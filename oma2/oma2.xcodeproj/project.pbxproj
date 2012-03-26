@@ -1,0 +1,335 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
+		DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
+		DB0FC02F1519183C008A9B54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
+		DB0FC0331519183D008A9B54 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0311519183D008A9B54 /* Credits.rtf */; };
+		DB0FC0361519183D008A9B54 /* oma2AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC0351519183D008A9B54 /* oma2AppDelegate.m */; };
+		DB0FC0391519183D008A9B54 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0371519183D008A9B54 /* MainMenu.xib */; };
+		DB0FC04015191886008A9B54 /* oma-icns.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC03F15191886008A9B54 /* oma-icns.icns */; };
+		DB0FC046151918F0008A9B54 /* StatusController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC041151918F0008A9B54 /* StatusController.m */; };
+		DB0FC047151918F0008A9B54 /* Status.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC042151918F0008A9B54 /* Status.xib */; };
+		DB0FC048151918F0008A9B54 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC044151918F0008A9B54 /* AppController.m */; };
+		DB2BC300151930D7009D9AED /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
+		DB2BC304151933C9009D9AED /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.m */; };
+		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
+		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		DB0FC01E1519183C008A9B54 /* oma2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB0FC0221519183C008A9B54 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		DB0FC0251519183C008A9B54 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		DB0FC0261519183C008A9B54 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DB0FC0271519183C008A9B54 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DB0FC02A1519183C008A9B54 /* oma2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "oma2-Info.plist"; sourceTree = "<group>"; };
+		DB0FC02C1519183C008A9B54 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DB0FC02E1519183C008A9B54 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		DB0FC0301519183D008A9B54 /* oma2-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "oma2-Prefix.pch"; sourceTree = "<group>"; };
+		DB0FC0321519183D008A9B54 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		DB0FC0341519183D008A9B54 /* oma2AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = oma2AppDelegate.h; sourceTree = "<group>"; };
+		DB0FC0351519183D008A9B54 /* oma2AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = oma2AppDelegate.m; sourceTree = "<group>"; };
+		DB0FC0381519183D008A9B54 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		DB0FC03F15191886008A9B54 /* oma-icns.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "oma-icns.icns"; sourceTree = "<group>"; };
+		DB0FC041151918F0008A9B54 /* StatusController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusController.m; sourceTree = "<group>"; };
+		DB0FC042151918F0008A9B54 /* Status.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Status.xib; sourceTree = "<group>"; };
+		DB0FC043151918F0008A9B54 /* StatusController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusController.h; sourceTree = "<group>"; };
+		DB0FC044151918F0008A9B54 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
+		DB0FC045151918F0008A9B54 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
+		DB2BC2FF151930D7009D9AED /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		DB2BC302151933C9009D9AED /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
+		DB2BC303151933C9009D9AED /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; };
+		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
+		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DB0FC01B1519183C008A9B54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DB0FC0131519183B008A9B54 = {
+			isa = PBXGroup;
+			children = (
+				DB0FC03F15191886008A9B54 /* oma-icns.icns */,
+				DB0FC0281519183C008A9B54 /* oma2 */,
+				DB0FC0211519183C008A9B54 /* Frameworks */,
+				DB0FC01F1519183C008A9B54 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DB0FC01F1519183C008A9B54 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DB0FC01E1519183C008A9B54 /* oma2.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DB0FC0211519183C008A9B54 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DB0FC0221519183C008A9B54 /* Cocoa.framework */,
+				DB0FC0241519183C008A9B54 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DB0FC0241519183C008A9B54 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DB0FC0251519183C008A9B54 /* AppKit.framework */,
+				DB0FC0261519183C008A9B54 /* CoreData.framework */,
+				DB0FC0271519183C008A9B54 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		DB0FC0281519183C008A9B54 /* oma2 */ = {
+			isa = PBXGroup;
+			children = (
+				DB0FC0341519183D008A9B54 /* oma2AppDelegate.h */,
+				DB0FC0351519183D008A9B54 /* oma2AppDelegate.m */,
+				DB0FC045151918F0008A9B54 /* AppController.h */,
+				DB0FC044151918F0008A9B54 /* AppController.m */,
+				DB0FC0371519183D008A9B54 /* MainMenu.xib */,
+				DB2BC2FF151930D7009D9AED /* Preferences.xib */,
+				DB2BC302151933C9009D9AED /* PreferenceController.h */,
+				DB2BC303151933C9009D9AED /* PreferenceController.m */,
+				DB0FC042151918F0008A9B54 /* Status.xib */,
+				DB0FC043151918F0008A9B54 /* StatusController.h */,
+				DB0FC041151918F0008A9B54 /* StatusController.m */,
+				DB0FC0291519183C008A9B54 /* Supporting Files */,
+			);
+			path = oma2;
+			sourceTree = "<group>";
+		};
+		DB0FC0291519183C008A9B54 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DB593A36151B8B19007CA0C3 /* plus.jpg */,
+				DB593A3A151B9766007CA0C3 /* box.jpg */,
+				DB0FC02A1519183C008A9B54 /* oma2-Info.plist */,
+				DB0FC02B1519183C008A9B54 /* InfoPlist.strings */,
+				DB0FC02E1519183C008A9B54 /* main.m */,
+				DB0FC0301519183D008A9B54 /* oma2-Prefix.pch */,
+				DB0FC0311519183D008A9B54 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DB0FC01D1519183C008A9B54 /* oma2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB0FC03C1519183D008A9B54 /* Build configuration list for PBXNativeTarget "oma2" */;
+			buildPhases = (
+				DB0FC01A1519183C008A9B54 /* Sources */,
+				DB0FC01B1519183C008A9B54 /* Frameworks */,
+				DB0FC01C1519183C008A9B54 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = oma2;
+			productName = oma2;
+			productReference = DB0FC01E1519183C008A9B54 /* oma2.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DB0FC0151519183B008A9B54 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Yale University";
+			};
+			buildConfigurationList = DB0FC0181519183B008A9B54 /* Build configuration list for PBXProject "oma2" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = DB0FC0131519183B008A9B54;
+			productRefGroup = DB0FC01F1519183C008A9B54 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DB0FC01D1519183C008A9B54 /* oma2 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DB0FC01C1519183C008A9B54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */,
+				DB0FC0331519183D008A9B54 /* Credits.rtf in Resources */,
+				DB0FC0391519183D008A9B54 /* MainMenu.xib in Resources */,
+				DB0FC04015191886008A9B54 /* oma-icns.icns in Resources */,
+				DB0FC047151918F0008A9B54 /* Status.xib in Resources */,
+				DB2BC300151930D7009D9AED /* Preferences.xib in Resources */,
+				DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */,
+				DB593A3B151B9766007CA0C3 /* box.jpg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DB0FC01A1519183C008A9B54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB0FC02F1519183C008A9B54 /* main.m in Sources */,
+				DB0FC0361519183D008A9B54 /* oma2AppDelegate.m in Sources */,
+				DB0FC046151918F0008A9B54 /* StatusController.m in Sources */,
+				DB0FC048151918F0008A9B54 /* AppController.m in Sources */,
+				DB2BC304151933C9009D9AED /* PreferenceController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		DB0FC02B1519183C008A9B54 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB0FC02C1519183C008A9B54 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DB0FC0311519183D008A9B54 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB0FC0321519183D008A9B54 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		DB0FC0371519183D008A9B54 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB0FC0381519183D008A9B54 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DB0FC03A1519183D008A9B54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		DB0FC03B1519183D008A9B54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		DB0FC03D1519183D008A9B54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_OBJC_GC = required;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
+				INFOPLIST_FILE = "oma2/oma2-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		DB0FC03E1519183D008A9B54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_OBJC_GC = required;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
+				INFOPLIST_FILE = "oma2/oma2-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DB0FC0181519183B008A9B54 /* Build configuration list for PBXProject "oma2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB0FC03A1519183D008A9B54 /* Debug */,
+				DB0FC03B1519183D008A9B54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB0FC03C1519183D008A9B54 /* Build configuration list for PBXNativeTarget "oma2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB0FC03D1519183D008A9B54 /* Debug */,
+				DB0FC03E1519183D008A9B54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DB0FC0151519183B008A9B54 /* Project object */;
+}
