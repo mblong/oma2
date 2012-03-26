@@ -16,11 +16,12 @@
 		DB0FC04015191886008A9B54 /* oma-icns.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC03F15191886008A9B54 /* oma-icns.icns */; };
 		DB0FC046151918F0008A9B54 /* StatusController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC041151918F0008A9B54 /* StatusController.m */; };
 		DB0FC047151918F0008A9B54 /* Status.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC042151918F0008A9B54 /* Status.xib */; };
-		DB0FC048151918F0008A9B54 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC044151918F0008A9B54 /* AppController.m */; };
+		DB0FC048151918F0008A9B54 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC044151918F0008A9B54 /* AppController.mm */; };
 		DB2BC300151930D7009D9AED /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
 		DB2BC304151933C9009D9AED /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.m */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
+		DBA96ABA1520C7090043754E /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,13 +42,16 @@
 		DB0FC041151918F0008A9B54 /* StatusController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusController.m; sourceTree = "<group>"; };
 		DB0FC042151918F0008A9B54 /* Status.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Status.xib; sourceTree = "<group>"; };
 		DB0FC043151918F0008A9B54 /* StatusController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusController.h; sourceTree = "<group>"; };
-		DB0FC044151918F0008A9B54 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
+		DB0FC044151918F0008A9B54 /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppController.mm; sourceTree = "<group>"; };
 		DB0FC045151918F0008A9B54 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		DB2BC2FF151930D7009D9AED /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		DB2BC302151933C9009D9AED /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
 		DB2BC303151933C9009D9AED /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; };
 		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
 		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
+		DBA96AB91520C7090043754E /* comdec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = comdec.mm; sourceTree = "<group>"; };
+		DBA96ABB1520C7820043754E /* oma2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oma2.h; sourceTree = "<group>"; };
+		DBA96ABC1520CA9C0043754E /* UI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,17 +106,8 @@
 		DB0FC0281519183C008A9B54 /* oma2 */ = {
 			isa = PBXGroup;
 			children = (
-				DB0FC0341519183D008A9B54 /* oma2AppDelegate.h */,
-				DB0FC0351519183D008A9B54 /* oma2AppDelegate.m */,
-				DB0FC045151918F0008A9B54 /* AppController.h */,
-				DB0FC044151918F0008A9B54 /* AppController.m */,
-				DB0FC0371519183D008A9B54 /* MainMenu.xib */,
-				DB2BC2FF151930D7009D9AED /* Preferences.xib */,
-				DB2BC302151933C9009D9AED /* PreferenceController.h */,
-				DB2BC303151933C9009D9AED /* PreferenceController.m */,
-				DB0FC042151918F0008A9B54 /* Status.xib */,
-				DB0FC043151918F0008A9B54 /* StatusController.h */,
-				DB0FC041151918F0008A9B54 /* StatusController.m */,
+				DBA96AB81520C6AC0043754E /* UI Independent */,
+				DBA96AB21520C34F0043754E /* UI */,
 				DB0FC0291519183C008A9B54 /* Supporting Files */,
 			);
 			path = oma2;
@@ -130,6 +125,34 @@
 				DB0FC0311519183D008A9B54 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DBA96AB21520C34F0043754E /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				DBA96ABC1520CA9C0043754E /* UI.h */,
+				DB0FC0341519183D008A9B54 /* oma2AppDelegate.h */,
+				DB0FC0351519183D008A9B54 /* oma2AppDelegate.m */,
+				DB0FC045151918F0008A9B54 /* AppController.h */,
+				DB0FC044151918F0008A9B54 /* AppController.mm */,
+				DB0FC0371519183D008A9B54 /* MainMenu.xib */,
+				DB2BC2FF151930D7009D9AED /* Preferences.xib */,
+				DB2BC302151933C9009D9AED /* PreferenceController.h */,
+				DB2BC303151933C9009D9AED /* PreferenceController.m */,
+				DB0FC042151918F0008A9B54 /* Status.xib */,
+				DB0FC043151918F0008A9B54 /* StatusController.h */,
+				DB0FC041151918F0008A9B54 /* StatusController.m */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		DBA96AB81520C6AC0043754E /* UI Independent */ = {
+			isa = PBXGroup;
+			children = (
+				DBA96ABB1520C7820043754E /* oma2.h */,
+				DBA96AB91520C7090043754E /* comdec.mm */,
+			);
+			name = "UI Independent";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -204,8 +227,9 @@
 				DB0FC02F1519183C008A9B54 /* main.m in Sources */,
 				DB0FC0361519183D008A9B54 /* oma2AppDelegate.m in Sources */,
 				DB0FC046151918F0008A9B54 /* StatusController.m in Sources */,
-				DB0FC048151918F0008A9B54 /* AppController.m in Sources */,
+				DB0FC048151918F0008A9B54 /* AppController.mm in Sources */,
 				DB2BC304151933C9009D9AED /* PreferenceController.m in Sources */,
+				DBA96ABA1520C7090043754E /* comdec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
