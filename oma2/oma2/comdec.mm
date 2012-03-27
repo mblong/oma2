@@ -1,27 +1,14 @@
-#include "oma2.h"
-#include "UI.h"
 
+#include "comdec.h"
 
-char reply[256];
+extern char reply[1024];
 
-int null(int,char*);
-int plus(int,char*);
-int comdec(char*);
 
 int null(int i,char* c){
     return 0;
 };
-int plus(int i,char* c){
-    sprintf(reply,"arg is: %d\n",i);
-    send_reply;
-    return 1;
-}
 
 
-ComDef   commands[] =    {
-    {{"               "},	null},			
-    {{"+              "},	plus},		
-    {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},0}};
 
 
 int comdec(char* cmnd){
