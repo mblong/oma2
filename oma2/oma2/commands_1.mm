@@ -394,16 +394,7 @@ extern "C" int smooth_c(int n,char* args){
 
 /************************************************************************/
 /*
-#include <Carbon/Carbon.h>
 
-extern DATAWORD *datpt;
-extern  int doffset;
-extern TWOBYTE header[],trailer[];
-extern int image_is_color;
-extern int have_max,npts;
-extern "C" int maxx(),update_status(),checkpar();
-extern "C" int printxyzstuff_nib(int,int,int);
-extern Point substart,subend; 
 */
 //extern char	saveprefixbuf[];		/* save data file prefix buffer */
 //extern char	savesuffixbuf[];		/* save data file suffix buffer */
@@ -425,87 +416,14 @@ void update_UI(){
     
     imspecs = iBuffer.getspecs();
     
-    header[NCHAN] = imspecs[COLS];
-    header[NTRAK] = imspecs[ROWS];
-    header[NDX] = imspecs[DX];
-    header[NDY] = imspecs[DY];
-    header[NX0] = imspecs[X0];
-    header[NY0] = imspecs[Y0];
-    trailer[SFACTR] = 1;
-    npts = header[NCHAN] * header[NTRAK];
-    trailer[IS_COLOR_] = imspecs[IS_COLOR];
-    image_is_color = imspecs[IS_COLOR];
-	
-	if(checkpar()==1) {
-        sprintf(reply,"update_UI trouble!\n");
-        send_reply;
-    }
-    
-    for(r=0; r<imspecs[ROWS]; r++){
-        for(c=0; c<imspecs[COLS]; c++){
-            *(datpt+doffset+i++) = iBuffer.getpix(r,c);
-        }; 
-    }
-    
-    substart.h=iRect.ul.h ;
-    substart.v=iRect.ul.v ;
-    subend.h=iRect.lr.h ;
-    subend.v=iRect.lr.v ;
 
 	have_max = 0;
-	maxx();
+
 	update_status();
     printxyzstuff_nib(iRect.ul.h,iRect.ul.v, 0);
     printxyzstuff_nib(iRect.lr.h,iRect.lr.v,1);
+ 
     free(imspecs);
  */
 }
 
-
-// this routine moves the current image buffer in the old oma commands into the iBuffer object
-
-/*
-
-extern "C" void old_oma_to_iBuffer(){
-
-    int r,c,i=0;
-    int *imspecs;
-    
-    
-    imspecs = iBuffer.getspecs();
-    
-    if(header[NCHAN]*header[NTRAK] != imspecs[COLS]*imspecs[ROWS]){
-        // New -- size -- reallocate data space
-        Image newIm(header[NTRAK],header[NCHAN]);
-        iBuffer.free();
-        iBuffer = newIm;
-    }
-    
-    imspecs[COLS] = header[NCHAN];
-    imspecs[ROWS] = header[NTRAK];
-    imspecs[DX] = header[NDX];
-    imspecs[DY] = header[NDY];
-    imspecs[X0] = header[NX0];
-    imspecs[Y0] = header[NY0];
-    imspecs[IS_COLOR] = trailer[IS_COLOR_] ;
-    
-    iBuffer.setspecs(imspecs);
-   
-    for(r=0; r<imspecs[ROWS]; r++){
-        for(c=0; c<imspecs[COLS]; c++){
-             iBuffer.setpix(r,c,*(datpt+doffset+i++));
-        }; 
-    }
-    
-    fullname(saveprefixbuf,LOAD_SAVE_PREFIX);
-    fullname(savesuffixbuf,LOAD_SAVE_SUFFIX);
-    fullname(getprefixbuf,LOAD_GET_PREFIX);
-    fullname(getsuffixbuf,LOAD_GET_SUFFIX);
-    
-    iRect.ul.h = substart.h;
-    iRect.ul.v = substart.v;
-    iRect.lr.h = subend.h;
-    iRect.lr.v = subend.v;
-    
-}
- */

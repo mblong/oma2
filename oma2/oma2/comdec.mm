@@ -37,7 +37,7 @@ int comdec(char* cmnd){
                  } else {
                  nosuch();
                  */ 
-                sprintf(reply,"No such command: %s",cmnd);
+                sprintf(reply,"No such command: %s\n",cmnd);
                 send_reply;
                 return -1;
                 //}

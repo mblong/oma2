@@ -28,6 +28,7 @@ AppController   *appController;
 
 -(void)awakeFromNib{
     appController = [self whoami];
+    [self appendText: @"OMA2>"];
 }
 
 -(id) whoami{
@@ -38,11 +39,11 @@ AppController   *appController;
     last_return += [string length];
     [[[theCommands textStorage] mutableString] appendString: string];
 }
+
 -(void) appendCText:(char *) string{
     NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
     last_return += [reply length];
     [[[theCommands textStorage] mutableString] appendString: reply];
-    
 }
 
 -(void) textDidChange:(NSNotification *) pNotify {
@@ -51,10 +52,11 @@ AppController   *appController;
     
     if([ch isEqualToString:@"\n"]){
         NSString *command = [text substringFromIndex:last_return];
-        NSLog(@"%@",command);
         last_return = [text length];
         // pass this to the command decoder
-        const char* cmd = [command cStringUsingEncoding:NSASCIIStringEncoding];
+        char* cmd = (char*) [command cStringUsingEncoding:NSASCIIStringEncoding];
+        // replace the \n with an EOL
+        cmd[strlen(cmd)-1] = 0;
         comdec((char*) cmd);
         [self appendText: @"OMA2>"];
     }
