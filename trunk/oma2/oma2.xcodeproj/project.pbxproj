@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB021E7B15211EFA001D1B05 /* commands_1.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7515211EFA001D1B05 /* commands_1.mm */; };
+		DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7715211EFA001D1B05 /* image_support.mm */; };
+		DB021E7D15211EFA001D1B05 /* image.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7915211EFA001D1B05 /* image.mm */; };
 		DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
 		DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
 		DB0FC02F1519183C008A9B54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
@@ -25,6 +28,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB021E7515211EFA001D1B05 /* commands_1.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = commands_1.mm; sourceTree = "<group>"; };
+		DB021E7615211EFA001D1B05 /* commands_1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = commands_1.h; sourceTree = "<group>"; };
+		DB021E7715211EFA001D1B05 /* image_support.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = image_support.mm; sourceTree = "<group>"; };
+		DB021E7815211EFA001D1B05 /* image_support.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_support.h; sourceTree = "<group>"; };
+		DB021E7915211EFA001D1B05 /* image.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = image.mm; sourceTree = "<group>"; };
+		DB021E7A15211EFA001D1B05 /* image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image.h; sourceTree = "<group>"; };
+		DB021E7F15214040001D1B05 /* comdec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comdec.h; sourceTree = "<group>"; };
 		DB0FC01E1519183C008A9B54 /* oma2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0FC0221519183C008A9B54 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		DB0FC0251519183C008A9B54 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -150,6 +160,13 @@
 			isa = PBXGroup;
 			children = (
 				DBA96ABB1520C7820043754E /* oma2.h */,
+				DB021E7A15211EFA001D1B05 /* image.h */,
+				DB021E7915211EFA001D1B05 /* image.mm */,
+				DB021E7815211EFA001D1B05 /* image_support.h */,
+				DB021E7715211EFA001D1B05 /* image_support.mm */,
+				DB021E7615211EFA001D1B05 /* commands_1.h */,
+				DB021E7515211EFA001D1B05 /* commands_1.mm */,
+				DB021E7F15214040001D1B05 /* comdec.h */,
 				DBA96AB91520C7090043754E /* comdec.mm */,
 			);
 			name = "UI Independent";
@@ -230,6 +247,9 @@
 				DB0FC048151918F0008A9B54 /* AppController.mm in Sources */,
 				DB2BC304151933C9009D9AED /* PreferenceController.m in Sources */,
 				DBA96ABA1520C7090043754E /* comdec.mm in Sources */,
+				DB021E7B15211EFA001D1B05 /* commands_1.mm in Sources */,
+				DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */,
+				DB021E7D15211EFA001D1B05 /* image.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
