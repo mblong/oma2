@@ -11,7 +11,8 @@ extern "C" int plus_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
-    (iBuffer+val).getmaxx();
+    (iBuffer+val);
+    iBuffer.getmaxx();
     update_UI();
     //cout << "test message\n";
     return NO_ERR;
@@ -25,7 +26,8 @@ extern "C" int minus_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
-    (iBuffer-val).getmaxx();
+    (iBuffer-val);
+    iBuffer.getmaxx();
     update_UI();
     return NO_ERR;
 }
@@ -34,7 +36,8 @@ extern "C" int divide_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
-    (iBuffer/val).getmaxx();
+    (iBuffer/val);
+    iBuffer.getmaxx();
     update_UI();
     return NO_ERR;
 }
@@ -43,7 +46,8 @@ extern "C" int multiply_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
-    (iBuffer*val).getmaxx();
+    (iBuffer*val);
+    iBuffer.getmaxx();
     update_UI();
     return NO_ERR;
 }
@@ -70,7 +74,8 @@ extern "C" int addfile_c(int n,char* args){
         return new_im.err();
     }
     if(iBuffer == new_im){
-        (iBuffer+new_im).getmaxx();
+        (iBuffer+new_im);
+        iBuffer.getmaxx();
         new_im.free();
         update_UI();
         return NO_ERR;
@@ -90,7 +95,8 @@ extern "C" int mulfile_c(int n,char* args){
         return new_im.err();
     }
     if(iBuffer == new_im){
-        (iBuffer*new_im).getmaxx();
+        (iBuffer*new_im);
+        iBuffer.getmaxx();
         new_im.free();
         update_UI();
         return NO_ERR;
@@ -110,7 +116,8 @@ extern "C" int subfile_c(int n,char* args){
         return new_im.err();
     }
     if(iBuffer == new_im){
-        (iBuffer-new_im).getmaxx();
+        (iBuffer-new_im);
+        iBuffer.getmaxx();
         new_im.free();
         update_UI();
         return NO_ERR;
@@ -130,7 +137,8 @@ extern "C" int divfile_c(int n,char* args){
         return new_im.err();
     }
     if(iBuffer == new_im){
-        (iBuffer/new_im).getmaxx();
+        (iBuffer/new_im);
+        iBuffer.getmaxx();
         new_im.free();
         update_UI();
         return NO_ERR;
@@ -411,10 +419,19 @@ extern "C" int smooth_c(int n,char* args){
 // In general though, this is a way to update user interface values after a command
 
 void update_UI(){
+    /*
+    DATAWORD* vals = iBuffer.getvalues();
+    printf(" min/max: %g %g\n",vals[MIN],vals[MAX]);
+    int * imspecs = iBuffer.getspecs();
+    printf(" r/c: %d %d\n",imspecs[ROWS],imspecs[COLS]);
+    printf(" have/loc: %d %d\n",imspecs[HAVE_MAX],imspecs[LMAX]);
+    free(vals);
+    free(imspecs);
+    */
 /*    int r,c,i=0;
     int *imspecs;
     
-    imspecs = iBuffer.getspecs();
+    
     
 
 	have_max = 0;
