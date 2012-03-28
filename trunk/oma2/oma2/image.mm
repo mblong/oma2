@@ -375,7 +375,7 @@ void Image::getmaxx()
      header[NMIN] = lmn - lmn/n*n;   	// Column of min 
      */
     
-    sprintf(reply,"%f %f  at %d %d\n",values[MIN] ,values[MAX] ,specs[LMIN],specs[LMAX]);
+    sprintf(reply,"%g %g  at %d %d\n",values[MIN] ,values[MAX] ,specs[LMIN],specs[LMAX]);
     send_reply;
     
 }
@@ -448,6 +448,14 @@ int* Image::getspecs(){
         thespecs[i] = specs[i];
     }
     return thespecs;
+}
+
+DATAWORD* Image::getvalues(){
+   DATAWORD* thevalues = new DATAWORD[NVALUES];
+    for(int i=0; i<NVALUES; i++){
+        thevalues[i] = values[i];
+    }
+    return thevalues;
 }
 
 void Image::setspecs(int* newspecs){

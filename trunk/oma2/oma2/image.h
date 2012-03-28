@@ -57,6 +57,7 @@ public:
     void copyABD(Image);        // copy All But Data from one image to another
     int* getspecs();            // returns a copy of the image specs array
     void setspecs(int*);        // sets the image specs array
+    DATAWORD* getvalues();      // returns a copy of the image values array
 
     DATAWORD getpix(int,int);     // get a pixel value at the specified row and column
     DATAWORD getpix(float,float); // get an interpoated pixel value at the specified 

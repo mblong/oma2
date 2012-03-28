@@ -8,6 +8,7 @@
 #include <StdLib.h>
 #include <math.h>
 
+
 /******************** Definitions ********************/
 
 #define IS_BIG_ENDIAN 0
@@ -76,6 +77,12 @@ name of the units. Occupies trailer[5] to trailer[12] */
 
 #define PI 3.14159265358979323846
 
+#define MAXMSG " Maximum %g at Row %d and Column %d.\n"
+#define MINMSG " Minimum %g at Row %d and Column %d.\n"
+#define DATAMSG " %g\n"
+#define DATAFMT "%g"
+
+
 /* Prefix and Suffix Types */
 enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_DATA,CSV_DATA,FTS_DATA,
        RAW_DATA,PDF_DATA,SAVE_DATA_NO_SUFFIX,
@@ -86,14 +93,6 @@ enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_
 
 /******************** Structures ********************/
 
-typedef struct {
-	char name[16];
-} Cname;
-
-typedef struct {
-	Cname text;
-	int (*fnc)(int,char*);
-} ComDef;
 
 typedef struct {
 	int* specs;
