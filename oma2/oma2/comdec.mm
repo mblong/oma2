@@ -967,8 +967,13 @@ int vprint(int index)
 
  
  int null(int i,char* c){
- return 0;
+     return 0;
  };
+
+int display_c(int, char*){
+    display_data;
+    return 0;
+}
 /*
 // ********** 
 int pause_flag = 0;
@@ -1010,15 +1015,17 @@ int pmacro(int n)
     macptr = 0;
     return 0;
 }
+ 
+*/
 // ********** 
 
-int macro(int n, int index)
+int macro(int n, char* args)
 {
-	extern unsigned char from_noprint;
+	//extern unsigned char from_noprint;
 	
-	keylimit(-1);
+	//keylimit(-1);
 	from_noprint = 1;
-	rmacro(n,index);
+	rmacro(n,args);
 	return 0;
     
 }
@@ -1026,11 +1033,9 @@ int macro(int n, int index)
 // *********** 
 
 
-int rmacro(int n, int index)
+int rmacro(int n, char* args)
 {
     extern int maccount,macflag,macptr,macval,macincrement;
-    extern char cmnd[];
-    extern char* macbuf;
     
 	int i;
 	int j = 1;
@@ -1051,9 +1056,9 @@ int rmacro(int n, int index)
     
 	// Check to see if there was a second argument 
 	
-	for ( i = index; cmnd[i] != EOL; i++) {
-		if(cmnd[i] == ' ') { 
-			sscanf(&cmnd[index],"%d %d",&i,&j);
+	for ( i = 0; args[i] != EOL; i++) {
+		if(args[i] == ' ') { 
+			sscanf(args,"%d %d",&i,&j);
 			macval = i;
 			maccount = (j - i)/macincrement + 1;
 			break;
@@ -1064,7 +1069,7 @@ int rmacro(int n, int index)
 	printf("Start Macro: from %d to %d, steps of %d.\n",macval,j,macincrement);
 	return 0;
 }
-
+/*
 // ********** 
 
 int imacro(int n)			// set a flag that determines if a macro checks for events during execution 

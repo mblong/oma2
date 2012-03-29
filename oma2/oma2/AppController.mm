@@ -8,6 +8,7 @@
 
 #import "AppController.h"
 #import "PreferenceController.h"
+#import "DataWindowController.h"
 
 AppController   *appController;
 
@@ -62,7 +63,13 @@ AppController   *appController;
     }
 }
 
+-(void) showDataWindow{
+    if(!dataWindowController){
+        dataWindowController = [[DataWindowController alloc] initWithWindowNibName:@"DataWindow"];
+    }
+    [dataWindowController showWindow:self];
 
+}
 
 
 @end

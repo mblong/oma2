@@ -13,6 +13,7 @@
 extern AppController *appController;
 
 #define send_reply [appController appendCText: reply];
+#define display_data [appController showDataWindow];
 
 
 

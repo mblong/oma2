@@ -61,18 +61,17 @@ Expression_Element evaluate(int start, int end);
 int vprint(int index);
 
 // function prototypes for commands in comdec.cpp
-
-
+int display_c(int, char*);
 int endifcmnd(int, char*);
 int execut(int, char*);
 int ifcmnd(int, char*);
 int loop(int, char*);
 int loopend(int, char*);
 int loopbreak(int, char*);
+int macro(int, char*);
 int null(int,char*);
+int rmacro(int, char*);
 int variab(int, char*);
-
-
 
 ComDef   commands[] =    {
     {{"               "},	null},			
@@ -83,6 +82,7 @@ ComDef   commands[] =    {
     {{"ADDFILE        "},	addfile_c},
     {{"CROP           "},	croprectangle_c},
     {{"CONCATENATE    "},	concatenatefile_c},
+    {{"DISPLAY        "},	display_c},
     {{"DIVFILE        "},	divfile_c},
     {{"EXECUTE        "},	execut},
     {{"GET            "},	getfile_c},
@@ -90,6 +90,7 @@ ComDef   commands[] =    {
     {{"LOOP           "},	loop},
     {{"LOOBBREAK      "},	loopbreak},
     {{"LOOPEND        "},	loopend},
+    {{"MACRO          "},	macro},
     {{"MULFILE        "},	mulfile_c},
     {{"RECTANGLE      "},	rectan_c},
     {{"RGB2RED        "},	rgb2red_c},
