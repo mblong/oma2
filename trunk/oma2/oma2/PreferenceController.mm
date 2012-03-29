@@ -37,13 +37,13 @@
 
 - (IBAction)newSavePrefix:(id)sender {
     const char* text = [[savePrefix stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-    //fullname(text,LOAD_SAVE_PREFIX);
+    fullname((char*)text,LOAD_SAVE_PREFIX);
     text = [[getPrefix stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-    //fullname(text,LOAD_GET_PREFIX);
+    fullname((char*)text,LOAD_GET_PREFIX);
     text = [[saveSuffix stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-    //fullname(text,LOAD_SAVE_SUFFIX);
+    fullname((char*)text,LOAD_SAVE_SUFFIX);
     text = [[getSuffix stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-    //fullname(text,LOAD_GET_SUFFIX);
+    fullname((char*)text,LOAD_GET_SUFFIX);
 
 }
 @end

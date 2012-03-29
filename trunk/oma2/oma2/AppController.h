@@ -13,10 +13,12 @@ int comdec(char*);
 
 
 @class PreferenceController;
+@class DataWindowController;
 
 @interface AppController : NSObject{
     
     PreferenceController *preferenceController;
+    DataWindowController *dataWindowController;
     NSUInteger last_return;
     
 }
@@ -31,6 +33,7 @@ int comdec(char*);
 
 
 - (IBAction)showPrefs:(id)sender;
+-(void) showDataWindow;
     
 @end
 

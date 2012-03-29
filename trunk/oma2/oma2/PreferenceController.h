@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "image_support.h"
 
 @interface PreferenceController : NSWindowController{
     NSTextField *savePrefix;
