@@ -61,7 +61,8 @@ Expression_Element evaluate(int start, int end);
 int vprint(int index);
 
 // function prototypes for commands in comdec.cpp
-int display_c(int, char*);
+int display(int, char*);
+int erase(int, char*);
 int endifcmnd(int, char*);
 int execut(int, char*);
 int ifcmnd(int, char*);
@@ -82,8 +83,9 @@ ComDef   commands[] =    {
     {{"ADDFILE        "},	addfile_c},
     {{"CROP           "},	croprectangle_c},
     {{"CONCATENATE    "},	concatenatefile_c},
-    {{"DISPLAY        "},	display_c},
+    {{"DISPLAY        "},	display},
     {{"DIVFILE        "},	divfile_c},
+    {{"ERASE          "},	erase},
     {{"EXECUTE        "},	execut},
     {{"GET            "},	getfile_c},
     {{"INVERT         "},	invert_c},

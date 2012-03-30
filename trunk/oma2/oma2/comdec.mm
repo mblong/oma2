@@ -285,6 +285,9 @@ int comdec(char* cmnd)
         }
     }
     ivalue *= sign;
+    if (chindx == 0) {  // if no arguments, pass a null string
+        *cmnd = 0;
+    }
     
     // Now Execute the Appropriate Command -- unless this is in an IF whose condition is not met
     
@@ -965,15 +968,26 @@ int vprint(int index)
 /*									Commands								 */
 /* ------------------------------------------------------------------------- */
 
- 
+// **********
+
  int null(int i,char* c){
      return 0;
  };
 
-int display_c(int, char*){
+// **********
+
+int display(int n, char* args){
     display_data;
     return 0;
 }
+
+// **********
+
+int erase(int n, char* args){
+    erase_window;
+    return 0;
+}
+
 /*
 // ********** 
 int pause_flag = 0;

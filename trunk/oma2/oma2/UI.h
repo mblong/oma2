@@ -13,8 +13,8 @@
 extern AppController *appController;
 
 #define send_reply [appController appendCText: reply];
-#define display_data [appController showDataWindow];
-
+#define display_data [appController showDataWindow:(char*) args];
+#define erase_window [appController eraseWindow:(int) n];
 
 
 #endif
