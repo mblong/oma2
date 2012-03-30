@@ -63,13 +63,31 @@ AppController   *appController;
     }
 }
 
--(void) showDataWindow{
+-(void) showDataWindow: (char*) windowname{
     if(!dataWindowController){
         dataWindowController = [[DataWindowController alloc] initWithWindowNibName:@"DataWindow"];
     }
+    NSLog(@"%ld",[dataWindowController retainCount]);
+    if(*windowname){
+        NSString *text  = [[NSString alloc] initWithCString:windowname encoding:NSASCIIStringEncoding];
+        [dataWindowController setWindowName:text] ; 
+    } else{
+         [dataWindowController setWindowName:@"Data"] ; 
+    }
+    [[dataWindowController window] setTitle:[dataWindowController windowName]];
     [dataWindowController showWindow:self];
 
 }
+
+-(void) eraseWindow:(int) n{
+    if(dataWindowController){
+        NSLog(@"%ld",[dataWindowController retainCount]);
+        [self->dataWindowController release];
+         NSLog(@"%ld",[dataWindowController retainCount]);
+    }
+
+}
+
 
 
 @end

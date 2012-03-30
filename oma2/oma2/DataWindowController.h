@@ -8,6 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface DataWindowController : NSWindowController
+@interface DataWindowController : NSWindowController{
+    NSString    *windowName;
+    
+}
+
+@property (copy) NSString *windowName;
+
 
 @end

@@ -21,7 +21,7 @@
 		DB0FC047151918F0008A9B54 /* Status.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC042151918F0008A9B54 /* Status.xib */; };
 		DB0FC048151918F0008A9B54 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC044151918F0008A9B54 /* AppController.mm */; };
 		DB17A3051524754A004F810A /* DataWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB17A3041524754A004F810A /* DataWindow.xib */; };
-		DB17A30C15247965004F810A /* DataWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB17A30B15247965004F810A /* DataWindowController.m */; };
+		DB17A30C15247965004F810A /* DataWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB17A30B15247965004F810A /* DataWindowController.mm */; };
 		DB2BC300151930D7009D9AED /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
 		DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
@@ -58,7 +58,7 @@
 		DB0FC045151918F0008A9B54 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		DB17A3041524754A004F810A /* DataWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DataWindow.xib; sourceTree = "<group>"; };
 		DB17A30A15247965004F810A /* DataWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataWindowController.h; sourceTree = "<group>"; };
-		DB17A30B15247965004F810A /* DataWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataWindowController.m; sourceTree = "<group>"; };
+		DB17A30B15247965004F810A /* DataWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DataWindowController.mm; sourceTree = "<group>"; };
 		DB2BC2FF151930D7009D9AED /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		DB2BC302151933C9009D9AED /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
 		DB2BC303151933C9009D9AED /* PreferenceController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PreferenceController.mm; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 				DB0FC0341519183D008A9B54 /* oma2AppDelegate.h */,
 				DB0FC0351519183D008A9B54 /* oma2AppDelegate.m */,
 				DB17A30A15247965004F810A /* DataWindowController.h */,
-				DB17A30B15247965004F810A /* DataWindowController.m */,
+				DB17A30B15247965004F810A /* DataWindowController.mm */,
 				DB17A3041524754A004F810A /* DataWindow.xib */,
 				DB0FC045151918F0008A9B54 /* AppController.h */,
 				DB0FC044151918F0008A9B54 /* AppController.mm */,
@@ -259,7 +259,7 @@
 				DB021E7B15211EFA001D1B05 /* commands_1.mm in Sources */,
 				DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */,
 				DB021E7D15211EFA001D1B05 /* image.mm in Sources */,
-				DB17A30C15247965004F810A /* DataWindowController.m in Sources */,
+				DB17A30C15247965004F810A /* DataWindowController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

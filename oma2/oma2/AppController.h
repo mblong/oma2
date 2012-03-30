@@ -33,7 +33,7 @@ int comdec(char*);
 
 
 - (IBAction)showPrefs:(id)sender;
--(void) showDataWindow;
-    
+-(void) showDataWindow:(char*) windowname;
+-(void) eraseWindow:(int) n;
 @end
 
