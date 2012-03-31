@@ -10,10 +10,14 @@
 
 @interface DataWindowController : NSWindowController{
     NSString    *windowName;
-    
+    NSImageView *imageView;
 }
 
 @property (copy) NSString *windowName;
 
+
+@property (assign) IBOutlet NSImageView *imageView;
+
+-(void) placeImage;
 
 @end
