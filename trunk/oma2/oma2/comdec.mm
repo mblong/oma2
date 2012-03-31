@@ -4,6 +4,7 @@
 
 extern char    reply[1024];   // buffer for sending messages to be typed out by the user interface
 extern Image   iBuffer;       // the image buffer
+extern ImageBitmap iBitmap;
 
 
 // if this is set, don't print anything
@@ -977,6 +978,7 @@ int vprint(int index)
 // **********
 
 int display(int n, char* args){
+    iBitmap = iBuffer;
     display_data;
     return 0;
 }

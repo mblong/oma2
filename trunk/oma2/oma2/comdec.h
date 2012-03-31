@@ -12,6 +12,7 @@
 #include "oma2.h"
 #include "UI.h"
 #include "commands_1.h"
+#include "ImageBitmap.h"
 
 // Things for loops in macros
 #define NESTDEPTH 20		// Should add checking for overflow; just make big for now

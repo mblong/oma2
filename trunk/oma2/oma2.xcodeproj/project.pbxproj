@@ -10,6 +10,7 @@
 		DB021E7B15211EFA001D1B05 /* commands_1.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7515211EFA001D1B05 /* commands_1.mm */; };
 		DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7715211EFA001D1B05 /* image_support.mm */; };
 		DB021E7D15211EFA001D1B05 /* image.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7915211EFA001D1B05 /* image.mm */; };
+		DB0F345615274EA800F3095E /* bike.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB0F345515274EA800F3095E /* bike.jpg */; };
 		DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
 		DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
 		DB0FC02F1519183C008A9B54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
@@ -27,6 +28,7 @@
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DBA96ABA1520C7090043754E /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
+		DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,7 @@
 		DB021E7915211EFA001D1B05 /* image.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = image.mm; sourceTree = "<group>"; };
 		DB021E7A15211EFA001D1B05 /* image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image.h; sourceTree = "<group>"; };
 		DB021E7F15214040001D1B05 /* comdec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comdec.h; sourceTree = "<group>"; };
+		DB0F345515274EA800F3095E /* bike.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bike.jpg; sourceTree = "<group>"; };
 		DB0FC01E1519183C008A9B54 /* oma2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0FC0221519183C008A9B54 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		DB0FC0251519183C008A9B54 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -62,11 +65,13 @@
 		DB2BC2FF151930D7009D9AED /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		DB2BC302151933C9009D9AED /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
 		DB2BC303151933C9009D9AED /* PreferenceController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PreferenceController.mm; sourceTree = "<group>"; };
+		DB2E76B8152611BD004B6502 /* ImageBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBitmap.h; sourceTree = "<group>"; };
 		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
 		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
 		DBA96AB91520C7090043754E /* comdec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = comdec.mm; sourceTree = "<group>"; };
 		DBA96ABB1520C7820043754E /* oma2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oma2.h; sourceTree = "<group>"; };
 		DBA96ABC1520CA9C0043754E /* UI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
+		DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageBitmap.mm; path = ../ImageBitmap.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +136,7 @@
 		DB0FC0291519183C008A9B54 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				DB0F345515274EA800F3095E /* bike.jpg */,
 				DB593A36151B8B19007CA0C3 /* plus.jpg */,
 				DB593A3A151B9766007CA0C3 /* box.jpg */,
 				DB0FC02A1519183C008A9B54 /* oma2-Info.plist */,
@@ -167,6 +173,8 @@
 		DBA96AB81520C6AC0043754E /* UI Independent */ = {
 			isa = PBXGroup;
 			children = (
+				DB2E76B8152611BD004B6502 /* ImageBitmap.h */,
+				DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */,
 				DBA96ABB1520C7820043754E /* oma2.h */,
 				DB021E7A15211EFA001D1B05 /* image.h */,
 				DB021E7915211EFA001D1B05 /* image.mm */,
@@ -240,6 +248,7 @@
 				DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */,
 				DB593A3B151B9766007CA0C3 /* box.jpg in Resources */,
 				DB17A3051524754A004F810A /* DataWindow.xib in Resources */,
+				DB0F345615274EA800F3095E /* bike.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +269,7 @@
 				DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */,
 				DB021E7D15211EFA001D1B05 /* image.mm in Sources */,
 				DB17A30C15247965004F810A /* DataWindowController.mm in Sources */,
+				DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

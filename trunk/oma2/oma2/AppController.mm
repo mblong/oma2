@@ -9,8 +9,11 @@
 #import "AppController.h"
 #import "PreferenceController.h"
 #import "DataWindowController.h"
+#import "ImageBitmap.h"
+
 
 AppController   *appController;
+extern ImageBitmap iBitmap;
 
 @implementation AppController
 
@@ -67,14 +70,16 @@ AppController   *appController;
     if(!dataWindowController){
         dataWindowController = [[DataWindowController alloc] initWithWindowNibName:@"DataWindow"];
     }
-    NSLog(@"%ld",[dataWindowController retainCount]);
+    //NSLog(@"%ld",[dataWindowController retainCount]);
     if(*windowname){
         NSString *text  = [[NSString alloc] initWithCString:windowname encoding:NSASCIIStringEncoding];
         [dataWindowController setWindowName:text] ; 
     } else{
          [dataWindowController setWindowName:@"Data"] ; 
     }
-    [[dataWindowController window] setTitle:[dataWindowController windowName]];
+    //[[dataWindowController window] setTitle:[dataWindowController windowName]];
+    [dataWindowController placeImage];
+    
     [dataWindowController showWindow:self];
 
 }

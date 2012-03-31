@@ -1,6 +1,11 @@
 #include "oma2.h"
 #include "Image_support.h"
 #include "UI.h"
+//#include "ImageBitmap.h"
+
+#ifndef oma2_Image_h
+#define oma2_Image_h
+
 
 /******************** Constants for Classes ********************/
 #define NSPECS  16   // number of integers in an Image specification array
@@ -20,7 +25,7 @@ enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR};
 
 class Image
 {
-private:
+protected:
     DATAWORD*   data;
     int         specs[NSPECS];      // information on Image size, type, etc.
     DATAWORD    values[NVALUES];    // important values (things like min, max, etc.)
@@ -69,5 +74,7 @@ public:
     Image invert();             // invert the current image
     Image rgb2color(int);       // crop an rgb image to color 0,1, or 2 (red, green, or blue)
     Image concat(Image);        // concatenate two images. Error if images are not the same width.
-        
+    friend class ImageBitmap;    
 };
+
+#endif
