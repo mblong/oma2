@@ -7,9 +7,11 @@
 //
 
 #import "DataWindowController.h"
+#import "AppController.h"
 #import "ImageBitmap.h"
 
 extern ImageBitmap iBitmap;
+extern AppController* appController; 
 
 @implementation DataWindowController
 
@@ -33,8 +35,9 @@ extern ImageBitmap iBitmap;
 
 - (void)dealloc
 {
-    NSLog(@"deallocate DataWindowController");
     [super dealloc];
+    NSLog(@"deallocate DataWindowController");
+    [appController dataWindowClosing];
 }
 
 
@@ -83,12 +86,15 @@ extern ImageBitmap iBitmap;
     NSWindowController *theWindowController = [[notification object] delegate];
     
     [theWindowController release];
-    [self release];
-    //[super dealloc];
+    
+    //[self release];
+    //[super dealloc]
     //[myArrayOfWindowControllers removeObject: theWindowController];
 }
 
 -(void) placeImage{
+    
+
     /*
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
                                 initWithBitmapDataPlanes: iBitmap.getpixdatap() pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
@@ -107,6 +113,14 @@ extern ImageBitmap iBitmap;
     */
     //[self addSubview:imageView];
 
+}
+
+-(BOOL) acceptsFirstResponder{
+    return YES;
+}
+
+- (void)keyDown:(NSEvent *)anEvent{
+    [[appController theWindow] sendEvent: anEvent];
 }
 
 

@@ -18,6 +18,7 @@ extern ImageBitmap iBitmap;
 @implementation AppController
 
 @synthesize theCommands;
+@synthesize theWindow;
 
 
 
@@ -81,18 +82,24 @@ extern ImageBitmap iBitmap;
     [dataWindowController placeImage];
     
     [dataWindowController showWindow:self];
-
+    
 }
 
 -(void) eraseWindow:(int) n{
     if(dataWindowController){
-        NSLog(@"%ld",[dataWindowController retainCount]);
-        [self->dataWindowController release];
-         NSLog(@"%ld",[dataWindowController retainCount]);
+        [[dataWindowController window ] close];
+        [dataWindowController release];
+        //NSLog(@"%ld",[dataWindowController retainCount]);
+        dataWindowController = nil;
+        
+        //[self->dataWindowController release];
+        // NSLog(@"%ld",[dataWindowController retainCount]);
     }
 
 }
 
-
+-(void) dataWindowClosing{
+    dataWindowController = nil;
+}
 
 @end

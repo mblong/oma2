@@ -48,9 +48,10 @@ void ImageBitmap::operator=(Image im){
 		pix_scale=1.0/nth;
 	}
 	
-	if(allocate_new)
+	if(allocate_new){
+        if(pixdata) free(pixdata);
 		pixdata = (PIXBYTES*)calloc(im.specs[COLS]/nth*im.specs[ROWS]/nth,4);
-	else{
+}else{
 		// try and reuse the same window, but be sure the size is the same
 		/*if( oma_wind[gwnum-1].width == im.specs[COLS]/nth &&
            oma_wind[gwnum-1].height == im.specs[ROWS]/nth) {
