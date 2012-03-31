@@ -19,13 +19,15 @@ int comdec(char*);
     
     PreferenceController *preferenceController;
     DataWindowController *dataWindowController;
+    NSWindow *theWindow;
     NSUInteger last_return;
     
 }
 
 @property (assign) IBOutlet NSTextView *theCommands;
+@property (assign) IBOutlet NSWindow *theWindow;
 
--(void) textDidChange:(NSNotification *) pNotify;   
+//-(void) textDidChange:(NSNotification *) pNotify;   
 
 -(void) appendText:(NSString *) string; 
 -(void) appendCText:(char *) string; 
@@ -35,5 +37,6 @@ int comdec(char*);
 - (IBAction)showPrefs:(id)sender;
 -(void) showDataWindow:(char*) windowname;
 -(void) eraseWindow:(int) n;
+-(void) dataWindowClosing;
 @end
 
