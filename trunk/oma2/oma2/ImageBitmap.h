@@ -34,6 +34,8 @@ public:
     ImageBitmap();            // default constructor with no arguments
     
     void operator=(Image);
+    void setcmin(DATAWORD);
+    void setcmax(DATAWORD);
     PIXBYTES* getpixdata();
     PIXBYTES** getpixdatap();
     int getwidth();

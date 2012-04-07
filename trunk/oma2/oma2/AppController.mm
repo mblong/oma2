@@ -19,6 +19,7 @@ extern ImageBitmap iBitmap;
 
 @synthesize theCommands;
 @synthesize theWindow;
+@synthesize sometext;
 
 
 
@@ -68,9 +69,9 @@ extern ImageBitmap iBitmap;
 }
 
 -(void) showDataWindow: (char*) windowname{
-    if(!dataWindowController){
+    //if(!dataWindowController){
         dataWindowController = [[DataWindowController alloc] initWithWindowNibName:@"DataWindow"];
-    }
+    //}
     //NSLog(@"%ld",[dataWindowController retainCount]);
     if(*windowname){
         NSString *text  = [[NSString alloc] initWithCString:windowname encoding:NSASCIIStringEncoding];
@@ -90,7 +91,7 @@ extern ImageBitmap iBitmap;
         [[dataWindowController window ] close];
         [dataWindowController release];
         //NSLog(@"%ld",[dataWindowController retainCount]);
-        dataWindowController = nil;
+        //dataWindowController = nil;
         
         //[self->dataWindowController release];
         // NSLog(@"%ld",[dataWindowController retainCount]);

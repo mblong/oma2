@@ -12,6 +12,7 @@
     float colormin;
     float colormax;
     int tool_selected;
+    int MinMaxInc;
     
 }
 
@@ -19,6 +20,7 @@
 // Min/Max Increment outlets
 @property (assign) IBOutlet NSSlider *MinMaxIncrementVal;
 @property (assign) IBOutlet NSTextField *MinMaxIncLabel;
+@property int MinMaxInc;
 
 // Color Min and Max values
 @property (assign) IBOutlet NSTextField *ColorMinLabel;
@@ -31,7 +33,7 @@
 
 
 // the slider action
-- (IBAction)UpdateMinMaxInc:(id)sender;
+//- (IBAction)UpdateMinMaxInc:(id)sender;
 
 // Color Min/Max "-" and "+" buttons
 - (IBAction)decreaseColorMin:(id)sender;

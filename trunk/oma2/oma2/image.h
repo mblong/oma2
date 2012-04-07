@@ -39,15 +39,15 @@ public:
     Image(int,int);     // constructor -- specify rows and columns, other values are defaults
     Image(char*);       // constructor -- new Image from filename
     
-    Image operator+(DATAWORD);  // constant arithmetic, modifies the current Image
-    Image operator-(DATAWORD);  //    does not calculate min/max
-    Image operator*(DATAWORD);
-    Image operator/(DATAWORD);
+    void operator+(DATAWORD);  // constant arithmetic, modifies the current Image
+    void operator-(DATAWORD);  //    does not calculate min/max
+    void operator*(DATAWORD);
+    void operator/(DATAWORD);
     
-    Image operator+(Image);     // Image arithmetic, modifies the current Image
-    Image operator-(Image);     //    does not calculate min/max
-    Image operator*(Image);
-    Image operator/(Image);
+    void operator+(Image);     // Image arithmetic, modifies the current Image
+    void operator-(Image);     //    does not calculate min/max
+    void operator*(Image);
+    void operator/(Image);
     
     Image operator<<(Image);    // make a copy of an image
     
@@ -69,11 +69,11 @@ public:
                                   // fractional row and column
     void setpix(int,int,DATAWORD);   // set a pixel value at the specified row and column
     
-    Image crop(rect);           // crop the current image or return an error if there was one
-    Image rotate(float);        // rotate the current image or return an error if there was one
-    Image invert();             // invert the current image
-    Image rgb2color(int);       // crop an rgb image to color 0,1, or 2 (red, green, or blue)
-    Image concat(Image);        // concatenate two images. Error if images are not the same width.
+    void crop(rect);           // crop the current image or return an error if there was one
+    void rotate(float);        // rotate the current image or return an error if there was one
+    void invert();             // invert the current image
+    void rgb2color(int);       // crop an rgb image to color 0,1, or 2 (red, green, or blue)
+    void concat(Image);        // concatenate two images. Error if images are not the same width.
     friend class ImageBitmap;    
 };
 

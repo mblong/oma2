@@ -127,6 +127,15 @@ PIXBYTES** ImageBitmap::getpixdatap(){
     return pdptr;
 }
 
+void ImageBitmap::setcmin(DATAWORD min){
+    cmin = min;
+}
+
+void ImageBitmap::setcmax(DATAWORD max){
+    cmax = max;
+}
+
+
 int ImageBitmap::getwidth(){
     return width;
 }

@@ -16,6 +16,7 @@
 
 @synthesize MinMaxIncrementVal;
 @synthesize MinMaxIncLabel;
+@synthesize MinMaxInc;
 
 
 - (id)initWithWindow:(NSWindow *)window
@@ -36,10 +37,11 @@
 }
 
 - (void) awakeFromNib{
-    int startMinMaxInc = 5;
+    MinMaxInc = 5;
+    /*
     [MinMaxIncrementVal setIntValue:startMinMaxInc];
     NSString *str = [NSString stringWithFormat:@"%d %%",startMinMaxInc];
-    [MinMaxIncLabel setStringValue:str];
+    [MinMaxIncLabel setStringValue:str];*/
     colormin = 0.;
     colormax = 1000;
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",colormax]];
@@ -47,6 +49,7 @@
     
     
 }
+/*
 - (IBAction)UpdateMinMaxInc:(id)sender {
     // get a string with the slider value and display it
     int MinMaxInc = [MinMaxIncrementVal intValue];
@@ -55,7 +58,7 @@
     // send the value to the UI
     
 }
-
+*/
 - (IBAction)decreaseColorMin:(id)sender {
 }
 

@@ -157,7 +157,8 @@ extern "C" int concatenatefile_c(int n,char* args){
         send_reply;
         return new_im.err();
     }
-    if(iBuffer.concat(new_im).err()){
+    iBuffer.concat(new_im);
+    if(iBuffer.err()){
         new_im.free();
         int err = iBuffer.err();
         sprintf(reply,"Error: %d.\n",err);
@@ -172,7 +173,8 @@ extern "C" int concatenatefile_c(int n,char* args){
 }
 
 extern "C" int croprectangle_c(int n,char* args){
-    if(iBuffer.crop(iRect).err()){
+    iBuffer.crop(iRect);
+    if(iBuffer.err()){
         int err = iBuffer.err();
         iBuffer.errclear();
         return err;
@@ -255,7 +257,8 @@ extern "C" int invert_c(int n,char* args){
 }
 
 extern "C" int rgb2red_c(int n,char* args){
-    if(iBuffer.rgb2color(0).err()){
+    iBuffer.rgb2color(0);
+    if(iBuffer.err()){
         int err = iBuffer.err();
         sprintf(reply,"Error: %d.\n",err);
         send_reply;
@@ -268,7 +271,8 @@ extern "C" int rgb2red_c(int n,char* args){
 }
 
 extern "C" int rgb2green_c(int n,char* args){
-    if(iBuffer.rgb2color(1).err()){
+    iBuffer.rgb2color(1);
+    if(iBuffer.err()){
         int err = iBuffer.err();
         sprintf(reply,"Error: %d.\n",err);
         send_reply;
@@ -281,7 +285,8 @@ extern "C" int rgb2green_c(int n,char* args){
 }
 
 extern "C" int rgb2blue_c(int n,char* args){
-    if(iBuffer.rgb2color(2).err()){
+    iBuffer.rgb2color(2);    
+    if(iBuffer.err()){
         int err = iBuffer.err();
         sprintf(reply,"Error: %d.\n",err);
         send_reply;
@@ -300,7 +305,8 @@ extern "C" int rotate_c(int n,char* args){
     int narg = sscanf(args,"%f",&angle);
     if(narg == 0) angle = 90.;
     if (!specs[IS_COLOR]) {
-        if(iBuffer.rotate(angle).err()){
+        iBuffer.rotate(angle);
+        if(iBuffer.err()){
             int err = iBuffer.err();
             sprintf(reply,"Error: %d.\n",err);
             send_reply;

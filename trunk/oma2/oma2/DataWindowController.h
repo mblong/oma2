@@ -14,8 +14,6 @@
 }
 
 @property (copy) NSString *windowName;
-
-
 @property (assign) IBOutlet NSImageView *imageView;
 
 -(void) placeImage;

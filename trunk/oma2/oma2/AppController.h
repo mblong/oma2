@@ -21,11 +21,13 @@ int comdec(char*);
     DataWindowController *dataWindowController;
     NSWindow *theWindow;
     NSUInteger last_return;
+    NSString *sometext;
     
 }
 
 @property (assign) IBOutlet NSTextView *theCommands;
 @property (assign) IBOutlet NSWindow *theWindow;
+@property (copy) NSString *sometext; 
 
 //-(void) textDidChange:(NSNotification *) pNotify;   
 
