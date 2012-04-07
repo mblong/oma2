@@ -609,7 +609,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="518615036"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -632,6 +632,22 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<int key="connectionID">238</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: MinMaxInc</string>
+						<reference key="source" ref="451424973"/>
+						<reference key="destination" ref="594875767"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="451424973"/>
+							<reference key="NSDestination" ref="594875767"/>
+							<string key="NSLabel">value: MinMaxInc</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">MinMaxInc</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">279</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">representedObject</string>
 						<reference key="source" ref="13148152"/>
@@ -640,28 +656,44 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<int key="connectionID">242</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: MinMaxIncLabel</string>
+						<reference key="source" ref="13148152"/>
+						<reference key="destination" ref="594875767"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="13148152"/>
+							<reference key="NSDestination" ref="594875767"/>
+							<string key="NSLabel">value: MinMaxIncLabel</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">MinMaxIncLabel</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">278</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: MinMaxInc</string>
+						<reference key="source" ref="240803401"/>
+						<reference key="destination" ref="594875767"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="240803401"/>
+							<reference key="NSDestination" ref="594875767"/>
+							<string key="NSLabel">value: MinMaxInc</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">MinMaxInc</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">281</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">UpdateMinMaxInc:</string>
 						<reference key="source" ref="594875767"/>
 						<reference key="destination" ref="451424973"/>
 					</object>
 					<int key="connectionID">240</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">MinMaxIncLabel</string>
-						<reference key="source" ref="594875767"/>
-						<reference key="destination" ref="240803401"/>
-					</object>
-					<int key="connectionID">241</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">MinMaxIncrementVal</string>
-						<reference key="source" ref="594875767"/>
-						<reference key="destination" ref="451424973"/>
-					</object>
-					<int key="connectionID">243</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1075,7 +1107,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<reference key="dict.values" ref="1002"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">275</int>
+			<int key="maxID">281</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

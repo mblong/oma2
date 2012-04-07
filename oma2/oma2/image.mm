@@ -63,7 +63,7 @@ Image::Image(char* filename)
     TWOBYTE *scpt,tmp_2byte;
     int doffset=80;
     
-    data = NULL;
+    data=NULL;
     specs[ROWS]=specs[COLS]=0;
     
     specs[Y0] = specs[X0] = specs[IS_COLOR] = specs[HAVE_MAX] = 0;
@@ -176,84 +176,88 @@ Image::Image(char* filename)
 }
 
 
-Image Image::operator+(DATAWORD val){
+void Image::operator+(DATAWORD val){
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) += val;
     }
     specs[HAVE_MAX]=0;
-    return *this;
+    //return *this;
 }
 
-Image Image::operator-(DATAWORD val){
+void Image::operator-(DATAWORD val){
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) -= val;
     }
     specs[HAVE_MAX]=0;
-    return *this;
+    //return *this;
 }
 
-Image Image::operator*(DATAWORD val){
+void Image::operator*(DATAWORD val){
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) *= val;
     }
     specs[HAVE_MAX]=0;
-    return *this;
+    //return *this;
 }
 
-Image Image::operator/(DATAWORD val){
+void Image::operator/(DATAWORD val){
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) /= val;
     }
     specs[HAVE_MAX]=0;
-    return *this;
+    //return *this;
 }
 
-Image Image::operator+(Image im2){
+void Image::operator+(Image im2){
     if (*this != im2){
         error = SIZE_ERR;
-        return *this;
+        //return *this;
+        return;
     }
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) += *(im2.data+i);
     }
     specs[HAVE_MAX]=0;
-    return *this;
+    //return *this;
 }
 
-Image Image::operator-(Image im2){
+void Image::operator-(Image im2){
     if (*this != im2){
         error = SIZE_ERR;
-        return *this;
+        //return *this;
+        return;
     }
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) -= *(im2.data+i);
     }
     specs[HAVE_MAX]=0;
-    return *this;
+    //return *this;
 }
 
-Image Image::operator*(Image im2){
+void Image::operator*(Image im2){
     if (*this != im2){
         error = SIZE_ERR;
-        return *this;
+        //return *this;
+        return;
     }
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) *= *(im2.data+i);
     }
     specs[HAVE_MAX]=0;
-    return *this;
+    //return *this;
 }
 
-Image Image::operator/(Image im2){
+void Image::operator/(Image im2){
     if (*this != im2){
         error = SIZE_ERR;
-        return *this;
+        //return *this;
+        return;
     }
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) /= *(im2.data+i);
     }
     specs[HAVE_MAX]=0;
-    return *this;
+    //return *this;
 }
 
 Image Image::operator<<(Image im){
@@ -493,7 +497,7 @@ void Image::copyABD(Image im){    // copy All But Data from one image to another
     is_big_endian = im.is_big_endian;
 }
 
-Image Image::crop(rect crop_rect){
+void Image::crop(rect crop_rect){
     int sizx,sizy,x0,y0;
 
     x0 = crop_rect.ul.h;
@@ -506,7 +510,8 @@ Image Image::crop(rect crop_rect){
         sprintf(reply,"Rectangle is not contained within the current image.\n");
         send_reply;
         error = SIZE_ERR;
-        return *this;
+        //return *this;
+        return;
     }
     
     int save_rgb_rectangle = specs[IS_COLOR];
@@ -517,7 +522,8 @@ Image Image::crop(rect crop_rect){
             sprintf(reply,"Can't save rectangle as RGB image -- rectangle size problem.\n");
             send_reply;
             error = SIZE_ERR;
-            return *this;
+            //return *this;
+            return;
         } else {
             sizy *= 3;
         }
@@ -527,7 +533,8 @@ Image Image::crop(rect crop_rect){
     Image cropped_image(sizy,sizx);
     if (cropped_image.err()) {
         error = MEM_ERR;
-        return *this;
+        //return *this;
+        return;
     }
     
     cropped_image.copyABD(*this); // copy all but the data from the current image
@@ -554,10 +561,10 @@ Image Image::crop(rect crop_rect){
     
     this->free();
     *this = cropped_image;
-    return *this;
+    //return *this;
 }
 
-Image Image::invert(){
+void Image::invert(){
     int size,i,ncolors;
 	DATAWORD *datp2,*datp,temp;
 	if (specs[IS_COLOR]) {
@@ -582,10 +589,10 @@ Image Image::invert(){
     } else {
         specs[HAVE_MAX]=0;
     }
-    return *this;
+    //return *this;
 }
 
-Image Image::rotate(float angle){
+void Image::rotate(float angle){
     
     int size,nt,nc,width=0,height=0,midx=0,midy=0,vrel,hrel,i=0;
     float theta,sintheta=0,costheta=1,ntf,ncf,outsideval;
@@ -596,7 +603,8 @@ Image Image::rotate(float angle){
     
     if(angle == 180. || angle == -180.){
         this->invert();
-        return *this;
+        //return *this;
+        return;
     }
     if(angle == 270. || angle == -90.){
         this->invert();
@@ -607,7 +615,8 @@ Image Image::rotate(float angle){
         Image rotated(specs[COLS],specs[ROWS]); // new data space
         if(rotated.err()){
             error = MEM_ERR;
-            return *this;
+            //return *this;
+            return;
         }
         rotated.copyABD(*this);                 // copy the specs etc.
         // rotate 90 degrees
@@ -627,7 +636,8 @@ Image Image::rotate(float angle){
         rotated.specs[HAVE_MAX]=0;
         this->free();   // free old data buffer
         *this = rotated;
-        return *this;
+        //return *this;
+        return;
     } else {
         sprintf(reply,"%f theta, %f sin, ",theta,sintheta);
         send_reply;
@@ -645,7 +655,8 @@ Image Image::rotate(float angle){
         Image rotated(width,height); // new data space
         if(rotated.err()){
             error = MEM_ERR;
-            return *this;
+            //return *this;
+            return;
         }
         rotated.copyABD(*this);                 // copy the specs etc.
 
@@ -682,11 +693,12 @@ Image Image::rotate(float angle){
         
         this->free();   // free old data buffer
         *this = rotated;
-        return *this;
+        //return *this;
+        return;
     }
 }
 
-Image Image::rgb2color(int color){
+void Image::rgb2color(int color){
     rect cropr = {{0,0},{specs[COLS]-1,0}};
     int height=specs[ROWS]/3;
     cropr.ul.v = color*height;
@@ -694,20 +706,22 @@ Image Image::rgb2color(int color){
     // now have the crop rectangle
     specs[IS_COLOR] = 0;    // we're not color any more
     this->crop(cropr);
-    return *this;
+    //return *this;
 }
 
-Image Image::concat(Image bottom){
+void Image::concat(Image bottom){
     if( this->specs[COLS] != bottom.specs[COLS]){   // images have to be the same width
         error = SIZE_ERR;
-        return *this;
+        //return *this;
+        return;
     }
     Image newim;            // an empty image
     newim.copyABD(*this);   // get the current specs    
     newim.data = new DATAWORD[(specs[ROWS]+bottom.specs[ROWS])* specs[COLS]]; // allocate space
     if (newim.data == NULL) {
         error = MEM_ERR;
-        return *this;
+        //return *this;
+        return;
     }
     newim.specs[ROWS] = specs[ROWS]+bottom.specs[ROWS];
     // copy the data from the top (current) image
@@ -723,6 +737,6 @@ Image Image::concat(Image bottom){
     newim.specs[HAVE_MAX] = 0;
     this->free();   // free old data buffer
     *this = newim;
-    return *this;
+    //return *this;
 }
 

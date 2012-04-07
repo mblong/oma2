@@ -92,7 +92,7 @@ ComDef   commands[] =    {
     {{"INVERT         "},	invert_c},
     {{"LOOP           "},	loop},
     {{"LOOBBREAK      "},	loopbreak},
-    {{"LOOPEND        "},	loopend},
+    {{"LOOPND         "},	loopend},
     {{"MACRO          "},	macro},
     {{"MULFILE        "},	mulfile_c},
     {{"RECTANGLE      "},	rectan_c},

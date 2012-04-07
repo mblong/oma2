@@ -35,8 +35,11 @@ extern AppController* appController;
 
 - (void)dealloc
 {
+    // more needed here
     [super dealloc];
     NSLog(@"deallocate DataWindowController");
+    //[bitmap release];
+    //[imageView release];          // this crashes things eventually
     [appController dataWindowClosing];
 }
 
@@ -47,7 +50,11 @@ extern AppController* appController;
     //[[self window] setTitle:windowName];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-    NSRect rect=NSMakeRect(100, 100, iBitmap.getwidth(), iBitmap.getheight()+20);
+    NSScreen *mainScreen = [NSScreen mainScreen];
+    NSRect screenRect = [mainScreen visibleFrame];
+    
+    
+    NSRect rect=NSMakeRect(screenRect.origin.x, screenRect.size.height, iBitmap.getwidth(), iBitmap.getheight()+20);
     [[self window] setTitle:windowName];
     [[self window] setFrame:rect display:YES];
 
