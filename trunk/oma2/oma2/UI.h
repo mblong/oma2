@@ -8,9 +8,10 @@
 
 #ifndef oma2_UI_h
 #define oma2_UI_h
-
+#include "StatusController.h"
 #include "AppController.h"
 extern AppController *appController;
+extern StatusController *statusController;
 
 #define send_reply [appController appendCText: reply];
 #define display_data [appController showDataWindow:(char*) args];

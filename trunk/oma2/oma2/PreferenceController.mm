@@ -18,6 +18,9 @@
 @synthesize settingsSuffix;
 @synthesize saveSuffix;
 
+@synthesize sometext;
+
+
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];

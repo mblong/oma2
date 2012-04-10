@@ -7,17 +7,24 @@
 //
 
 #import "StatusController.h"
+#import "ImageBitmap.h"
+
+//extern ImageBitmap iBitmap;
 
 @implementation StatusController
 @synthesize toolSelected;
 
 @synthesize ColorMinLabel;
 @synthesize ColorMaxLabel;
+@synthesize colorMin;
+@synthesize colorMax;
+@synthesize autoScale;
 
-@synthesize MinMaxIncrementVal;
-@synthesize MinMaxIncLabel;
+//@synthesize MinMaxIncrementVal;
+//@synthesize MinMaxIncLabel;
 @synthesize MinMaxInc;
 
+StatusController *statusController;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -37,18 +44,23 @@
 }
 
 - (void) awakeFromNib{
-    MinMaxInc = 5;
+    [self setMinMaxInc:5];
+    //[self setColorMin:0];
+    //[self setColorMax:1];
+    [self setAutoScale:YES];
+
+    
     /*
     [MinMaxIncrementVal setIntValue:startMinMaxInc];
     NSString *str = [NSString stringWithFormat:@"%d %%",startMinMaxInc];
     [MinMaxIncLabel setStringValue:str];*/
-    colormin = 0.;
-    colormax = 1000;
-    [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",colormax]];
-    [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",colormin]];
-    
+   
+    [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",1000.]];
+    [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",0.]];
+    //statusController = [self whoami];
     
 }
+
 /*
 - (IBAction)UpdateMinMaxInc:(id)sender {
     // get a string with the slider value and display it
@@ -59,6 +71,15 @@
     
 }
 */
+
+
+
+- (void) labelColorMin:(float) cmin Max:(float) cmax{
+    [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",cmax]];
+    [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",cmin]];
+    //[self setAutoScale:NO];
+}
+
 - (IBAction)decreaseColorMin:(id)sender {
 }
 
@@ -74,6 +95,18 @@
 - (IBAction)selectTool:(id)sender {
     tool_selected = (int)[toolSelected selectedColumn];
     NSLog(@" Tool number %d\n",tool_selected);
+    
+}
+
+-(id) whoami{
+    return self;
+}
+
+- (IBAction)scaleCheckbox:(id)sender {
+//    if([scaleCheckbox state])
+//        iBitmap.setautoscale(1);
+//    else
+//        iBitmap.setautoscale(0);
     
 }
 @end

@@ -84,6 +84,7 @@ ComDef   commands[] =    {
     {{"ADDFILE        "},	addfile_c},
     {{"CROP           "},	croprectangle_c},
     {{"CONCATENATE    "},	concatenatefile_c},
+    {{"CMINMX         "},	setcminmax_c},
     {{"DISPLAY        "},	display},
     {{"DIVFILE        "},	divfile_c},
     {{"ERASE          "},	erase},

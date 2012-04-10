@@ -9,6 +9,8 @@
 #import "oma2AppDelegate.h"
 #import "StatusController.h"
 
+extern StatusController *statusController;
+
 @implementation oma2AppDelegate
 
 @synthesize window = _window;
@@ -25,6 +27,7 @@
         statusController = [[StatusController alloc] initWithWindowNibName: @"Status"];
     }
     [statusController showWindow:self];
+
 
 }
 

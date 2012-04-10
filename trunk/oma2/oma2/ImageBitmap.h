@@ -12,6 +12,7 @@
 #include <iostream>
 #include "Image.h"
 
+
 #define NCOLORS 256
 
 typedef  unsigned char PIXBYTES;
@@ -28,6 +29,7 @@ private:
     int         height;
     int         is_color;
     int         pixsiz;
+    int         autoscale;
     DATAWORD    cmin;
     DATAWORD    cmax;
 public:
@@ -36,6 +38,12 @@ public:
     void operator=(Image);
     void setcmin(DATAWORD);
     void setcmax(DATAWORD);
+    DATAWORD getcmin();
+    DATAWORD getcmax();
+
+    void setautoscale(int);
+    int getautoscale();
+    
     PIXBYTES* getpixdata();
     PIXBYTES** getpixdatap();
     int getwidth();

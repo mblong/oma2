@@ -7,11 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-@class StatusController;
+
 
 
 @interface oma2AppDelegate : NSObject <NSApplicationDelegate>{
-    StatusController    *statusController;
+
 }
 
 @property (assign) IBOutlet NSWindow *window;

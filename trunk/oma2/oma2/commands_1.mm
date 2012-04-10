@@ -4,6 +4,7 @@
 
 extern char    reply[1024];   // buffer for sending messages to be typed out by the user interface
 extern Image   iBuffer;       // the image buffer
+extern ImageBitmap iBitmap;   // the bitmap buffer
 extern rect    iRect;         // the image sub-rectagle (for cropping for example), 
 
 
@@ -405,6 +406,23 @@ extern "C" int smooth_c(int n,char* args){
     return NO_ERR;
 }
 
+int setcminmax_c(int n,char* args)		/* get color min and max */
+{
+	DATAWORD mn = 1, mx;
+    
+    if(*args){
+        int narg = sscanf(args,"%f %f",&mn,&mx); 
+        if (narg == 2){
+            iBitmap.setcmin(mn);
+            iBitmap.setcmax(mx);
+            iBitmap.setautoscale(0);
+        } else
+            iBitmap.setautoscale(1);
+    } else
+        iBitmap.setautoscale(1);
+    update_UI();
+    return 0;
+}
 
 /************************************************************************/
 /*
@@ -437,8 +455,6 @@ void update_UI(){
 /*    int r,c,i=0;
     int *imspecs;
     
-    
-    
 
 	have_max = 0;
 
@@ -448,5 +464,11 @@ void update_UI(){
  
     free(imspecs);
  */
+    [statusController labelColorMin:iBitmap.getcmin() Max:iBitmap.getcmax()]; 
+    if(iBitmap.getautoscale())
+        [statusController setAutoScale:YES];
+    else
+        [statusController setAutoScale:NO];
+ 
 }
 
