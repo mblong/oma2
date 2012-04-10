@@ -9,26 +9,35 @@
 #import <Cocoa/Cocoa.h>
 
 @interface StatusController : NSWindowController{
-    float colormin;
-    float colormax;
+    float colorMin;
+    float colorMax;
     int tool_selected;
     int MinMaxInc;
+    BOOL autoScale;
+    BOOL Update;
     
 }
 
 
 // Min/Max Increment outlets
-@property (assign) IBOutlet NSSlider *MinMaxIncrementVal;
-@property (assign) IBOutlet NSTextField *MinMaxIncLabel;
+//@property (assign) IBOutlet NSSlider *MinMaxIncrementVal;
+//@property (assign) IBOutlet NSTextField *MinMaxIncLabel;
 @property int MinMaxInc;
 
 // Color Min and Max values
 @property (assign) IBOutlet NSTextField *ColorMinLabel;
 @property (assign) IBOutlet NSTextField *ColorMaxLabel;
+@property float colorMin;
+@property float colorMax;
+
+- (IBAction)scaleCheckbox:(id)sender;
+
+@property BOOL autoScale;
 
 // Tool selection
 - (IBAction)selectTool:(id)sender;
 @property (assign) IBOutlet NSMatrix *toolSelected;
+
 
 
 
@@ -41,5 +50,10 @@
 - (IBAction)decreaseColorMax:(id)sender;
 - (IBAction)increaseColorMax:(id)sender;
 
+
+- (void) labelColorMin:(float) cmin Max:(float) cmax;
+
+
+-(id) whoami;
 
 @end

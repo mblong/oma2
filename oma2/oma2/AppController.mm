@@ -9,6 +9,7 @@
 #import "AppController.h"
 #import "PreferenceController.h"
 #import "DataWindowController.h"
+#import "StatusController.h"
 #import "ImageBitmap.h"
 
 
@@ -21,20 +22,49 @@ extern ImageBitmap iBitmap;
 @synthesize theWindow;
 @synthesize sometext;
 
+//@synthesize statusController;
+
 
 
 - (IBAction)showPrefs:(id)sender{
     if(!preferenceController){
         preferenceController = [[PreferenceController alloc] initWithWindowNibName:@"Preferences"];
     }
+    
+    [preferenceController addObserver:self
+          forKeyPath:@"macroPrefix"
+             options:NSKeyValueObservingOptionNew
+             context:NULL];
+
     [preferenceController showWindow:self];
     
 }
+
+// this attempt to be notified when text changes in prefixes doesn't work
+// It gets called once only when the window opens, not when the text changes
+- (void)observeValueForKeyPath:(NSString *)keyPath 
+                      ofObject:(id)object 
+                        change:(NSDictionary *)change 
+                       context:(void *)context {
+    if ([keyPath isEqualToString:@"macroPrefix"]) {
+        
+        const char* text = [[[change objectForKey:NSKeyValueChangeNewKey] stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+        fullname((char*)text,LOAD_SAVE_PREFIX);
+    }
+}
+
+
 
 
 -(void)awakeFromNib{
     appController = [self whoami];
     [self appendText: @"OMA2>"];
+    /*
+    if(!statusController){
+        statusController = [[StatusController alloc] initWithWindowNibName: @"Status"];
+    }
+    [statusController showWindow:self];
+     */
 }
 
 -(id) whoami{
@@ -51,6 +81,25 @@ extern ImageBitmap iBitmap;
     last_return += [reply length];
     [[[theCommands textStorage] mutableString] appendString: reply];
 }
+/*
+-(void) updateCMin:(float) cmin Max:(float) cmax {
+    
+    [[self statusController] setColorMax:cmax];
+    [[self statusController] setColorMin:cmin];
+   
+    //[[self statusController] setColorMaxLabel:[NSString stringWithFormat:@"%g",cmax]];
+    //[[self statusController] setColorMinLabel:[NSString stringWithFormat:@"%g",cmin]];
+    
+    [[self statusController] labelColorMin: cmin Max: cmax];
+     
+    
+}
+
+-(void) updateAutoScale:(BOOL) val {
+    [[self statusController] setAutoScale:YES];
+    
+}
+*/
 
 -(void) textDidChange:(NSNotification *) pNotify {
     NSString *text  = [[theCommands textStorage] string];
@@ -102,5 +151,6 @@ extern ImageBitmap iBitmap;
 -(void) dataWindowClosing{
     dataWindowController = nil;
 }
+
 
 @end

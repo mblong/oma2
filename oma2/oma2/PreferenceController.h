@@ -19,6 +19,8 @@
     NSTextField *getSuffix;
     NSTextField *macroSuffix;
     NSTextField *settingsSuffix;
+    
+    NSString *sometext;
 }
 
 - (IBAction)newSavePrefix:(id)sender;
@@ -34,6 +36,8 @@
 @property (assign) IBOutlet NSTextField *getSuffix;
 @property (assign) IBOutlet NSTextField *macroSuffix;
 @property (assign) IBOutlet NSTextField *settingsSuffix;
+
+@property (copy) IBOutlet NSString *sometext;
 
 
 @end

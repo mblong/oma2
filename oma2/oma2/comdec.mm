@@ -980,6 +980,7 @@ int vprint(int index)
 int display(int n, char* args){
     iBitmap = iBuffer;
     display_data;
+    update_UI();
     return 0;
 }
 

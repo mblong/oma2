@@ -14,11 +14,13 @@ int comdec(char*);
 
 @class PreferenceController;
 @class DataWindowController;
+//@class StatusController;
 
 @interface AppController : NSObject{
     
     PreferenceController *preferenceController;
     DataWindowController *dataWindowController;
+    //StatusController    *statusController;
     NSWindow *theWindow;
     NSUInteger last_return;
     NSString *sometext;
@@ -27,12 +29,19 @@ int comdec(char*);
 
 @property (assign) IBOutlet NSTextView *theCommands;
 @property (assign) IBOutlet NSWindow *theWindow;
-@property (copy) NSString *sometext; 
+@property (copy) NSString *sometext;
+
+
+//@property (copy) StatusController *statusController;
 
 //-(void) textDidChange:(NSNotification *) pNotify;   
 
 -(void) appendText:(NSString *) string; 
--(void) appendCText:(char *) string; 
+-(void) appendCText:(char *) string;
+//-(void) updateCMin:(float) cmin Max:(float) cmax;
+//-(void) updateAutoScale:(BOOL) val;
+
+
 -(id) whoami;
 
 

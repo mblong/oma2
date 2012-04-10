@@ -32,8 +32,10 @@ void ImageBitmap::operator=(Image im){
     
     int allocate_new=1;
 	
-    cmax = im.values[MAX];
-    cmin = im.values[MIN];
+    if(autoscale){
+        cmax = im.values[MAX];
+        cmin = im.values[MIN];
+    }
     //printf("%g %g cmin cmax\n",cmin,cmax);
     
 	crange = cmax - cmin;
@@ -135,14 +137,29 @@ void ImageBitmap::setcmax(DATAWORD max){
     cmax = max;
 }
 
+DATAWORD ImageBitmap::getcmin(){
+    return cmin;
+}
+
+DATAWORD ImageBitmap::getcmax(){
+    return cmax;
+}
+
+void ImageBitmap::setautoscale(int n){
+    autoscale = n;
+}
+
+int ImageBitmap::getautoscale(){
+    return autoscale;
+}
 
 int ImageBitmap::getwidth(){
     return width;
 }
+
 int ImageBitmap::getheight(){
     return height;
 }
-
 
 //************************************
 /*

@@ -1,4 +1,5 @@
 #include "Image.h"
+#include "ImageBitmap.h"
 
 
 extern "C" int null_c(int,char*);
@@ -23,6 +24,8 @@ extern "C" int rgb2green_c(int,char*);
 extern "C" int rgb2blue_c(int,char*);
 extern "C" int rotate_c(int,char*);
 extern "C" int smooth_c(int,char*);
+
+extern "C" int setcminmax_c(int,char*);
 
 
 
