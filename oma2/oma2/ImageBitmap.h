@@ -27,22 +27,11 @@ private:
     PIXBYTES*   pixdata;            //
     int         width;              // 
     int         height;
-    int         is_color;
-    int         pixsiz;
-    int         autoscale;
-    DATAWORD    cmin;
-    DATAWORD    cmax;
+
 public:
     ImageBitmap();            // default constructor with no arguments
     
     void operator=(Image);
-    void setcmin(DATAWORD);
-    void setcmax(DATAWORD);
-    DATAWORD getcmin();
-    DATAWORD getcmax();
-
-    void setautoscale(int);
-    int getautoscale();
     
     PIXBYTES* getpixdata();
     PIXBYTES** getpixdatap();

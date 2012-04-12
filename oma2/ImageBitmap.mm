@@ -8,12 +8,13 @@
 #include "ImageBitmap.h"
 
 ImageBitmap iBitmap;    // a global -- the bitmap for the iBuffer image
+extern oma2UIData  UIData;
 
 
 ImageBitmap::ImageBitmap(){
     pixdata = 0;            //
-    width = height = is_color = 0;
-    pixsiz = 1;
+    width = height = UIData.iscolor = 0;
+    UIData.pixsiz = 1;
 
 }
 
@@ -32,21 +33,21 @@ void ImageBitmap::operator=(Image im){
     
     int allocate_new=1;
 	
-    if(autoscale){
-        cmax = im.values[MAX];
-        cmin = im.values[MIN];
+    if(UIData.autoscale){
+        UIData.cmax = im.values[MAX];
+        UIData.cmin = im.values[MIN];
     }
     //printf("%g %g cmin cmax\n",cmin,cmax);
     
-	crange = cmax - cmin;
+	crange = UIData.cmax - UIData.cmin;
 	ncm1 = (NCOLORS-1);
-	cm = cmin;
+	cm = UIData.cmin;
 	
-	if( pixsiz > 0 ){
+	if( UIData.pixsiz > 0 ){
 		nth = 1;
 		pix_scale = 1.0;
 	} else {
-		nth = abs(pixsiz);
+		nth = abs(UIData.pixsiz);
 		pix_scale=1.0/nth;
 	}
 	
@@ -72,7 +73,7 @@ void ImageBitmap::operator=(Image im){
 	}
 	width = im.specs[COLS]/nth;
 	height = im.specs[ROWS]/nth;
-	if( pixsiz > 0 ) {
+	if( UIData.pixsiz > 0 ) {
 		for(i=0; i < ntrack; i++){
 			for(j=0; j < nchan; j++){
 				indx = *(im.data+k++) - cm;
@@ -129,29 +130,6 @@ PIXBYTES** ImageBitmap::getpixdatap(){
     return pdptr;
 }
 
-void ImageBitmap::setcmin(DATAWORD min){
-    cmin = min;
-}
-
-void ImageBitmap::setcmax(DATAWORD max){
-    cmax = max;
-}
-
-DATAWORD ImageBitmap::getcmin(){
-    return cmin;
-}
-
-DATAWORD ImageBitmap::getcmax(){
-    return cmax;
-}
-
-void ImageBitmap::setautoscale(int n){
-    autoscale = n;
-}
-
-int ImageBitmap::getautoscale(){
-    return autoscale;
-}
 
 int ImageBitmap::getwidth(){
     return width;

@@ -108,6 +108,41 @@ typedef struct {
     point lr;       // lower right
 } rect;
 
+typedef struct {
+    char        version[32];
+    int         pixsiz;					// Status Window Related 
+    int         newwindowflag;
+    int         cminmaxinc;
+    int         autoscale;
+	int         autoupdate;
+    int         toolselected;
+    int         iscolor;
+    
+    rect        iRect;              // the image sub-rectagle (for cropping for example), 
+                                    //   defined in terms of upper left pt. to lower right pt.
+                                    // Consider moving this to the rectan command as static
+
+
+    DATAWORD    cmin;
+	DATAWORD    cmax;
+    DATAWORD    min;
+    DATAWORD    max;
+    
+    /*
+	settings[4] = detector;
+	settings[8] = showselection;
+	settings[9] = docalcs;
+	
+	settings[11] = dlen;
+	settings[12] = dhi;
+	settings[13] = c_font;
+	settings[14] = s_font;
+	settings[15] = showruler;
+    */
+
+    
+    
+}oma2UIData;
 
 #define _OMA2_
 #endif

@@ -9,19 +9,19 @@
 #import "StatusController.h"
 #import "ImageBitmap.h"
 
-//extern ImageBitmap iBitmap;
+extern ImageBitmap iBitmap;
+extern oma2UIData  UIData;     
+
 
 @implementation StatusController
 @synthesize toolSelected;
 
 @synthesize ColorMinLabel;
 @synthesize ColorMaxLabel;
-@synthesize colorMin;
-@synthesize colorMax;
-@synthesize autoScale;
 
-//@synthesize MinMaxIncrementVal;
-//@synthesize MinMaxIncLabel;
+@synthesize scaleState;
+@synthesize updateState;
+
 @synthesize MinMaxInc;
 
 StatusController *statusController;
@@ -45,51 +45,36 @@ StatusController *statusController;
 
 - (void) awakeFromNib{
     [self setMinMaxInc:5];
-    //[self setColorMin:0];
-    //[self setColorMax:1];
-    [self setAutoScale:YES];
-
-    
-    /*
-    [MinMaxIncrementVal setIntValue:startMinMaxInc];
-    NSString *str = [NSString stringWithFormat:@"%d %%",startMinMaxInc];
-    [MinMaxIncLabel setStringValue:str];*/
    
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",1000.]];
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",0.]];
-    //statusController = [self whoami];
-    
 }
 
-/*
-- (IBAction)UpdateMinMaxInc:(id)sender {
-    // get a string with the slider value and display it
-    int MinMaxInc = [MinMaxIncrementVal intValue];
-    NSString *str = [NSString stringWithFormat:@"%d %%",MinMaxInc];
-    [MinMaxIncLabel setStringValue:str];
-    // send the value to the UI
-    
-}
-*/
 
-
-
-- (void) labelColorMin:(float) cmin Max:(float) cmax{
-    [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",cmax]];
-    [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",cmin]];
-    //[self setAutoScale:NO];
+- (void) labelColorMinMax{
+    [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
+    [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
 }
 
 - (IBAction)decreaseColorMin:(id)sender {
+    UIData.cmin -= MinMaxInc/100.0*(UIData.max - UIData.min);
+    [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
 }
 
 - (IBAction)increaseColorMin:(id)sender {
+    UIData.cmin += MinMaxInc/100.0*(UIData.max - UIData.min);
+    [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
 }
 
 - (IBAction)decreaseColorMax:(id)sender {
+    UIData.cmax -= MinMaxInc/100.0*(UIData.max - UIData.min);
+    [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
+    if(UIData.autoupdate) [appController updateDataWindow];
 }
 
 - (IBAction)increaseColorMax:(id)sender {
+    UIData.cmax += MinMaxInc/100.0*(UIData.max - UIData.min);
+    [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
 }
 
 - (IBAction)selectTool:(id)sender {
@@ -103,10 +88,22 @@ StatusController *statusController;
 }
 
 - (IBAction)scaleCheckbox:(id)sender {
-//    if([scaleCheckbox state])
-//        iBitmap.setautoscale(1);
-//    else
-//        iBitmap.setautoscale(0);
-    
+    if([scaleState state] )
+        UIData.autoscale = 1;
+    else
+        UIData.autoscale = 0;
 }
+
+- (IBAction)updateCheckbox:(id)sender {
+    if([updateState state] )
+        UIData.autoupdate = 1;
+    else
+        UIData.autoupdate = 0;
+}
+
+
+- (void)keyDown:(NSEvent *)anEvent{
+    [[appController theWindow] sendEvent: anEvent];
+}
+
 @end

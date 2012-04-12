@@ -15,6 +15,7 @@
 
 AppController   *appController;
 extern ImageBitmap iBitmap;
+extern Image iBuffer;
 
 @implementation AppController
 
@@ -81,25 +82,6 @@ extern ImageBitmap iBitmap;
     last_return += [reply length];
     [[[theCommands textStorage] mutableString] appendString: reply];
 }
-/*
--(void) updateCMin:(float) cmin Max:(float) cmax {
-    
-    [[self statusController] setColorMax:cmax];
-    [[self statusController] setColorMin:cmin];
-   
-    //[[self statusController] setColorMaxLabel:[NSString stringWithFormat:@"%g",cmax]];
-    //[[self statusController] setColorMinLabel:[NSString stringWithFormat:@"%g",cmin]];
-    
-    [[self statusController] labelColorMin: cmin Max: cmax];
-     
-    
-}
-
--(void) updateAutoScale:(BOOL) val {
-    [[self statusController] setAutoScale:YES];
-    
-}
-*/
 
 -(void) textDidChange:(NSNotification *) pNotify {
     NSString *text  = [[theCommands textStorage] string];
@@ -132,6 +114,15 @@ extern ImageBitmap iBitmap;
     [dataWindowController placeImage];
     
     [dataWindowController showWindow:self];
+    
+}
+
+-(void) updateDataWindow{
+    iBitmap = iBuffer;
+    [dataWindowController updateImage];
+    [dataWindowController showWindow:self];
+    
+    
     
 }
 
