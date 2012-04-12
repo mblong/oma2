@@ -30,6 +30,13 @@ extern AppController* appController;
 }
 
 -(void)awakeFromNib{
+    NSScreen *mainScreen = [NSScreen mainScreen];
+    NSRect screenRect = [mainScreen visibleFrame];
+    
+    // resize here before display
+    NSRect rect=NSMakeRect(screenRect.origin.x, screenRect.size.height, iBitmap.getwidth(), iBitmap.getheight()+20);
+    [[self window] setFrame:rect display:YES];
+
     
 }
 
@@ -50,13 +57,8 @@ extern AppController* appController;
     //[[self window] setTitle:windowName];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-    NSScreen *mainScreen = [NSScreen mainScreen];
-    NSRect screenRect = [mainScreen visibleFrame];
     
-    
-    NSRect rect=NSMakeRect(screenRect.origin.x, screenRect.size.height, iBitmap.getwidth(), iBitmap.getheight()+20);
     [[self window] setTitle:windowName];
-    [[self window] setFrame:rect display:YES];
 
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
                                 initWithBitmapDataPlanes: iBitmap.getpixdatap() 
@@ -119,6 +121,37 @@ extern AppController* appController;
     [imageView setNeedsDisplay];
     */
     //[self addSubview:imageView];
+
+}
+
+-(void) updateImage{
+    
+    NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
+                                initWithBitmapDataPlanes: iBitmap.getpixdatap() 
+                                pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
+                                bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
+                                colorSpaceName:NSCalibratedRGBColorSpace 
+                                bytesPerRow: 4*iBitmap.getwidth()  
+                                bitsPerPixel: 32];
+    
+    NSImage *im = [[[NSImage alloc] init] autorelease];
+    [im addRepresentation:bitmap];
+    if ( ![im isValid] ) {
+        NSLog(@"Invalid Image");
+    }
+    [imageView setFrameOrigin:NSMakePoint(0,0)];
+    [imageView setFrameSize:NSMakeSize(iBitmap.getwidth(), iBitmap.getheight())];
+    
+    //NSRect rect=NSMakeRect(0, 0, 500, 500);
+    //imageView = [[NSImageView alloc] initWithFrame:rect];
+    //[imageView setImageScaling:NSScaleToFit];
+    
+    [imageView setImage:im];
+    //[imageView setImage:[NSImage imageNamed:@"bike.jpg"]];
+    
+    
+    
+    [imageView display];
 
 }
 

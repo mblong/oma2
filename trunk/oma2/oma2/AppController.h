@@ -49,5 +49,6 @@ int comdec(char*);
 -(void) showDataWindow:(char*) windowname;
 -(void) eraseWindow:(int) n;
 -(void) dataWindowClosing;
+-(void) updateDataWindow;
 @end
 

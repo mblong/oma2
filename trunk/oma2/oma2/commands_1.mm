@@ -5,7 +5,7 @@
 extern char    reply[1024];   // buffer for sending messages to be typed out by the user interface
 extern Image   iBuffer;       // the image buffer
 extern ImageBitmap iBitmap;   // the bitmap buffer
-extern rect    iRect;         // the image sub-rectagle (for cropping for example), 
+extern oma2UIData UIData; 
 
 
 extern "C" int plus_c(int n,char* args){
@@ -174,7 +174,7 @@ extern "C" int concatenatefile_c(int n,char* args){
 }
 
 extern "C" int croprectangle_c(int n,char* args){
-    iBuffer.crop(iRect);
+    iBuffer.crop(UIData.iRect);
     if(iBuffer.err()){
         int err = iBuffer.err();
         iBuffer.errclear();
@@ -198,7 +198,7 @@ extern "C" int rectan_c(int n, char* args)
     if(narg == 0){
         
         sprintf(reply,"Current Rectangle is %d %d %d %d.\n",
-               iRect.ul.h,iRect.ul.v,iRect.lr.h,iRect.lr.v);
+               UIData.iRect.ul.h,UIData.iRect.ul.v,UIData.iRect.lr.h,UIData.iRect.lr.v);
         send_reply;
         /*
         user_variables[0].ivalue = substart.h;
@@ -219,22 +219,22 @@ extern "C" int rectan_c(int n, char* args)
         send_reply;
         return -1;
     }
-    iRect = new_rect;
-    start = iRect.ul;
-    end = iRect.lr;
+    UIData.iRect = new_rect;
+    start = UIData.iRect.ul;
+    end = UIData.iRect.lr;
     // remove restriction on the way a rectangle is defined
     // previously, the assumption was that all rectangles were defined from the upper left to lower right
     if(end.h < start.h){
-        iRect.lr.h = start.h;
-        iRect.ul.h = end.h;
+        UIData.iRect.lr.h = start.h;
+        UIData.iRect.ul.h = end.h;
     }
     if(end.v < start.v){
-        iRect.lr.v = start.v;
-        iRect.ul.v = end.v;
+        UIData.iRect.lr.v = start.v;
+        UIData.iRect.ul.v = end.v;
     }
 
     sprintf(reply,"Current Rectangle is %d %d %d %d.\n",
-           iRect.ul.h,iRect.ul.v,iRect.lr.h,iRect.lr.v);
+           UIData.iRect.ul.h,UIData.iRect.ul.v,UIData.iRect.lr.h,UIData.iRect.lr.v);
     send_reply;
     /*
     user_variables[0].ivalue = substart.h;
@@ -413,13 +413,13 @@ int setcminmax_c(int n,char* args)		/* get color min and max */
     if(*args){
         int narg = sscanf(args,"%f %f",&mn,&mx); 
         if (narg == 2){
-            iBitmap.setcmin(mn);
-            iBitmap.setcmax(mx);
-            iBitmap.setautoscale(0);
+            UIData.cmin = mn;
+            UIData.cmax = mx;
+            UIData.autoscale = 0;
         } else
-            iBitmap.setautoscale(1);
+            UIData.autoscale = 1;
     } else
-        iBitmap.setautoscale(1);
+        UIData.autoscale = 1;
     update_UI();
     return 0;
 }
@@ -428,47 +428,31 @@ int setcminmax_c(int n,char* args)		/* get color min and max */
 /*
 
 */
-//extern char	saveprefixbuf[];		/* save data file prefix buffer */
-//extern char	savesuffixbuf[];		/* save data file suffix buffer */
-//extern char	getprefixbuf[];		/* get data file prefix buffer */
-//extern char	getsuffixbuf[];		/* get data file suffix buffer */
-//extern char	graphicsprefixbuf[];	/* graphics file prefix buffer */
-//extern char	graphicssuffixbuf[];	/* graphics file suffix buffer */
-//extern char	macroprefixbuf[];     /* macro file prefix buffer */
-//extern char	macrosuffixbuf[];     /* macro file suffix buffer */
-
 
 // update the User Interface
 // for omaT, this glues the new Image class results into the old globals-based system
 // In general though, this is a way to update user interface values after a command
 
 void update_UI(){
-    /*
-    DATAWORD* vals = iBuffer.getvalues();
-    printf(" min/max: %g %g\n",vals[MIN],vals[MAX]);
-    int * imspecs = iBuffer.getspecs();
-    printf(" r/c: %d %d\n",imspecs[ROWS],imspecs[COLS]);
-    printf(" have/loc: %d %d\n",imspecs[HAVE_MAX],imspecs[LMAX]);
-    free(vals);
-    free(imspecs);
-    */
-/*    int r,c,i=0;
-    int *imspecs;
-    
+/*
 
-	have_max = 0;
-
-	update_status();
-    printxyzstuff_nib(iRect.ul.h,iRect.ul.v, 0);
-    printxyzstuff_nib(iRect.lr.h,iRect.lr.v,1);
- 
-    free(imspecs);
  */
-    [statusController labelColorMin:iBitmap.getcmin() Max:iBitmap.getcmax()]; 
-    if(iBitmap.getautoscale())
-        [statusController setAutoScale:YES];
+    int* specs = iBuffer.getspecs();
+    DATAWORD* values= iBuffer.getvalues();
+    UIData.max = values[MAX];
+    UIData.min = values[MIN];
+    UIData.iscolor = specs[IS_COLOR];
+    
+    [statusController labelColorMinMax]; 
+    
+    if(UIData.autoscale)
+        [[statusController scaleState] setState:NSOnState];
     else
-        [statusController setAutoScale:NO];
+        [[statusController scaleState] setState:NSOffState];
+    
+    free(specs);
+    free(values);
+    
  
 }
 

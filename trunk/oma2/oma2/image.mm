@@ -8,9 +8,7 @@
 
 char    reply[1024];            // buffer for sending messages to be typed out by the user interface
 Image   iBuffer(200,200);       // the image buffer
-rect    iRect = {{0,0},{0,0}};  // the image sub-rectagle (for cropping for example), 
-                                //   defined in terms of upper left pt. to lower right pt.
-                                // Consider moving this to the rectan command as static
+oma2UIData UIData;            // Put all the UI globals here
 
 
 //extern "C" int get_byte_swap_value(short);

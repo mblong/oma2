@@ -17,5 +17,6 @@
 @property (assign) IBOutlet NSImageView *imageView;
 
 -(void) placeImage;
+-(void) updateImage;
 
 @end
