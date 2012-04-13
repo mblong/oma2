@@ -137,6 +137,8 @@ Image::Image(char* filename)
     specs[DY] =  header[NDY];
     specs[X0] = header[NX0];
     specs[Y0] = header[NY0];
+    if(specs[DX] == 0)specs[DX]=1;
+    if(specs[DY] == 0)specs[DY]=1;
     //specs[IS_COLOR] = trailer[IS_COLOR_];
     
     

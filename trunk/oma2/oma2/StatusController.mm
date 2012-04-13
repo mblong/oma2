@@ -19,6 +19,16 @@ extern oma2UIData  UIData;
 @synthesize ColorMinLabel;
 @synthesize ColorMaxLabel;
 
+@synthesize MinLabel;
+@synthesize MaxLabel;
+@synthesize ColsLabel;
+@synthesize RowsLabel;
+@synthesize X0Label;
+@synthesize Y0Label;
+@synthesize DXLabel;
+@synthesize DYLabel;
+
+
 @synthesize scaleState;
 @synthesize updateState;
 
@@ -54,6 +64,16 @@ StatusController *statusController;
 - (void) labelColorMinMax{
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
+    
+    [MinLabel setStringValue:[NSString stringWithFormat:@"Min: %g",UIData.min]];
+    [MaxLabel setStringValue:[NSString stringWithFormat:@"Max: %g",UIData.max]];
+    [RowsLabel setStringValue:[NSString stringWithFormat:@"Rows: %d",UIData.rows]];
+    [ColsLabel setStringValue:[NSString stringWithFormat:@"Cols: %d",UIData.cols]];
+    [DXLabel setStringValue:[NSString stringWithFormat:@"DX: %d",UIData.dx]];
+    [DYLabel setStringValue:[NSString stringWithFormat:@"DY: %d",UIData.dy]];
+    [X0Label setStringValue:[NSString stringWithFormat:@"X0: %d",UIData.x0]];
+    [Y0Label setStringValue:[NSString stringWithFormat:@"Y0: %d",UIData.y0]];
+
 }
 
 - (IBAction)decreaseColorMin:(id)sender {

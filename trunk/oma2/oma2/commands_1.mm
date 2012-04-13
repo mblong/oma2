@@ -406,6 +406,32 @@ extern "C" int smooth_c(int n,char* args){
     return NO_ERR;
 }
 
+int size_c(int n,char* args){
+    int width, height;
+    if(*args){
+        int narg = sscanf(args,"%d %d",&width,&height); 
+        if (narg == 2){
+            Image new_im(height,width);
+            if(new_im.err()){
+                sprintf(reply,"Could not load %s\n",args);
+                send_reply;
+                return new_im.err();
+            }
+            iBuffer.free();     // release the old data
+            iBuffer = new_im;   // this is the new data
+            iBuffer.getmaxx();
+            update_UI();
+            return NO_ERR;
+        }
+    } 
+    int* specs = iBuffer.getspecs();
+    sprintf(reply,"Current Image is %d by %d\n",specs[COLS],specs[ROWS]);
+    send_reply;
+    free(specs);
+    return NO_ERR;
+ 
+}
+
 int setcminmax_c(int n,char* args)		/* get color min and max */
 {
 	DATAWORD mn = 1, mx;
@@ -442,8 +468,17 @@ void update_UI(){
     UIData.max = values[MAX];
     UIData.min = values[MIN];
     UIData.iscolor = specs[IS_COLOR];
+    UIData.rows = specs[ROWS];
+    UIData.cols = specs[COLS];
+    UIData.dx = specs[DX];
+    UIData.dy = specs[DY];
+    UIData.x0 = specs[X0];
+    UIData.y0 = specs[Y0];
+    
+    
     
     [statusController labelColorMinMax]; 
+    
     
     if(UIData.autoscale)
         [[statusController scaleState] setState:NSOnState];
