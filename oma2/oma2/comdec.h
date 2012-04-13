@@ -101,6 +101,7 @@ ComDef   commands[] =    {
     {{"RGB2GREEN      "},	rgb2green_c},
     {{"RGB2BLUE       "},	rgb2blue_c},
     {{"ROTATE         "},	rotate_c},
+    {{"SIZE           "},	size_c},
     {{"SMOOTH         "},	smooth_c},
     {{"SUBFILE        "},	subfile_c},
     {{"VARIABLES      "},	variab},

@@ -117,6 +117,12 @@ typedef struct {
 	int         autoupdate;
     int         toolselected;
     int         iscolor;
+    int         rows;
+    int         cols;
+    int         dx;
+    int         dy;
+    int         x0;
+    int         y0;
     
     rect        iRect;              // the image sub-rectagle (for cropping for example), 
                                     //   defined in terms of upper left pt. to lower right pt.

@@ -24,6 +24,17 @@
 @property (assign) IBOutlet NSTextField *ColorMinLabel;
 @property (assign) IBOutlet NSTextField *ColorMaxLabel;
 
+// Image Specs
+@property (assign) IBOutlet NSTextField *MinLabel;
+@property (assign) IBOutlet NSTextField *MaxLabel;
+@property (assign) IBOutlet NSTextField *ColsLabel;
+@property (assign) IBOutlet NSTextField *RowsLabel;
+@property (assign) IBOutlet NSTextField *X0Label;
+@property (assign) IBOutlet NSTextField *Y0Label;
+@property (assign) IBOutlet NSTextField *DXLabel;
+@property (assign) IBOutlet NSTextField *DYLabel;
+
+
 - (IBAction)scaleCheckbox:(id)sender;
 @property (assign) IBOutlet NSButton *scaleState;
 

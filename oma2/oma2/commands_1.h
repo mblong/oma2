@@ -17,6 +17,7 @@ extern "C" int subfile_c(int,char*);
 extern "C" int concatenatefile_c(int,char*);
 extern "C" int croprectangle_c(int,char*);
 extern "C" int rectan_c(int,char*);
+extern "C" int size_c(int,char*);
 extern "C" int invert_c(int,char*);
 extern "C" int rgb2red_c(int,char*);
 
