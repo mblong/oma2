@@ -73,19 +73,12 @@ extern AppController* appController;
     if ( ![im isValid] ) {
         NSLog(@"Invalid Image");
     }
-    [imageView setFrameOrigin:NSMakePoint(0,0)];
-    [imageView setFrameSize:NSMakeSize(iBitmap.getwidth(), iBitmap.getheight())];
 
-    //NSRect rect=NSMakeRect(0, 0, 500, 500);
-    //imageView = [[NSImageView alloc] initWithFrame:rect];
-    //[imageView setImageScaling:NSScaleToFit];
     
     [imageView setImage:im];
-    //[imageView setImage:[NSImage imageNamed:@"bike.jpg"]];
-    
-
-    
+    [imageView setImageScaling:NSImageScaleAxesIndependently];
     [imageView display];
+    
 
 }
 
@@ -104,24 +97,6 @@ extern AppController* appController;
 -(void) placeImage{
     
 
-    /*
-    NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
-                                initWithBitmapDataPlanes: iBitmap.getpixdatap() pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
-                                colorSpaceName:NSDeviceRGBColorSpace bytesPerRow: 0  
-                                bitsPerPixel: 32];
-    
-    NSImage *im = [[[NSImage alloc] init] autorelease];
-    [im addRepresentation:bitmap];
-    NSRect rect=NSMakeRect(10, 10, 400, 300);
-    imageView = [[NSImageView alloc] initWithFrame:rect];
-    [imageView setImageScaling:NSScaleToFit];
-    
-    //[imageView setImage:im];
-    [imageView setImage:[NSImage imageNamed:@"bike.jpg"]];
-    [imageView setNeedsDisplay];
-    */
-    //[self addSubview:imageView];
-
 }
 
 -(void) updateImage{
@@ -139,17 +114,9 @@ extern AppController* appController;
     if ( ![im isValid] ) {
         NSLog(@"Invalid Image");
     }
-    [imageView setFrameOrigin:NSMakePoint(0,0)];
-    [imageView setFrameSize:NSMakeSize(iBitmap.getwidth(), iBitmap.getheight())];
-    
-    //NSRect rect=NSMakeRect(0, 0, 500, 500);
-    //imageView = [[NSImageView alloc] initWithFrame:rect];
-    //[imageView setImageScaling:NSScaleToFit];
     
     [imageView setImage:im];
-    //[imageView setImage:[NSImage imageNamed:@"bike.jpg"]];
-    
-    
+    [imageView setImageScaling:NSImageScaleAxesIndependently];
     
     [imageView display];
 
