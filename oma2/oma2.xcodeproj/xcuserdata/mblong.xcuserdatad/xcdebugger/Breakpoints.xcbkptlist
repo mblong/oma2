@@ -92,20 +92,6 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "oma2/DataWindowController.mm"
-         timestampString = "355927447.203931"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "121"
-         endingLineNumber = "121"
-         landmarkName = "-placeImage"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
          filePath = "oma2/AppController.mm"
          timestampString = "355928513.122553"
          startingColumnNumber = "9223372036854775807"
@@ -121,11 +107,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "oma2/DataWindowController.mm"
-         timestampString = "355927447.203931"
+         timestampString = "356010608.893125"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "97"
-         endingLineNumber = "97"
+         startingLineNumber = "99"
+         endingLineNumber = "99"
          landmarkName = "-windowWillClose:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -135,11 +121,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "oma2/DataWindowController.mm"
-         timestampString = "355928513.122553"
+         timestampString = "356010608.893125"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "163"
-         endingLineNumber = "163"
+         startingLineNumber = "167"
+         endingLineNumber = "167"
          landmarkName = "-keyDown:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -163,11 +149,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "oma2/oma2.h"
-         timestampString = "355944623.930379"
+         timestampString = "355833332.732019"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "126"
-         endingLineNumber = "126">
+         startingLineNumber = "120"
+         endingLineNumber = "120">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -189,54 +175,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "oma2/StatusController.mm"
-         timestampString = "355944817.291785"
+         timestampString = "355929851.142637"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "92"
-         endingLineNumber = "92"
-         landmarkName = "-decreaseColorMax:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "oma2/DataWindowController.mm"
-         timestampString = "355932999.923968"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "149"
-         endingLineNumber = "149"
-         landmarkName = "-updateImage"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "oma2/StatusController.mm"
-         timestampString = "355945242.449997"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "75"
-         endingLineNumber = "75"
+         startingLineNumber = "72"
+         endingLineNumber = "72"
          landmarkName = "-labelColorMinMax"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "oma2/image.mm"
-         timestampString = "355951630.174899"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "83"
-         endingLineNumber = "83"
-         landmarkName = "Image::Image(char* filename)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
