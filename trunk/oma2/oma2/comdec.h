@@ -66,6 +66,7 @@ int display(int, char*);
 int erase(int, char*);
 int endifcmnd(int, char*);
 int execut(int, char*);
+int help(int n, char* args);
 int ifcmnd(int, char*);
 int loop(int, char*);
 int loopend(int, char*);
@@ -90,6 +91,7 @@ ComDef   commands[] =    {
     {{"ERASE          "},	erase},
     {{"EXECUTE        "},	execut},
     {{"GET            "},	getfile_c},
+    {{"HELP           "},	help},
     {{"INVERT         "},	invert_c},
     {{"LOOP           "},	loop},
     {{"LOOBBREAK      "},	loopbreak},

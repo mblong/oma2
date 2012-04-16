@@ -13,6 +13,14 @@
 extern AppController *appController;
 extern StatusController *statusController;
 
+#define printf1(s) {sprintf(reply,s); send_reply}
+#define printf2(s,a) {sprintf(reply,s,a); send_reply}
+#define printf3(s,a,b) {sprintf(reply,s,a,b); send_reply}
+#define printf4(s,a,b,c) {sprintf(reply,s,a,b,c); send_reply}
+#define printf5(s,a,b,c,d) {sprintf(reply,s,a,b,c,d); send_reply}
+#define printf6(s,a,b,c,d,e) {sprintf(reply,s,a,b,c,d,e); send_reply}
+
+
 #define send_reply [appController appendCText: reply];
 #define display_data [appController showDataWindow:(char*) args];
 #define erase_window [appController eraseWindow:(int) n];

@@ -122,11 +122,11 @@ Image::Image(char* filename)
         
         strcpy(unit_text,(char*) &trailer[RULER_UNITS]);
         if( unit_text[0] ){
-            sprintf(reply,"%f Pixels per %s.\n",ruler_scale,unit_text);
-            send_reply;
+            printf3("%f Pixels per %s.\n",ruler_scale,unit_text);
+
         } else {
-            sprintf(reply,"%f Pixels per Unit.\n",ruler_scale);
-            send_reply;
+            printf2("%f Pixels per Unit.\n",ruler_scale);
+
         }
     } else {
         has_ruler = 0;
@@ -156,14 +156,12 @@ Image::Image(char* filename)
     nr = read((int)fd,data,doffset*DATABYTES);
     
     nr = read((int)fd,(char*)data, nbyte);
-    sprintf(reply,"%d Bytes read.\n",(int)nr);
-    send_reply;
+    printf2("%d Bytes read.\n",(int)nr);
     
     if(nbyte/nr == 2) {
         // this is a 2-byte data file
         // adjust to 4-byte format
-        sprintf(reply,"2-byte input file\n");
-        send_reply;
+        printf1("2-byte input file\n");
         if(swap_bytes)  swap_bytes_routine((char*) data,(int) nr,2);
 		two_to_four(data,(int)nr/2,trailer[SFACTR]);
     } else {
@@ -379,8 +377,8 @@ void Image::getmaxx()
      header[NMIN] = lmn - lmn/n*n;   	// Column of min 
      */
     
-    sprintf(reply,"%g %g  at %d %d\n",values[MIN] ,values[MAX] ,specs[LMIN],specs[LMAX]);
-    send_reply;
+    printf5("%g %g  at %d %d\n",values[MIN] ,values[MAX] ,specs[LMIN],specs[LMAX]);
+
     
 }
 
@@ -507,8 +505,7 @@ void Image::crop(rect crop_rect){
     
     if(x0 + sizx > specs[COLS] || y0 + sizy > specs[ROWS]){
         //beep();
-        sprintf(reply,"Rectangle is not contained within the current image.\n");
-        send_reply;
+        printf1("Rectangle is not contained within the current image.\n");
         error = SIZE_ERR;
         //return *this;
         return;
@@ -519,8 +516,7 @@ void Image::crop(rect crop_rect){
     if(save_rgb_rectangle){
         if( y0 + sizy*3 >= specs[ROWS] ){
             //beep();
-            sprintf(reply,"Can't save rectangle as RGB image -- rectangle size problem.\n");
-            send_reply;
+            printf1("Can't save rectangle as RGB image -- rectangle size problem.\n");
             error = SIZE_ERR;
             //return *this;
             return;
@@ -548,10 +544,8 @@ void Image::crop(rect crop_rect){
 		}
 	}
 
-    sprintf(reply,"%d x %d Image.\n",sizx,sizy);
-    send_reply;
-	sprintf(reply,"Current image starts at: %d\t%d\n",x0,y0);
-    send_reply;
+    printf3("%d x %d Image.\n",sizx,sizy);
+	printf3("Current image starts at: %d\t%d\n",x0,y0);
     
     cropped_image.specs[X0] = x0*specs[DX];
     cropped_image.specs[Y0] = y0*specs[DY];
@@ -639,18 +633,15 @@ void Image::rotate(float angle){
         //return *this;
         return;
     } else {
-        sprintf(reply,"%f theta, %f sin, ",theta,sintheta);
-        send_reply;
-        sprintf(reply,"%f cos\n",costheta);
-        send_reply;
+        printf3("%f theta, %f sin, ",theta,sintheta);
+        printf2("%f cos\n",costheta);
         
         width = specs[COLS]*fabs(costheta) + specs[ROWS]*fabs(sintheta);
         height = specs[ROWS]*fabs(costheta) + specs[COLS]*fabs(sintheta);
         midx = width/2;
         midy = height/2;
         size = width * height;
-        sprintf(reply,"%d %d width height\n",width,height);
-        send_reply;
+        printf3("%d %d width height\n",width,height);
         
         Image rotated(width,height); // new data space
         if(rotated.err()){

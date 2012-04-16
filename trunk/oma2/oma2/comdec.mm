@@ -49,7 +49,7 @@ int selected_hist_index = 0;
 int stored_commands=0;
 
 char* fullname();
-int update_pause(),vprint(),get_variable_index(),printf();
+int update_pause(),vprint(),get_variable_index();
 
 char    macbuf[MBUFLEN] = {0};    	    	/* the macro buffer */
 char*   exbuf[EX_NEST_DEPTH];    	    	// the execute buffers 
@@ -120,8 +120,8 @@ int comdec(char* cmnd)
         /* Now have the command, echo it to terminal */
         
         exe_line_number[which_ex_buffer]++;					/* next line unless modified by loop */
-        sprintf(reply," E-%d-%d: %s\n",which_ex_buffer+1,exe_line_number[which_ex_buffer],cmnd);
-        send_reply;
+        printf4(" E-%d-%d: %s\n",which_ex_buffer+1,exe_line_number[which_ex_buffer],cmnd);
+
         /* Now adjust pointers */
         
         if ( *(exbuf[which_ex_buffer] + ++exptr[which_ex_buffer]) == EOL && (executedepth[which_ex_buffer] == loopdepth) ) {
@@ -251,13 +251,11 @@ int comdec(char* cmnd)
                     clist_ptr = commands;
                     cp = 0;
                 } else {
-                    sprintf(reply, "No such command:%s\n",cmnd);
-                    send_reply;
+                    printf2("No such command:%s\n",cmnd);
                     return -1;
                 }
                 */
-                sprintf(reply, "No such command:%s\n",cmnd);
-                send_reply;
+                printf2("No such command:%s\n",cmnd);
                 return -1;
             }
         } else {
@@ -551,8 +549,7 @@ int fill_in_command(char* dest,char* source,int val)
                     *(dest+j) = 0; // end the returned command line here
                     if (if_condition_met) {     // only call out errors if we are actually doing this command
                         //beep();
-                        sprintf(reply," No variable to match %s.\n",txt);
-                        send_reply;
+                        printf2(" No variable to match %s.\n",txt);
                         return arg_index;
                     } else {
                         // this command isn't going to be done 
@@ -952,14 +949,11 @@ Expression_Element evaluate(int start, int end)
 int vprint(int index)
 {
 	if(user_variables[index].is_float > 0){
-		sprintf(reply,"%s: %g\n", user_variables[index].vname,user_variables[index].fvalue);
-        send_reply;
+		printf3("%s: %g\n", user_variables[index].vname,user_variables[index].fvalue);
 	}else if(user_variables[index].is_float == 0){
-		sprintf(reply,"%s: %d\n", user_variables[index].vname,user_variables[index].ivalue);
-        send_reply;
+		printf3("%s: %d\n", user_variables[index].vname,user_variables[index].ivalue);
 	}else{
-		sprintf(reply,"%s: %s\n", user_variables[index].vname,&user_variables[index].estring[0]);
-        send_reply;
+		printf3("%s: %s\n", user_variables[index].vname,&user_variables[index].estring[0]);
     }
 	return 0;
 }
@@ -1154,15 +1148,13 @@ int execut(int n, char* args)
     
 	if(fd == -1) {
 		//beep();
-		sprintf(reply,"Execute File '%s' Not Found.\n",args);
-        send_reply;
+		printf2("Execute File '%s' Not Found.\n",args);
 		//free(exbuf[which_ex_buffer]);
 		which_ex_buffer--;
 		return -1;
 	}
 	nread = (int)read(fd,exbuf[which_ex_buffer],MBUFLEN);
-	sprintf(reply,"%d Bytes Read.\n",nread);
-    send_reply;
+	printf2("%d Bytes Read.\n",nread);
 	
  	// the format of macro files has changed -- now they are formatted text files 
 	// previously, they were constant length files containing C strings 
@@ -1388,8 +1380,7 @@ int ifcmnd(int n, char* args)
 	
 	if( (macflag == 0) && (exflag == 0)) {
 		//beep();
-		sprintf(reply,"IF must be within a Macro.\n");
-        send_reply;
+		printf1("IF must be within a Macro.\n");
 		return -1;
 	}
 	
@@ -1423,8 +1414,7 @@ int ifcmnd(int n, char* args)
 	ifdepth++;
     if(ifdepth >= NESTDEPTH){
         //beep();
-        sprintf(reply,"IF buffer overflow.\n");
-        send_reply;
+        printf1("IF buffer overflow.\n");
         return -1;
     }
 	//printf("if condition: %d; depth %d\n",if_condition_met,ifdepth);
@@ -1438,10 +1428,8 @@ int endifcmnd(int n, char* args)
 {
 	if( ifdepth <1){
 		//beep();
-		sprintf(reply,"IF nesting error,\n");
-        send_reply;
-		sprintf(reply,"if condition: %d; depth %d\n",if_condition_met,ifdepth);
-        send_reply;
+		printf1("IF nesting error,\n");
+		printf3("IF condition: %d; depth %d\n",if_condition_met,ifdepth);
 		ifdepth = 0;
 		if_condition_met = 1;
 		return 1;
@@ -1469,17 +1457,14 @@ int loop(int n,char* args)
 	
 	if( (macflag == 0) && (exflag == 0)) {
 		//beep();
-		sprintf(reply,"Loops must be within a Macro.\n");
-        send_reply;
-		
+		printf1("Loops must be within a Macro.\n");
 		return -1;
 	}
 	
 	narg = sscanf(args,"%s %d %d %d",vname,&start,&end,&step);
 	if( narg < 3 ){
 		//beep();
-		sprintf(reply,"Not enough arguments for LOOP.\n");
-        send_reply;
+		printf1("Not enough arguments for LOOP.\n");
 		return -2;
 	}
 	if( narg == 3 )
@@ -1489,7 +1474,7 @@ int loop(int n,char* args)
        ((start < end) && step < 0) ||
        (step == 0) ) {
         //beep();
-        sprintf(reply,"Invalid arguments for LOOP.\n");
+        printf1("Invalid arguments for LOOP.\n");
         return -3;
 	}
 	
@@ -1560,8 +1545,7 @@ int loopbreak(int n,char* args)			// break out of the current loop
 	
 	if(loopdepth <= 0) {
 		//beep();
-		sprintf(reply,"Loop break not in a loop\n");
-        send_reply;
+		printf1("Loop break not in a loop\n");
 		return -1;
 	}
 	
@@ -1859,3 +1843,71 @@ int prflag(int n, char* args)	// set flag to use enable/disable printing
 
 
 */
+
+
+// ********** 
+
+int help(int n, char* args)
+{
+    extern  ComDef    commands[];
+    int i=0;
+    //int j,status,length;
+	//int fd,gethelpfile(),gettextline();
+	//pchar string[CHPERLN];
+    enum {LOOKING_FOR_MATCH,LISTING};
+       
+    if(*args == 0) {
+        printf1("Available Commands are:\n" );
+       
+        for (i = 0; commands[i].text.name[0] != EOL; i++ ) {
+            printf2( "%s\n", commands[i].text.name);
+        }
+        /*
+        printf( "Available Custom Commands are:\n" );
+        i = 0;
+        while ( my_commands[i].text.name[0] != EOL ) {
+            printf( "%s\n", my_commands[i].text.name);
+            i++;
+        }
+         */
+    }
+    else {
+        /*
+        fd = gethelpfile();
+        if( fd == -1) {
+            printf("'OMA HELP' File Not Found.\n");
+            return -1;
+        }
+        
+        for( i = 0; (args[i] = toupper(args[i])) != EOL; i++ ) ; // convert to uppercase 
+        status = LOOKING_FOR_MATCH;
+        while((length = gettextline(fd,string)) > 0) {
+            switch (status) {
+				case LOOKING_FOR_MATCH:
+					for( j = 0; j<i; j++) {
+						if( args[j] != string[j])
+							break;
+					}
+					if( j != i )
+						break;
+					printf("%s",string);
+					status = LISTING;
+					break;
+				case LISTING:
+					if( length <= 2) {
+						status = LOOKING_FOR_MATCH;
+						printf("\n");
+						break; 
+					}
+					printf("%s",string);
+            }
+            
+        }
+        helpdone(fd);	// clean-up in the file system, close help file 
+         */
+    }
+    return 0;
+}
+
+
+
