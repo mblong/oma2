@@ -56,8 +56,7 @@ extern "C" int multiply_c(int n,char* args){
 extern "C" int getfile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
-        sprintf(reply,"Could not load %s\n",args);
-        send_reply;
+        printf2("Could not load %s\n",args);
         return new_im.err();
     }
     iBuffer.free();     // release the old data
@@ -70,8 +69,7 @@ extern "C" int getfile_c(int n,char* args){
 extern "C" int addfile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
-        sprintf(reply,"Could not open %s\n",args);
-        send_reply;
+        printf2("Could not open %s\n",args);
         return new_im.err();
     }
     if(iBuffer == new_im){
@@ -82,8 +80,7 @@ extern "C" int addfile_c(int n,char* args){
         return NO_ERR;
     }
     new_im.free();
-    sprintf(reply,"Files are not the same size.\n");
-    send_reply;
+    printf1("Files are not the same size.\n");
     iBuffer.errclear();
     return SIZE_ERR;
 }
@@ -91,8 +88,7 @@ extern "C" int addfile_c(int n,char* args){
 extern "C" int mulfile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
-        sprintf(reply,"Could not open %s\n",args);
-        send_reply;
+        printf2("Could not open %s\n",args);
         return new_im.err();
     }
     if(iBuffer == new_im){
@@ -103,8 +99,7 @@ extern "C" int mulfile_c(int n,char* args){
         return NO_ERR;
     }
     new_im.free();
-    sprintf(reply,"Files are not the same size.\n");
-    send_reply;
+    printf1("Files are not the same size.\n");
     iBuffer.errclear();
     return SIZE_ERR;
 }
@@ -112,8 +107,7 @@ extern "C" int mulfile_c(int n,char* args){
 extern "C" int subfile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
-        sprintf(reply,"Could not open %s\n",args);
-        send_reply;
+        printf2("Could not open %s\n",args);
         return new_im.err();
     }
     if(iBuffer == new_im){
@@ -124,8 +118,7 @@ extern "C" int subfile_c(int n,char* args){
         return NO_ERR;
     }
     new_im.free();
-    sprintf(reply,"Files are not the same size.\n");
-    send_reply;
+    printf1("Files are not the same size.\n");
     iBuffer.errclear();
     return SIZE_ERR;
 }
@@ -133,8 +126,7 @@ extern "C" int subfile_c(int n,char* args){
 extern "C" int divfile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
-        sprintf(reply,"Could not open %s\n",args);
-        send_reply;
+        printf2("Could not open %s\n",args);
         return new_im.err();
     }
     if(iBuffer == new_im){
@@ -145,8 +137,7 @@ extern "C" int divfile_c(int n,char* args){
         return NO_ERR;
     }
     new_im.free();
-    sprintf(reply,"Files are not the same size.\n");
-    send_reply;
+    printf1("Files are not the same size.\n");
     iBuffer.errclear();
     return SIZE_ERR;
 }
@@ -154,16 +145,14 @@ extern "C" int divfile_c(int n,char* args){
 extern "C" int concatenatefile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
-        sprintf(reply,"Could not open %s\n",args);
-        send_reply;
+        printf2("Could not open %s\n",args);
         return new_im.err();
     }
     iBuffer.concat(new_im);
     if(iBuffer.err()){
         new_im.free();
         int err = iBuffer.err();
-        sprintf(reply,"Error: %d.\n",err);
-        send_reply;
+        printf2("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
     }
@@ -197,9 +186,8 @@ extern "C" int rectan_c(int n, char* args)
     
     if(narg == 0){
         
-        sprintf(reply,"Current Rectangle is %d %d %d %d.\n",
+        printf5("Current Rectangle is %d %d %d %d.\n",
                UIData.iRect.ul.h,UIData.iRect.ul.v,UIData.iRect.lr.h,UIData.iRect.lr.v);
-        send_reply;
         /*
         user_variables[0].ivalue = substart.h;
         user_variables[0].is_float = 0;
@@ -215,8 +203,7 @@ extern "C" int rectan_c(int n, char* args)
     
     if(narg != 4) {
         //beep();
-        sprintf(reply,"Need 4 Arguments.\n"); 
-        send_reply;
+        printf1("Need 4 Arguments.\n"); 
         return -1;
     }
     UIData.iRect = new_rect;
@@ -233,9 +220,8 @@ extern "C" int rectan_c(int n, char* args)
         UIData.iRect.ul.v = end.v;
     }
 
-    sprintf(reply,"Current Rectangle is %d %d %d %d.\n",
+    printf5("Current Rectangle is %d %d %d %d.\n",
            UIData.iRect.ul.h,UIData.iRect.ul.v,UIData.iRect.lr.h,UIData.iRect.lr.v);
-    send_reply;
     /*
     user_variables[0].ivalue = substart.h;
     user_variables[0].is_float = 0;
@@ -261,8 +247,7 @@ extern "C" int rgb2red_c(int n,char* args){
     iBuffer.rgb2color(0);
     if(iBuffer.err()){
         int err = iBuffer.err();
-        sprintf(reply,"Error: %d.\n",err);
-        send_reply;
+        printf2("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
     }
@@ -275,8 +260,7 @@ extern "C" int rgb2green_c(int n,char* args){
     iBuffer.rgb2color(1);
     if(iBuffer.err()){
         int err = iBuffer.err();
-        sprintf(reply,"Error: %d.\n",err);
-        send_reply;
+        printf2("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
     }
@@ -289,8 +273,7 @@ extern "C" int rgb2blue_c(int n,char* args){
     iBuffer.rgb2color(2);    
     if(iBuffer.err()){
         int err = iBuffer.err();
-        sprintf(reply,"Error: %d.\n",err);
-        send_reply;
+        printf2("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
     }
@@ -309,8 +292,7 @@ extern "C" int rotate_c(int n,char* args){
         iBuffer.rotate(angle);
         if(iBuffer.err()){
             int err = iBuffer.err();
-            sprintf(reply,"Error: %d.\n",err);
-            send_reply;
+            printf2("Error: %d.\n",err);
             iBuffer.errclear();
             return err;
         }
@@ -338,8 +320,7 @@ extern "C" int rotate_c(int n,char* args){
         free(specs);
         if(iBuffer.err()){
             int err = iBuffer.err();
-            sprintf(reply,"Error: %d.\n",err);
-            send_reply;
+            printf2("Error: %d.\n",err);
             iBuffer.errclear();
             return err;
         }
@@ -413,8 +394,7 @@ int size_c(int n,char* args){
         if (narg == 2){
             Image new_im(height,width);
             if(new_im.err()){
-                sprintf(reply,"Could not load %s\n",args);
-                send_reply;
+                printf2("Could not load %s\n",args);
                 return new_im.err();
             }
             iBuffer.free();     // release the old data
@@ -425,8 +405,7 @@ int size_c(int n,char* args){
         }
     } 
     int* specs = iBuffer.getspecs();
-    sprintf(reply,"Current Image is %d by %d\n",specs[COLS],specs[ROWS]);
-    send_reply;
+    printf3("Current Image is %d by %d\n",specs[COLS],specs[ROWS]);
     free(specs);
     return NO_ERR;
  
@@ -465,6 +444,7 @@ void update_UI(){
  */
     int* specs = iBuffer.getspecs();
     DATAWORD* values= iBuffer.getvalues();
+    
     UIData.max = values[MAX];
     UIData.min = values[MIN];
     UIData.iscolor = specs[IS_COLOR];
@@ -475,10 +455,7 @@ void update_UI(){
     UIData.x0 = specs[X0];
     UIData.y0 = specs[Y0];
     
-    
-    
     [statusController labelColorMinMax]; 
-    
     
     if(UIData.autoscale)
         [[statusController scaleState] setState:NSOnState];

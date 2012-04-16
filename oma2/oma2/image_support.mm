@@ -206,8 +206,7 @@ char* fullname(char* fnam,int  type)
     
 	if( (strlen(long_name) + 8) >= CHPERLN) {
 	    //beep();
-	    sprintf(reply," File Name Is Too Long!\n"); 
-        send_reply;
+	    printf1(" File Name Is Too Long!\n"); 
 	} else  {
 	    //strncpy(fnam,long_name,CHPERLN);	// put the full name back in the command line 
 	    strcpy(fnam,long_name);
