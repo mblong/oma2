@@ -41,6 +41,7 @@ StatusController *statusController;
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.
+        
     }
     
     return self;
@@ -58,6 +59,7 @@ StatusController *statusController;
    
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",1000.]];
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",0.]];
+    [[self window]registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];   // all types
 }
 
 
@@ -128,5 +130,35 @@ StatusController *statusController;
 - (void)keyDown:(NSEvent *)anEvent{
     [[appController theWindow] sendEvent: anEvent];
 }
+
+
+// ******** drag and drop related
+
+- (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
+    if ([NSImage canInitWithPasteboard:[sender draggingPasteboard]] &&
+        [sender draggingSourceOperationMask] & NSDragOperationCopy) {
+        return NSDragOperationCopy;
+    }
+    return NSDragOperationNone;
+}
+
+- (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
+    return YES;
+}
+
+- (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
+    if ([NSImage canInitWithPasteboard:[sender draggingPasteboard]]) {
+        //NSImage *newImage = [[NSImage alloc] initWithPasteboard:[sender draggingPasteboard]];
+        //[self setImage:newImage];
+        //[newImage release];
+        return YES;
+    }
+    return NO;
+}
+
+- (void)concludeDragOperation:(id<NSDraggingInfo>)sender {
+    //[self setNeedsDisplay:YES];
+}
+
 
 @end

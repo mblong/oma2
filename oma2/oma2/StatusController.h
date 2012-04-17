@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface StatusController : NSWindowController{
+@interface StatusController : NSWindowController <NSDraggingDestination> {
     int tool_selected;
     int MinMaxInc;
     //NSButton *scaleState;

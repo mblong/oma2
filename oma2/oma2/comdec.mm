@@ -6,6 +6,40 @@ extern char    reply[1024];   // buffer for sending messages to be typed out by 
 extern Image   iBuffer;       // the image buffer
 extern ImageBitmap iBitmap;
 
+ComDef   commands[] =    {
+    {{"               "},	null},			
+    {{"+              "},	plus_c},
+    {{"-              "},	minus_c,},
+    {{"*              "},	multiply_c},
+    {{"/              "},	divide_c,},		
+    {{"ADDFILE        "},	addfile_c},
+    {{"CROP           "},	croprectangle_c},
+    {{"CONCATENATE    "},	concatenatefile_c},
+    {{"CMINMX         "},	setcminmax_c},
+    {{"DISPLAY        "},	display},
+    {{"DIVFILE        "},	divfile_c},
+    {{"ERASE          "},	erase},
+    {{"EXECUTE        "},	execut},
+    {{"GET            "},	getfile_c},
+    {{"HELP           "},	help},
+    {{"INVERT         "},	invert_c},
+    {{"LOOP           "},	loop},
+    {{"LOOBBREAK      "},	loopbreak},
+    {{"LOOPND         "},	loopend},
+    {{"MACRO          "},	macro},
+    {{"MULFILE        "},	mulfile_c},
+    {{"RECTANGLE      "},	rectan_c},
+    {{"RGB2RED        "},	rgb2red_c},
+    {{"RGB2GREEN      "},	rgb2green_c},
+    {{"RGB2BLUE       "},	rgb2blue_c},
+    {{"ROTATE         "},	rotate_c},
+    {{"SIZE           "},	size_c},
+    {{"SMOOTH         "},	smooth_c},
+    {{"SUBFILE        "},	subfile_c},
+    {{"VARIABLES      "},	variab},
+    {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},0}};
+
+
 
 // if this is set, don't print anything
 int no_print = 0;
