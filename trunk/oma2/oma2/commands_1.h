@@ -1,3 +1,7 @@
+//#ifndef oma2_commands_1_h
+//#define oma2_commands_1_h
+
+
 #include "Image.h"
 #include "ImageBitmap.h"
 
@@ -33,3 +37,5 @@ extern "C" int setcminmax_c(int,char*);
 void update_UI();    // return ibuffer to the old oma
 
 char* fullname(char* fnam,int  type);
+
+//#endif

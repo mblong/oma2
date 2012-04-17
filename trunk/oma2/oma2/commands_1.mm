@@ -434,37 +434,3 @@ int setcminmax_c(int n,char* args)		/* get color min and max */
 
 */
 
-// update the User Interface
-// for omaT, this glues the new Image class results into the old globals-based system
-// In general though, this is a way to update user interface values after a command
-
-void update_UI(){
-/*
-
- */
-    int* specs = iBuffer.getspecs();
-    DATAWORD* values= iBuffer.getvalues();
-    
-    UIData.max = values[MAX];
-    UIData.min = values[MIN];
-    UIData.iscolor = specs[IS_COLOR];
-    UIData.rows = specs[ROWS];
-    UIData.cols = specs[COLS];
-    UIData.dx = specs[DX];
-    UIData.dy = specs[DY];
-    UIData.x0 = specs[X0];
-    UIData.y0 = specs[Y0];
-    
-    [statusController labelColorMinMax]; 
-    
-    if(UIData.autoscale)
-        [[statusController scaleState] setState:NSOnState];
-    else
-        [[statusController scaleState] setState:NSOffState];
-    
-    free(specs);
-    free(values);
-    
- 
-}
-

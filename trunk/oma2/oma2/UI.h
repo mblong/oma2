@@ -10,6 +10,11 @@
 #define oma2_UI_h
 #include "StatusController.h"
 #include "AppController.h"
+#include "ImageBitmap.h"
+#include "Image.h"
+#include "commands_1.h"
+#include "comdec.h"
+
 extern AppController *appController;
 extern StatusController *statusController;
 
@@ -25,5 +30,8 @@ extern StatusController *statusController;
 #define display_data [appController showDataWindow:(char*) args];
 #define erase_window [appController eraseWindow:(int) n];
 
+
+void dropped_file(char*,char*);
+void update_UI();
 
 #endif
