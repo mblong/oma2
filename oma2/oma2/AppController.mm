@@ -21,9 +21,10 @@ extern Image iBuffer;
 
 @synthesize theCommands;
 @synthesize theWindow;
-@synthesize sometext;
+//@synthesize sometext;
 
 //@synthesize statusController;
+@synthesize tool;
 
 
 

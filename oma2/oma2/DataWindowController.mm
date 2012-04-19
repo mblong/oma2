@@ -25,9 +25,7 @@ extern AppController* appController;
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.
-
     }
-    
     return self;
 }
 
@@ -37,9 +35,7 @@ extern AppController* appController;
     
     // resize here before display
     NSRect rect=NSMakeRect(screenRect.origin.x, screenRect.size.height, iBitmap.getwidth(), iBitmap.getheight()+22);
-    [[self window] setFrame:rect display:YES];
-
-    
+    [[self window] setFrame:rect display:NO];   // display will happen later
 }
 
 - (void)dealloc
@@ -137,7 +133,6 @@ extern AppController* appController;
     
     [imageView setImage:im];
     [imageView setImageScaling:NSImageScaleAxesIndependently];
-    
     [imageView display];
 
 }

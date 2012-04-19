@@ -9,13 +9,12 @@
 #import <Cocoa/Cocoa.h>
 
 @interface StatusController : NSWindowController {
-    int tool_selected;
-    int MinMaxInc;
-    //NSButton *scaleState;
-    //BOOL Update;
+    //int tool_selected;
+    //int MinMaxInc;
     
 }
-
+//
+@property int tool_selected;
 
 // Min/Max Increment outlets
 @property int MinMaxInc;

@@ -15,11 +15,16 @@ extern Image iBuffer;
 extern AppController* appController; 
 
 
+
 @implementation DataView
 
 - (void)drawRect:(NSRect)dirtyRect{
     [super drawRect:dirtyRect];
+    //NSLog(@"TooL: %d",statusController.tool_selected);    // don't know why this doesn't work
+    if(appController.tool){
+    
     [[NSBezierPath bezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y, endPoint.x-startPoint.x, endPoint.y-startPoint.y)] stroke] ;
+    }
     
 }
 

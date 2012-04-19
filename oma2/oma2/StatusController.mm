@@ -15,6 +15,7 @@ extern oma2UIData  UIData;
 
 @implementation StatusController
 @synthesize toolSelected;
+@synthesize tool_selected;
 
 @synthesize ColorMinLabel;
 @synthesize ColorMaxLabel;
@@ -114,6 +115,8 @@ StatusController *statusController;
 
 - (IBAction)selectTool:(id)sender {
     tool_selected = (int)[toolSelected selectedColumn];
+    [self setTool_selected:(int)[toolSelected selectedColumn]];
+    appController.tool = tool_selected;
     NSLog(@" Tool number %d\n",tool_selected);
     
 }
