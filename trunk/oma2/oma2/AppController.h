@@ -23,14 +23,15 @@ int comdec(char*);
     //StatusController    *statusController;
     NSWindow *__unsafe_unretained theWindow;
     NSUInteger last_return;
-    NSString *sometext;
+//    NSString *sometext;
     
 }
 
 @property (unsafe_unretained) IBOutlet NSTextView *theCommands;
 @property (unsafe_unretained) IBOutlet NSWindow *theWindow;
-@property (copy) NSString *sometext;
+//@property (copy) NSString *sometext;
 
+@property int tool;     // the tool selected in the status window, used in DataView
 
 //@property (copy) StatusController *statusController;
 
