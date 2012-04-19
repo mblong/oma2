@@ -348,7 +348,7 @@ int fill_in_command(char* dest,char* source,int val)
 	int is_arg = 0;
 	//DateTimeRec datetime;
 	float ave_in_rect(),rms_in_rect();
-    char txt[1024];
+    char txt[1024] = {0};
     
 	extern char saveprefixbuf[], getprefixbuf[];
 	extern char lastname[];

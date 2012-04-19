@@ -21,35 +21,35 @@
 @property int MinMaxInc;
 
 // Color Min and Max values
-@property (assign) IBOutlet NSTextField *ColorMinLabel;
-@property (assign) IBOutlet NSTextField *ColorMaxLabel;
+@property (weak) IBOutlet NSTextField *ColorMinLabel;
+@property (weak) IBOutlet NSTextField *ColorMaxLabel;
 
 // Image Specs
-@property (assign) IBOutlet NSTextField *MinLabel;
-@property (assign) IBOutlet NSTextField *MaxLabel;
-@property (assign) IBOutlet NSTextField *ColsLabel;
-@property (assign) IBOutlet NSTextField *RowsLabel;
-@property (assign) IBOutlet NSTextField *X0Label;
-@property (assign) IBOutlet NSTextField *Y0Label;
-@property (assign) IBOutlet NSTextField *DXLabel;
-@property (assign) IBOutlet NSTextField *DYLabel;
+@property (weak) IBOutlet NSTextField *MinLabel;
+@property (weak) IBOutlet NSTextField *MaxLabel;
+@property (weak) IBOutlet NSTextField *ColsLabel;
+@property (weak) IBOutlet NSTextField *RowsLabel;
+@property (weak) IBOutlet NSTextField *X0Label;
+@property (weak) IBOutlet NSTextField *Y0Label;
+@property (weak) IBOutlet NSTextField *DXLabel;
+@property (weak) IBOutlet NSTextField *DYLabel;
 
 // mouse click/drag labels
-@property (assign) IBOutlet NSTextField *XLabel;
-@property (assign) IBOutlet NSTextField *YLabel;
-@property (assign) IBOutlet NSTextField *ZLabel;
+@property (weak) IBOutlet NSTextField *XLabel;
+@property (weak) IBOutlet NSTextField *YLabel;
+@property (weak) IBOutlet NSTextField *ZLabel;
 
 - (IBAction)scaleCheckbox:(id)sender;
-@property (assign) IBOutlet NSButton *scaleState;
+@property (weak) IBOutlet NSButton *scaleState;
 
 - (IBAction)updateCheckbox:(id)sender;
-@property (assign) IBOutlet NSButton *updateState;
+@property (weak) IBOutlet NSButton *updateState;
 
 
 
 // Tool selection
 - (IBAction)selectTool:(id)sender;
-@property (assign) IBOutlet NSMatrix *toolSelected;
+@property (weak) IBOutlet NSMatrix *toolSelected;
 
 
 // Color Min/Max "-" and "+" buttons

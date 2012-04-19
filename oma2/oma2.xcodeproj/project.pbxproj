@@ -363,7 +363,8 @@
 		DB0FC03D1519183D008A9B54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_OBJC_GC = supported;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
 				INFOPLIST_FILE = "oma2/oma2-Info.plist";
@@ -375,7 +376,8 @@
 		DB0FC03E1519183D008A9B54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_OBJC_GC = supported;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
 				INFOPLIST_FILE = "oma2/oma2-Info.plist";

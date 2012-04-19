@@ -10,15 +10,15 @@
 #import "image_support.h"
 
 @interface PreferenceController : NSWindowController{
-    NSTextField *savePrefix;
-    NSTextField *getPrefix;
-    NSTextField *macroPrefix;
-    NSTextField *settingsPrefix;
+    NSTextField *__weak savePrefix;
+    NSTextField *__weak getPrefix;
+    NSTextField *__weak macroPrefix;
+    NSTextField *__weak settingsPrefix;
     
-    NSTextField *saveSuffix;
-    NSTextField *getSuffix;
-    NSTextField *macroSuffix;
-    NSTextField *settingsSuffix;
+    NSTextField *__weak saveSuffix;
+    NSTextField *__weak getSuffix;
+    NSTextField *__weak macroSuffix;
+    NSTextField *__weak settingsSuffix;
     
     NSString *sometext;
 }
@@ -26,16 +26,16 @@
 - (IBAction)newSavePrefix:(id)sender;
 
 
-@property (assign) IBOutlet NSTextField *savePrefix;
-@property (assign) IBOutlet NSTextField *getPrefix;
-@property (assign) IBOutlet NSTextField *macroPrefix;
-@property (assign) IBOutlet NSTextField *settingsPrefix;
+@property (weak) IBOutlet NSTextField *savePrefix;
+@property (weak) IBOutlet NSTextField *getPrefix;
+@property (weak) IBOutlet NSTextField *macroPrefix;
+@property (weak) IBOutlet NSTextField *settingsPrefix;
 
 
-@property (assign) IBOutlet NSTextField *saveSuffix;
-@property (assign) IBOutlet NSTextField *getSuffix;
-@property (assign) IBOutlet NSTextField *macroSuffix;
-@property (assign) IBOutlet NSTextField *settingsSuffix;
+@property (weak) IBOutlet NSTextField *saveSuffix;
+@property (weak) IBOutlet NSTextField *getSuffix;
+@property (weak) IBOutlet NSTextField *macroSuffix;
+@property (weak) IBOutlet NSTextField *settingsSuffix;
 
 @property (copy) IBOutlet NSString *sometext;
 

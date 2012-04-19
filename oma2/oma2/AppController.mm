@@ -81,7 +81,6 @@ extern Image iBuffer;
     NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
     last_return += [reply length];
     [[[theCommands textStorage] mutableString] appendString: reply];
-    [reply release];
 }
 
 -(void) textDidChange:(NSNotification *) pNotify {
@@ -108,7 +107,6 @@ extern Image iBuffer;
     if(*windowname){
         NSString *text  = [[NSString alloc] initWithCString:windowname encoding:NSASCIIStringEncoding];
         [dataWindowController setWindowName:text] ; 
-        [text release];
     } else{
          [dataWindowController setWindowName:@"Data"] ; 
     }
@@ -124,15 +122,11 @@ extern Image iBuffer;
     iBitmap = iBuffer;
     [dataWindowController updateImage];
     [dataWindowController showWindow:self];
-    
-    
-    
 }
 
 -(void) eraseWindow:(int) n{
     if(dataWindowController){
         [[dataWindowController window ] close];
-        [dataWindowController release];
         //NSLog(@"%ld",[dataWindowController retainCount]);
         //dataWindowController = nil;
         
@@ -143,7 +137,7 @@ extern Image iBuffer;
 }
 
 -(void) dataWindowClosing{
-    dataWindowController = nil;
+    //dataWindowController = nil;
 }
 
 

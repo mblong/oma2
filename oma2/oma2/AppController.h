@@ -21,14 +21,14 @@ int comdec(char*);
     PreferenceController *preferenceController;
     DataWindowController *dataWindowController;
     //StatusController    *statusController;
-    NSWindow *theWindow;
+    NSWindow *__unsafe_unretained theWindow;
     NSUInteger last_return;
     NSString *sometext;
     
 }
 
-@property (assign) IBOutlet NSTextView *theCommands;
-@property (assign) IBOutlet NSWindow *theWindow;
+@property (unsafe_unretained) IBOutlet NSTextView *theCommands;
+@property (unsafe_unretained) IBOutlet NSWindow *theWindow;
 @property (copy) NSString *sometext;
 
 

@@ -12,11 +12,11 @@
 
 @interface DataWindowController : NSWindowController{
     NSString    *windowName;
-    DataView    *imageView;
+    DataView    *__weak imageView;
 }
 
 @property (copy) NSString *windowName;
-@property (assign) IBOutlet DataView *imageView;
+@property (weak) IBOutlet DataView *imageView;
 
 -(void) placeImage;
 -(void) updateImage;
