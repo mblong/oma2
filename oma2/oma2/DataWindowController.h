@@ -8,13 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class DataView;
+
 @interface DataWindowController : NSWindowController{
     NSString    *windowName;
-    NSImageView *imageView;
+    DataView    *imageView;
 }
 
 @property (copy) NSString *windowName;
-@property (assign) IBOutlet NSImageView *imageView;
+@property (assign) IBOutlet DataView *imageView;
 
 -(void) placeImage;
 -(void) updateImage;

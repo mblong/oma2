@@ -27,6 +27,10 @@ extern oma2UIData  UIData;
 @synthesize Y0Label;
 @synthesize DXLabel;
 @synthesize DYLabel;
+@synthesize XLabel;
+@synthesize YLabel;
+@synthesize ZLabel;
+
 
 
 @synthesize scaleState;
@@ -59,7 +63,6 @@ StatusController *statusController;
    
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",1000.]];
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",0.]];
-    [[self window]registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];   // all types
 }
 
 
@@ -75,6 +78,13 @@ StatusController *statusController;
     [DYLabel setStringValue:[NSString stringWithFormat:@"DY: %d",UIData.dy]];
     [X0Label setStringValue:[NSString stringWithFormat:@"X0: %d",UIData.x0]];
     [Y0Label setStringValue:[NSString stringWithFormat:@"Y0: %d",UIData.y0]];
+
+}
+
+- (void) labelX0:(int) x Y0:(int) y Z0:(float) z{
+    [XLabel setStringValue:[NSString stringWithFormat:@"X: %d",x]];
+    [YLabel setStringValue:[NSString stringWithFormat:@"Y: %d",y]];
+    [ZLabel setStringValue:[NSString stringWithFormat:@"Z: %g",z]];
 
 }
 
@@ -131,34 +141,6 @@ StatusController *statusController;
     [[appController theWindow] sendEvent: anEvent];
 }
 
-
-// ******** drag and drop related
-
-- (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
-    if ([NSImage canInitWithPasteboard:[sender draggingPasteboard]] &&
-        [sender draggingSourceOperationMask] & NSDragOperationCopy) {
-        return NSDragOperationCopy;
-    }
-    return NSDragOperationNone;
-}
-
-- (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
-    return YES;
-}
-
-- (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
-    if ([NSImage canInitWithPasteboard:[sender draggingPasteboard]]) {
-        //NSImage *newImage = [[NSImage alloc] initWithPasteboard:[sender draggingPasteboard]];
-        //[self setImage:newImage];
-        //[newImage release];
-        return YES;
-    }
-    return NO;
-}
-
-- (void)concludeDragOperation:(id<NSDraggingInfo>)sender {
-    //[self setNeedsDisplay:YES];
-}
 
 
 @end

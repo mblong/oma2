@@ -51,8 +51,8 @@
         const char* cname = [name cStringUsingEncoding:NSASCIIStringEncoding];
         const char* cext = [ext cStringUsingEncoding:NSASCIIStringEncoding];
         dropped_file((char*)cext,(char*)cname);
-        [ext release];
-        [name release];
+        //[ext release];
+        //[name release];
         //delete []cname;
         //delete []cext;
         // Perform operation using the file’s URL

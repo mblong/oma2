@@ -81,6 +81,7 @@ extern Image iBuffer;
     NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
     last_return += [reply length];
     [[[theCommands textStorage] mutableString] appendString: reply];
+    [reply release];
 }
 
 -(void) textDidChange:(NSNotification *) pNotify {
@@ -107,9 +108,11 @@ extern Image iBuffer;
     if(*windowname){
         NSString *text  = [[NSString alloc] initWithCString:windowname encoding:NSASCIIStringEncoding];
         [dataWindowController setWindowName:text] ; 
+        [text release];
     } else{
          [dataWindowController setWindowName:@"Data"] ; 
     }
+    
     //[[dataWindowController window] setTitle:[dataWindowController windowName]];
     [dataWindowController placeImage];
     

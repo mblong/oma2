@@ -1,6 +1,7 @@
 #include "Image_support.h"
 
 extern char reply[1024];
+extern oma2UIData UIData;
 
 /*
     These are general purpose C functions that may be used anywhere.
@@ -97,14 +98,6 @@ void swap_bytes_routine(char* co, int num,int nb)
 
 char* fullname(char* fnam,int  type)
 {
-    static char	saveprefixbuf[PREFIX_CHPERLN];		/* save data file prefix buffer */
-    static char	savesuffixbuf[PREFIX_CHPERLN];		/* save data file suffix buffer */
-    static char	getprefixbuf[PREFIX_CHPERLN];		/* get data file prefix buffer */
-    static char	getsuffixbuf[PREFIX_CHPERLN];		/* get data file suffix buffer */
-    static char	graphicsprefixbuf[PREFIX_CHPERLN];	/* graphics file prefix buffer */
-    static char	graphicssuffixbuf[PREFIX_CHPERLN];	/* graphics file suffix buffer */
-    static char	macroprefixbuf[PREFIX_CHPERLN];     /* macro file prefix buffer */
-    static char	macrosuffixbuf[PREFIX_CHPERLN];     /* macro file suffix buffer */
 
     static int have_full_name = 0;
     static int normal_prefix = 1;                   // this used for UPREFIX command
@@ -133,62 +126,62 @@ char* fullname(char* fnam,int  type)
 	
 	switch (type) {
         case GET_DATA:				
-            prefixbuf = getprefixbuf;	
-            suffixbuf = getsuffixbuf;		
+            prefixbuf = UIData.getprefixbuf;	
+            suffixbuf = UIData.getsuffixbuf;		
             break;				
         case SETTINGS_DATA:
-            prefixbuf = graphicsprefixbuf;		
-            suffixbuf = graphicssuffixbuf;	
+            prefixbuf = UIData.graphicsprefixbuf;		
+            suffixbuf = UIData.graphicssuffixbuf;	
             break;
             
         case MACROS_DATA:
-            prefixbuf = macroprefixbuf;	
-            suffixbuf = macrosuffixbuf;
+            prefixbuf = UIData.macroprefixbuf;	
+            suffixbuf = UIData.macrosuffixbuf;
             break;
         case TIFF_DATA:				
-            prefixbuf = getprefixbuf;	
+            prefixbuf = UIData.getprefixbuf;	
             suffixbuf = ".tiff";		
             break;				
         case TIF_DATA:				
-            prefixbuf = getprefixbuf;	
+            prefixbuf = UIData.getprefixbuf;	
             suffixbuf = ".tif";		
             break;				
         case PDF_DATA:				
-            prefixbuf = getprefixbuf;	
+            prefixbuf = UIData.getprefixbuf;	
             suffixbuf = ".pdf";		
             break;				
         case FTS_DATA:				
-            prefixbuf = getprefixbuf;	
+            prefixbuf = UIData.getprefixbuf;	
             suffixbuf = ".fts";		
             break;				
         case RAW_DATA:				
-            prefixbuf = getprefixbuf;	
+            prefixbuf = UIData.getprefixbuf;	
             suffixbuf = "";		
             break;				
         case CSV_DATA:				
-            prefixbuf = saveprefixbuf;	
+            prefixbuf = UIData.saveprefixbuf;	
             suffixbuf = ".csv";		
             break;				
         case SAVE_DATA_NO_SUFFIX:
-            prefixbuf = saveprefixbuf;		
+            prefixbuf = UIData.saveprefixbuf;		
             suffixbuf = "";
             break;
 		case LOAD_SAVE_PREFIX:
-            strcpy(saveprefixbuf,fnam);
+            strcpy(UIData.saveprefixbuf,fnam);
             return fnam;
         case LOAD_GET_PREFIX:
-            strcpy(getprefixbuf,fnam);
+            strcpy(UIData.getprefixbuf,fnam);
             return fnam;
         case LOAD_SAVE_SUFFIX:
-            strcpy(savesuffixbuf,fnam);
+            strcpy(UIData.savesuffixbuf,fnam);
             return fnam;
         case LOAD_GET_SUFFIX:
-            strcpy(getsuffixbuf,fnam);
+            strcpy(UIData.getsuffixbuf,fnam);
             return fnam;
         default:
         case SAVE_DATA:
-            prefixbuf = saveprefixbuf;		
-            suffixbuf = savesuffixbuf;
+            prefixbuf = UIData.saveprefixbuf;		
+            suffixbuf = UIData.savesuffixbuf;
             
 	}
  	

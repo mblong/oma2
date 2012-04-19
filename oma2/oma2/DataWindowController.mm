@@ -11,6 +11,7 @@
 #import "ImageBitmap.h"
 
 extern ImageBitmap iBitmap;
+extern Image iBuffer;
 extern AppController* appController; 
 
 @implementation DataWindowController
@@ -34,7 +35,7 @@ extern AppController* appController;
     NSRect screenRect = [mainScreen visibleFrame];
     
     // resize here before display
-    NSRect rect=NSMakeRect(screenRect.origin.x, screenRect.size.height, iBitmap.getwidth(), iBitmap.getheight()+20);
+    NSRect rect=NSMakeRect(screenRect.origin.x, screenRect.size.height, iBitmap.getwidth(), iBitmap.getheight()+22);
     [[self window] setFrame:rect display:YES];
 
     
@@ -70,6 +71,7 @@ extern AppController* appController;
     
     NSImage *im = [[[NSImage alloc] init] autorelease];
     [im addRepresentation:bitmap];
+    [bitmap release];
     if ( ![im isValid] ) {
         NSLog(@"Invalid Image");
     }
@@ -77,7 +79,7 @@ extern AppController* appController;
     
     [imageView setImage:im];
     [imageView setImageScaling:NSImageScaleAxesIndependently];
-    [imageView display];
+    [imageView setNeedsDisplay:YES];
     
 
 }
@@ -85,9 +87,9 @@ extern AppController* appController;
 
 - (void) windowWillClose:(NSNotification *) notification
 {
-    NSWindowController *theWindowController = [[notification object] delegate];
+    //NSWindowController *theWindowController = [[notification object] delegate];
     
-    [theWindowController release];
+    //[theWindowController release];
     
     //[self release];
     //[super dealloc]
@@ -111,6 +113,7 @@ extern AppController* appController;
     
     NSImage *im = [[[NSImage alloc] init] autorelease];
     [im addRepresentation:bitmap];
+    [bitmap release];
     if ( ![im isValid] ) {
         NSLog(@"Invalid Image");
     }
@@ -129,6 +132,7 @@ extern AppController* appController;
 - (void)keyDown:(NSEvent *)anEvent{
     [[appController theWindow] sendEvent: anEvent];
 }
+
 
 
 @end

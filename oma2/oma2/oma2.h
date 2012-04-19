@@ -110,7 +110,21 @@ typedef struct {
 
 typedef struct {
     char        version[32];
-    int         pixsiz;					// Status Window Related 
+    
+    // Prefix/suffix buffers
+    
+    char	saveprefixbuf[PREFIX_CHPERLN];		/* save data file prefix buffer */
+    char	savesuffixbuf[PREFIX_CHPERLN];		/* save data file suffix buffer */
+    char	getprefixbuf[PREFIX_CHPERLN];		/* get data file prefix buffer */
+    char	getsuffixbuf[PREFIX_CHPERLN];		/* get data file suffix buffer */
+    char	graphicsprefixbuf[PREFIX_CHPERLN];	/* graphics file prefix buffer */
+    char	graphicssuffixbuf[PREFIX_CHPERLN];	/* graphics file suffix buffer */
+    char	macroprefixbuf[PREFIX_CHPERLN];     /* macro file prefix buffer */
+    char	macrosuffixbuf[PREFIX_CHPERLN];     /* macro file suffix buffer */
+
+    // Status Window Related 
+    
+    int         pixsiz;					
     int         newwindowflag;
     int         cminmaxinc;
     int         autoscale;

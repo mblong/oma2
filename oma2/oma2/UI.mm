@@ -41,7 +41,12 @@ void update_UI(){
         [[statusController scaleState] setState:NSOnState];
     else
         [[statusController scaleState] setState:NSOffState];
-    
+
+    if(UIData.autoupdate)
+        [[statusController updateState] setState:NSOnState];
+    else
+        [[statusController updateState] setState:NSOffState];
+
     free(specs);
     free(values);
     

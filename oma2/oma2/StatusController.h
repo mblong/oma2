@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface StatusController : NSWindowController <NSDraggingDestination> {
+@interface StatusController : NSWindowController {
     int tool_selected;
     int MinMaxInc;
     //NSButton *scaleState;
@@ -34,6 +34,10 @@
 @property (assign) IBOutlet NSTextField *DXLabel;
 @property (assign) IBOutlet NSTextField *DYLabel;
 
+// mouse click/drag labels
+@property (assign) IBOutlet NSTextField *XLabel;
+@property (assign) IBOutlet NSTextField *YLabel;
+@property (assign) IBOutlet NSTextField *ZLabel;
 
 - (IBAction)scaleCheckbox:(id)sender;
 @property (assign) IBOutlet NSButton *scaleState;
@@ -56,6 +60,7 @@
 
 
 - (void) labelColorMinMax;
+- (void) labelX0:(int) x Y0:(int) y Z0:(float) z;
 
 -(id) whoami;
 

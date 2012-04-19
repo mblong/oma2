@@ -55,8 +55,9 @@
 							<int key="NSvFlags">274</int>
 							<string key="NSFrameSize">{434, 471}</string>
 							<reference key="NSSuperview" ref="1006"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:1192</string>
-							<string key="NSClassName">NSImageView</string>
+							<string key="NSClassName">DataView</string>
 						</object>
 					</object>
 					<string key="NSFrameSize">{434, 471}</string>
@@ -213,7 +214,7 @@
 				<reference key="dict.values" ref="1002"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">18</int>
+			<int key="maxID">20</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
