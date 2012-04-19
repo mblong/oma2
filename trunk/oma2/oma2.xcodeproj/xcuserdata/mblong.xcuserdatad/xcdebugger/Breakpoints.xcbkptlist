@@ -36,20 +36,6 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "oma2/AppController.mm"
-         timestampString = "355928513.122553"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "103"
-         endingLineNumber = "103"
-         landmarkName = "-showDataWindow:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
          filePath = "oma2/DataWindowController.m"
          timestampString = "354811534.52488"
          startingColumnNumber = "9223372036854775807"
@@ -65,12 +51,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "oma2/AppController.mm"
-         timestampString = "355930238.551578"
+         timestampString = "356531877.601264"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "130"
-         endingLineNumber = "130"
-         landmarkName = "-updateDataWindow"
+         startingLineNumber = "84"
+         endingLineNumber = "84"
+         landmarkName = "-appendCText:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -88,44 +74,16 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "oma2/AppController.mm"
-         timestampString = "355928513.122553"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "116"
-         endingLineNumber = "116"
-         landmarkName = "-showDataWindow:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "oma2/DataWindowController.mm"
-         timestampString = "356474798.273258"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "90"
-         endingLineNumber = "90"
-         landmarkName = "-windowWillClose:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "oma2/DataWindowController.mm"
-         timestampString = "356474798.273258"
+         timestampString = "356535663.129053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "130"
-         endingLineNumber = "130"
+         startingLineNumber = "147"
+         endingLineNumber = "147"
          landmarkName = "-acceptsFirstResponder"
          landmarkType = "5">
       </FileBreakpoint>
@@ -154,20 +112,6 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "134"
          endingLineNumber = "134">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "oma2/AppController.mm"
-         timestampString = "355930238.551578"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "122"
-         endingLineNumber = "122"
-         landmarkName = "@implementation AppController"
-         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -254,17 +198,31 @@
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "oma2/AppController.mm"
+         timestampString = "356538076.968128"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "104"
+         endingLineNumber = "104"
+         landmarkName = "-showDataWindow:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "oma2/DataWindowController.mm"
-         timestampString = "356528704.415151"
+         filePath = "oma2/DataView.mm"
+         timestampString = "356540708.633769"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "80"
-         endingLineNumber = "80"
-         landmarkName = "-windowDidLoad"
+         startingLineNumber = "36"
+         endingLineNumber = "36"
+         landmarkName = "-mouseDown:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

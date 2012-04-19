@@ -17,32 +17,39 @@ extern AppController* appController;
 
 @implementation DataView
 
-- (void) mouseDown:(NSEvent *)theEvent{
-    NSPoint point = [theEvent locationInWindow];
-    startPoint = [self convertPoint:point fromView:nil];
-    [statusController labelX0:startPoint.x Y0:startPoint.y 
-                           Z0: iBuffer.getpix((int)startPoint.x,(int)startPoint.y)];
-    //startPoint = [self convertPoint:point fromView:nil];
-    
-    
-}
-
 - (void)drawRect:(NSRect)dirtyRect{
     [super drawRect:dirtyRect];
     [[NSBezierPath bezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y, endPoint.x-startPoint.x, endPoint.y-startPoint.y)] stroke] ;
     
 }
 
+- (void) mouseDown:(NSEvent *)theEvent{
+    NSPoint point = [theEvent locationInWindow];
+    startPoint = [self convertPoint:point fromView:nil];
+    int x = startPoint.x;
+    int y = self.frame.size.height - startPoint.y;
+    if(x < 0) x = 0;
+    if(x > self.frame.size.width-1) x = self.frame.size.width-1;
+    if(y < 0) y = 0;
+    if(y > self.frame.size.height-1) y = self.frame.size.height-1;
+    
+    [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
+}
+
+
 - (void) mouseDragged:(NSEvent *)theEvent{
     NSPoint point = [theEvent locationInWindow];
     endPoint = [self convertPoint:point fromView:nil];
-    [statusController labelX0:endPoint.x Y0:endPoint.y  
-                           Z0: iBuffer.getpix((int)endPoint.x,(int)endPoint.y)];
-    
-    [[NSBezierPath bezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y, endPoint.x-startPoint.x, endPoint.y-startPoint.y)] stroke] ;
-    
+    int x = endPoint.x;
+    int y = self.frame.size.height - endPoint.y;
+    if(x < 0) x = 0;
+    if(x > self.frame.size.width-1) x = self.frame.size.width-1;
+    if(y < 0) y = 0;
+    if(y > self.frame.size.height-1) y = self.frame.size.height-1;
+
+    [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
+        
     [self setNeedsDisplay:YES];
-    
 }
 
 @end

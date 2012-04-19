@@ -9,6 +9,7 @@
 #import "DataWindowController.h"
 #import "AppController.h"
 #import "ImageBitmap.h"
+#import "DataView.h"
 
 extern ImageBitmap iBitmap;
 extern Image iBuffer;
@@ -44,7 +45,6 @@ extern AppController* appController;
 - (void)dealloc
 {
     // more needed here
-    [super dealloc];
     NSLog(@"deallocate DataWindowController");
     //[bitmap release];
     //[imageView release];          // this crashes things eventually
@@ -58,7 +58,7 @@ extern AppController* appController;
     //[[self window] setTitle:windowName];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-    
+/*    
     [[self window] setTitle:windowName];
 
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
@@ -69,9 +69,8 @@ extern AppController* appController;
                                 bytesPerRow: 4*iBitmap.getwidth()  
                                 bitsPerPixel: 32];
     
-    NSImage *im = [[[NSImage alloc] init] autorelease];
+    NSImage *im = [[NSImage alloc] init];
     [im addRepresentation:bitmap];
-    [bitmap release];
     if ( ![im isValid] ) {
         NSLog(@"Invalid Image");
     }
@@ -80,7 +79,7 @@ extern AppController* appController;
     [imageView setImage:im];
     [imageView setImageScaling:NSImageScaleAxesIndependently];
     [imageView setNeedsDisplay:YES];
-    
+*/    
 
 }
 
@@ -97,7 +96,26 @@ extern AppController* appController;
 }
 
 -(void) placeImage{
+    [[self window] setTitle:windowName];
     
+    NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
+                                initWithBitmapDataPlanes: iBitmap.getpixdatap() 
+                                pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
+                                bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
+                                colorSpaceName:NSCalibratedRGBColorSpace 
+                                bytesPerRow: 4*iBitmap.getwidth()  
+                                bitsPerPixel: 32];
+    
+    NSImage *im = [[NSImage alloc] init];
+    [im addRepresentation:bitmap];
+    if ( ![im isValid] ) {
+        NSLog(@"Invalid Image");
+    }
+    
+    
+    [imageView setImage:im];
+    [imageView setImageScaling:NSImageScaleAxesIndependently];
+    [imageView setNeedsDisplay:YES];
 
 }
 
@@ -111,9 +129,8 @@ extern AppController* appController;
                                 bytesPerRow: 4*iBitmap.getwidth()  
                                 bitsPerPixel: 32];
     
-    NSImage *im = [[[NSImage alloc] init] autorelease];
+    NSImage *im = [[NSImage alloc] init];
     [im addRepresentation:bitmap];
-    [bitmap release];
     if ( ![im isValid] ) {
         NSLog(@"Invalid Image");
     }
