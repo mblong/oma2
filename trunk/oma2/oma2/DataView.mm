@@ -9,10 +9,12 @@
 #import "DataView.h"
 #import "AppController.h"
 #import "ImageBitmap.h"
+#import "UI.h"
 
 extern ImageBitmap iBitmap;
 extern Image iBuffer;
 extern AppController* appController; 
+extern oma2UIData UIData;
 
 
 
@@ -23,7 +25,23 @@ extern AppController* appController;
     //NSLog(@"TooL: %d",statusController.tool_selected);    // don't know why this doesn't work
     if(appController.tool){
     
-    [[NSBezierPath bezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y, endPoint.x-startPoint.x, endPoint.y-startPoint.y)] stroke] ;
+        [[NSBezierPath 
+          bezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y, 
+            endPoint.x-startPoint.x, endPoint.y-startPoint.y)]stroke];
+        UIData.iRect.ul.h = startRect.x;
+        UIData.iRect.ul.v = startRect.y;
+        UIData.iRect.lr.h = endRect.x;
+        UIData.iRect.lr.v = endRect.y;
+        // remove restriction on the way a rectangle is defined
+        // previously, the assumption was that all rectangles were defined from the upper left to lower right
+        if(endRect.x < startRect.x){
+            UIData.iRect.lr.h = startRect.x;
+            UIData.iRect.ul.h = endRect.x;
+        }
+        if(endRect.y < startRect.y){
+            UIData.iRect.lr.v = startRect.y;
+            UIData.iRect.ul.v = endRect.y;
+        }
     }
     
 }
@@ -37,6 +55,8 @@ extern AppController* appController;
     if(x > self.frame.size.width-1) x = self.frame.size.width-1;
     if(y < 0) y = 0;
     if(y > self.frame.size.height-1) y = self.frame.size.height-1;
+    startRect.x = x;
+    startRect.y = y;
     
     [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
 }
@@ -51,6 +71,8 @@ extern AppController* appController;
     if(x > self.frame.size.width-1) x = self.frame.size.width-1;
     if(y < 0) y = 0;
     if(y > self.frame.size.height-1) y = self.frame.size.height-1;
+    endRect.x = x;
+    endRect.y = y;
 
     [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
         
