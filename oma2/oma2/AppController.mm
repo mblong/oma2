@@ -12,6 +12,10 @@
 #import "StatusController.h"
 #import "ImageBitmap.h"
 
+// This isn't the right way to do this
+#define TITLEBAR_HEIGHT 22
+#define WINDOW_OFFSET 20
+
 
 AppController   *appController;
 extern ImageBitmap iBitmap;
@@ -28,18 +32,32 @@ extern Image iBuffer;
 
 
 
+-(void)awakeFromNib{
+    appController = [self whoami];
+    [self appendText: @"OMA2>"];
+    
+    NSScreen *mainScreen = [NSScreen mainScreen];
+    screenRect = [mainScreen visibleFrame];
+    window_placement.origin.x = screenRect.origin.x+WINDOW_OFFSET;
+    window_placement.origin.y = screenRect.size.height;
+    wraps = 1;
+    
+    windowArray = [[NSMutableArray alloc] initWithCapacity:10];
+}
+
 - (IBAction)showPrefs:(id)sender{
     if(!preferenceController){
         preferenceController = [[PreferenceController alloc] initWithWindowNibName:@"Preferences"];
     }
     
+    // this attempt to be notified when text changes in prefixes doesn't work
+    // It gets called once only when the window opens, not when the text changes
     [preferenceController addObserver:self
-          forKeyPath:@"macroPrefix"
-             options:NSKeyValueObservingOptionNew
-             context:NULL];
-
-    [preferenceController showWindow:self];
+                           forKeyPath:@"macroPrefix"
+                              options:NSKeyValueObservingOptionNew
+                              context:NULL];
     
+    [preferenceController showWindow:self];
 }
 
 // this attempt to be notified when text changes in prefixes doesn't work
@@ -57,17 +75,6 @@ extern Image iBuffer;
 
 
 
-
--(void)awakeFromNib{
-    appController = [self whoami];
-    [self appendText: @"OMA2>"];
-    /*
-    if(!statusController){
-        statusController = [[StatusController alloc] initWithWindowNibName: @"Status"];
-    }
-    [statusController showWindow:self];
-     */
-}
 
 -(id) whoami{
     return self;
@@ -101,10 +108,34 @@ extern Image iBuffer;
 }
 
 -(void) showDataWindow: (char*) windowname{
-    //if(!dataWindowController){
-        dataWindowController = [[DataWindowController alloc] initWithWindowNibName:@"DataWindow"];
-    //}
-    //NSLog(@"%ld",[dataWindowController retainCount]);
+    
+    // figure out where to place image
+    
+    if(window_placement.origin.x == WINDOW_OFFSET+screenRect.origin.x) {   // left column
+        window_placement.origin.y -= (iBitmap.getheight()+TITLEBAR_HEIGHT);
+    }
+    
+    window_placement=NSMakeRect(window_placement.origin.x, 
+                                window_placement.origin.y,
+                                iBitmap.getwidth(), iBitmap.getheight()+TITLEBAR_HEIGHT);
+    
+    if (window_placement.origin.x+iBitmap.getwidth()>screenRect.size.width) {
+        window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
+        
+        if(window_placement.origin.y - iBitmap.getheight() - TITLEBAR_HEIGHT > 0){
+            window_placement.origin.y -= (iBitmap.getheight() + TITLEBAR_HEIGHT);
+        } else{
+            wraps++;
+            window_placement.origin.y = screenRect.size.height 
+             -iBitmap.getheight()- wraps*TITLEBAR_HEIGHT; // wrap to top
+        }
+         
+    }
+    
+    DataWindowController* dataWindowController = [[DataWindowController alloc] initWithWindowNibName:@"DataWindow"];
+    
+    [windowArray addObject:dataWindowController];
+    
     if(*windowname){
         NSString *text  = [[NSString alloc] initWithCString:windowname encoding:NSASCIIStringEncoding];
         [dataWindowController setWindowName:text] ; 
@@ -112,29 +143,37 @@ extern Image iBuffer;
          [dataWindowController setWindowName:@"Data"] ; 
     }
     
-    //[[dataWindowController window] setTitle:[dataWindowController windowName]];
-    [dataWindowController placeImage];
+    [dataWindowController placeImage:window_placement];
     
+    window_placement.origin.x += iBitmap.getwidth();            // increment for next one
+    /*
+    if (window_placement.origin.x > screenRect.size.width){     //
+        window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
+        if(window_placement.origin.y - iBitmap.getheight() - TITLEBAR_HEIGHT > 0){
+            window_placement.origin.y -= (iBitmap.getheight() + TITLEBAR_HEIGHT);
+        } else{
+            window_placement.origin.y = screenRect.size.height;
+        }
+    }
+    */
     [dataWindowController showWindow:self];
     
 }
 
 -(void) updateDataWindow{
     iBitmap = iBuffer;
-    [dataWindowController updateImage];
-    [dataWindowController showWindow:self];
+    [[windowArray lastObject] updateImage];
+    [[windowArray lastObject] showWindow:self];
 }
 
 -(void) eraseWindow:(int) n{
-    if(dataWindowController){
-        [[dataWindowController window ] close];
-        //NSLog(@"%ld",[dataWindowController retainCount]);
-        //dataWindowController = nil;
-        
-        //[self->dataWindowController release];
-        // NSLog(@"%ld",[dataWindowController retainCount]);
+    for (DataWindowController* thewindow in windowArray){
+        [[thewindow window ] close];
     }
-
+    [windowArray removeAllObjects];
+    wraps=1;
+    window_placement.origin.x = screenRect.origin.x+WINDOW_OFFSET;
+    window_placement.origin.y = screenRect.size.height;
 }
 
 -(void) dataWindowClosing{

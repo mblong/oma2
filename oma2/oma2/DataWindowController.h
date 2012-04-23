@@ -17,8 +17,9 @@
 
 @property (copy) NSString *windowName;
 @property (weak) IBOutlet DataView *imageView;
+@property NSRect windowRect;
 
--(void) placeImage;
+-(void) placeImage: (NSRect) theRect;
 -(void) updateImage;
 
 @end

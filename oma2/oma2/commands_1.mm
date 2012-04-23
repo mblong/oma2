@@ -184,7 +184,7 @@ extern "C" int rectan_c(int n, char* args)
     // For this need 4 arguments 
     narg = sscanf(args,"%d %d %d %d",&new_rect.ul.h,&new_rect.ul.v,&new_rect.lr.h,&new_rect.lr.v);
     
-    if(narg == 0){
+    if(*args == 0){
         
         printf5("Current Rectangle is %d %d %d %d.\n",
                UIData.iRect.ul.h,UIData.iRect.ul.v,UIData.iRect.lr.h,UIData.iRect.lr.v);
@@ -286,8 +286,8 @@ extern "C" int rgb2blue_c(int n,char* args){
 extern "C" int rotate_c(int n,char* args){
     float angle;
     int* specs= iBuffer.getspecs();
-    int narg = sscanf(args,"%f",&angle);
-    if(narg == 0) angle = 90.;
+    sscanf(args,"%f",&angle);
+    if(*args == 0) angle = 90.;
     if (!specs[IS_COLOR]) {
         iBuffer.rotate(angle);
         if(iBuffer.err()){

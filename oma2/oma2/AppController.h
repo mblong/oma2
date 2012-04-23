@@ -19,28 +19,27 @@ int comdec(char*);
 @interface AppController : NSObject{
     
     PreferenceController *preferenceController;
-    DataWindowController *dataWindowController;
-    //StatusController    *statusController;
+    //DataWindowController *dataWindowController;
+    
     NSWindow *__unsafe_unretained theWindow;
     NSUInteger last_return;
-//    NSString *sometext;
+    NSUInteger wraps;
+    
+    NSMutableArray *windowArray; 
+    
+    NSRect window_placement;
+    NSRect screenRect;
+
     
 }
 
 @property (unsafe_unretained) IBOutlet NSTextView *theCommands;
 @property (unsafe_unretained) IBOutlet NSWindow *theWindow;
-//@property (copy) NSString *sometext;
-
 @property int tool;     // the tool selected in the status window, used in DataView
 
-//@property (copy) StatusController *statusController;
-
-//-(void) textDidChange:(NSNotification *) pNotify;   
 
 -(void) appendText:(NSString *) string; 
 -(void) appendCText:(char *) string;
-//-(void) updateCMin:(float) cmin Max:(float) cmax;
-//-(void) updateAutoScale:(BOOL) val;
 
 
 -(id) whoami;
