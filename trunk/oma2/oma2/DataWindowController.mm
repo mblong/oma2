@@ -19,6 +19,7 @@ extern AppController* appController;
 
 @synthesize  windowName;
 @synthesize imageView;
+@synthesize windowRect;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -30,12 +31,9 @@ extern AppController* appController;
 }
 
 -(void)awakeFromNib{
-    NSScreen *mainScreen = [NSScreen mainScreen];
-    NSRect screenRect = [mainScreen visibleFrame];
-    
-    // resize here before display
-    NSRect rect=NSMakeRect(screenRect.origin.x, screenRect.size.height, iBitmap.getwidth(), iBitmap.getheight()+22);
-    [[self window] setFrame:rect display:NO];   // display will happen later
+    [[self window] setFrame:windowRect display:NO];   // display will happen later
+    //NSLog(@"%f %f %f %f",windowRect.origin.x,windowRect.origin.y,
+          //windowRect.size.width,windowRect.size.height);
 }
 
 - (void)dealloc
@@ -91,7 +89,9 @@ extern AppController* appController;
     //[myArrayOfWindowControllers removeObject: theWindowController];
 }
 
--(void) placeImage{
+-(void) placeImage:(NSRect) theRect{
+    windowRect = theRect;
+    
     [[self window] setTitle:windowName];
     
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]

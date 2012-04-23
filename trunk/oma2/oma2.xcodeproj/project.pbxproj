@@ -224,7 +224,7 @@
 		DB0FC0151519183B008A9B54 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = "Yale University";
 			};
 			buildConfigurationList = DB0FC0181519183B008A9B54 /* Build configuration list for PBXProject "oma2" */;
