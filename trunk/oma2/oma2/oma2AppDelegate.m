@@ -23,6 +23,9 @@ extern StatusController *statusController;
         statusController = [[StatusController alloc] initWithWindowNibName: @"Status"];
     }
     [statusController showWindow:self];
+    
+    // Load preferences
+    
 
 
 }

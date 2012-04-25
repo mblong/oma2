@@ -51,11 +51,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "oma2/AppController.mm"
-         timestampString = "356795287.757761"
+         timestampString = "356962274.743178"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "92"
-         endingLineNumber = "92"
+         startingLineNumber = "89"
+         endingLineNumber = "89"
          landmarkName = "-appendCText:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -230,11 +230,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "oma2/AppController.mm"
-         timestampString = "356795287.757761"
+         timestampString = "356962274.743178"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "139"
-         endingLineNumber = "139"
+         startingLineNumber = "136"
+         endingLineNumber = "136"
          landmarkName = "-showDataWindow:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -282,11 +282,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "oma2/AppController.mm"
-         timestampString = "356795287.757761"
+         timestampString = "356962274.743178"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "146"
-         endingLineNumber = "146"
+         startingLineNumber = "143"
+         endingLineNumber = "143"
          landmarkName = "-showDataWindow:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -302,6 +302,19 @@
          endingLineNumber = "93"
          landmarkName = "-placeImage:"
          landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "oma2/image_support.mm"
+         timestampString = "357076481.15517"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "302"
+         endingLineNumber = "302"
+         landmarkName = "loadprefs(char* name)"
+         landmarkType = "7">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

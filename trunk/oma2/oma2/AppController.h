@@ -14,12 +14,10 @@ int comdec(char*);
 
 @class PreferenceController;
 @class DataWindowController;
-//@class StatusController;
 
 @interface AppController : NSObject{
     
     PreferenceController *preferenceController;
-    //DataWindowController *dataWindowController;
     
     NSWindow *__unsafe_unretained theWindow;
     NSUInteger last_return;
@@ -30,7 +28,6 @@ int comdec(char*);
     NSRect window_placement;
     NSRect screenRect;
 
-    
 }
 
 @property (unsafe_unretained) IBOutlet NSTextView *theCommands;
@@ -46,9 +43,11 @@ int comdec(char*);
 
 
 - (IBAction)showPrefs:(id)sender;
+
 -(void) showDataWindow:(char*) windowname;
 -(void) eraseWindow:(int) n;
 -(void) dataWindowClosing;
 -(void) updateDataWindow;
+
 @end
 

@@ -6,8 +6,8 @@
 // Whenever possible, imbed things as static variables inside a function
 // See fullname() for example, where that is the location of all the prefix/suffix related storage
 
-char    reply[1024];            // buffer for sending messages to be typed out by the user interface
-Image   iBuffer(200,200);       // the image buffer
+char    reply[1024];          // buffer for sending messages to be typed out by the user interface
+Image   iBuffer(200,200);     // the image buffer
 oma2UIData UIData;            // Put all the UI globals here
 
 
@@ -55,10 +55,9 @@ Image::Image(char* filename)
 {
     unsigned long fd,nr,nbyte;
     TWOBYTE header[HEADLEN];
-    char comment[COMLEN],ch;
+    char comment[COMLEN];
     TWOBYTE trailer[TRAILEN];
     int swap_bytes;
-    TWOBYTE *scpt,tmp_2byte;
     int doffset=80;
     
     data=NULL;
@@ -79,68 +78,11 @@ Image::Image(char* filename)
     }
     
     nr = read((int)fd,(char*)header,HEADLEN);
-    
     nr = read((int)fd,comment,COMLEN);
-    
-    /*  68000 aranges text differently */
-    for(nr=0; nr < COMLEN; nr += 2) {
-        ch = comment[nr+1];
-        comment[nr+1] = comment[nr];
-        comment[nr] = ch;
-    }
-    
-    
     nr = read((int)fd,(char*)trailer,TRAILEN);
-    swap_bytes = get_byte_swap_value(trailer[IDWRDS]);
-    if(swap_bytes) {
-        swap_bytes_routine((char*)header,HEADLEN,2);
-        swap_bytes_routine((char*)trailer,TRAILEN,2);
-    }
     
-    nbyte = (header[NCHAN]*header[NTRAK]) * DATABYTES;
-    
-    if(trailer[IS_COLOR_] == 1) 
-        specs[IS_COLOR] = 1;
-    else 
-        specs[IS_COLOR] = 0;
-    
-    if(trailer[RULER_CODE] == MAGIC_NUMBER) {	/* If there was a ruler defined */
-        has_ruler = 1;
-        
-        scpt = (TWOBYTE*) &ruler_scale;
-        if(swap_bytes) {
-            *(scpt+1) = trailer[RULER_SCALE];
-            *(scpt) = trailer[RULER_SCALE+1];	
-            // need to change the order of values in the trailer as well
-            tmp_2byte = trailer[RULER_SCALE];
-            trailer[RULER_SCALE] = trailer[RULER_SCALE+1];
-            trailer[RULER_SCALE+1] = tmp_2byte;
-        } else {
-            *(scpt) = trailer[RULER_SCALE];
-            *(scpt+1) = trailer[RULER_SCALE+1];
-        }
-        
-        strcpy(unit_text,(char*) &trailer[RULER_UNITS]);
-        if( unit_text[0] ){
-            printf3("%f Pixels per %s.\n",ruler_scale,unit_text);
-
-        } else {
-            printf2("%f Pixels per Unit.\n",ruler_scale);
-
-        }
-    } else {
-        has_ruler = 0;
-    }
-    specs[ROWS] = header[NTRAK];
-    specs[COLS] = header[NCHAN];
-    specs[DX] = header[NDX];
-    specs[DY] =  header[NDY];
-    specs[X0] = header[NX0];
-    specs[Y0] = header[NY0];
-    if(specs[DX] == 0)specs[DX]=1;
-    if(specs[DY] == 0)specs[DY]=1;
-    //specs[IS_COLOR] = trailer[IS_COLOR_];
-    
+    swap_bytes = process_old_header((TWOBYTE*)header,(char*)comment,(TWOBYTE*)trailer, this);
+    nbyte = specs[ROWS]*specs[COLS]*DATABYTES;
     
     // problem of how to get rid of the old 80 data word offset and still read in old oma files
     
@@ -151,8 +93,7 @@ Image::Image(char* filename)
         return;
     }
     
-    // in old oma files, there is an 80 element data offset -- 
-    // skip over this
+    // in old oma files, there is an 80 element data offset -- skip over this
     nr = read((int)fd,data,doffset*DATABYTES);
     
     nr = read((int)fd,(char*)data, nbyte);
@@ -169,7 +110,6 @@ Image::Image(char* filename)
     }
     
     close((int)fd);
-    
     return;
 }
 

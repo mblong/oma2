@@ -3,8 +3,10 @@
 #include "UI.h"
 //#include "ImageBitmap.h"
 
+
 #ifndef oma2_Image_h
 #define oma2_Image_h
+
 
 
 /******************** Constants for Classes ********************/
@@ -74,7 +76,8 @@ public:
     void invert();             // invert the current image
     void rgb2color(int);       // crop an rgb image to color 0,1, or 2 (red, green, or blue)
     void concat(Image);        // concatenate two images. Error if images are not the same width.
-    friend class ImageBitmap;    
+    friend class ImageBitmap; 
+    friend int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im);
 };
 
 #endif
