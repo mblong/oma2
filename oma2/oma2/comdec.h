@@ -75,6 +75,7 @@ int macro(int, char*);
 int null(int,char*);
 int rmacro(int, char*);
 int variab(int, char*);
+int getsettings(int,char*);
 
 
 #endif

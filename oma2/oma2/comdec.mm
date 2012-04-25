@@ -21,6 +21,7 @@ ComDef   commands[] =    {
     {{"ERASE          "},	erase},
     {{"EXECUTE        "},	execut},
     {{"GET            "},	getfile_c},
+    {{"GETSETTINGS    "},	getsettings},
     {{"HELP           "},	help},
     {{"INVERT         "},	invert_c},
     {{"LOOP           "},	loop},
@@ -128,213 +129,213 @@ int comdec(char* cmnd)
     char  txtbuf[CHPERLN];		// temp text buffer
     extern int maccount,macflag,macptr,macval,macincrement;
     extern int exflag,exptr[],exval[];
-
+    
     int     (*fnc)(int,char*);
     
     while(true){
-    /* --------------------- Code Starts Here ------------------------- */
-    if (exflag == 0) which_ex_buffer=-1;    // this was not reset in the stop macro command, so do it now
-    
-    if (exflag) {
+        /* --------------------- Code Starts Here ------------------------- */
+        if (exflag == 0) which_ex_buffer=-1;    // this was not reset in the stop macro command, so do it now
         
-        /* Get next line from the execute buffer. */
-        
-        exptr[which_ex_buffer] = 0;
-        for( i=0; i<exe_line_number[which_ex_buffer]; i++) {			// point to the appropriate line number
-            while ( *(exbuf[which_ex_buffer] + exptr[which_ex_buffer]) != 0 )
-                exptr[which_ex_buffer]++;
-            exptr[which_ex_buffer]++;
-        }
-        
-        fill_in_command(cmnd,exbuf[which_ex_buffer]+exptr[which_ex_buffer],exval[which_ex_buffer]);
-        /* sprintf(cmnd,exbuf+exptr,exval); */
-        
-        while ( *(exbuf[which_ex_buffer] + ++exptr[which_ex_buffer]) ) ;	// move past the current command
-        
-        /* Now have the command, echo it to terminal */
-        
-        exe_line_number[which_ex_buffer]++;					/* next line unless modified by loop */
-        printf4(" E-%d-%d: %s\n",which_ex_buffer+1,exe_line_number[which_ex_buffer],cmnd);
-
-        /* Now adjust pointers */
-        
-        if ( *(exbuf[which_ex_buffer] + ++exptr[which_ex_buffer]) == EOL && (executedepth[which_ex_buffer] == loopdepth) ) {
-			//if ( *(exbuf + ++exptr) == EOL && inloop == 0 ) {
-            exval[which_ex_buffer]++;
+        if (exflag) {
+            
+            /* Get next line from the execute buffer. */
+            
             exptr[which_ex_buffer] = 0;
-            // get rid of the execute buffer
-            //free(exbuf[which_ex_buffer]);
-            //printf("%d\n",exbuf[which_ex_buffer]);
-            which_ex_buffer--;
-            
-            if(which_ex_buffer < 0){
-                exflag = 0;
-                if_condition_met = 1;
-            }
-        }
-        //if(macro_stopable) checkevents();		// if the macro is stopable, check for possible events 
-                                                // (such as cancel macro) before each command */	
-        
-    } else {
-        if (macflag) {
-            
-            // Get the appropriate line from the macro buffer. 
-            macptr = 0;
-            for( i=0; i<macro_line_number; i++) {
-                while ( *(macbuf + macptr) != 0 )
-                    macptr++;
-                macptr++;
+            for( i=0; i<exe_line_number[which_ex_buffer]; i++) {			// point to the appropriate line number
+                while ( *(exbuf[which_ex_buffer] + exptr[which_ex_buffer]) != 0 )
+                    exptr[which_ex_buffer]++;
+                exptr[which_ex_buffer]++;
             }
             
-            fill_in_command(cmnd,macbuf+macptr,macval);
+            fill_in_command(cmnd,exbuf[which_ex_buffer]+exptr[which_ex_buffer],exval[which_ex_buffer]);
+            /* sprintf(cmnd,exbuf+exptr,exval); */
+            
+            while ( *(exbuf[which_ex_buffer] + ++exptr[which_ex_buffer]) ) ;	// move past the current command
             
             /* Now have the command, echo it to terminal */
             
-            macro_line_number++;				/* next line unless modified by loop */
-            printf (" M%d: %s\n",macro_line_number,cmnd);
+            exe_line_number[which_ex_buffer]++;					/* next line unless modified by loop */
+            printf4(" E-%d-%d: %s\n",which_ex_buffer+1,exe_line_number[which_ex_buffer],cmnd);
             
-            while ( *(macbuf + (++macptr) ) ) ;
+            /* Now adjust pointers */
             
-            /* Now adjust macro pointers */
-            
-            if ( *( macbuf+ ++macptr) == EOL  && inloop == 0) {
-                /* if (all commands have been done) */
-                //update_status();	     		/*  report the macro value used */
-                macval += macincrement;	     		/*  increment value */
-                macro_line_number = 0;				/* go back to the first line */
-                if ( --maccount == 0 ) {     		/* check for done with macros */
-                    macflag = 0;
-                    macro_line_number = lvar_max = loopdepth = var_char_count = 0;
-                    //ifdepth = 0;
+            if ( *(exbuf[which_ex_buffer] + ++exptr[which_ex_buffer]) == EOL && (executedepth[which_ex_buffer] == loopdepth) ) {
+                //if ( *(exbuf + ++exptr) == EOL && inloop == 0 ) {
+                exval[which_ex_buffer]++;
+                exptr[which_ex_buffer] = 0;
+                // get rid of the execute buffer
+                //free(exbuf[which_ex_buffer]);
+                //printf("%d\n",exbuf[which_ex_buffer]);
+                which_ex_buffer--;
+                
+                if(which_ex_buffer < 0){
+                    exflag = 0;
                     if_condition_met = 1;
-                    if(from_noprint) {
-                        //keylimit(-2);
-                        from_noprint = 0;
+                }
+            }
+            //if(macro_stopable) checkevents();		// if the macro is stopable, check for possible events 
+            // (such as cancel macro) before each command */	
+            
+        } else {
+            if (macflag) {
+                
+                // Get the appropriate line from the macro buffer. 
+                macptr = 0;
+                for( i=0; i<macro_line_number; i++) {
+                    while ( *(macbuf + macptr) != 0 )
+                        macptr++;
+                    macptr++;
+                }
+                
+                fill_in_command(cmnd,macbuf+macptr,macval);
+                
+                /* Now have the command, echo it to terminal */
+                
+                macro_line_number++;				/* next line unless modified by loop */
+                printf (" M%d: %s\n",macro_line_number,cmnd);
+                
+                while ( *(macbuf + (++macptr) ) ) ;
+                
+                /* Now adjust macro pointers */
+                
+                if ( *( macbuf+ ++macptr) == EOL  && inloop == 0) {
+                    /* if (all commands have been done) */
+                    //update_status();	     		/*  report the macro value used */
+                    macval += macincrement;	     		/*  increment value */
+                    macro_line_number = 0;				/* go back to the first line */
+                    if ( --maccount == 0 ) {     		/* check for done with macros */
+                        macflag = 0;
+                        macro_line_number = lvar_max = loopdepth = var_char_count = 0;
+                        //ifdepth = 0;
+                        if_condition_met = 1;
+                        if(from_noprint) {
+                            //keylimit(-2);
+                            from_noprint = 0;
+                        }
                     }
                 }
+                /*if(macro_stopable)checkevents();		// if the macro is stopable, check for possible events 
+                 (such as cancel macro) before each command */	
             }
-            /*if(macro_stopable)checkevents();		// if the macro is stopable, check for possible events 
-                                                        (such as cancel macro) before each command */	
+            
+            else {
+                
+                //getlin(txtbuf);   /* go get a line from the terminal */
+                strcpy(txtbuf, cmnd);
+                fill_in_command(cmnd,txtbuf,macval);
+            }
+        }
+        cp = i = clst = 0;         /* cp is command pointer */
+        
+        clist_ptr = commands;
+        
+        // Now have the command text -- save that to history buffer
+        
+        if(!macflag && !exflag) { // don't buffer stuff going on inside macros and execs
+            i = (int)strlen(cmnd);
+            if(i>0){
+                while( hist_index + i >= HISTORY_BUFFER_SIZE) {
+                    // buffer full -- get rid of earliest commands
+                    for(j=0; cmnd_history[j] != 0; j++){};
+                    j+=2;	// j is the number of characters to be overwritten
+                    for(k=0; k< hist_index ; k++){
+                        if( k+j < HISTORY_BUFFER_SIZE) cmnd_history[k] = cmnd_history[k+j-1];  // overwrite oldest command
+                    }
+                    stored_commands--;
+                    cmnd_history[hist_index - j]=0;
+                    hist_index = hist_index - j+1;
+                    
+                }
+                strcpy(&cmnd_history[hist_index],cmnd);
+                cmnd_history[hist_index+i]=0;		// be sure EOL is in there
+                hist_index +=  i+1;
+                selected_hist_index = hist_index;
+                stored_commands++;
+                /* 
+                 // command history diagnostics
+                 printf("%s\n%d stored; %d index\n",cmnd,stored_commands,hist_index);
+                 for(i=0; i<hist_index; i++){
+                 if(cmnd_history[i]!=0) printf("%c",cmnd_history[i]);
+                 else printf("!");
+                 }
+                 printf("\n");
+                 */
+            }
         }
         
-        else {
-            
-            //getlin(txtbuf);   /* go get a line from the terminal */
-            strcpy(txtbuf, cmnd);
-            fill_in_command(cmnd,txtbuf,macval);
-        }
-    }
-    cp = i = clst = 0;         /* cp is command pointer */
-    
-    clist_ptr = commands;
-    
-    // Now have the command text -- save that to history buffer
-    
-    if(!macflag && !exflag) { // don't buffer stuff going on inside macros and execs
-        i = (int)strlen(cmnd);
-        if(i>0){
-            while( hist_index + i >= HISTORY_BUFFER_SIZE) {
-                // buffer full -- get rid of earliest commands
-                for(j=0; cmnd_history[j] != 0; j++){};
-                j+=2;	// j is the number of characters to be overwritten
-                for(k=0; k< hist_index ; k++){
-                    if( k+j < HISTORY_BUFFER_SIZE) cmnd_history[k] = cmnd_history[k+j-1];  // overwrite oldest command
-                }
-                stored_commands--;
-                cmnd_history[hist_index - j]=0;
-                hist_index = hist_index - j+1;
-				
+        i = 0;
+        
+        // First, check for an "=" --> means this is an assignment command
+        while ( cmnd[i] != EOL  && cmnd[i]!= ';'){
+            if ( cmnd[i++] == '='){
+                if(if_condition_met) do_assignment(cmnd);		// don't do assignments if an if condition is not met
+                return 0;
             }
-            strcpy(&cmnd_history[hist_index],cmnd);
-            cmnd_history[hist_index+i]=0;		// be sure EOL is in there
-            hist_index +=  i+1;
-            selected_hist_index = hist_index;
-            stored_commands++;
-            /* 
-             // command history diagnostics
-             printf("%s\n%d stored; %d index\n",cmnd,stored_commands,hist_index);
-             for(i=0; i<hist_index; i++){
-             if(cmnd_history[i]!=0) printf("%c",cmnd_history[i]);
-             else printf("!");
-             }
-             printf("\n");
-             */
         }
-    }
-    
-    i = 0;
-    
-    // First, check for an "=" --> means this is an assignment command
-    while ( cmnd[i] != EOL  && cmnd[i]!= ';'){
-        if ( cmnd[i++] == '='){
-            if(if_condition_met) do_assignment(cmnd);		// don't do assignments if an if condition is not met
-            return 0;
-        }
-    }
-    
-    // while not end of command ... 
-    i = 0;
-    while ( cmnd[i] != EOL  && cmnd[i] != ' ' && cmnd[i]!= ';'){
-        if ( toupper(cmnd[i]) !=  clist_ptr[cp].text.name[i] ) {
-            cp++;           /* next command */
-            i = 0;
-            if ( clist_ptr[cp].text.name[i] == EOL ){
-                /* disable looking in second command list for now
-                if( clst == 0 ) {
-                    clst = 1;
-                    clist_ptr = commands;
-                    cp = 0;
-                } else {
+        
+        // while not end of command ... 
+        i = 0;
+        while ( cmnd[i] != EOL  && cmnd[i] != ' ' && cmnd[i]!= ';'){
+            if ( toupper(cmnd[i]) !=  clist_ptr[cp].text.name[i] ) {
+                cp++;           /* next command */
+                i = 0;
+                if ( clist_ptr[cp].text.name[i] == EOL ){
+                    /* disable looking in second command list for now
+                     if( clst == 0 ) {
+                     clst = 1;
+                     clist_ptr = commands;
+                     cp = 0;
+                     } else {
+                     printf2("No such command:%s\n",cmnd);
+                     return -1;
+                     }
+                     */
                     printf2("No such command:%s\n",cmnd);
                     return -1;
                 }
-                */
-                printf2("No such command:%s\n",cmnd);
-                return -1;
+            } else {
+                i++;
             }
-        } else {
-            i++;
         }
-    }
-    if (clst == 0 )
-        fnc =  commands[cp].fnc;
-    else
-        fnc = commands[cp].fnc;
-    
-    // next check for an integer argument
-    
-    if (cmnd[i] != EOL && cmnd[i] != ';') {
-        chindx = ++i; // save a pointer to the first 
-        //   character after command 
-        while ( cmnd[i] != EOL && cmnd[i] != ';'
-               && cmnd[i] != ' ') {
-            c = cmnd[i++];
-            if (c == '+' )
-                sign *= 1;
-            if (c == '-' )
-                sign *= -1;
-            if (c >= '0' && c <= '9')
-                ivalue = 10 * ivalue + c - '0';
-        }
-    }
-    ivalue *= sign;
-    if (chindx == 0) {  // if no arguments, pass a null string
-        *cmnd = 0;
-    }
-    
-    // Now Execute the Appropriate Command -- unless this is in an IF whose condition is not met
-    
-    if(if_condition_met ||fnc == endifcmnd || fnc == ifcmnd){
-        /*if (clst == 1 ){
-            error_return = (*fnc)(ivalue,chindx);   // this is the old style
-        }else{
-            error_return = (*fnc)(ivalue,&cmnd[chindx]);
-        }
-         */
-        error_return = (*fnc)(ivalue,&cmnd[chindx]);
-        if(exflag==0) break;
+        if (clst == 0 )
+            fnc =  commands[cp].fnc;
+        else
+            fnc = commands[cp].fnc;
         
-    }
+        // next check for an integer argument
+        
+        if (cmnd[i] != EOL && cmnd[i] != ';') {
+            chindx = ++i; // save a pointer to the first 
+            //   character after command 
+            while ( cmnd[i] != EOL && cmnd[i] != ';'
+                   && cmnd[i] != ' ') {
+                c = cmnd[i++];
+                if (c == '+' )
+                    sign *= 1;
+                if (c == '-' )
+                    sign *= -1;
+                if (c >= '0' && c <= '9')
+                    ivalue = 10 * ivalue + c - '0';
+            }
+        }
+        ivalue *= sign;
+        if (chindx == 0) {  // if no arguments, pass a null string
+            *cmnd = 0;
+        }
+        
+        // Now Execute the Appropriate Command -- unless this is in an IF whose condition is not met
+        
+        if(if_condition_met ||fnc == endifcmnd || fnc == ifcmnd){
+            /*if (clst == 1 ){
+             error_return = (*fnc)(ivalue,chindx);   // this is the old style
+             }else{
+             error_return = (*fnc)(ivalue,&cmnd[chindx]);
+             }
+             */
+            error_return = (*fnc)(ivalue,&cmnd[chindx]);
+            if(exflag==0) break;
+            
+        }
     }
     return 0;
 }
@@ -1745,26 +1746,26 @@ int loopend(int n,char* args)
  This was formerly the GRAPHICS FILES menu.
  */
 
-/*
+
 int getsettings(int n,char* args)	
 {
-	extern char txt[];
-	extern char cmnd[];
+	char txt[CHPERLN];
+	//extern char cmnd[];
 	int err;
 	
 	if(*args == 0){	// no file name was specified, use the default name and get it from the oma application
 		strcpy(txt,SETTINGSFILE);
 		err = loadprefs(txt);
-		return err;
 	} else { // otherwise, add the prefix and suffix and use the name specified
 		err = loadprefs(fullname(args, SETTINGS_DATA));
-		return err;
-	}
+    }
+    update_UI();
+    return err;
     
 }
 
 // ********** 
-
+/*
 int savsettings(int n,char* args)
 {
 	extern char txt[];

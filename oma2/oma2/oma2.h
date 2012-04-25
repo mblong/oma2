@@ -21,7 +21,7 @@
 #define DATABYTES 4
 
 #define CHPERLN 4096      	/* maximum number of characters per line */
-#define PREFIX_CHPERLN 256  /* maximum number of characters in the prefix */
+#define PREFIX_CHPERLN 128  /* maximum number of characters in the prefix */
 #define HEADLEN 30       	/* number of bytes in header */
 #define TRAILEN 62       	/* number of bytes in trailer */
 #define COMLEN 512-HEADLEN-TRAILEN  /* number of bytes in comment buffer */
@@ -88,7 +88,24 @@ enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_
        RAW_DATA,PDF_DATA,SAVE_DATA_NO_SUFFIX,
        LOAD_SAVE_PREFIX,LOAD_GET_PREFIX,LOAD_SAVE_SUFFIX,LOAD_GET_SUFFIX};
 
+#define DO_MACH_O
 
+#ifdef DO_MACH_O
+    #ifndef SETTINGSFILE
+        #define SETTINGSFILE "Resources/OMA Settings"
+        #define PALETTEFILE	"Resources/OMA palette.pa1"
+        #define PALETTEFILE2 "Resources/OMA palette2.pa1"
+        #define PALETTEFILE3 "Resources/OMA palette3.pa1"
+
+        #define HELPFILE "Resources/oma help.txt"
+        #define HELPURL "Resources/oma_help/OMA_First_Steps.html"
+    #endif
+#else
+    #define SETTINGSFILE "OMA Settings"
+    #define PALETTEFILE	"OMA Palette"
+    #define PALETTEFILE2 "OMA Palette2"
+    #define PALETTEFILE3 "OMA Palette3"
+#endif
 
 
 /******************** Structures ********************/
