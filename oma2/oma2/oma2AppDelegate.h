@@ -14,6 +14,6 @@
 
 }
 
-@property (unsafe_unretained) IBOutlet NSWindow *window;
+@property (strong) IBOutlet NSWindow *window;
 
 @end

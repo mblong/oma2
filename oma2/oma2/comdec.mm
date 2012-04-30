@@ -34,6 +34,7 @@ ComDef   commands[] =    {
     {{"RGB2GREEN      "},	rgb2green_c},
     {{"RGB2BLUE       "},	rgb2blue_c},
     {{"ROTATE         "},	rotate_c},
+    {{"SAVSETTINGS   "},	savsettings},
     {{"SIZE           "},	size_c},
     {{"SMOOTH         "},	smooth_c},
     {{"SUBFILE        "},	subfile_c},
@@ -1765,10 +1766,11 @@ int getsettings(int n,char* args)
 }
 
 // ********** 
-/*
+
 int savsettings(int n,char* args)
 {
-	extern char txt[];
+	char txt[CHPERLN];
+    //extern char txt[];
 	int err;
 	
 	if(*args == 0){	// no file name was specified, use the default name and put it in the oma application
@@ -1780,7 +1782,7 @@ int savsettings(int n,char* args)
 		return err;
 	}
 }
-*/
+
 // ********** 
 
 int variab(int n, char* args)	// print values of defined variables

@@ -1,4 +1,4 @@
-#ifndef _OMA2_
+#ifndef _OMA2_h
 
 //#include <iostream>
 #include <stdio.h>
@@ -20,11 +20,12 @@
 #define TWOBYTE short
 #define DATABYTES 4
 
-#define CHPERLN 4096      	/* maximum number of characters per line */
-#define PREFIX_CHPERLN 128  /* maximum number of characters in the prefix */
-#define HEADLEN 30       	/* number of bytes in header */
-#define TRAILEN 62       	/* number of bytes in trailer */
-#define COMLEN 512-HEADLEN-TRAILEN  /* number of bytes in comment buffer */
+#define CHPERLN 4096            // maximum number of characters per line 
+#define PREFIX_CHPERLN 128      // maximum number of characters in the prefix 
+#define NEW_PREFIX_CHPERLN 256  // maximum number of characters in the new prefix 
+#define HEADLEN 30              // number of bytes in header 
+#define TRAILEN 62              // number of bytes in trailer 
+#define COMLEN 512-HEADLEN-TRAILEN  // number of bytes in comment buffer 
 
 /* Define the indices to important locations in the header */
 
@@ -86,19 +87,20 @@ name of the units. Occupies trailer[5] to trailer[12] */
 /* Prefix and Suffix Types */
 enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_DATA,CSV_DATA,FTS_DATA,
        RAW_DATA,PDF_DATA,SAVE_DATA_NO_SUFFIX,
-       LOAD_SAVE_PREFIX,LOAD_GET_PREFIX,LOAD_SAVE_SUFFIX,LOAD_GET_SUFFIX};
+       LOAD_SAVE_PREFIX,LOAD_GET_PREFIX,LOAD_SAVE_SUFFIX,LOAD_GET_SUFFIX,
+       LOAD_MACRO_PREFIX,LOAD_SETTINGS_PREFIX,LOAD_MACRO_SUFFIX,LOAD_SETTINGS_SUFFIX};
 
 #define DO_MACH_O
 
 #ifdef DO_MACH_O
     #ifndef SETTINGSFILE
-        #define SETTINGSFILE "Resources/OMA Settings"
-        #define PALETTEFILE	"Resources/OMA palette.pa1"
-        #define PALETTEFILE2 "Resources/OMA palette2.pa1"
-        #define PALETTEFILE3 "Resources/OMA palette3.pa1"
+        #define SETTINGSFILE "oma2.app/Contents/Resources/OMA Settings"
+        #define PALETTEFILE	"oma2.app/Contents/Resources/OMA palette.pa1"
+        #define PALETTEFILE2 "oma2.app/Contents/Resources/OMA palette2.pa1"
+        #define PALETTEFILE3 "oma2.app/Contents/Resources/OMA palette3.pa1"
 
-        #define HELPFILE "Resources/oma help.txt"
-        #define HELPURL "Resources/oma_help/OMA_First_Steps.html"
+        #define HELPFILE "oma2.app/Contents/Resources/oma help.txt"
+        #define HELPURL "oma2.app/Contents/Resources/oma_help/OMA_First_Steps.html"
     #endif
 #else
     #define SETTINGSFILE "OMA Settings"
@@ -106,6 +108,8 @@ enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_
     #define PALETTEFILE2 "OMA Palette2"
     #define PALETTEFILE3 "OMA Palette3"
 #endif
+
+#define SETTINGS_VERSION_1  "OMA2 Settings Version 1.0"
 
 
 /******************** Structures ********************/
@@ -126,18 +130,18 @@ typedef struct {
 } rect;
 
 typedef struct {
-    char        version[32];
+    char        version[HEADLEN];
     
     // Prefix/suffix buffers
     
-    char	saveprefixbuf[PREFIX_CHPERLN];		/* save data file prefix buffer */
-    char	savesuffixbuf[PREFIX_CHPERLN];		/* save data file suffix buffer */
-    char	getprefixbuf[PREFIX_CHPERLN];		/* get data file prefix buffer */
-    char	getsuffixbuf[PREFIX_CHPERLN];		/* get data file suffix buffer */
-    char	graphicsprefixbuf[PREFIX_CHPERLN];	/* graphics file prefix buffer */
-    char	graphicssuffixbuf[PREFIX_CHPERLN];	/* graphics file suffix buffer */
-    char	macroprefixbuf[PREFIX_CHPERLN];     /* macro file prefix buffer */
-    char	macrosuffixbuf[PREFIX_CHPERLN];     /* macro file suffix buffer */
+    char	saveprefixbuf[NEW_PREFIX_CHPERLN];		/* save data file prefix buffer */
+    char	savesuffixbuf[NEW_PREFIX_CHPERLN];		/* save data file suffix buffer */
+    char	getprefixbuf[NEW_PREFIX_CHPERLN];		/* get data file prefix buffer */
+    char	getsuffixbuf[NEW_PREFIX_CHPERLN];		/* get data file suffix buffer */
+    char	graphicsprefixbuf[NEW_PREFIX_CHPERLN];	/* graphics file prefix buffer */
+    char	graphicssuffixbuf[NEW_PREFIX_CHPERLN];	/* graphics file suffix buffer */
+    char	macroprefixbuf[NEW_PREFIX_CHPERLN];     /* macro file prefix buffer */
+    char	macrosuffixbuf[NEW_PREFIX_CHPERLN];     /* macro file suffix buffer */
 
     // Status Window Related 
     
@@ -157,8 +161,7 @@ typedef struct {
     
     rect        iRect;              // the image sub-rectagle (for cropping for example), 
                                     //   defined in terms of upper left pt. to lower right pt.
-                                    // Consider moving this to the rectan command as static
-
+                                    
 
     DATAWORD    cmin;
 	DATAWORD    cmax;
@@ -181,6 +184,6 @@ typedef struct {
     
 }oma2UIData;
 
-#define _OMA2_
+#define _OMA2_h
 #endif
 

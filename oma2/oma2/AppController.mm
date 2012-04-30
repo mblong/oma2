@@ -26,6 +26,7 @@ extern Image iBuffer;
 @synthesize theCommands;
 @synthesize theWindow;
 @synthesize tool;
+@synthesize preferenceController;
 
 
 
@@ -55,6 +56,7 @@ extern Image iBuffer;
                               context:NULL];
     
     [preferenceController showWindow:self];
+    [preferenceController fillInUIData];
 }
 
 // this attempt to be notified when text changes in prefixes doesn't work
