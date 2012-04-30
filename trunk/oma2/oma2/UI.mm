@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include "UI.h"
+#include "PreferenceController.h"
+
 extern char    reply[1024];   // buffer for sending messages to be typed out by the user interface
 extern Image   iBuffer;       // the image buffer
 extern ImageBitmap iBitmap;   // the bitmap buffer
@@ -19,6 +21,8 @@ extern oma2UIData UIData;
 // This is a way to update user interface values after a command
 
 void update_UI(){
+    [[appController preferenceController] fillInUIData];
+    
     /*
      
      */

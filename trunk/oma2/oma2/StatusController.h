@@ -9,8 +9,12 @@
 #import <Cocoa/Cocoa.h>
 
 @interface StatusController : NSWindowController {
+@private
     //int tool_selected;
-    //int MinMaxInc;
+    int MinMaxInc;
+    IBOutlet NSSlider *slide_val;   // lesson 8
+    IBOutlet NSTextField *slide_label;
+
     
 }
 //
@@ -18,6 +22,8 @@
 
 // Min/Max Increment outlets
 @property int MinMaxInc;
+- (IBAction)changedMinMaxInc:(id)sender;
+//@property (weak) IBOutlet NSSliderCell *minMaxIncSetting;
 
 // Color Min and Max values
 @property (weak) IBOutlet NSTextField *ColorMinLabel;

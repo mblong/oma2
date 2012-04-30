@@ -10,6 +10,10 @@ extern oma2UIData UIData;
 
 /* ***************************** Support Routines **************************** */
 
+void setUpUIData(){
+    strcpy(UIData.version, SETTINGS_VERSION_1);
+}
+
 int two_to_four(DATAWORD* dpt, int num, TWOBYTE scale)
 {
     TWOBYTE* two_byte_ptr;
@@ -178,6 +182,18 @@ char* fullname(char* fnam,int  type)
         case LOAD_GET_SUFFIX:
             strcpy(UIData.getsuffixbuf,fnam);
             return fnam;
+		case LOAD_MACRO_PREFIX:
+            strcpy(UIData.macroprefixbuf,fnam);
+            return fnam;
+        case LOAD_SETTINGS_PREFIX:
+            strcpy(UIData.graphicsprefixbuf,fnam);
+            return fnam;
+        case LOAD_MACRO_SUFFIX:
+            strcpy(UIData.macrosuffixbuf,fnam);
+            return fnam;
+        case LOAD_SETTINGS_SUFFIX:
+            strcpy(UIData.graphicssuffixbuf,fnam);
+            return fnam;
         default:
         case SAVE_DATA:
             prefixbuf = UIData.saveprefixbuf;		
@@ -246,14 +262,7 @@ int loadprefs(char* name)
 		}
 		strcpy(txt,name);
 	}
-	/*
-     fp = fopen(txt,"r");
-     if(fp == NULL){
-     beep();
-     return -1;
-     }
-     
-     */
+
     fd = open(txt,O_RDONLY);
     
     if(fd == -1) {
@@ -264,6 +273,25 @@ int loadprefs(char* name)
 	//oldfont = c_font;
 	
     read(fd,(char*)header,HEADLEN);
+    if (strcmp((const char*)header, SETTINGS_VERSION_1) == 0) {
+        int nbytes = sizeof(oma2UIData);
+        read(fd,(char*)UIData.saveprefixbuf,nbytes-HEADLEN);    // 
+        close(fd);
+        int* thespecs = iBuffer.getspecs();
+        thespecs[ROWS] = UIData.rows;
+        thespecs[COLS] = UIData.cols;
+        thespecs[X0] = UIData.x0;
+        thespecs[Y0] = UIData.y0;
+        thespecs[DX] = UIData.dx;
+        thespecs[DY] = UIData.dy;
+        thespecs[IS_COLOR] = UIData.iscolor;
+        thespecs[Y0] = UIData.y0;
+        iBuffer.setspecs(thespecs);
+        //iBuffer.getmaxx();
+
+
+        return 0;
+    }
 	
     read(fd,(char*)comment,COMLEN);
     read(fd,(char*)trailer,TRAILEN);
@@ -452,6 +480,22 @@ int loadprefs(char* name)
      */
 	return 0;
 	
+}
+
+int saveprefs(char* name)
+{
+    int fd = creat(name,PMODE);
+    if(fd == -1) {
+		//beep();
+		return -1;
+	}
+    
+    int nbytes = sizeof(oma2UIData);
+    write(fd,(char*)&UIData,nbytes);
+    
+
+    close(fd);
+    return 0;
 }
 
 int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im){

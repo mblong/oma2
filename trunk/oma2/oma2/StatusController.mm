@@ -10,10 +10,14 @@
 #import "ImageBitmap.h"
 
 extern ImageBitmap iBitmap;
-extern oma2UIData  UIData;     
+extern oma2UIData  UIData;
+extern AppController *appController;
+StatusController *statusController;
 
 
 @implementation StatusController
+
+//@synthesize minMaxIncSetting;
 @synthesize toolSelected;
 @synthesize tool_selected;
 
@@ -39,7 +43,7 @@ extern oma2UIData  UIData;
 
 @synthesize MinMaxInc;
 
-StatusController *statusController;
+
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -60,7 +64,7 @@ StatusController *statusController;
 }
 
 - (void) awakeFromNib{
-    [self setMinMaxInc:5];
+    [self setMinMaxInc:4];
    
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",1000.]];
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",0.]];
@@ -68,6 +72,14 @@ StatusController *statusController;
 
 
 - (void) labelColorMinMax{
+    //MinMaxInc = UIData.cminmaxinc;
+    [self setMinMaxInc:UIData.cminmaxinc];
+    [slide_val setIntValue:UIData.cminmaxinc];   
+    [slide_label setIntValue:[slide_val intValue]];
+
+    //[minMaxIncSetting setIntValue:UIData.cminmaxinc];
+
+    
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
     
@@ -79,6 +91,14 @@ StatusController *statusController;
     [DYLabel setStringValue:[NSString stringWithFormat:@"DY: %d",UIData.dy]];
     [X0Label setStringValue:[NSString stringWithFormat:@"X0: %d",UIData.x0]];
     [Y0Label setStringValue:[NSString stringWithFormat:@"Y0: %d",UIData.y0]];
+    
+    appController.tool = UIData.toolselected;
+    [self setTool_selected:UIData.toolselected];
+    [[self toolSelected] selectCellAtRow:0 column:UIData.toolselected];
+    
+    
+    
+
 
 }
 
@@ -105,6 +125,7 @@ StatusController *statusController;
     UIData.cmax -= MinMaxInc/100.0*(UIData.max - UIData.min);
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
     if(UIData.autoupdate) [appController updateDataWindow];
+    NSLog(@"minmaxinc: %d",MinMaxInc);
 }
 
 - (IBAction)increaseColorMax:(id)sender {
@@ -117,6 +138,7 @@ StatusController *statusController;
     tool_selected = (int)[toolSelected selectedColumn];
     [self setTool_selected:(int)[toolSelected selectedColumn]];
     appController.tool = tool_selected;
+    UIData.toolselected = tool_selected;
     NSLog(@" Tool number %d\n",tool_selected);
     
 }
@@ -146,4 +168,10 @@ StatusController *statusController;
 
 
 
+- (IBAction)changedMinMaxInc:(id)sender {
+    [slide_label setIntValue:[slide_val intValue]];
+    MinMaxInc = [slide_val intValue];
+    UIData.cminmaxinc = MinMaxInc;
+    NSLog(@"minmaxinc: %d",MinMaxInc);
+}
 @end

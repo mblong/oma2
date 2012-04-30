@@ -8,6 +8,7 @@
 
 #ifndef oma2_UI_h
 #define oma2_UI_h
+
 #include "StatusController.h"
 #include "AppController.h"
 #include "ImageBitmap.h"
@@ -15,8 +16,11 @@
 #include "commands_1.h"
 #include "comdec.h"
 
+// In this exceptional case, define external variable in this header file
 extern AppController *appController;
 extern StatusController *statusController;
+
+
 
 #define printf1(s) {sprintf(reply,s); send_reply}
 #define printf2(s,a) {sprintf(reply,s,a); send_reply}

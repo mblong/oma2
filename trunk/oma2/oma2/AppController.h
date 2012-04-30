@@ -17,9 +17,9 @@ int comdec(char*);
 
 @interface AppController : NSObject{
     
-    PreferenceController *preferenceController;
+    PreferenceController *__strong preferenceController;
     
-    NSWindow *__unsafe_unretained theWindow;
+    NSWindow *__strong theWindow;
     NSUInteger last_return;
     NSUInteger wraps;
     
@@ -29,9 +29,9 @@ int comdec(char*);
     NSRect screenRect;
 
 }
-
-@property (unsafe_unretained) IBOutlet NSTextView *theCommands;
-@property (unsafe_unretained) IBOutlet NSWindow *theWindow;
+@property (strong) PreferenceController *preferenceController;
+@property (strong) IBOutlet NSTextView *theCommands;
+@property (strong) IBOutlet NSWindow *theWindow;
 @property int tool;     // the tool selected in the status window, used in DataView
 
 

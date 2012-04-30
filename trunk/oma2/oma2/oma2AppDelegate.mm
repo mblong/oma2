@@ -8,8 +8,14 @@
 
 #import "oma2AppDelegate.h"
 #import "StatusController.h"
+#include "oma2.h"
 
 extern StatusController *statusController;
+// function prototypes for UI independent routines that we need
+int loadprefs(char*);
+void update_UI();
+void setUpUIData();
+
 
 @implementation oma2AppDelegate
 
@@ -24,10 +30,26 @@ extern StatusController *statusController;
     }
     [statusController showWindow:self];
     
+    setUpUIData();
+    
     // Load preferences
+
+    char text[NEW_PREFIX_CHPERLN];
+    strcpy(text,SETTINGSFILE);
+    loadprefs(text);
+    update_UI();
+    
     
 
 
+}
+
+-(void) applicationWillTerminate:(NSNotification *)notification
+{   
+    char c=0;
+    int savsettings(int n,char* args);
+    savsettings(0,&c);
+    
 }
 
 

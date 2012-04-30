@@ -76,6 +76,7 @@ int null(int,char*);
 int rmacro(int, char*);
 int variab(int, char*);
 int getsettings(int,char*);
+int savsettings(int,char*);
 
 
 #endif

@@ -14,7 +14,7 @@
 		DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
 		DB0FC02F1519183C008A9B54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
 		DB0FC0331519183D008A9B54 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0311519183D008A9B54 /* Credits.rtf */; };
-		DB0FC0361519183D008A9B54 /* oma2AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC0351519183D008A9B54 /* oma2AppDelegate.m */; };
+		DB0FC0361519183D008A9B54 /* oma2AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */; };
 		DB0FC0391519183D008A9B54 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0371519183D008A9B54 /* MainMenu.xib */; };
 		DB0FC04015191886008A9B54 /* oma-icns.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC03F15191886008A9B54 /* oma-icns.icns */; };
 		DB0FC046151918F0008A9B54 /* StatusController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC041151918F0008A9B54 /* StatusController.mm */; };
@@ -53,7 +53,7 @@
 		DB0FC0301519183D008A9B54 /* oma2-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "oma2-Prefix.pch"; sourceTree = "<group>"; };
 		DB0FC0321519183D008A9B54 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		DB0FC0341519183D008A9B54 /* oma2AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = oma2AppDelegate.h; sourceTree = "<group>"; };
-		DB0FC0351519183D008A9B54 /* oma2AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = oma2AppDelegate.m; sourceTree = "<group>"; };
+		DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = oma2AppDelegate.mm; sourceTree = "<group>"; };
 		DB0FC0381519183D008A9B54 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		DB0FC03F15191886008A9B54 /* oma-icns.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "oma-icns.icns"; sourceTree = "<group>"; };
 		DB0FC041151918F0008A9B54 /* StatusController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatusController.mm; sourceTree = "<group>"; };
@@ -162,7 +162,7 @@
 				DBC81582153DFBB7002BEFD4 /* UI.mm */,
 				DBA96ABC1520CA9C0043754E /* UI.h */,
 				DB0FC0341519183D008A9B54 /* oma2AppDelegate.h */,
-				DB0FC0351519183D008A9B54 /* oma2AppDelegate.m */,
+				DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */,
 				DB17A30A15247965004F810A /* DataWindowController.h */,
 				DB17A30B15247965004F810A /* DataWindowController.mm */,
 				DB2113571540219200B23364 /* DataView.h */,
@@ -273,7 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB0FC02F1519183C008A9B54 /* main.m in Sources */,
-				DB0FC0361519183D008A9B54 /* oma2AppDelegate.m in Sources */,
+				DB0FC0361519183D008A9B54 /* oma2AppDelegate.mm in Sources */,
 				DB0FC046151918F0008A9B54 /* StatusController.mm in Sources */,
 				DB0FC048151918F0008A9B54 /* AppController.mm in Sources */,
 				DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */,

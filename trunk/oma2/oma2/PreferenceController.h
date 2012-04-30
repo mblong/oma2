@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "image_support.h"
+#import "oma2.h"
 
 @interface PreferenceController : NSWindowController{
     NSTextField *__weak savePrefix;
@@ -38,6 +39,8 @@
 @property (weak) IBOutlet NSTextField *settingsSuffix;
 
 @property (copy) IBOutlet NSString *sometext;
+
+- (void) fillInUIData;
 
 
 @end
