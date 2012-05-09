@@ -112,26 +112,46 @@ StatusController *statusController;
 - (IBAction)decreaseColorMin:(id)sender {
     UIData.cmin -= MinMaxInc/100.0*(UIData.max - UIData.min);
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
-    if(UIData.autoupdate) [appController updateDataWindow];
+    if(UIData.autoupdate){
+        int saveAuatoscale = UIData.autoscale;
+        UIData.autoscale = 0;
+        [appController updateDataWindow];
+        UIData.autoscale = saveAuatoscale;
+    }
 }
 
 - (IBAction)increaseColorMin:(id)sender {
     UIData.cmin += MinMaxInc/100.0*(UIData.max - UIData.min);
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
-    if(UIData.autoupdate) [appController updateDataWindow];
+    if(UIData.autoupdate) {
+        int saveAuatoscale = UIData.autoscale;
+        UIData.autoscale = 0;
+        [appController updateDataWindow];
+        UIData.autoscale = saveAuatoscale;
+    }
 }
 
 - (IBAction)decreaseColorMax:(id)sender {
     UIData.cmax -= MinMaxInc/100.0*(UIData.max - UIData.min);
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
-    if(UIData.autoupdate) [appController updateDataWindow];
-    NSLog(@"minmaxinc: %d",MinMaxInc);
+    if(UIData.autoupdate) {
+        int saveAuatoscale = UIData.autoscale;
+        UIData.autoscale = 0;
+        [appController updateDataWindow];
+        UIData.autoscale = saveAuatoscale;
+    }
+    //NSLog(@"minmaxinc: %d",MinMaxInc);
 }
 
 - (IBAction)increaseColorMax:(id)sender {
     UIData.cmax += MinMaxInc/100.0*(UIData.max - UIData.min);
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
-    if(UIData.autoupdate) [appController updateDataWindow];
+    if(UIData.autoupdate) {
+        int saveAuatoscale = UIData.autoscale;
+        UIData.autoscale = 0;
+        [appController updateDataWindow];
+        UIData.autoscale = saveAuatoscale;
+    }
 }
 
 - (IBAction)selectTool:(id)sender {

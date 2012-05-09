@@ -62,7 +62,17 @@ void dropped_file(char* extension, char* name){
     printf2("File ext is: %s\n",extension);
     printf2("File name is: %s\n",name);
     if(strcmp(extension, "dat")==0){
-        getfile_c(0,name);
+        Image new_im(name);
+        if(new_im.err()){
+            printf2("Could not load %s\n",name);
+            [appController appendText: @"OMA2>"];
+            return;
+        }
+        iBuffer.free();     // release the old data
+        iBuffer = new_im;   // this is the new data
+        iBuffer.getmaxx();
+        update_UI();
+
         display(0,(char*)"Data");
         [appController appendText: @"OMA2>"];
     }

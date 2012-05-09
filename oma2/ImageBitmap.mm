@@ -9,6 +9,7 @@
 
 ImageBitmap iBitmap;    // a global -- the bitmap for the iBuffer image
 extern oma2UIData  UIData;
+RGBColor color[256][8];
 
 
 ImageBitmap::ImageBitmap(){
@@ -84,13 +85,14 @@ void ImageBitmap::operator=(Image im){
 				if( pindx < 0)
 					pindx = 0;
 				//++pindx;
-				*(pixdata+n++) =pindx;
-                *(pixdata+n++) =pindx;
-                *(pixdata+n++) =pindx;
+				//*(pixdata+n++) =pindx;
+                //*(pixdata+n++) =pindx;
+                //*(pixdata+n++) =pindx;
+                //*(pixdata+n++) =0xFF;
+				*(pixdata+n++) = color[pindx][UIData.thepalette].red;
+				*(pixdata+n++) = color[pindx][UIData.thepalette].green;
+				*(pixdata+n++) = color[pindx][UIData.thepalette].blue;
                 *(pixdata+n++) =0xFF;
-				//*(pixdata+n++) = color[pindx][thepalette].red/256;
-				//*(pixdata+n++) = color[pindx][thepalette].green/256;
-				//*(pixdata+n++) = color[pindx][thepalette].blue/256;
 			}
 		}
 	}else {
@@ -108,14 +110,15 @@ void ImageBitmap::operator=(Image im){
 					pindx = 0;
 				++pindx;
 				//*(pixdata+n++) = 0xFF;
-				*(pixdata+n++) =pindx;
-                *(pixdata+n++) =pindx;
-                *(pixdata+n++) =pindx;
-                *(pixdata+n++) =0xFF;
+				//*(pixdata+n++) =pindx;
+                //*(pixdata+n++) =pindx;
+                //*(pixdata+n++) =pindx;
+                //*(pixdata+n++) =0xFF;
                 
-				//*(pixdata+n++) = color[pindx][thepalette].red/256;
-				//*(pixdata+n++) = color[pindx][thepalette].green/256;
-				//*(pixdata+n++) = color[pindx][thepalette].blue/256;
+				*(pixdata+n++) = color[pindx][UIData.thepalette].red;
+				*(pixdata+n++) = color[pindx][UIData.thepalette].green;
+				*(pixdata+n++) = color[pindx][UIData.thepalette].blue;
+                *(pixdata+n++) =0xFF;
 			}
             k = i * nth * nchan;
 		}
