@@ -17,6 +17,7 @@ char* fullname(char*,int);
 int loadprefs(char*);
 int saveprefs(char*);
 int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* );
+int getpalettefile(char*);
 
 #endif
 

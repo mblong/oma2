@@ -429,6 +429,15 @@ int setcminmax_c(int n,char* args)		/* get color min and max */
     return 0;
 }
 
+int palette_c(int n,char* args){
+    if(n>= 0 && n<NUMPAL){
+        UIData.thepalette = n;
+    }else {
+        UIData.thepalette = DEFAULTMAP;
+    }
+    return 0;
+}
+
 /************************************************************************/
 /*
 

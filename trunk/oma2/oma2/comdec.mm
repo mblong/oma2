@@ -29,6 +29,7 @@ ComDef   commands[] =    {
     {{"LOOPND         "},	loopend},
     {{"MACRO          "},	macro},
     {{"MULFILE        "},	mulfile_c},
+    {{"PALETTE        "},	palette_c},
     {{"RECTANGLE      "},	rectan_c},
     {{"RGB2RED        "},	rgb2red_c},
     {{"RGB2GREEN      "},	rgb2green_c},

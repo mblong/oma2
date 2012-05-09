@@ -11,8 +11,11 @@
 #include "oma2.h"
 
 extern StatusController *statusController;
+extern oma2UIData UIData;
+
 // function prototypes for UI independent routines that we need
 int loadprefs(char*);
+int getpalettefile(char*);
 void update_UI();
 void setUpUIData();
 
@@ -37,10 +40,9 @@ void setUpUIData();
     char text[NEW_PREFIX_CHPERLN];
     strcpy(text,SETTINGSFILE);
     loadprefs(text);
-    update_UI();
-    
     
 
+    update_UI();
 
 }
 

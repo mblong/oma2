@@ -109,6 +109,11 @@ enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_
     #define PALETTEFILE3 "OMA Palette3"
 #endif
 
+// 8 defined color palettes
+#define NUMPAL 8
+enum  {DEFAULTMAP,BGRBOW,GRAYMAP,REDMAP,GREENMAP,BLUEMAP,FROMAFILE2,FROMAFILE3};
+
+
 #define SETTINGS_VERSION_1  "OMA2 Settings Version 1.0"
 
 
@@ -167,6 +172,8 @@ typedef struct {
 	DATAWORD    cmax;
     DATAWORD    min;
     DATAWORD    max;
+    
+    int         thepalette;
     
     /*
 	settings[4] = detector;

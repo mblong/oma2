@@ -11,7 +11,69 @@ extern oma2UIData UIData;
 /* ***************************** Support Routines **************************** */
 
 void setUpUIData(){
+    
+    char text[NEW_PREFIX_CHPERLN];
     strcpy(UIData.version, SETTINGS_VERSION_1);
+    extern RGBColor color[256][8];
+
+    // setup color palettes
+    strcpy(text,PALETTEFILE);
+    UIData.thepalette = DEFAULTMAP;
+    getpalettefile(text);
+    
+    strcpy(text,PALETTEFILE2);
+    UIData.thepalette = FROMAFILE2;
+    getpalettefile(text);
+
+    strcpy(text,PALETTEFILE3
+           );
+    UIData.thepalette = FROMAFILE3;
+    getpalettefile(text);
+    
+    int i, thedepth = 8;
+    
+    for(int thepalette = BGRBOW; thepalette <= BLUEMAP; thepalette++){
+        switch(thepalette) {
+            case GRAYMAP:
+                for(i=0; i<NCOLORS; i++) 
+                    color[i][thepalette].red = color[i][thepalette].green = 
+                    color[i][thepalette].blue = i;
+                break;
+            case REDMAP:
+                for(i=0; i<NCOLORS; i++) { 
+                    color[i][thepalette].red = i;
+                    color[i][thepalette].green = color[i][thepalette].blue = 0; }
+                break;
+            case BLUEMAP:
+                for(i=0; i<NCOLORS; i++) {
+                    color[i][thepalette].blue = i;
+                    color[i][thepalette].red = color[i][thepalette].green = 0; }
+                break;
+            case GREENMAP:
+                for(i=0; i<NCOLORS; i++) {
+                    color[i][thepalette].green = i;
+                    color[i][thepalette].red = color[i][thepalette].blue = 0; }
+                break;
+            case BGRBOW:
+                unsigned int thrd = (1 << thedepth)/3;
+                unsigned int constant = NCOLORS/thrd;
+                for (i=0; i<thrd; i++) {
+                    color[i][thepalette].blue = i*constant;
+                    color[i][thepalette].red = color[i][thepalette].green = 0;
+                    color[i+thrd][thepalette].blue = thrd*constant - i*constant;
+                    color[i+thrd][thepalette].green = i*constant;
+                    color[i+thrd][thepalette].red = 0;
+                    color[i+thrd*2][thepalette].red = i*constant;
+                    color[i+thrd*2][thepalette].green = thrd*constant - i*constant;
+                    color[i+thrd*2][thepalette].blue = 0;
+                }
+        }
+    }
+    // end of palette setup
+
+    
+    
+
 }
 
 int two_to_four(DATAWORD* dpt, int num, TWOBYTE scale)
@@ -560,3 +622,33 @@ int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im)
     
     return swap_bytes;
 }
+
+int getpalettefile(char* name) 
+{
+    // read from a file into the palette specified by UIData.thepalette
+    extern RGBColor color[256][8];    
+    
+    unsigned short i;
+    int fd;
+	unsigned char thecolors[256];
+	
+    fd = open(name,O_RDONLY);
+    if(fd == -1) {
+        //beep();
+        return -1;
+    }
+    read(fd,thecolors,256);
+    for(i=0; i<256; i++)
+        color[i][UIData.thepalette].red = thecolors[i];
+    
+    read(fd,thecolors,256);
+    for(i=0; i<256; i++)
+        color[i][UIData.thepalette].green = thecolors[i];
+    
+    read(fd,thecolors,256);
+    for(i=0; i<256; i++)
+        color[i][UIData.thepalette].blue = thecolors[i];
+    
+	return 0;
+}
+
