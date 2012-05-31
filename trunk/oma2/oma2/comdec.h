@@ -60,6 +60,7 @@ int is_variable_char(char ch);
 Expression_Element evaluate_string(char* ex_string);
 Expression_Element evaluate(int start, int end);
 int vprint(int index);
+void clear_macro_to_end();
 
 // function prototypes for commands in comdec.cpp
 int display(int, char*);
@@ -68,6 +69,7 @@ int endifcmnd(int, char*);
 int execut(int, char*);
 int help(int n, char* args);
 int ifcmnd(int, char*);
+int lmacro(int, char*);
 int loop(int, char*);
 int loopend(int, char*);
 int loopbreak(int, char*);
@@ -77,6 +79,7 @@ int rmacro(int, char*);
 int variab(int, char*);
 int getsettings(int,char*);
 int savsettings(int,char*);
+int defmac(int,char*);
 
 
 #endif

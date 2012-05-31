@@ -27,6 +27,10 @@ private:
     PIXBYTES*   pixdata;            //
     int         width;              // 
     int         height;
+    DATAWORD    cmin;
+    DATAWORD    crange;
+
+    
 
 public:
     ImageBitmap();            // default constructor with no arguments
@@ -37,6 +41,7 @@ public:
     PIXBYTES** getpixdatap();
     int getwidth();
     int getheight();
+    int scale_pixval(DATAWORD);
 };
 
 

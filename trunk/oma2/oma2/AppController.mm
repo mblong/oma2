@@ -91,18 +91,25 @@ extern Image iBuffer;
 }
 
 -(void) textDidChange:(NSNotification *) pNotify {
-    NSString *text  = [[theCommands textStorage] string];
-    NSString *ch = [text substringFromIndex:[text length] - 1];
-    
-    if([ch isEqualToString:@"\n"]){
-        NSString *command = [text substringFromIndex:last_return];
-        last_return = [text length];
-        // pass this to the command decoder
-        char* cmd = (char*) [command cStringUsingEncoding:NSASCIIStringEncoding];
-        // replace the \n with an EOL
-        cmd[strlen(cmd)-1] = 0;
-        comdec((char*) cmd);
-        [self appendText: @"OMA2>"];
+    static int comdec_done=1;
+    if (comdec_done) {
+        
+        NSString *text  = [[theCommands textStorage] string];
+        NSString *ch = [text substringFromIndex:[text length] - 1];
+        
+        if([ch isEqualToString:@"\n"]){
+            NSString *command = [text substringFromIndex:last_return];
+            last_return = [text length];
+            // pass this to the command decoder
+            char* cmd = (char*) [command cStringUsingEncoding:NSASCIIStringEncoding];
+            // replace the \n with an EOL
+            cmd[strlen(cmd)-1] = 0;
+            strlcpy(oma2Command, cmd, CHPERLN);
+            comdec_done = 0;
+            comdec((char*) oma2Command);
+            comdec_done = 1;
+            [self appendText: @"OMA2>"];
+        }
     }
 }
 

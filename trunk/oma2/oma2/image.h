@@ -20,8 +20,8 @@ enum {ROWS,COLS,X0,Y0,DX,DY,LMAX,LMIN,IS_COLOR,HAVE_MAX};
 // locations within the values array
 enum {MIN,MAX,RMAX,RMIN,GMAX,GMIN,BMAX,BMIN};
 
-// Image error codes
-enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR};
+// Image error codes and command return codes
+enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR,ARG_ERR,GET_MACRO_LINE};
 
 /******************** Class Definitions ********************/
 
