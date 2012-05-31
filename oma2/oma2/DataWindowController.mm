@@ -111,7 +111,8 @@ extern AppController* appController;
     
     [imageView setImage:im];
     [imageView setImageScaling:NSImageScaleAxesIndependently];
-    [imageView setNeedsDisplay:YES];
+    //[imageView setNeedsDisplay:YES]; // for display in macro, this doesn't do the job
+    [imageView display];
 
 }
 

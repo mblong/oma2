@@ -19,6 +19,21 @@ ImageBitmap::ImageBitmap(){
     
 }
 
+int ImageBitmap::scale_pixval(DATAWORD val)
+{
+    int pval;
+    float fpval;
+    
+    fpval = (val-cmin) * (NCOLORS-1);
+    pval = fpval/crange;
+    if( pval > (NCOLORS-1))
+        pval = (NCOLORS-1);
+    if( pval < 0)
+        pval = 0;
+    return pval;
+}
+
+
 void ImageBitmap::operator=(Image im){
 	//Ptr ptr;
 	pdptr = &pixdata;
@@ -27,10 +42,7 @@ void ImageBitmap::operator=(Image im){
 	int nchan = im.specs[COLS];
 	int nth;
 	float pix_scale;
-    
-	float fpindx;
-	DATAWORD crange,cm,ncm1,indx;
-	int pindx;
+    int pindx;
     
     int allocate_new=1;
 	
@@ -41,8 +53,7 @@ void ImageBitmap::operator=(Image im){
     //printf("%g %g cmin cmax\n",cmin,cmax);
     
 	crange = UIData.cmax - UIData.cmin;
-	ncm1 = (NCOLORS-1);
-	cm = UIData.cmin;
+	cmin = UIData.cmin;
 	
 	if( UIData.pixsiz > 0 ){
 		nth = 1;
@@ -51,10 +62,17 @@ void ImageBitmap::operator=(Image im){
 		nth = abs(UIData.pixsiz);
 		pix_scale=1.0/nth;
 	}
+    
+    width = im.specs[COLS]/nth;
+    if (im.specs[IS_COLOR]) 
+        height = im.specs[ROWS]/nth/3;
+	else
+        height = im.specs[ROWS]/nth;
+
 	
 	if(allocate_new){
         if(pixdata) free(pixdata);
-		pixdata = (PIXBYTES*)calloc(im.specs[COLS]/nth*im.specs[ROWS]/nth,4);
+		pixdata = (PIXBYTES*)calloc(width*height,4);
     }else{
 		// try and reuse the same window, but be sure the size is the same
 		/*if( oma_wind[gwnum-1].width == im.specs[COLS]/nth &&
@@ -72,57 +90,63 @@ void ImageBitmap::operator=(Image im){
 		printf("memory error\n");
 		//return pixdata;
 	}
-	width = im.specs[COLS]/nth;
-	height = im.specs[ROWS]/nth;
-	if( UIData.pixsiz > 0 ) {
-		for(i=0; i < ntrack; i++){
-			for(j=0; j < nchan; j++){
-				indx = *(im.data+k++) - cm;
-				fpindx = (float)indx * ncm1;
-				pindx = fpindx/crange;
-				if( pindx > ncm1)
-					pindx = ncm1;
-				if( pindx < 0)
-					pindx = 0;
-				//++pindx;
-				//*(pixdata+n++) =pindx;
-                //*(pixdata+n++) =pindx;
-                //*(pixdata+n++) =pindx;
-                //*(pixdata+n++) =0xFF;
-				*(pixdata+n++) = color[pindx][UIData.thepalette].red;
-				*(pixdata+n++) = color[pindx][UIData.thepalette].green;
-				*(pixdata+n++) = color[pindx][UIData.thepalette].blue;
-                *(pixdata+n++) =0xFF;
-			}
-		}
-	}else {
-		i = 0;
-		while(++i < ntrack/nth){
-			j = 0;
-			while( j++ < nchan/nth){
-				indx = *(im.data+k) - cm;
-				k += nth;
-				fpindx = (float)indx * ncm1;
-				pindx = fpindx/crange;
-				if( pindx > ncm1)
-					pindx = ncm1;
-				if( pindx < 0)
-					pindx = 0;
-				++pindx;
-				//*(pixdata+n++) = 0xFF;
-				//*(pixdata+n++) =pindx;
-                //*(pixdata+n++) =pindx;
-                //*(pixdata+n++) =pindx;
-                //*(pixdata+n++) =0xFF;
-                
-				*(pixdata+n++) = color[pindx][UIData.thepalette].red;
-				*(pixdata+n++) = color[pindx][UIData.thepalette].green;
-				*(pixdata+n++) = color[pindx][UIData.thepalette].blue;
-                *(pixdata+n++) =0xFF;
-			}
-            k = i * nth * nchan;
-		}
-	}
+    if (im.specs[IS_COLOR]) {
+        DATAWORD *pt_green,*pt_blue;
+        pt_green = im.data + nchan*ntrack/3;
+        pt_blue =  pt_green + nchan*ntrack/3;
+        int k=0;
+
+        if( UIData.pixsiz > 0 ) {
+            for(i=0; i < ntrack/3; i++){
+                for(j=0; j < nchan; j++){
+                    *(pixdata+n++) = scale_pixval(*(im.data+k)*UIData.r_scale);
+                    *(pixdata+n++) = scale_pixval(*(pt_green+k)*UIData.g_scale);
+                    *(pixdata+n++) = scale_pixval(*(pt_blue+k++)*UIData.b_scale);
+                    *(pixdata+n++) =0xFF;
+                }
+            }
+        }else {     // this case isn't implemented
+            i = 0;
+            while(++i < ntrack/nth){
+                j = 0;
+                while( j++ < nchan/nth){
+                    pindx = scale_pixval(*(im.data+k));
+                    k += nth;                
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].red;
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].green;
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
+                    *(pixdata+n++) =0xFF;
+                }
+                k = i * nth * nchan;
+            }
+        }
+    } else {
+        if( UIData.pixsiz > 0 ) {
+            for(i=0; i < ntrack; i++){
+                for(j=0; j < nchan; j++){
+                    pindx = scale_pixval(*(im.data+k++));
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].red;
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].green;
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
+                    *(pixdata+n++) =0xFF;
+                }
+            }
+        }else {
+            i = 0;
+            while(++i < ntrack/nth){
+                j = 0;
+                while( j++ < nchan/nth){
+                    pindx = scale_pixval(*(im.data+k));
+                    k += nth;                
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].red;
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].green;
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
+                    *(pixdata+n++) =0xFF;
+                }
+                k = i * nth * nchan;
+            }
+        }
+    }
 }
 
 PIXBYTES* ImageBitmap::getpixdata(){

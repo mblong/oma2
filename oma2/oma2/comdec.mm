@@ -17,6 +17,7 @@ ComDef   commands[] =    {
     {{"CONCATENATE    "},	concatenatefile_c},
     {{"CMINMX         "},	setcminmax_c},
     {{"DISPLAY        "},	display},
+    {{"DMACRO         "},	defmac},
     {{"DIVFILE        "},	divfile_c},
     {{"ERASE          "},	erase},
     {{"EXECUTE        "},	execut},
@@ -24,6 +25,7 @@ ComDef   commands[] =    {
     {{"GETSETTINGS    "},	getsettings},
     {{"HELP           "},	help},
     {{"INVERT         "},	invert_c},
+    {{"LMACRO         "},	lmacro},
     {{"LOOP           "},	loop},
     {{"LOOBBREAK      "},	loopbreak},
     {{"LOOPND         "},	loopend},
@@ -85,7 +87,7 @@ int hist_index=0;
 int selected_hist_index = 0;
 int stored_commands=0;
 
-char* fullname();
+//char* fullname();
 int update_pause(),vprint(),get_variable_index();
 
 char    macbuf[MBUFLEN] = {0};    	    	/* the macro buffer */
@@ -126,6 +128,7 @@ int comdec(char* cmnd)
     int     chindx = 0;     /* index of first character after command */
     int     sign = 1;       /* sign of integer argument */
     int     ivalue = 0;     /* integer value */
+    static int command_return;
     
     extern char* exbuf[];     /* the execute buffer */
     char  txtbuf[CHPERLN];		// temp text buffer
@@ -133,6 +136,16 @@ int comdec(char* cmnd)
     extern int exflag,exptr[],exval[];
     
     int     (*fnc)(int,char*);
+    
+    switch (command_return) {
+        case GET_MACRO_LINE:
+            command_return = error_return = defmac(1,cmnd);
+            return NO_ERR;
+            break;
+            
+        default:
+            break;
+    }
     
     while(true){
         /* --------------------- Code Starts Here ------------------------- */
@@ -194,7 +207,7 @@ int comdec(char* cmnd)
                 /* Now have the command, echo it to terminal */
                 
                 macro_line_number++;				/* next line unless modified by loop */
-                printf (" M%d: %s\n",macro_line_number,cmnd);
+                printf3(" M%d: %s\n",macro_line_number,cmnd);
                 
                 while ( *(macbuf + (++macptr) ) ) ;
                 
@@ -334,8 +347,8 @@ int comdec(char* cmnd)
              error_return = (*fnc)(ivalue,&cmnd[chindx]);
              }
              */
-            error_return = (*fnc)(ivalue,&cmnd[chindx]);
-            if(exflag==0) break;
+            command_return = error_return = (*fnc)(ivalue,&cmnd[chindx]);
+            if(exflag==0 && macflag==0) break;
             
         }
     }
@@ -1065,6 +1078,134 @@ int pmacro(int n)
 }
  
 */
+
+/* ********** */
+
+void clear_macro_to_end()
+{
+	int i=0;	
+	
+	while( *(macbuf+i++) ) {
+		while( *(macbuf+i++)){};
+	}
+	//printf("%d\n",i);
+	while( i<MBUFLEN) 
+		*(macbuf+i++) = 0;
+	
+}
+
+
+int defmac(int n,char* args)
+{
+    
+    extern char macbuf[];
+    int j,k,index=0;
+    int nc = 1;
+	char tempbuf[MBUFLEN];
+	static int get_next_line = 0,i=0, line_num;
+    
+    if (!get_next_line) {
+        
+        if (n == 0) n = 1;
+        line_num = n;
+        // to get pointer no the next character, skip past n-1 zeros in the macro buffer 	
+        
+        j = n;
+        while (--j) { 			// find the start of the specified line 
+            for(k = i; macbuf[i];i++ ){}; 
+            i++;
+            if ( k+1 == i) {
+                //beep();
+                printf1("Macro Is Not That Long.\n");
+                return ARG_ERR;
+            }
+
+        }
+        //if(n > 1 && macbuf[i+1] != 0)i++;
+        
+        while ( (args[index] != EOL) && (args[index] != ';') ) {
+            if(args[index++] == ' ') { 	// if there is a macro definition on this line 
+                j = strlen(&args[index])+1;	// the length of what we are going to add 
+                nc = i;
+                k = 0;
+                if (*(macbuf+nc) != EOL){ // if there are more lines, they will have to be tacked on at the end 
+                    while (*(macbuf+nc++)){};	 // nc is now the start of the next line or EOL 
+                    
+                    while(*(macbuf+nc) ) {
+                        while(*(macbuf+nc))
+                            *(tempbuf+k++) = *(macbuf+nc++);
+                        *(tempbuf+k++) = *(macbuf+nc++);		/* remember the 0 */
+                    }
+                    /* printf("%d characters to be appended\n",k); */
+                }
+                
+                if ( (i + k + j) >= MBUFLEN) {
+                    //beep();
+                    printf1 ("Macro Buffer Overflow.\n");
+                    return MEM_ERR;
+                }
+                while((args[index] != EOL) && (args[index] != ';')) { 
+                    *(macbuf+i++) = args[index++]; 
+                }
+                *(macbuf+i++) = EOL;			
+                
+                for(j=0; j<k; j++) {
+                    *(macbuf+i++) = *(tempbuf+j);	
+                }
+                *(macbuf+i++) = EOL;
+                i = 0;
+                return NO_ERR;
+            }
+        }
+        
+        // at this point we are looking for new lines of text
+        printf2("Line #%d: ",line_num++);
+        get_next_line = 1;
+        return GET_MACRO_LINE;
+    }
+    nc = strlen(args);
+    if (nc) {
+        if ( (i+nc) >= MBUFLEN ) {
+			//beep();
+            printf1 ("Macro Buffer Overflow.\n");
+            *(macbuf+i) = EOL;
+            clear_macro_to_end();
+            get_next_line=i=0;
+            return MEM_ERR;
+        }
+        
+        for (j = 0;args[j];j++) {
+            *(macbuf + i++) = args[j];
+        }
+        *(macbuf + i++) = EOL;
+        printf2("Line #%d: ",line_num++);
+        return GET_MACRO_LINE;
+    }
+    *(macbuf+i) = EOL;
+	clear_macro_to_end();		/* insert trailing zeros after the macro */
+    get_next_line=i=0;
+	return NO_ERR;
+}
+
+// ********** 
+int lmacro(int n, char* args)
+{
+    
+    int lc,i;
+    
+    lc = 1;
+    i = 0;
+    while (*(macbuf+i)) {
+        printf2( "Line #%d: ",lc++);
+		printf2( "%s\n",macbuf+i);
+        while (*(macbuf+i)) {
+            i++;
+        }
+        i++;
+    }
+    return 0;
+}
+
 // ********** 
 
 int macro(int n, char* args)
@@ -1077,6 +1218,7 @@ int macro(int n, char* args)
 	return 0;
     
 }
+
 
 // *********** 
 
@@ -1093,7 +1235,7 @@ int rmacro(int n, char* args)
     
     if ( *macbuf == 0){
 		//beep();
-        printf ("No Macro Defined.\n");
+        printf1("No Macro Defined.\n");
         return 1;
     }
 	
@@ -1114,7 +1256,7 @@ int rmacro(int n, char* args)
 	}
     if (maccount <= 0)  maccount = 1;
     macptr = 0;
-	printf("Start Macro: from %d to %d, steps of %d.\n",macval,j,macincrement);
+	printf4("Start Macro: from %d to %d, steps of %d.\n",macval,j,macincrement);
 	return 0;
 }
 /*
@@ -1759,7 +1901,7 @@ int getsettings(int n,char* args)
 		strcpy(txt,SETTINGSFILE);
 		err = loadprefs(txt);
 	} else { // otherwise, add the prefix and suffix and use the name specified
-		err = loadprefs(fullname(args, SETTINGS_DATA));
+		err = loadprefs((char*)fullname(args, SETTINGS_DATA));
     }
     update_UI();
     return err;
@@ -1779,7 +1921,7 @@ int savsettings(int n,char* args)
 		err = saveprefs (txt);
 		return err;
 	} else { // otherwise, add the prefix and suffix and use the name specified
-		err = saveprefs(fullname(args, SETTINGS_DATA));
+		err = saveprefs((char*)fullname(args, SETTINGS_DATA));
 		return err;
 	}
 }

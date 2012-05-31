@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "oma2.h"
 
 // function prototypes for UI independent routines that we need
 int comdec(char*);
@@ -27,6 +28,8 @@ int comdec(char*);
     
     NSRect window_placement;
     NSRect screenRect;
+    NSTextView *__strong theCommands;
+    char oma2Command[CHPERLN];
 
 }
 @property (strong) PreferenceController *preferenceController;

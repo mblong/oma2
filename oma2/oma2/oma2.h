@@ -175,6 +175,12 @@ typedef struct {
     
     int         thepalette;
     
+    float r_scale;
+    float g_scale;
+    float b_scale;
+    
+    
+    
     /*
 	settings[4] = detector;
 	settings[8] = showselection;

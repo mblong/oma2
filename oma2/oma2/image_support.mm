@@ -70,7 +70,10 @@ void setUpUIData(){
         }
     }
     // end of palette setup
-
+    UIData.r_scale = 1.;
+    UIData.g_scale = 1.;
+    UIData.b_scale = 1.;
+    
     
     
 
@@ -165,16 +168,12 @@ void swap_bytes_routine(char* co, int num,int nb)
 char* fullname(char* fnam,int  type)
 {
 
-    static int have_full_name = 0;
     static int normal_prefix = 1;                   // this used for UPREFIX command
     
 	char const *prefixbuf;		
 	char const *suffixbuf;
 	
 	char long_name[CHPERLN];
-	
-	
-	if( have_full_name ) return(fnam);
 	
 	if( type == GET_DATA || type == SAVE_DATA ) {
 		switch(normal_prefix) {
@@ -263,13 +262,13 @@ char* fullname(char* fnam,int  type)
             
 	}
  	
-	//strncpy(long_name,prefixbuf,CHPERLN);
-	strcpy(long_name,prefixbuf);
+	
+	strlcpy(long_name,prefixbuf,NEW_PREFIX_CHPERLN);
 	
 	
 	//n = CHPERLN - strlen(prefixbuf)-1;
 	//strncat(long_name,fnam,n);		// add the middle of the file name 
-	strcat(long_name,fnam);
+	strlcat(long_name,fnam,CHPERLN);
     
 	//n = CHPERLN - strlen(long_name)-1;
 	//strncat(long_name,suffixbuf,n);	// prefix buf now has entire name 
@@ -279,10 +278,9 @@ char* fullname(char* fnam,int  type)
 	    //beep();
 	    printf1(" File Name Is Too Long!\n"); 
 	} else  {
-	    //strncpy(fnam,long_name,CHPERLN);	// put the full name back in the command line 
-	    strcpy(fnam,long_name);
+	    strlcpy(fnam,long_name,CHPERLN);
     }
-    //*(prefixbuf+n) = '\0';	// reset end of string in the prefix 
+    
     return(fnam);
 }
 
