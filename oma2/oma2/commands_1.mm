@@ -438,6 +438,196 @@ int palette_c(int n,char* args){
     return 0;
 }
 
+
+
+/* ********** */
+
+int calc_cmd_c(int n, char* args)
+{
+    point substart,subend;
+    int* bufferspecs = iBuffer.getspecs();
+	
+	substart = UIData.iRect.ul;
+    subend = UIData.iRect.lr;
+    
+    if (subend.h > bufferspecs[COLS]-1 ||
+        subend.v > bufferspecs[ROWS]-1 ||
+        substart.h < 0 ||
+        substart.v < 0){
+        free(bufferspecs);
+        printf1("Rectangle not contained in current image.\n");
+        return ARG_ERR;
+    }
+	
+	calc(substart,subend);
+    free(bufferspecs);
+	return 0;
+}
+/* ********** */
+
+int calcall_c(int n, char* args)
+{
+	point substart,subend;
+    int* bufferspecs = iBuffer.getspecs();
+	
+	substart.h = substart.v = 0;
+	subend.h = bufferspecs[COLS]-1;
+	subend.v = bufferspecs[ROWS]-1;
+	
+	calc(substart,subend);
+    free(bufferspecs);
+	return 0;
+}
+
+int calc(point start,point end){
+ 
+    double xcom,ycom,ave,rms;		// centroid coordinates,average, and rms 
+	int icount,nt,nc;
+	DATAWORD datval;
+    DATAWORD* buffervalues = iBuffer.getvalues();
+    int* bufferspecs = iBuffer.getspecs();
+    char* unit_text = iBuffer.getunit_text();
+
+    icount = 0;
+	xcom = ycom = ave = rms = 0.0;
+	
+	//printf("%d %d %d %d \n", start->v,start->h,end->v,end->h);
+	for(nt=start.v; nt<=end.v; nt++) {
+		for(nc=start.h; nc<=end.h; nc++) {
+			datval = iBuffer.getpix(nt,nc);		
+			ave += datval;					// average 
+			xcom += nc * (datval-buffervalues[MIN]);			// x center of mass -- subtract min
+			ycom += nt * (datval-buffervalues[MIN]);			// y center of mass -- subtract min 
+			rms += datval*datval;			// rms 
+			icount++;						// number of points 
+		}
+	}
+	xcom /= icount;
+	ycom /= icount;
+	ave = ave/(float)icount;
+	xcom /= (ave-buffervalues[MIN]);
+	ycom /= (ave-buffervalues[MIN]);
+	
+	rms = rms/icount - ave*ave;	
+	rms = sqrt(rms);
+	
+	printf3("Ave:\t%g\trms:\t%g\t# Pts:\t",ave,rms);
+	printf2("%d",icount);
+	if( bufferspecs[HAS_RULER] ) {
+		xcom /= buffervalues[RULER_SCALE];
+		ycom /= buffervalues[RULER_SCALE];
+	}
+	printf3("\tx:\t%g\ty:\t%g",xcom,ycom);
+	if( bufferspecs[HAS_RULER]!= 0  && unit_text[0]!=0 ){
+		printf2("\t%s\n",unit_text);
+	} else {
+		printf1("\n");
+    }
+
+    free( buffervalues);
+    free( bufferspecs);
+    free( unit_text);
+    return 0;
+
+}
+
+/*
+int calc(Point *start,Point *end)
+{
+	double xcom,ycom,ave,rms,ftemp;		// centroid coordinates,average, and rms 
+	int icount,nt,nc;
+	DATAWORD idat(int,int),datval;
+	
+	extern int showruler,plotline;
+	extern int ruler_scale_defined;
+	extern float ruler_scale;
+	extern char unit_text[];
+	extern Variable user_variables[];	
+	extern DATAWORD min;
+	
+	if(start->v > end->v) {
+		nt = end->v;
+		end->v = start->v;
+		start->v = nt;
+	}
+	if(start->h > end->h) {
+		nt = end->h;
+		end->h = start->h;
+		start->h = nt;
+	}
+    
+    if(UIData.toolselected == 
+	
+	if( showruler ) {
+		if( plotline ) {
+			do_line_plot(start,end);
+			return 0;
+		}	
+		nt = start->v - end->v;
+		nc = start->h - end->h;
+		ftemp = nc;
+		ycom = nt;
+		xcom = nt*nt+nc*nc;
+		xcom = sqrt(xcom);
+		if( ruler_scale_defined ) {
+			ftemp /= ruler_scale;
+			xcom /= ruler_scale;
+			ycom /= ruler_scale;
+		}
+		pprintf("∂x:\t%.2f\t∂y:\t%.2f",ftemp,ycom);		// For some goddamn reason, only can put 2 things on a line 
+		if( ruler_scale_defined && unit_text[0] )
+			pprintf("\tL:\t%.2f\t%s\n",xcom,unit_text);
+		else
+			pprintf("\tL:\t%.2f\n",xcom);
+		return 0;
+	}
+	icount = 0;
+	xcom = ycom = ave = rms = 0.0;
+	
+	//printf("%d %d %d %d \n", start->v,start->h,end->v,end->h);
+	for(nt=start->v; nt<=end->v; nt++) {
+		for(nc=start->h; nc<=end->h; nc++) {
+			datval = idat(nt,nc);		
+			ave += datval;					// average 
+			xcom += nc * (datval-min);			// x center of mass -- subtract min
+			ycom += nt * (datval-min);			// y center of mass -- subtract min 
+			rms += datval*datval;			// rms 
+			icount++;						// number of points 
+		}
+	}
+	xcom /= icount;
+	ycom /= icount;
+	ave = ave/(float)icount;
+	xcom /= (ave-min);
+	ycom /= (ave-min);
+	
+	rms = rms/icount - ave*ave;	
+	rms = sqrt(rms);
+	
+	pprintf("Ave:\t%g\trms:\t%g\t# Pts:\t",ave,rms);
+	pprintf("%d",icount);
+	if( ruler_scale_defined ) {
+		xcom /= ruler_scale;
+		ycom /= ruler_scale;
+	}
+	pprintf("\tx:\t%g\ty:\t%g",xcom,ycom);
+	if( ruler_scale_defined && unit_text[0] )
+		pprintf("\t%s\n",unit_text);
+	else
+		pprintf("\n");
+	// return values available as variables
+	user_variables[0].fvalue = ave;
+	user_variables[0].is_float = 1;
+	user_variables[1].fvalue = rms;
+	user_variables[1].is_float = 1;
+	user_variables[2].fvalue = xcom;
+	user_variables[2].is_float = 1;
+	user_variables[3].fvalue = ycom;
+	user_variables[3].is_float = 1;
+	return 0;
+}
+ */
+
 /************************************************************************/
 /*
 

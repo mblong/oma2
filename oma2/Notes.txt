@@ -1,0 +1,25 @@
+√load and save prefs -- do on start and quit
+
+windows -- erase nth,
+release window when click on close
+
+
+√macros enabled and define macros
+    √define macro starting at line number doesn't work right
+     
+log
+
+help file
+
+initializations:
+√palettes
+√prefs
+
+√drag and drop -- shouldn't use fullname
+
+√when displaying in a macro, window should draw contents before the end of the macro
+      this also causes a malloc error in drawRect when guard malloc is enabled
+      
+√crop of color image has bad access if rectangle goes all the way to the bottom of the image
+    √also trouble with monochrome crop -- problem is with verticle part of rectangle coorinates returned by the UI 
+    I'm using a defined constant for the TITLEBAR_HEIGHT -- that probably isn't right

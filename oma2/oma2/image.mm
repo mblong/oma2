@@ -22,8 +22,8 @@ Image::Image()              // create an empty Image
     specs[Y0] = specs[X0] = specs[IS_COLOR] = specs[HAVE_MAX] = 0;
     specs[DX] = specs[DY] = 1;
     error = 0;
-    has_ruler=0;
-    ruler_scale=1.;
+    specs[HAS_RULER]=0;
+    values[RULER_SCALE]=1.;
     unit_text[0] = 0;
     is_big_endian = IS_BIG_ENDIAN;
 }
@@ -43,8 +43,8 @@ Image::Image(int rows, int cols)
     specs[Y0] = specs[X0] = specs[IS_COLOR] = specs[HAVE_MAX] = 0;
     specs[DX] = specs[DY] = 1;
     error = 0;
-    has_ruler=0;
-    ruler_scale=1.;
+    specs[HAS_RULER]=0;
+    values[RULER_SCALE]=1.;
     unit_text[0] = 0;
     is_big_endian = IS_BIG_ENDIAN;
     
@@ -66,8 +66,8 @@ Image::Image(char* filename)
     specs[Y0] = specs[X0] = specs[IS_COLOR] = specs[HAVE_MAX] = 0;
     specs[DX] = specs[DY] = 1;
     error = 0;
-    has_ruler=0;
-    ruler_scale=1.;
+    specs[HAS_RULER]=0;
+    values[RULER_SCALE]=1.;
     unit_text[0] = 0;
     is_big_endian = IS_BIG_ENDIAN;
     
@@ -400,6 +400,15 @@ DATAWORD* Image::getvalues(){
     return thevalues;
 }
 
+char* Image::getunit_text(){
+    char* thetext = new char[NRULERCHAR];
+    for(int i=0; i<NRULERCHAR; i++){
+        thetext[i] = unit_text[i];
+    }
+    return thetext;
+}
+
+
 void Image::setspecs(int* newspecs){
     // resize if necessary
     if(newspecs[ROWS]*newspecs[COLS] != specs[ROWS]*specs[COLS]){
@@ -430,8 +439,6 @@ void Image::copyABD(Image im){    // copy All But Data from one image to another
     }
 
     error = im.error;
-    has_ruler = im.has_ruler;
-    ruler_scale  = im.ruler_scale;
     is_big_endian = im.is_big_endian;
 }
 

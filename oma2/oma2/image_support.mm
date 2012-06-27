@@ -583,31 +583,31 @@ int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im)
         im->specs[IS_COLOR] = 0;
     
     if(trailer[RULER_CODE] == MAGIC_NUMBER) {	// If there was a ruler defined 
-        im->has_ruler = 1;
+        im->specs[HAS_RULER] = 1;
         
-        scpt = (TWOBYTE*) &(im->ruler_scale);
+        scpt = (TWOBYTE*) &(im->values[RULER_SCALE]);
         if(swap_bytes) {
-            *(scpt+1) = trailer[RULER_SCALE];
-            *(scpt) = trailer[RULER_SCALE+1];	
+            *(scpt+1) = trailer[OLD_RULER_SCALE];
+            *(scpt) = trailer[OLD_RULER_SCALE+1];	
             // need to change the order of values in the trailer as well
-            tmp_2byte = trailer[RULER_SCALE];
-            trailer[RULER_SCALE] = trailer[RULER_SCALE+1];
-            trailer[RULER_SCALE+1] = tmp_2byte;
+            tmp_2byte = trailer[OLD_RULER_SCALE];
+            trailer[OLD_RULER_SCALE] = trailer[OLD_RULER_SCALE+1];
+            trailer[OLD_RULER_SCALE+1] = tmp_2byte;
         } else {
-            *(scpt) = trailer[RULER_SCALE];
-            *(scpt+1) = trailer[RULER_SCALE+1];
+            *(scpt) = trailer[OLD_RULER_SCALE];
+            *(scpt+1) = trailer[OLD_RULER_SCALE+1];
         }
         
         strcpy(im->unit_text,(char*) &trailer[RULER_UNITS]);
         if( im->unit_text[0] ){
-            printf3("%f Pixels per %s.\n",im->ruler_scale,im->unit_text);
+            printf3("%f Pixels per %s.\n",im->values[RULER_SCALE],im->unit_text);
             
         } else {
-            printf2("%f Pixels per Unit.\n",im->ruler_scale);
+            printf2("%f Pixels per Unit.\n",im->values[RULER_SCALE]);
             
         }
     } else {
-        im->has_ruler = 0;
+        im->specs[HAS_RULER] = 0;
     }
     im->specs[ROWS] = header[NTRAK];
     im->specs[COLS] = header[NCHAN];

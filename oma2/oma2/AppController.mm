@@ -12,9 +12,6 @@
 #import "StatusController.h"
 #import "ImageBitmap.h"
 
-// This isn't the right way to do this
-#define TITLEBAR_HEIGHT 22
-#define WINDOW_OFFSET 20
 
 
 AppController   *appController;
@@ -91,26 +88,26 @@ extern Image iBuffer;
 }
 
 -(void) textDidChange:(NSNotification *) pNotify {
-    static int comdec_done=1;
-    if (comdec_done) {
+    
+    NSString *text  = [[theCommands textStorage] string];
+    NSString *ch = [text substringFromIndex:[text length] - 1];
+    
+    if([ch isEqualToString:@"\n"]){
+        NSString *command = [text substringFromIndex:last_return];
+        last_return = [text length];
+        // pass this to the command decoder
+        char* cmd = (char*) [command cStringUsingEncoding:NSASCIIStringEncoding];
+        // replace the \n with an EOL
+        cmd[strlen(cmd)-1] = 0;
+        strlcpy(oma2Command, cmd, CHPERLN);
+        int returnVal = comdec((char*) oma2Command);
         
-        NSString *text  = [[theCommands textStorage] string];
-        NSString *ch = [text substringFromIndex:[text length] - 1];
-        
-        if([ch isEqualToString:@"\n"]){
-            NSString *command = [text substringFromIndex:last_return];
-            last_return = [text length];
-            // pass this to the command decoder
-            char* cmd = (char*) [command cStringUsingEncoding:NSASCIIStringEncoding];
-            // replace the \n with an EOL
-            cmd[strlen(cmd)-1] = 0;
-            strlcpy(oma2Command, cmd, CHPERLN);
-            comdec_done = 0;
-            comdec((char*) oma2Command);
-            comdec_done = 1;
+        if (returnVal < GET_MACRO_LINE ) {
             [self appendText: @"OMA2>"];
         }
+        
     }
+    
 }
 
 -(void) showDataWindow: (char*) windowname{

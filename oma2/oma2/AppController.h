@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "oma2.h"
 
+// This isn't the right way to do this
+#define TITLEBAR_HEIGHT 24
+
+#define WINDOW_OFFSET 20
+
+
 // function prototypes for UI independent routines that we need
 int comdec(char*);
 
