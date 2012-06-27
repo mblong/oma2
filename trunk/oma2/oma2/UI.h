@@ -20,6 +20,8 @@
 extern AppController *appController;
 extern StatusController *statusController;
 
+enum {CROSS,RECT,CALCRECT,RULER,LINEPLOT};
+
 
 
 #define printf1(s) {sprintf(reply,s); send_reply}

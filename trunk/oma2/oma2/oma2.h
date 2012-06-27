@@ -50,7 +50,7 @@
 #define IDWRDS	1			// use this to indicate byte ordering
 #define RULER_CODE 2		/* if trailer[RULER_CODE] == MAGIC_NUMBER, assume a ruler */
 #define MAGIC_NUMBER 12345  /*   has been defined. */
-#define RULER_SCALE 3		/* A floating point number occupying trailer[3] & [4]. Pixels/Unit. */
+#define OLD_RULER_SCALE 3		/* A floating point number occupying trailer[3] & [4]. Pixels/Unit. */
 #define RULER_UNITS 5		/* The starting location of a text string specifying the 
 name of the units. Occupies trailer[5] to trailer[12] */
 #define RUNNUM	13

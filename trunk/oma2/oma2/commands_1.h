@@ -11,6 +11,8 @@ extern "C" int null_c(int,char*);
 extern "C" int addfile_c(int,char*);
 extern "C" int concatenatefile_c(int,char*);
 extern "C" int croprectangle_c(int,char*);
+extern "C" int calc_cmd_c(int,char*);
+extern "C" int calcall_c(int,char*);
 extern "C" int divfile_c(int,char*);
 extern "C" int divide_c(int,char*);
 extern "C" int getfile_c(int,char*);
@@ -38,5 +40,7 @@ extern "C" int subfile_c(int,char*);
 void update_UI();    // return ibuffer to the old oma
 
 char* fullname(char* fnam,int  type);
+int calc(point,point);
+
 
 //#endif

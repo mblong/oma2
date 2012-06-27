@@ -13,6 +13,8 @@ ComDef   commands[] =    {
     {{"*              "},	multiply_c},
     {{"/              "},	divide_c,},		
     {{"ADDFILE        "},	addfile_c},
+    {{"CALCULATE      "},	calc_cmd_c},
+    {{"CALCALL        "},	calcall_c},    
     {{"CROP           "},	croprectangle_c},
     {{"CONCATENATE    "},	concatenatefile_c},
     {{"CMINMX         "},	setcminmax_c},
@@ -140,7 +142,7 @@ int comdec(char* cmnd)
     switch (command_return) {
         case GET_MACRO_LINE:
             command_return = error_return = defmac(1,cmnd);
-            return NO_ERR;
+            return command_return;
             break;
             
         default:
@@ -284,7 +286,7 @@ int comdec(char* cmnd)
         while ( cmnd[i] != EOL  && cmnd[i]!= ';'){
             if ( cmnd[i++] == '='){
                 if(if_condition_met) do_assignment(cmnd);		// don't do assignments if an if condition is not met
-                return 0;
+                return NO_ERR;
             }
         }
         
@@ -306,7 +308,7 @@ int comdec(char* cmnd)
                      }
                      */
                     printf2("No such command:%s\n",cmnd);
-                    return -1;
+                    return CMND_ERR;
                 }
             } else {
                 i++;
@@ -352,7 +354,7 @@ int comdec(char* cmnd)
             
         }
     }
-    return 0;
+    return command_return;
 }
 
 

@@ -15,13 +15,13 @@
 #define NRULERCHAR 16   // number of characters in the units of the ruler
 
 // locations within the specs array
-enum {ROWS,COLS,X0,Y0,DX,DY,LMAX,LMIN,IS_COLOR,HAVE_MAX};
+enum {ROWS,COLS,X0,Y0,DX,DY,LMAX,LMIN,IS_COLOR,HAVE_MAX,HAS_RULER};
 
 // locations within the values array
-enum {MIN,MAX,RMAX,RMIN,GMAX,GMIN,BMAX,BMIN};
+enum {MIN,MAX,RMAX,RMIN,GMAX,GMIN,BMAX,BMIN,RULER_SCALE};
 
 // Image error codes and command return codes
-enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR,ARG_ERR,GET_MACRO_LINE};
+enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR,ARG_ERR,CMND_ERR,GET_MACRO_LINE};
 
 /******************** Class Definitions ********************/
 
@@ -31,10 +31,8 @@ protected:
     DATAWORD*   data;
     int         specs[NSPECS];      // information on Image size, type, etc.
     DATAWORD    values[NVALUES];    // important values (things like min, max, etc.)
-    int         error;
-    int         has_ruler;
-    float       ruler_scale;
     char        unit_text[NRULERCHAR];
+    int         error;
     int         is_big_endian;
 public:
     Image();            // default constructor with no arguments
@@ -65,6 +63,7 @@ public:
     int* getspecs();            // returns a copy of the image specs array
     void setspecs(int*);        // sets the image specs array
     DATAWORD* getvalues();      // returns a copy of the image values array
+    char* getunit_text();       // returns a copy of the image ruler units
 
     DATAWORD getpix(int,int);     // get a pixel value at the specified row and column
     DATAWORD getpix(float,float); // get an interpoated pixel value at the specified 
