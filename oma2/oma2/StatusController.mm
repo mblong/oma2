@@ -35,6 +35,9 @@ StatusController *statusController;
 @synthesize XLabel;
 @synthesize YLabel;
 @synthesize ZLabel;
+@synthesize XLabel2;
+@synthesize YLabel2;
+@synthesize ZLabel2;
 
 
 
@@ -108,6 +111,19 @@ StatusController *statusController;
     [ZLabel setStringValue:[NSString stringWithFormat:@"Z: %g",z]];
 
 }
+
+- (void) labelX1:(int) x Y1:(int) y Z1:(float) z{
+    if(x<0){
+        [XLabel2 setStringValue:@" "];
+        [YLabel2 setStringValue:@" "];
+        [ZLabel2 setStringValue:@" "];
+    } else {
+        [XLabel2 setStringValue:[NSString stringWithFormat:@"X: %d",x]];
+        [YLabel2 setStringValue:[NSString stringWithFormat:@"Y: %d",y]];
+        [ZLabel2 setStringValue:[NSString stringWithFormat:@"Z: %g",z]];
+     }
+}
+
 
 - (IBAction)decreaseColorMin:(id)sender {
     UIData.cmin -= MinMaxInc/100.0*(UIData.max - UIData.min);

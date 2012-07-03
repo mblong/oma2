@@ -44,6 +44,11 @@
 @property (weak) IBOutlet NSTextField *YLabel;
 @property (weak) IBOutlet NSTextField *ZLabel;
 
+@property (weak) IBOutlet NSTextField *XLabel2;
+@property (weak) IBOutlet NSTextField *YLabel2;
+@property (weak) IBOutlet NSTextField *ZLabel2;
+
+
 - (IBAction)scaleCheckbox:(id)sender;
 @property (weak) IBOutlet NSButton *scaleState;
 
@@ -66,6 +71,7 @@
 
 - (void) labelColorMinMax;
 - (void) labelX0:(int) x Y0:(int) y Z0:(float) z;
+- (void) labelX1:(int) x Y1:(int) y Z1:(float) z;
 
 -(id) whoami;
 

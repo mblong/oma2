@@ -303,7 +303,7 @@ int comdec(char* cmnd)
                      clist_ptr = commands;
                      cp = 0;
                      } else {
-                     printf2("No such command:%s\n",cmnd);
+                     printf2("No such command: %s\n",cmnd);
                      return -1;
                      }
                      */
