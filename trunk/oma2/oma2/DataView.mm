@@ -24,72 +24,46 @@ extern oma2UIData UIData;
     [super drawRect:dirtyRect];
     //NSLog(@"TooL: %d",statusController.tool_selected);    // don't know why this doesn't work
     
-    //CROSS,RECT,CALCRECT,RULER,LINEPLOT
-    NSBezierPath *path = [NSBezierPath bezierPath];
-    [[NSColor grayColor] set];
-    [path setLineWidth:2.0];
-
-    switch  (appController.tool){     
-        case CALCRECT:
-            // add calculation here
-            // in this implementation, this does not redefine the image rectangle
-            
-            //[[NSBezierPath bezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y, 
-            //      endPoint.x-startPoint.x, endPoint.y-startPoint.y)]stroke];
-            
-            [path appendBezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y,
-                    endPoint.x-startPoint.x, endPoint.y-startPoint.y)];
-            [path stroke];
-
-            break;
-        case RECT:
-            
-            [path appendBezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y, 
-                    endPoint.x-startPoint.x, endPoint.y-startPoint.y)];
-            [path stroke];
-            
-            UIData.iRect.ul.h = startRect.x;
-            UIData.iRect.ul.v = startRect.y;
-            UIData.iRect.lr.h = endRect.x;
-            UIData.iRect.lr.v = endRect.y;
-            // remove restriction on the way a rectangle is defined
-            // previously, the assumption was that all rectangles were defined from the upper left to lower right
-            if(endRect.x < startRect.x){
-                UIData.iRect.lr.h = startRect.x;
-                UIData.iRect.ul.h = endRect.x;
-            }
-            if(endRect.y < startRect.y){
-                UIData.iRect.lr.v = startRect.y;
-                UIData.iRect.ul.v = endRect.y;
-            }
-           
-
-            break;
-        case RULER:
-            [path moveToPoint:startPoint];
-            [path lineToPoint:endPoint];
-            [path stroke];
-            
-            
-            
-            //[NSBezierPath strokeLineFromPoint:startPoint toPoint: endPoint];
-
-            break;
-        case LINEPLOT:
-            [path moveToPoint:startPoint];
-            [path lineToPoint:endPoint];
-            [path stroke];
-            
-            //[NSBezierPath strokeLineFromPoint:startPoint toPoint: endPoint];
-            
-            break;
-
-        default:
-            break;
+    if (mouse_down) {
+        
+        // only want to do this if mouse is pressed -- 
+        // without this condition, this gets done for every DISPLAY command
+        
+        //tools are: CROSS,RECT,CALCRECT,RULER,LINEPLOT
+        NSBezierPath *path = [NSBezierPath bezierPath];
+        [[NSColor grayColor] set];
+        [path setLineWidth:2.0];
+        
+        switch  (appController.tool){     
+            case CALCRECT:
+            case RECT:
+                //[[NSBezierPath bezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y, 
+                //      endPoint.x-startPoint.x, endPoint.y-startPoint.y)]stroke];
+                
+                [path appendBezierPathWithRect:
+                 NSMakeRect(startPoint.x, startPoint.y,
+                            endPoint.x-startPoint.x, endPoint.y-startPoint.y)];
+                [path stroke];
+                break;
+                
+            case RULER:
+            case LINEPLOT:
+                [path moveToPoint:startPoint];
+                [path lineToPoint:endPoint];
+                [path stroke];
+                
+                //[NSBezierPath strokeLineFromPoint:startPoint toPoint: endPoint];
+                
+                break;
+                
+            default:
+                break;
+        }
     }
 }
 
 - (void) mouseDown:(NSEvent *)theEvent{
+    mouse_down = 1;
     NSPoint point = [theEvent locationInWindow];
     startPoint = [self convertPoint:point fromView:nil];
     int x = startPoint.x;
@@ -103,6 +77,7 @@ extern oma2UIData UIData;
     startRect.y = y;
     
     [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
+    [statusController labelX1:-1 Y1:-1 Z1: 0];
 }
 
 
@@ -118,10 +93,87 @@ extern oma2UIData UIData;
         y = self.frame.size.height- TITLEBAR_HEIGHT -1;
     endRect.x = x;
     endRect.y = y;
+    
 
-    [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
+    if(appController.tool < RECT)
+        [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
+    else
+        [statusController labelX1:x Y1:y Z1: iBuffer.getpix(y,x)];
         
     [self setNeedsDisplay:YES];
+}
+
+- (void) mouseUp:(NSEvent *)theEvent{
+    
+    
+    // remove restriction on the way a rectangle is defined
+    // previously, the assumption was that all rectangles were defined from the upper left to lower right
+    
+    int x = endRect.x;
+    int y = endRect.y;
+    
+    if(endRect.x < startRect.x){
+        endRect.x = startRect.x;
+        startRect.x = x;
+    }
+    if(endRect.y < startRect.y){
+        endRect.y = startRect.y;
+        startRect.y = y;
+    }
+    
+    switch  (appController.tool){     
+        case CALCRECT:
+            // in this implementation, this does not redefine the image rectangle
+            // add calculation here
+            point start,end;
+            start.h = startRect.x;
+            start.v = startRect.y;
+            end.h = endRect.x;
+            end.v = endRect.y;
+            calc(start,end);
+            
+            break;
+        case RECT:
+            
+            UIData.iRect.ul.h = startRect.x;
+            UIData.iRect.ul.v = startRect.y;
+            UIData.iRect.lr.h = endRect.x;
+            UIData.iRect.lr.v = endRect.y;           
+            
+            break;
+        case RULER:
+            DATAWORD* buffervalues = iBuffer.getvalues();
+            int* bufferspecs = iBuffer.getspecs();
+            char* unit_text = iBuffer.getunit_text();
+            float dist,dx,dy;
+            extern char reply[];
+
+            dx = -(startRect.x - endRect.x);
+            dy = -(startRect.y - endRect.y);
+            dist = sqrt( dx*dx + dy*dy);
+            
+            
+            if( bufferspecs[HAS_RULER] ) {
+                dist /= buffervalues[RULER_SCALE];
+                dx /= buffervalues[RULER_SCALE];
+                dy /= buffervalues[RULER_SCALE];
+            }              
+            printf4("dx:\t%g\tdy:\t%g\tL:\t%g",dx,dy,dist);
+            if( bufferspecs[HAS_RULER]!= 0  && unit_text[0]!=0 ){
+                printf2("\t%s\n",unit_text);
+            } else {
+                printf1("\n");
+            }
+            
+            free( buffervalues);
+            free( bufferspecs);
+            free( unit_text);
+            
+            break;
+            
+    }   
+    
+    mouse_down = 0;
 }
 
 @end
