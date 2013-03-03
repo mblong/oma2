@@ -37,7 +37,7 @@ int ImageBitmap::scale_pixval(DATAWORD val)
 void ImageBitmap::operator=(Image im){
 	//Ptr ptr;
 	pdptr = &pixdata;
-	long k = 0, i,j,n=0;
+	int k = 0, i,j,n=0;
 	int ntrack = im.specs[ROWS];
 	int nchan = im.specs[COLS];
 	int nth;

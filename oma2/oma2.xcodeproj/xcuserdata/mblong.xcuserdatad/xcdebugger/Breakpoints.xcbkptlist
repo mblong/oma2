@@ -91,11 +91,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "oma2/StatusController.mm"
-         timestampString = "362619098.192241"
+         timestampString = "365865340.541258"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "56"
-         endingLineNumber = "56"
+         startingLineNumber = "57"
+         endingLineNumber = "57"
          landmarkName = "-initWithWindow:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -142,16 +142,16 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "oma2/UI.mm"
-         timestampString = "357325284.99195"
+         timestampString = "365874320.486621"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "64"
-         endingLineNumber = "64"
+         startingLineNumber = "71"
+         endingLineNumber = "71"
          landmarkName = "dropped_file(char* extension, char* name)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -189,11 +189,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "oma2/StatusController.mm"
-         timestampString = "362619637.921176"
+         timestampString = "365866903.667403"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "165"
-         endingLineNumber = "165"
+         startingLineNumber = "169"
+         endingLineNumber = "169"
          landmarkName = "-increaseColorMax:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -328,33 +328,20 @@
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "oma2/StatusController.mm"
-         timestampString = "362619098.192241"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "105"
-         endingLineNumber = "105"
-         landmarkName = "-labelColorMinMax"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "oma2/StatusController.mm"
-         timestampString = "362619637.921176"
+         timestampString = "365866903.667403"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "210"
-         endingLineNumber = "210"
+         startingLineNumber = "214"
+         endingLineNumber = "214"
          landmarkName = "-changedMinMaxInc:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "oma2/comdec.mm"
@@ -367,7 +354,7 @@
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "oma2/comdec.mm"
@@ -415,6 +402,19 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "16"
          endingLineNumber = "16">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "oma2/commands_1.mm"
+         timestampString = "365868048.192495"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "433"
+         endingLineNumber = "433"
+         landmarkName = "palette_c(int n,char* args)"
+         landmarkType = "7">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

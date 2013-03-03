@@ -55,7 +55,8 @@
 - (IBAction)updateCheckbox:(id)sender;
 @property (weak) IBOutlet NSButton *updateState;
 
-
+// Palette indicator
+@property (weak) IBOutlet NSButton *PaletteBox;
 
 // Tool selection
 - (IBAction)selectTool:(id)sender;
@@ -72,6 +73,7 @@
 - (void) labelColorMinMax;
 - (void) labelX0:(int) x Y0:(int) y Z0:(float) z;
 - (void) labelX1:(int) x Y1:(int) y Z1:(float) z;
+- (void) updatePaletteBox;
 
 -(id) whoami;
 
