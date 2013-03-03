@@ -246,7 +246,7 @@ void Image::getmaxx()
 {
     DATAWORD *locmin,*locmax;
     DATAWORD *mydatpt,*pt_green,*pt_blue;
-    DATAWORD rmax,gmax,bmax,rmin,gmin,bmin;
+    DATAWORD rmax=0,gmax=0,bmax=0,rmin=0,gmin=0,bmin=0;
     int npts=specs[ROWS]*specs[COLS];
     
     //if( specs[HAVE_MAX] == 1)return;      // Disable for now. May want to add an argument to this to look at the

@@ -51,6 +51,13 @@ void update_UI(){
     else
         [[statusController updateState] setState:NSOffState];
 
+    static int current_pal = -1;
+    if (current_pal != UIData.thepalette) {
+        [statusController updatePaletteBox];
+        current_pal = UIData.thepalette;
+    }
+    
+    
     free(specs);
     free(values);
     

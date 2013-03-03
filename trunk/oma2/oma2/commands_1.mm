@@ -435,6 +435,7 @@ int palette_c(int n,char* args){
     }else {
         UIData.thepalette = DEFAULTMAP;
     }
+    update_UI();
     return 0;
 }
 

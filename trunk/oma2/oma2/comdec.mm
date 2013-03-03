@@ -320,7 +320,7 @@ int comdec(char* cmnd)
             fnc = commands[cp].fnc;
         
         // next check for an integer argument
-        
+        ivalue = 0;
         if (cmnd[i] != EOL && cmnd[i] != ';') {
             chindx = ++i; // save a pointer to the first 
             //   character after command 
@@ -365,7 +365,7 @@ int fill_in_command(char* dest,char* source,int val)
 	int k,l,m,n,match,nn,arg_index,numdig = 0;
 	int is_arg = 0;
 	//DateTimeRec datetime;
-	float ave_in_rect(),rms_in_rect();
+	//float ave_in_rect(),rms_in_rect();
     char txt[1024] = {0};
     
 	extern char saveprefixbuf[], getprefixbuf[];
@@ -1127,7 +1127,7 @@ int defmac(int n,char* args)
         
         while ( (args[index] != EOL) && (args[index] != ';') ) {
             if(args[index++] == ' ') { 	// if there is a macro definition on this line 
-                j = strlen(&args[index])+1;	// the length of what we are going to add 
+                j = (int)strlen(&args[index])+1;	// the length of what we are going to add
                 nc = i;
                 k = 0;
                 if (*(macbuf+nc) != EOL){ // if there are more lines, they will have to be tacked on at the end 
@@ -1165,7 +1165,7 @@ int defmac(int n,char* args)
         get_next_line = 1;
         return GET_MACRO_LINE;
     }
-    nc = strlen(args);
+    nc = (int)strlen(args);
     if (nc) {
         if ( (i+nc) >= MBUFLEN ) {
 			//beep();

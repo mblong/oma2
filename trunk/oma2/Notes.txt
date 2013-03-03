@@ -23,11 +23,14 @@ windows related stuff:
 release window when click on close
 find which window is active
 get the bitmap data from a window for line plots
-open a lineplot window and plot graphics
+-> open a lineplot window and plot graphics
 copy from an image window
 
 Status Window:
-color bar
+    √ show color bar
+
+Prefs:
+    -> select color bar
 
 log
 
