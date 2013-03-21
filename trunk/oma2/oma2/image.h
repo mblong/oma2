@@ -53,6 +53,7 @@ public:
     
     bool operator==(Image);     // true if Images are the same size
     bool operator!=(Image);     // true if Images are not the same size
+    bool isEmpty();             // true of Image has no data
     
     int err();                  // return the error code (= 0 if no error)
     void errclear();            // clear the image error code

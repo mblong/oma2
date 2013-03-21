@@ -25,7 +25,10 @@
 #define NEW_PREFIX_CHPERLN 256  // maximum number of characters in the new prefix 
 #define HEADLEN 30              // number of bytes in header 
 #define TRAILEN 62              // number of bytes in trailer 
-#define COMLEN 512-HEADLEN-TRAILEN  // number of bytes in comment buffer 
+#define COMLEN 512-HEADLEN-TRAILEN  // number of bytes in comment buffer
+
+#define NUM_TEMP_IMAGES 40      // allowed temporary images
+#define NUMBERED_TEMP_IMAGES 10 // the first 10 are numbered 0-9
 
 /* Define the indices to important locations in the header */
 

@@ -15,7 +15,9 @@ extern "C" int calc_cmd_c(int,char*);
 extern "C" int calcall_c(int,char*);
 extern "C" int divfile_c(int,char*);
 extern "C" int divide_c(int,char*);
+extern "C" int ftemp_c(int, char*);
 extern "C" int getfile_c(int,char*);
+extern "C" int gtemp_c(int, char*);
 extern "C" int invert_c(int,char*);
 extern "C" int minus_c(int,char*);
 extern "C" int mulfile_c(int,char*);
@@ -33,6 +35,13 @@ extern "C" int setcminmax_c(int,char*);
 extern "C" int size_c(int,char*);
 extern "C" int smooth_c(int,char*);
 extern "C" int subfile_c(int,char*);
+
+extern "C" int stemp_c(int n, char* args);
+
+
+
+
+extern int temp_image_index (char* name,int define);
 
 
 

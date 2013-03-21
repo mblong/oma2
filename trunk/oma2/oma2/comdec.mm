@@ -23,10 +23,14 @@ ComDef   commands[] =    {
     {{"DIVFILE        "},	divfile_c},
     {{"ERASE          "},	erase},
     {{"EXECUTE        "},	execut},
+    {{"FLOAT          "},	vfloat},
+    {{"FTEMPIMAGE     "},	ftemp_c},
     {{"GET            "},	getfile_c},
     {{"GETSETTINGS    "},	getsettings},
+    {{"GTEMPIMAGE     "},	gtemp_c},
     {{"HELP           "},	help},
     {{"INVERT         "},	invert_c},
+    {{"INTVARIABLE    "},	vint},
     {{"LMACRO         "},	lmacro},
     {{"LOOP           "},	loop},
     {{"LOOBBREAK      "},	loopbreak},
@@ -39,8 +43,9 @@ ComDef   commands[] =    {
     {{"RGB2GREEN      "},	rgb2green_c},
     {{"RGB2BLUE       "},	rgb2blue_c},
     {{"ROTATE         "},	rotate_c},
-    {{"SAVSETTINGS   "},	savsettings},
+    {{"SAVSETTINGS    "},	savsettings},
     {{"SIZE           "},	size_c},
+    {{"STEMPIMAGE     "},	stemp_c},
     {{"SMOOTH         "},	smooth_c},
     {{"SUBFILE        "},	subfile_c},
     {{"VARIABLES      "},	variab},
@@ -118,6 +123,9 @@ Variable user_variables[MAX_VAR] = {{{"command_return_1"},0,0.0,0,{""}},
 };
 int num_variables = 10;
 
+// an array of expression elements
+// this global array is used to evaluate the RHS of an assignment statement
+// the elements can be numbers, variables, or operators
 Expression_Element exp_el[CHPERLN];
 
 
@@ -660,6 +668,9 @@ int fill_in_command(char* dest,char* source,int val)
 int treat_as_float = 0;		// for arithmetic on RHS of assignment
 // need to decide when to do float to integer conversion and when not to
 
+// the command had an = in it, so do an assignment
+// define variable on LHS if it isn't already defined
+// evaluate RHS
 int do_assignment(char* cmnd)
 {
 	//extern char cmnd[];
@@ -728,6 +739,9 @@ int do_assignment(char* cmnd)
 	return 0;
 }
 
+// return the index of a variable if it is already defined
+// if def_flag == 1, define it if it is undefined
+// if def_flag == 0, return error -2 if it is undefined
 int get_variable_index(char* name, int def_flag)
 {
 	int i,j;
@@ -765,7 +779,9 @@ int is_variable_char(char ch)
 	return 1;
 }
 
-
+// the argument here is the RHS of an assignment statement
+// expression elements are picked off and placed in the global exp_el array
+// 
 Expression_Element evaluate_string(char* ex_string)
 {
 	
@@ -784,6 +800,7 @@ Expression_Element evaluate_string(char* ex_string)
 	i= 0;
 	rhs_vals = 0;
 	treat_as_float = 0;
+    // get the expression elements from the string
 	while(ex_string[i] != EOL && ex_string[i] != ';'){ // While not the end of the command
 		// if this is a string
 		if( ex_string[i] == '"'){
@@ -848,42 +865,45 @@ Expression_Element evaluate_string(char* ex_string)
 			//printf(" variable is %s; expression is %s\n", vname,&ex_string[i]);
 		}
 	}
-	if(rhs_vals == 1 && (exp_el[0].op_char == 'v' || exp_el[0].op_char == 's')){ // simple assignment
+	// have now filled in the exp_el array with all the expression elements
+    // evaluate the expression elements
+    if(rhs_vals == 1 && (exp_el[0].op_char == 'v' || exp_el[0].op_char == 's')){ // simple assignment
 		ex_result =  exp_el[0];
 		//vprint(var_index);
 		return(ex_result);
 	}
+    // a more complicated expression
 	nestdepth = 1;
-	
 	while(nestdepth >0){
+        // process elements in parenthesis (if any)
 		for(i=0; i<rhs_vals; i++){
 			if(exp_el[i].op_char == '(') {	// look for matching )
 				nestdepth++;
-            inside:		for(j=i+1; j<rhs_vals; j++){
-                if(exp_el[j].op_char == '(') { // must be nested, start over
-                    i = j;
-                    nestdepth++;
-                    goto inside;
-                }
-                if(exp_el[j].op_char == ')') { // matched pair, evaluate
-                    ex_result = evaluate(i+1,j);
-                    if( ex_result.op_char == 'e'){
-                        //beep();
-                        printf("Assignment error -3\n");
-                        ex_result.op_char = 'e';
-                        return(ex_result);	// some problem here
+    inside:		for(j=i+1; j<rhs_vals; j++){
+                    if(exp_el[j].op_char == '(') { // must be nested, start over
+                        i = j;
+                        nestdepth++;
+                        goto inside;
                     }
-                    
-                    // now compress the expression
-                    exp_el[i] = ex_result;
-                    
-                    for(k=j+1; k<rhs_vals; k++){
-                        exp_el[i+k-j] = exp_el[k];
+                    if(exp_el[j].op_char == ')') { // matched pair, evaluate
+                        ex_result = evaluate(i+1,j);
+                        if( ex_result.op_char == 'e'){
+                            //beep();
+                            printf("Assignment error -3\n");
+                            ex_result.op_char = 'e';
+                            return(ex_result);	// some problem here
+                        }
+                        
+                        // now compress the expression
+                        exp_el[i] = ex_result;
+                        
+                        for(k=j+1; k<rhs_vals; k++){
+                            exp_el[i+k-j] = exp_el[k];
+                        }
+                        rhs_vals -= (j-i);
+                        break;
                     }
-                    rhs_vals -= (j-i);
-                    break;
                 }
-            }
 				
 			}
 		}
@@ -896,11 +916,13 @@ Expression_Element evaluate_string(char* ex_string)
 }
 
 
-
+// evaluate expression elements from the global exp_el array
+// start with element  'start', end with element 'end-1'
+// these elements won't have any parenthesis in them
 Expression_Element evaluate(int start, int end)
 {
 	int i,div_mul_result=0,last_op;
-	Expression_Element eres;
+	Expression_Element eres;        // the expression result that will be returned
 	float x,y;
 	
 	eres.ivalue = 0;
@@ -919,6 +941,7 @@ Expression_Element evaluate(int start, int end)
 		start++;
 	}
 	
+    // first process ^ * and /
 	last_op = -2;
 	for(i=start+1; i < end; i+= 2){
 		if(exp_el[i].op_char == 'v' || exp_el[i+1].op_char != 'v')
@@ -953,7 +976,7 @@ Expression_Element evaluate(int start, int end)
 		eres.ivalue = exp_el[start].ivalue;
 		eres.fvalue = exp_el[start].fvalue;
 	}
-	
+	// next process + -
 	for(i=start+1; i < end; i+= 2){
 		if(exp_el[i].op_char == 'v' || exp_el[i+1].op_char != 'v')
 			return eres; // error
@@ -968,6 +991,7 @@ Expression_Element evaluate(int start, int end)
 		//printf("%c %d\n",eres.op_char,eres.ivalue);
 	}	
 	
+    // next process < and >
 	for(i=start+1; i < end; i+= 2){
 		if(exp_el[i].op_char == 'v' || exp_el[i+1].op_char != 'v')
 			return eres; // error
@@ -1941,7 +1965,7 @@ int variab(int n, char* args)	// print values of defined variables
 }
 
 // ********** 
-/*
+
 int vfloat(int n, char* args)	// set flag to use floating pt value of a variable
 {
 	int arg_index;
@@ -1989,7 +2013,7 @@ int vint(int n, char* args)	// set flag to use integer value of a variable
 }
 // ********** 
  
- */
+ 
 
 /* STOP_ON_ERROR flag
  If flag = 1, macro or execute commands will stop on error conditions. If flag = 0
