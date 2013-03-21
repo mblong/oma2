@@ -39,9 +39,10 @@ typedef struct {
 	char vname[MAX_VAR_LENGTH];
 	int ivalue;
 	float fvalue;
-	int is_float;
+	int is_float;       // = 1 -> float; = 0 -> int; = -1 -> string
 	char estring[ESTRING_LENGTH];
 } Variable;
+
 
 typedef struct {
 	char op_char;
@@ -49,6 +50,16 @@ typedef struct {
 	float fvalue;
 	char estring[ESTRING_LENGTH];
 } Expression_Element;
+/*
+ allowed op_char values:
+ s      a string
+ v      a numerical value (from a constant or a variable)
+ e      error
+ + = * / ^
+ ( )
+ < >
+ 
+ */
 
 
 // function prototypes for routines in comdec.cpp
@@ -77,6 +88,8 @@ int macro(int, char*);
 int null(int,char*);
 int rmacro(int, char*);
 int variab(int, char*);
+int vfloat(int, char*);
+int vint(int, char*);
 int getsettings(int,char*);
 int savsettings(int,char*);
 int defmac(int,char*);

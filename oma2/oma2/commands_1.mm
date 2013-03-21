@@ -5,8 +5,11 @@
 extern char    reply[1024];   // buffer for sending messages to be typed out by the user interface
 extern Image   iBuffer;       // the image buffer
 extern ImageBitmap iBitmap;   // the bitmap buffer
-extern oma2UIData UIData; 
+extern oma2UIData UIData;
 
+extern Image  iTempImages[];
+extern int numberNamedTempImages;
+extern Variable namedTempImages[];
 
 extern "C" int plus_c(int n,char* args){
     DATAWORD val;
@@ -532,105 +535,107 @@ int calc(point start,point end){
 
 }
 
-/*
-int calc(Point *start,Point *end)
+/* ********** */
+
+// return the index of a temporary image
+// or return -1 if there was a problem
+int temp_image_index (char* name,int define)
 {
-	double xcom,ycom,ave,rms,ftemp;		// centroid coordinates,average, and rms 
-	int icount,nt,nc;
-	DATAWORD idat(int,int),datval;
-	
-	extern int showruler,plotline;
-	extern int ruler_scale_defined;
-	extern float ruler_scale;
-	extern char unit_text[];
-	extern Variable user_variables[];	
-	extern DATAWORD min;
-	
-	if(start->v > end->v) {
-		nt = end->v;
-		end->v = start->v;
-		start->v = nt;
-	}
-	if(start->h > end->h) {
-		nt = end->h;
-		end->h = start->h;
-		start->h = nt;
-	}
+    int i,j;
     
-    if(UIData.toolselected == 
-	
-	if( showruler ) {
-		if( plotline ) {
-			do_line_plot(start,end);
-			return 0;
-		}	
-		nt = start->v - end->v;
-		nc = start->h - end->h;
-		ftemp = nc;
-		ycom = nt;
-		xcom = nt*nt+nc*nc;
-		xcom = sqrt(xcom);
-		if( ruler_scale_defined ) {
-			ftemp /= ruler_scale;
-			xcom /= ruler_scale;
-			ycom /= ruler_scale;
-		}
-		pprintf("∂x:\t%.2f\t∂y:\t%.2f",ftemp,ycom);		// For some goddamn reason, only can put 2 things on a line 
-		if( ruler_scale_defined && unit_text[0] )
-			pprintf("\tL:\t%.2f\t%s\n",xcom,unit_text);
-		else
-			pprintf("\tL:\t%.2f\n",xcom);
-		return 0;
-	}
-	icount = 0;
-	xcom = ycom = ave = rms = 0.0;
-	
-	//printf("%d %d %d %d \n", start->v,start->h,end->v,end->h);
-	for(nt=start->v; nt<=end->v; nt++) {
-		for(nc=start->h; nc<=end->h; nc++) {
-			datval = idat(nt,nc);		
-			ave += datval;					// average 
-			xcom += nc * (datval-min);			// x center of mass -- subtract min
-			ycom += nt * (datval-min);			// y center of mass -- subtract min 
-			rms += datval*datval;			// rms 
-			icount++;						// number of points 
-		}
-	}
-	xcom /= icount;
-	ycom /= icount;
-	ave = ave/(float)icount;
-	xcom /= (ave-min);
-	ycom /= (ave-min);
-	
-	rms = rms/icount - ave*ave;	
-	rms = sqrt(rms);
-	
-	pprintf("Ave:\t%g\trms:\t%g\t# Pts:\t",ave,rms);
-	pprintf("%d",icount);
-	if( ruler_scale_defined ) {
-		xcom /= ruler_scale;
-		ycom /= ruler_scale;
-	}
-	pprintf("\tx:\t%g\ty:\t%g",xcom,ycom);
-	if( ruler_scale_defined && unit_text[0] )
-		pprintf("\t%s\n",unit_text);
-	else
-		pprintf("\n");
-	// return values available as variables
-	user_variables[0].fvalue = ave;
-	user_variables[0].is_float = 1;
-	user_variables[1].fvalue = rms;
-	user_variables[1].is_float = 1;
-	user_variables[2].fvalue = xcom;
-	user_variables[2].is_float = 1;
-	user_variables[3].fvalue = ycom;
-	user_variables[3].is_float = 1;
-	return 0;
+    // numbered temporary image?
+    if(name[0] >= '0' && name[0] <= '9'){   // this is the 0-9 naming case
+        // just to be sure, be sure this isn't a number > 9
+        sscanf(name, "%d",&i);
+        if( i > 9){
+            printf1("Numbered temporary images must be between 0-9\n");
+            return -1;
+        } else
+            return name[0] - '0';
+    }
+    // valid named temporary?
+    if (name[0] >= 'a' && name[0] <='z') {
+        // this is a named temporary image
+        // check to see if it already exists
+        for(i=0; i< numberNamedTempImages; i++){
+            for(j=0; j< strlen(name); j++){
+                if( *(name+j) != namedTempImages[i].vname[j])
+                    break;
+            }
+            if( j == strlen(name) && j == strlen(namedTempImages[i].vname)){
+                // this is already defined
+                return NUMBERED_TEMP_IMAGES+i;
+            }
+        }
+        if( i == numberNamedTempImages && define == 1){	// add a new named temp image to the list
+            if(numberNamedTempImages >= NUM_TEMP_IMAGES-NUMBERED_TEMP_IMAGES){
+                // TOO MANY named temps
+                return -1;
+            }
+            for(j=0; j<= strlen(name); j++)
+                namedTempImages[numberNamedTempImages].vname[j] = *(name+j);
+            numberNamedTempImages++;
+            return NUMBERED_TEMP_IMAGES+numberNamedTempImages-1;
+        }
+		//beep();
+		printf2("Temporary image %s not defined.\n",name);
+		return(-1);
+    }
+    printf2("%s is not a valid image name.\n",name);
+	return -1;
 }
- */
 
-/************************************************************************/
+
 /*
+ STEMP name
+ Save current image as temporary image with specified name. The name can be 0-9 or
+ a text string beginning with a lower case letter. This can be retrieved with GTEMP.
+ */
+int stemp_c(int n, char* args)
+{
+    n = temp_image_index(args,1);
+    if(n >=0){
+        iTempImages[n] << iBuffer;
+        return NO_ERR;
+    } else {
+        return MEM_ERR;
+    }
+    
+}
+/* ********** */
 
-*/
+int gtemp_c(int n, char* args)
+{
+    n = temp_image_index(args,0);
+    if(n >=0){
+
+        if( iTempImages[n].isEmpty()){
+            printf1("Temporary image is not defined.\n");
+            return MEM_ERR;
+        }
+        iBuffer << iTempImages[n];
+        iBuffer.getmaxx();
+        update_UI();
+        return NO_ERR;
+    } else
+        return MEM_ERR;
+}
+
+/* ********** */
+
+int ftemp_c(int n, char* args)
+{
+    n = temp_image_index(args,0);
+    if(n >=0){
+        iTempImages[n].free();
+        if (n >= NUMBERED_TEMP_IMAGES) { // this one was named
+            namedTempImages[n-NUMBERED_TEMP_IMAGES].vname[0] = 0;    // get rid of this name
+            numberNamedTempImages--;
+            for(int i=n-NUMBERED_TEMP_IMAGES; i < numberNamedTempImages; i++)
+                namedTempImages[i] = namedTempImages[i+1];
+        }
+        return NO_ERR;
+    }
+    return MEM_ERR;
+}
 

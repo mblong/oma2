@@ -9,7 +9,9 @@
 char    reply[1024];          // buffer for sending messages to be typed out by the user interface
 Image   iBuffer(200,200);     // the image buffer
 oma2UIData UIData;            // Put all the UI globals here
-
+Image  iTempImages[NUM_TEMP_IMAGES];  // temporary in-memmory images
+int numberNamedTempImages = 0;
+Variable namedTempImages[NUM_TEMP_IMAGES-NUMBERED_TEMP_IMAGES];
 
 //extern "C" int get_byte_swap_value(short);
 //extern "C" void swap_bytes_routine(char* co, int num,int nb);
@@ -234,12 +236,23 @@ int Image::err(){
     return error;
 }
 
+bool Image::isEmpty(){
+    if (data == NULL) 
+        return true;
+    else
+        return false;
+}
+
+
 void Image::errclear(){
     error=0;
 }
 
 void Image::free(){
-    if(data!= NULL) delete[] data;
+    if(data != NULL){
+        delete[] data;
+        data = NULL;
+    }
 }
 
 void Image::getmaxx()
