@@ -11,7 +11,7 @@ extern Image  iTempImages[];
 extern int numberNamedTempImages;
 extern Variable namedTempImages[];
 
-extern "C" int plus_c(int n,char* args){
+int plus_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
@@ -26,7 +26,7 @@ int null_c(int n,char* args){
     return NO_ERR;
 }
 
-extern "C" int minus_c(int n,char* args){
+int minus_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
@@ -36,7 +36,7 @@ extern "C" int minus_c(int n,char* args){
     return NO_ERR;
 }
 
-extern "C" int divide_c(int n,char* args){
+int divide_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
@@ -46,7 +46,7 @@ extern "C" int divide_c(int n,char* args){
     return NO_ERR;
 }
 
-extern "C" int multiply_c(int n,char* args){
+int multiply_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
@@ -56,7 +56,7 @@ extern "C" int multiply_c(int n,char* args){
     return NO_ERR;
 }
 
-extern "C" int getfile_c(int n,char* args){
+int getfile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
         printf2("Could not load %s\n",args);
@@ -69,7 +69,7 @@ extern "C" int getfile_c(int n,char* args){
     return NO_ERR;
 }
 
-extern "C" int addfile_c(int n,char* args){
+int addfile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
         printf2("Could not open %s\n",args);
@@ -88,7 +88,7 @@ extern "C" int addfile_c(int n,char* args){
     return SIZE_ERR;
 }
 
-extern "C" int mulfile_c(int n,char* args){
+int mulfile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
         printf2("Could not open %s\n",args);
@@ -107,7 +107,7 @@ extern "C" int mulfile_c(int n,char* args){
     return SIZE_ERR;
 }
 
-extern "C" int subfile_c(int n,char* args){
+int subfile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
         printf2("Could not open %s\n",args);
@@ -126,7 +126,7 @@ extern "C" int subfile_c(int n,char* args){
     return SIZE_ERR;
 }
 
-extern "C" int divfile_c(int n,char* args){
+int divfile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
         printf2("Could not open %s\n",args);
@@ -145,13 +145,13 @@ extern "C" int divfile_c(int n,char* args){
     return SIZE_ERR;
 }
 
-extern "C" int concatenatefile_c(int n,char* args){
+int compositefile_c(int n,char* args){
     Image new_im(fullname(args,GET_DATA));
     if(new_im.err()){
         printf2("Could not open %s\n",args);
         return new_im.err();
     }
-    iBuffer.concat(new_im);
+    iBuffer.composite(new_im);
     if(iBuffer.err()){
         new_im.free();
         int err = iBuffer.err();
@@ -165,7 +165,7 @@ extern "C" int concatenatefile_c(int n,char* args){
     return NO_ERR;
 }
 
-extern "C" int croprectangle_c(int n,char* args){
+int croprectangle_c(int n,char* args){
     iBuffer.crop(UIData.iRect);
     if(iBuffer.err()){
         int err = iBuffer.err();
@@ -178,7 +178,7 @@ extern "C" int croprectangle_c(int n,char* args){
 }
 
 
-extern "C" int rectan_c(int n, char* args)
+int rectan_c(int n, char* args)
 {
     int narg;
     point start,end;
@@ -239,14 +239,14 @@ extern "C" int rectan_c(int n, char* args)
     return NO_ERR;
 }
 
-extern "C" int invert_c(int n,char* args){
+int invert_c(int n,char* args){
     iBuffer.invert();
     iBuffer.getmaxx();
     update_UI();
     return NO_ERR;
 }
 
-extern "C" int rgb2red_c(int n,char* args){
+int rgb2red_c(int n,char* args){
     iBuffer.rgb2color(0);
     if(iBuffer.err()){
         int err = iBuffer.err();
@@ -259,7 +259,7 @@ extern "C" int rgb2red_c(int n,char* args){
     return NO_ERR;
 }
 
-extern "C" int rgb2green_c(int n,char* args){
+int rgb2green_c(int n,char* args){
     iBuffer.rgb2color(1);
     if(iBuffer.err()){
         int err = iBuffer.err();
@@ -272,7 +272,7 @@ extern "C" int rgb2green_c(int n,char* args){
     return NO_ERR;
 }
 
-extern "C" int rgb2blue_c(int n,char* args){
+int rgb2blue_c(int n,char* args){
     iBuffer.rgb2color(2);    
     if(iBuffer.err()){
         int err = iBuffer.err();
@@ -286,7 +286,7 @@ extern "C" int rgb2blue_c(int n,char* args){
 }
 
 
-extern "C" int rotate_c(int n,char* args){
+int rotate_c(int n,char* args){
     float angle;
     int* specs= iBuffer.getspecs();
     sscanf(args,"%f",&angle);
@@ -314,7 +314,7 @@ extern "C" int rotate_c(int n,char* args){
         iBuffer.free();
         iBuffer=color[0];
         for(c=1; c<3; c++){
-            iBuffer.concat(color[c]);
+            iBuffer.composite(color[c]);
             color[c].free();
         }
         specs = iBuffer.getspecs();  // get the new specs
@@ -333,7 +333,7 @@ extern "C" int rotate_c(int n,char* args){
     }
 }
 
-extern "C" int smooth_c(int n,char* args){
+int smooth_c(int n,char* args){
     int dx,dy,i,j,nt,nc,count,dxs,dys;
     float sum;
     int* bufferspecs;
@@ -631,11 +631,133 @@ int ftemp_c(int n, char* args)
         if (n >= NUMBERED_TEMP_IMAGES) { // this one was named
             namedTempImages[n-NUMBERED_TEMP_IMAGES].vname[0] = 0;    // get rid of this name
             numberNamedTempImages--;
-            for(int i=n-NUMBERED_TEMP_IMAGES; i < numberNamedTempImages; i++)
+            for(int i=n-NUMBERED_TEMP_IMAGES; i < numberNamedTempImages; i++){
                 namedTempImages[i] = namedTempImages[i+1];
+                iTempImages[i+NUMBERED_TEMP_IMAGES] = iTempImages[i+NUMBERED_TEMP_IMAGES+1];
+            }
         }
         return NO_ERR;
     }
     return MEM_ERR;
+}
+
+/* ********** */
+/*
+ LTEMP
+ list defined temporary images.
+ */
+int ltemp_c(int n, char* args)
+{
+    int i,ncolors;
+    for (n=0; n<NUMBERED_TEMP_IMAGES; n++) {
+        if(!iTempImages[n].isEmpty()){
+            if(iTempImages[n].isColor())
+                ncolors=3;
+            else
+                ncolors=1;
+            printf5("Temp Image %d: %d x %d x %d\n",n,
+                   iTempImages[n].width(),iTempImages[n].height(),ncolors);
+        }
+    }
+    for (i = 0; i<numberNamedTempImages; i++) {
+        n = i+NUMBERED_TEMP_IMAGES;
+        if(iTempImages[n].isColor())
+            ncolors=3;
+        else
+            ncolors=1;
+        printf5("Temp Image %s: %d x %d x %d\n",namedTempImages[i].vname,
+               iTempImages[n].width(),iTempImages[n].height(),ncolors);
+    }
+    
+	return 0;
+}
+/* ********** */
+
+int addtmp_c(int n, char* args)
+{
+    n = temp_image_index(args,0);
+    if(n >=0){
+        if (iBuffer != iTempImages[n]) {
+            printf1("Images are not the same size.\n");
+            return SIZE_ERR;
+        }
+        iBuffer + iTempImages[n];
+        iBuffer.getmaxx();
+        update_UI();
+        return NO_ERR;
+    } else
+        return MEM_ERR;
+}
+/* ********** */
+
+int subtmp_c(int n, char* args)
+{	
+    n = temp_image_index(args,0);
+    if(n >=0){
+        if (iBuffer != iTempImages[n]) {
+            printf1("Images are not the same size.\n");
+            return SIZE_ERR;
+        }
+        iBuffer - iTempImages[n];
+        iBuffer.getmaxx();
+        update_UI();
+        return NO_ERR;
+    } else
+        return MEM_ERR;
+}
+
+/* ********** */
+
+int multmp_c(int n, char* args)
+{
+    n = temp_image_index(args,0);
+    if(n >=0){
+        if (iBuffer != iTempImages[n]) {
+            printf1("Images are not the same size.\n");
+            return SIZE_ERR;
+        }
+        iBuffer * iTempImages[n];
+        iBuffer.getmaxx();
+        update_UI();
+        return NO_ERR;
+    } else
+        return MEM_ERR;
+}
+
+/* ********** */
+
+int divtmp_c(int n, char* args)
+{
+    n = temp_image_index(args,0);
+    if(n >=0){
+        if (iBuffer != iTempImages[n]) {
+            printf1("Images are not the same size.\n");
+            return SIZE_ERR;
+        }
+        iBuffer / iTempImages[n];
+        iBuffer.getmaxx();
+        update_UI();
+        return NO_ERR;
+    } else
+        return MEM_ERR;
+}
+
+
+/* ********** */
+
+int comtmp_c(int n, char* args)
+{
+    n = temp_image_index(args,0);
+    if(n >=0){
+        if (iBuffer.width() != iTempImages[n].width()) {
+            printf1("Images are not the same width.\n");
+            return SIZE_ERR;
+        }
+        iBuffer.composite(iTempImages[n]);
+        iBuffer.getmaxx();
+        update_UI();
+        return NO_ERR;
+    } else
+        return MEM_ERR;
 }
 

@@ -13,17 +13,20 @@ ComDef   commands[] =    {
     {{"*              "},	multiply_c},
     {{"/              "},	divide_c,},		
     {{"ADDFILE        "},	addfile_c},
+    {{"ADDTEMPIMAGE   "},	addtmp_c},
     {{"CALCULATE      "},	calc_cmd_c},
     {{"CALCALL        "},	calcall_c},    
     {{"CROP           "},	croprectangle_c},
-    {{"CONCATENATE    "},	concatenatefile_c},
+    {{"COMPOSITE      "},	compositefile_c},
+    {{"COMTEMPIMAGE   "},	comtmp_c},
     {{"CMINMX         "},	setcminmax_c},
     {{"DISPLAY        "},	display},
     {{"DMACRO         "},	defmac},
     {{"DIVFILE        "},	divfile_c},
+    {{"DIVTEMPIMAGE   "},	divtmp_c},
     {{"ERASE          "},	erase},
     {{"EXECUTE        "},	execut},
-    {{"FLOAT          "},	vfloat},
+    {{"FLOATVARIABLE  "},	vfloat},
     {{"FTEMPIMAGE     "},	ftemp_c},
     {{"GET            "},	getfile_c},
     {{"GETSETTINGS    "},	getsettings},
@@ -35,8 +38,10 @@ ComDef   commands[] =    {
     {{"LOOP           "},	loop},
     {{"LOOBBREAK      "},	loopbreak},
     {{"LOOPND         "},	loopend},
+    {{"LTEMPIMAGE     "},	ltemp_c},
     {{"MACRO          "},	macro},
     {{"MULFILE        "},	mulfile_c},
+    {{"MULTEMPIMAGE   "},	multmp_c},
     {{"PALETTE        "},	palette_c},
     {{"RECTANGLE      "},	rectan_c},
     {{"RGB2RED        "},	rgb2red_c},
@@ -48,6 +53,7 @@ ComDef   commands[] =    {
     {{"STEMPIMAGE     "},	stemp_c},
     {{"SMOOTH         "},	smooth_c},
     {{"SUBFILE        "},	subfile_c},
+    {{"SUBTEMPIMAGE   "},	subtmp_c},
     {{"VARIABLES      "},	variab},
     {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},0}};
 
@@ -783,8 +789,7 @@ int is_variable_char(char ch)
 // expression elements are picked off and placed in the global exp_el array
 // 
 Expression_Element evaluate_string(char* ex_string)
-{
-	
+{	
 	int is_variable_char(char);
 	
 	int i,j,k,varlen,rhs_vals;
@@ -1123,7 +1128,6 @@ void clear_macro_to_end()
 
 int defmac(int n,char* args)
 {
-    
     extern char macbuf[];
     int j,k,index=0;
     int nc = 1;
@@ -1216,7 +1220,6 @@ int defmac(int n,char* args)
 // ********** 
 int lmacro(int n, char* args)
 {
-    
     int lc,i;
     
     lc = 1;
@@ -2056,10 +2059,10 @@ int prflag(int n, char* args)	// set flag to use enable/disable printing
 int help(int n, char* args)
 {
     extern  ComDef    commands[];
-    int i=0;
+    int i=0,fd,status,length,j;
     //int j,status,length;
 	//int fd,gethelpfile(),gettextline();
-	//pchar string[CHPERLN];
+	char string[CHPERLN];
     enum {LOOKING_FOR_MATCH,LISTING};
        
     if(*args == 0) {
@@ -2068,25 +2071,17 @@ int help(int n, char* args)
         for (i = 0; commands[i].text.name[0] != EOL; i++ ) {
             printf2( "%s\n", commands[i].text.name);
         }
-        /*
-        printf( "Available Custom Commands are:\n" );
-        i = 0;
-        while ( my_commands[i].text.name[0] != EOL ) {
-            printf( "%s\n", my_commands[i].text.name);
-            i++;
-        }
-         */
     }
     else {
-        /*
-        fd = gethelpfile();
+        fd = open(HELPFILE,O_RDONLY);
         if( fd == -1) {
-            printf("'OMA HELP' File Not Found.\n");
-            return -1;
+            printf1("'OMA HELP' File Not Found.\n");
+            return FILE_ERR;
         }
-        
+
         for( i = 0; (args[i] = toupper(args[i])) != EOL; i++ ) ; // convert to uppercase 
         status = LOOKING_FOR_MATCH;
+        
         while((length = gettextline(fd,string)) > 0) {
             switch (status) {
 				case LOOKING_FOR_MATCH:
@@ -2096,24 +2091,72 @@ int help(int n, char* args)
 					}
 					if( j != i )
 						break;
-					printf("%s",string);
+					printf2("%s",string);
 					status = LISTING;
 					break;
 				case LISTING:
 					if( length <= 2) {
 						status = LOOKING_FOR_MATCH;
-						printf("\n");
+						printf1("\n");
 						break; 
 					}
-					printf("%s",string);
+					printf2("%s",string);
             }
-            
         }
-        helpdone(fd);	// clean-up in the file system, close help file 
-         */
+        close(fd);
     }
     return 0;
 }
 
+/* get a line of text from a file specified by fd */
+#define BREAK_AFTER 80
+int gettextline(int fd, char* textline)
+{
+	static int i = -2;
+	int n = 0;
+	static int j = 0;
+    static char textbuf[1024];
+	
+	if( i == -2 ){				// read the first time
+		i = (int)read(fd,textbuf,1024);
+	}
+	
+	while(  textbuf[j]  != '\n' ) {
+		
+		if( j >= i) {
+			i = (int)read(fd,textbuf,1024);
+			j = 0;
+			if( i < 1) {
+				return -1;	// end of file or error
+			}
+            //goto next_char;
+		} else {
+            if( n >  BREAK_AFTER && textbuf[j] == ' '){
+				// cut things off here
+				textline[n++] =  '\n';		// Unix uses <lf> for new line
+				//j++;
+
+				textline[n++] ='\t'	;		// tab over
+				textline[n] = 0;
+				return n;
+			}
+			textline[n++] = textbuf[j++];
+			
+			// this for lines that may be too long
+			if(n >=CHPERLN-2) {
+				n = CHPERLN-3;
+			}
+		}
+        //next_char:
+	}
+
+	textline[n++] =  '\n';		// Unix uses <lf> for new line
+	j++;
+
+	textline[n] = 0;
+	return n;
+}
+
+/* ********** */
 
 

@@ -6,42 +6,49 @@
 #include "ImageBitmap.h"
 
 
-extern "C" int null_c(int,char*);
+int null_c(int,char*);
 
-extern "C" int addfile_c(int,char*);
-extern "C" int concatenatefile_c(int,char*);
-extern "C" int croprectangle_c(int,char*);
-extern "C" int calc_cmd_c(int,char*);
-extern "C" int calcall_c(int,char*);
-extern "C" int divfile_c(int,char*);
-extern "C" int divide_c(int,char*);
-extern "C" int ftemp_c(int, char*);
-extern "C" int getfile_c(int,char*);
-extern "C" int gtemp_c(int, char*);
-extern "C" int invert_c(int,char*);
-extern "C" int minus_c(int,char*);
-extern "C" int mulfile_c(int,char*);
-extern "C" int multiply_c(int,char*);
+int addfile_c(int,char*);
+int compositefile_c(int,char*);
+int croprectangle_c(int,char*);
+int calc_cmd_c(int,char*);
+int calcall_c(int,char*);
+int divfile_c(int,char*);
+int divide_c(int,char*);
+int ftemp_c(int, char*);
+int getfile_c(int,char*);
+int gtemp_c(int, char*);
+int invert_c(int,char*);
+int ltemp_c(int n, char* args);
+int minus_c(int,char*);
+int mulfile_c(int,char*);
+int multiply_c(int,char*);
 int palette_c(int,char*);
-extern "C" int plus_c(int,char*);
+int plus_c(int,char*);
 
-extern "C" int rectan_c(int,char*);
-extern "C" int rgb2red_c(int,char*);
+int rectan_c(int,char*);
+int rgb2red_c(int,char*);
 
-extern "C" int rgb2green_c(int,char*);
-extern "C" int rgb2blue_c(int,char*);
-extern "C" int rotate_c(int,char*);
-extern "C" int setcminmax_c(int,char*);
-extern "C" int size_c(int,char*);
-extern "C" int smooth_c(int,char*);
-extern "C" int subfile_c(int,char*);
+int rgb2green_c(int,char*);
+int rgb2blue_c(int,char*);
+int rotate_c(int,char*);
+int setcminmax_c(int,char*);
+int size_c(int,char*);
+int smooth_c(int,char*);
+int subfile_c(int,char*);
 
-extern "C" int stemp_c(int n, char* args);
+int stemp_c(int n, char* args);
+int ltemp_c(int n, char* args);
+
+int divtmp_c(int n, char* args);
+int multmp_c(int n, char* args);
+int addtmp_c(int n, char* args);
+int subtmp_c(int n, char* args);
+int comtmp_c(int n, char* args);
 
 
 
-
-extern int temp_image_index (char* name,int define);
+int temp_image_index (char* name,int define);
 
 
 
