@@ -94,5 +94,7 @@ int getsettings(int,char*);
 int savsettings(int,char*);
 int defmac(int,char*);
 
+int gettextline(int, char*);
+
 
 #endif

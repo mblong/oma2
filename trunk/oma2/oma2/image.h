@@ -53,7 +53,11 @@ public:
     
     bool operator==(Image);     // true if Images are the same size
     bool operator!=(Image);     // true if Images are not the same size
-    bool isEmpty();             // true of Image has no data
+    bool isEmpty();             // true if Image has no data
+    bool isColor();             // true if Image is flagged as color
+    
+    int width();                // image width
+    int height();               // image height -- for color images this is pixHeight/3
     
     int err();                  // return the error code (= 0 if no error)
     void errclear();            // clear the image error code
@@ -75,7 +79,7 @@ public:
     void rotate(float);        // rotate the current image or return an error if there was one
     void invert();             // invert the current image
     void rgb2color(int);       // crop an rgb image to color 0,1, or 2 (red, green, or blue)
-    void concat(Image);        // concatenate two images. Error if images are not the same width.
+    void composite(Image);        // composite two images. Error if images are not the same width.
     friend class ImageBitmap; 
     friend int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im);
 };

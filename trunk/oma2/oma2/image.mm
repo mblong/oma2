@@ -236,8 +236,33 @@ int Image::err(){
     return error;
 }
 
+int Image::width(){
+    if(data)
+        return specs[COLS];
+    else
+        return 0;
+}
+
+int Image::height(){
+    if(data)
+        if(specs[IS_COLOR])
+            return specs[ROWS]/3;
+        else
+            return specs[ROWS];
+    else
+        return 0;
+}
+
+
 bool Image::isEmpty(){
     if (data == NULL) 
+        return true;
+    else
+        return false;
+}
+
+bool Image::isColor(){
+    if (specs[IS_COLOR])
         return true;
     else
         return false;
@@ -356,7 +381,7 @@ DATAWORD Image::getpix(float yi, float xi)
 	iy = yi;
 	
 	if( (ix+1) == specs[COLS] || (iy+1) == specs[ROWS]) 
-		return(this->getpix(iy,ix));
+		return(getpix(iy,ix));
 	
 	xf = xi - ix;	/* the fraction part */
 	yf = yi - iy;
@@ -368,10 +393,10 @@ DATAWORD Image::getpix(float yi, float xi)
 	//		|             |
 	//      z1-----------z2
 	
-	z1 = this->getpix(iy,ix);
-	z2 = this->getpix(iy,ix+1);
-	z3 = this->getpix(iy+1,ix);
-	z4 = this->getpix(iy+1,ix+1);
+	z1 = getpix(iy,ix);
+	z2 = getpix(iy,ix+1);
+	z3 = getpix(iy+1,ix);
+	z4 = getpix(iy+1,ix+1);
 
 	// Bilinear Interpolation
     
@@ -556,12 +581,12 @@ void Image::rotate(float angle){
     costheta = cos(theta);
     
     if(angle == 180. || angle == -180.){
-        this->invert();
+        invert();
         //return *this;
         return;
     }
     if(angle == 270. || angle == -90.){
-        this->invert();
+        invert();
         angle=90.;
     }
     
@@ -588,7 +613,7 @@ void Image::rotate(float angle){
         rotated.specs[DY] = specs[DX];
         
         rotated.specs[HAVE_MAX]=0;
-        this->free();   // free old data buffer
+        free();   // free old data buffer
         *this = rotated;
         //return *this;
         return;
@@ -660,7 +685,7 @@ void Image::rgb2color(int color){
     //return *this;
 }
 
-void Image::concat(Image bottom){
+void Image::composite(Image bottom){
     if( this->specs[COLS] != bottom.specs[COLS]){   // images have to be the same width
         error = SIZE_ERR;
         //return *this;
