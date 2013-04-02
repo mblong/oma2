@@ -277,7 +277,6 @@
 			};
 			buildConfigurationList = DB0FC0181519183B008A9B54 /* Build configuration list for PBXProject "oma2" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

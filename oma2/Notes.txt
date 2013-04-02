@@ -16,7 +16,8 @@ initializations:
 √crop of color image has bad access if rectangle goes all the way to the bottom of the image
     √also trouble with monochrome crop -- problem is with verticle part of rectangle coorinates returned by the UI 
     I'm using a defined constant for the TITLEBAR_HEIGHT -- that probably isn't right
-    
+
+√rework min/max
     
 windows related stuff:
 -- erase nth,
@@ -34,5 +35,6 @@ Prefs:
 
 log
 
-help file
+√ help file
 
+ save command

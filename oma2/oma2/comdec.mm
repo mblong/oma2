@@ -19,6 +19,7 @@ ComDef   commands[] =    {
     {{"CROP           "},	croprectangle_c},
     {{"COMPOSITE      "},	compositefile_c},
     {{"COMTEMPIMAGE   "},	comtmp_c},
+    {{"COLORFLAG      "},	colorflag_c},
     {{"CMINMX         "},	setcminmax_c},
     {{"DISPLAY        "},	display},
     {{"DMACRO         "},	defmac},

@@ -282,8 +282,8 @@ void Image::free(){
 
 void Image::getmaxx()
 {
-    DATAWORD *locmin,*locmax;
-    DATAWORD *mydatpt,*pt_green,*pt_blue;
+    DATAWORD *locmin,*locmax,*locrmin,*locrmax,*locgmin,*locgmax,*locbmin,*locbmax;
+    DATAWORD *mydatpt;
     DATAWORD rmax=0,gmax=0,bmax=0,rmin=0,gmin=0,bmin=0;
     int npts=specs[ROWS]*specs[COLS];
     
@@ -292,42 +292,40 @@ void Image::getmaxx()
     
     mydatpt = data;
     locmin = locmax = mydatpt;
-    *locmin = *locmax = *mydatpt;
+    locrmin = locrmax = locgmin = locgmax = locbmin = locbmax = mydatpt;
     
     if(specs[IS_COLOR]){ 
-        rmin = rmax = *mydatpt;
-        pt_green = mydatpt + npts/3;
-        pt_blue =  pt_green + npts/3;
-        gmin = gmax = *pt_green;
-        bmin = bmax = *pt_blue;
-        while ( mydatpt < data+npts ) {
-            if ( *mydatpt > *locmax ) {
-                locmax = mydatpt;
-            }
-            
-            if ( *mydatpt < *locmin ) {
-                locmin = mydatpt;
-            }
-            if( (mydatpt < pt_green) && (*mydatpt > rmax)) rmax = *mydatpt;
-            if( (mydatpt >= pt_green) && (mydatpt < pt_blue) && (*mydatpt > gmax)) gmax = *mydatpt;
-            if( (mydatpt >= pt_blue) && (*mydatpt > bmax)) bmax = *mydatpt;
-            
-            if( (mydatpt < pt_green) && (*mydatpt < rmin)) rmin = *mydatpt;
-            if( (mydatpt >= pt_green) && (mydatpt < pt_blue) && (*mydatpt < gmin)) gmin = *mydatpt;
-            if( (mydatpt >= pt_blue) && (*mydatpt < bmin)) bmin = *mydatpt;
-            
-            mydatpt++;
+        for (locrmin = locrmax = mydatpt; mydatpt < data+npts/3; mydatpt++ ) {
+            if ( *mydatpt > *locmax )  locmax = mydatpt;
+            if ( *mydatpt < *locmin )  locmin = mydatpt;
+            if ( *mydatpt > *locrmax ) locrmax = mydatpt;
+            if ( *mydatpt < *locrmin ) locrmin = mydatpt;
         }
+ 
+        for (locgmin = locgmax = mydatpt; mydatpt < data+2*npts/3; mydatpt++ ) {
+            if ( *mydatpt > *locmax )  locmax = mydatpt;
+            if ( *mydatpt < *locmin )  locmin = mydatpt;
+            if ( *mydatpt > *locgmax ) locgmax = mydatpt;
+            if ( *mydatpt < *locgmin ) locgmin = mydatpt;
+        }
+
+        for (locbmin = locbmax = mydatpt; mydatpt < data+npts; mydatpt++ ) {
+            if ( *mydatpt > *locmax )  locmax = mydatpt;
+            if ( *mydatpt < *locmin )  locmin = mydatpt;
+            if ( *mydatpt > *locbmax ) locbmax = mydatpt;
+            if ( *mydatpt < *locbmin ) locbmin = mydatpt;
+        }
+        rmax = *locrmax;
+        rmin = *locrmin;
+        gmax = *locgmax;
+        gmin = *locgmin;
+        bmax = *locbmax;
+        bmin = *locbmin;
+
     } else{
         while ( mydatpt < data+npts ) {
-            if ( *mydatpt > *locmax ) {
-                locmax = mydatpt;
-            }
-            
-            if ( *mydatpt < *locmin ) {
-                locmin = mydatpt;
-            }
-            
+            if ( *mydatpt > *locmax ) locmax = mydatpt;
+            if ( *mydatpt < *locmin ) locmin = mydatpt;
             mydatpt++;
         }
         
@@ -343,6 +341,13 @@ void Image::getmaxx()
     
     specs[LMIN] = (int)(locmin - data);
     specs[LMAX] = (int)(locmax - data);
+    specs[LRMIN] = (int)(locrmin - data);
+    specs[LRMAX] = (int)(locrmax - data);
+    specs[LGMIN] = (int)(locgmin - data - npts/3);
+    specs[LGMAX] = (int)(locgmax - data - npts/3);
+    specs[LBMIN] = (int)(locbmin - data - 2*npts/3);
+    specs[LBMAX] = (int)(locbmax - data - 2*npts/3);
+
     specs[HAVE_MAX] = 1;
     
     /*
@@ -355,8 +360,20 @@ void Image::getmaxx()
      header[NMIN] = lmn - lmn/n*n;   	// Column of min 
      */
     
-    printf5("%g %g  at %d %d\n",values[MIN] ,values[MAX] ,specs[LMIN],specs[LMAX]);
+    if(specs[IS_COLOR]){
+        printf4("Red Maximum %g at Row %d and Column %d\n", values[RMAX], specs[LRMAX]/specs[COLS], specs[LRMAX]%specs[COLS]);
+        printf4("Red Minimum %g at Row %d and Column %d\n\n", values[RMIN], specs[LRMIN]/specs[COLS], specs[LRMIN]%specs[COLS]);
 
+        printf4("Green Maximum %g at Row %d and Column %d\n", values[GMAX], specs[LGMAX]/specs[COLS], specs[LGMAX]%specs[COLS]);
+        printf4("Green Minimum %g at Row %d and Column %d\n\n", values[GMIN], specs[LGMIN]/specs[COLS], specs[LGMIN]%specs[COLS]);
+
+        printf4("Blue Maximum %g at Row %d and Column %d\n", values[BMAX], specs[LBMAX]/specs[COLS], specs[LBMAX]%specs[COLS]);
+        printf4("Blue Minimum %g at Row %d and Column %d\n", values[BMIN], specs[LBMIN]/specs[COLS], specs[LBMIN]%specs[COLS]);
+
+    } else {
+        printf4("Maximum %g at Row %d and Column %d\n", values[MAX], specs[LMAX]/specs[COLS], specs[LMAX]%specs[COLS]);
+        printf4("Minimum %g at Row %d and Column %d\n", values[MIN], specs[LMIN]/specs[COLS], specs[LMIN]%specs[COLS]);
+    }
     
 }
 

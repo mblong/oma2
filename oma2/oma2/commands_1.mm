@@ -285,6 +285,23 @@ int rgb2blue_c(int n,char* args){
     return NO_ERR;
 }
 
+int colorflag_c(int n, char* args){
+    int flag;
+    int* specs= iBuffer.getspecs();
+    
+    if (*args) {
+        sscanf(args, "%d",&flag);
+        if (flag) 
+            specs[IS_COLOR]= 1;
+        else
+            specs[IS_COLOR]= 0;
+        iBuffer.setspecs(specs);
+    } 
+    printf2("Image Color Flag is %d\n", specs[IS_COLOR])
+    free(specs);
+    update_UI();
+    return NO_ERR;    
+}
 
 int rotate_c(int n,char* args){
     float angle;

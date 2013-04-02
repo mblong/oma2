@@ -10,12 +10,13 @@
 
 
 /******************** Constants for Classes ********************/
-#define NSPECS  16   // number of integers in an Image specification array
+#define NSPECS  32   // number of integers in an Image specification array
 #define NVALUES 16   // number of values associated with an Image (things like min, max, etc.)
 #define NRULERCHAR 16   // number of characters in the units of the ruler
 
 // locations within the specs array
-enum {ROWS,COLS,X0,Y0,DX,DY,LMAX,LMIN,IS_COLOR,HAVE_MAX,HAS_RULER};
+enum {ROWS,COLS,X0,Y0,DX,DY,LMAX,LMIN,IS_COLOR,HAVE_MAX,HAS_RULER,
+        LRMAX,LRMIN,LGMAX,LGMIN,LBMAX,LBMIN};
 
 // locations within the values array
 enum {MIN,MAX,RMAX,RMIN,GMAX,GMIN,BMAX,BMIN,RULER_SCALE};
