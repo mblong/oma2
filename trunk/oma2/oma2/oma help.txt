@@ -31,6 +31,9 @@ COMPOSITE  <filename>
 COMTEMPIMAGE name 
 	Create a composite image by appending the data in the named temporary image to that which exists in the current image buffer. The width of the specified temporary image be the same as that of the current image.
 	
+COLORFLAG [value]
+	If an argument is given, the IS_COLOR flag is set to 0 (flag = 0) or 1 (anything else). If no argument is given, the current value of the color flag is printed.
+
 CMINMX n m 
 	Specifies the minimum (n) and maximum (m) values in the data that correspond to the minimum and maximum color or gray scale values. Specifying the values causes the "Auto Scale" feature to be disabled. If the arguments are not given, the "Auto Scale" feature is enabled.
 

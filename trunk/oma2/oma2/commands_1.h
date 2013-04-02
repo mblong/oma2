@@ -46,6 +46,8 @@ int addtmp_c(int n, char* args);
 int subtmp_c(int n, char* args);
 int comtmp_c(int n, char* args);
 
+int colorflag_c(int n, char* args);
+
 
 
 int temp_image_index (char* name,int define);
