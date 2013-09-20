@@ -113,24 +113,44 @@ extern Image iBuffer;
 -(void) showDataWindow: (char*) windowname{
     
     // figure out where to place image
+    // window_placement needs to have the right position and size
+    
+    int windowHeight = iBitmap.getheight();
+    int windowWidth = iBitmap.getwidth();
+    float scaleWidth = (float)windowWidth/(float)screenRect.size.width;
+    float scaleHeight = (float)windowHeight/(float)screenRect.size.height;
+    float scaleWindow = 1.0;
+    if (scaleHeight > 1.0 || scaleWidth > 1.0) {
+        if(scaleHeight > scaleWidth)
+            scaleWindow = scaleHeight;
+        else
+            scaleWindow = scaleWidth;
+        windowHeight /= scaleWindow;
+        windowWidth /= scaleWindow;
+        char txt[128];
+        sprintf(txt," Window scaled by %f\n",scaleWindow);
+        [self appendCText:txt];
+        
+    }
+    
     
     if(window_placement.origin.x == WINDOW_OFFSET+screenRect.origin.x) {   // left column
-        window_placement.origin.y -= (iBitmap.getheight()+TITLEBAR_HEIGHT);
+        window_placement.origin.y -= (windowHeight+TITLEBAR_HEIGHT);
     }
     
     window_placement=NSMakeRect(window_placement.origin.x, 
                                 window_placement.origin.y,
-                                iBitmap.getwidth(), iBitmap.getheight()+TITLEBAR_HEIGHT);
+                                windowWidth, windowHeight+TITLEBAR_HEIGHT);
     
-    if (window_placement.origin.x+iBitmap.getwidth()>screenRect.size.width) {
+    if (window_placement.origin.x+windowWidth>screenRect.size.width) {
         window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
         
-        if(window_placement.origin.y - iBitmap.getheight() - TITLEBAR_HEIGHT > 0){
-            window_placement.origin.y -= (iBitmap.getheight() + TITLEBAR_HEIGHT);
+        if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > 0){
+            window_placement.origin.y -= (windowHeight + TITLEBAR_HEIGHT);
         } else{
             wraps++;
             window_placement.origin.y = screenRect.size.height 
-             -iBitmap.getheight()- wraps*TITLEBAR_HEIGHT; // wrap to top
+             -windowHeight- wraps*TITLEBAR_HEIGHT; // wrap to top
         }
          
     }
@@ -148,7 +168,7 @@ extern Image iBuffer;
     
     [dataWindowController placeImage:window_placement];
     
-    window_placement.origin.x += iBitmap.getwidth();            // increment for next one
+    window_placement.origin.x += windowWidth;            // increment for next one
     /*
     if (window_placement.origin.x > screenRect.size.width){     //
         window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;

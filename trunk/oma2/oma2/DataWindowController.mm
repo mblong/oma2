@@ -91,6 +91,7 @@ extern AppController* appController;
 
 -(void) placeImage:(NSRect) theRect{
     windowRect = theRect;
+    //windowRect.origin.y += TITLEBAR_HEIGHT;
     
     [[self window] setTitle:windowName];
     
@@ -110,7 +111,9 @@ extern AppController* appController;
     
     
     [imageView setImage:im];
-    [imageView setImageScaling:NSImageScaleAxesIndependently];
+    //[imageView setFrame:windowRect];
+    [imageView setImageScaling:NSScaleToFit];
+    [imageView setImageAlignment:NSImageAlignTop];
     //[imageView setNeedsDisplay:YES]; // for display in macro, this doesn't do the job
     [imageView display];
 

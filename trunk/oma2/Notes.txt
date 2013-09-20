@@ -1,6 +1,5 @@
 √load and save prefs -- do on start and quit
 
-
 √macros enabled and define macros
     √define macro starting at line number doesn't work right
      
@@ -18,23 +17,49 @@ initializations:
     I'm using a defined constant for the TITLEBAR_HEIGHT -- that probably isn't right
 
 √rework min/max
-    
-windows related stuff:
--- erase nth,
-release window when click on close
-find which window is active
-get the bitmap data from a window for line plots
--> open a lineplot window and plot graphics
-copy from an image window
 
 Status Window:
     √ show color bar
 
-Prefs:
-    -> select color bar
-
-log
-
 √ help file
 
- save command
+
+Needed Commands
+ SAVE command
+ LOG command
+ GET command -- should get any kind of readable file?
+ 
+Existing Command Issues:
+    CROP has bugs when image is big
+    ERASE [n] to just erase nth window
+ 
+ UI Issues:
+    when the status window is selected, typing a space isn't sent to the command window
+    Big image issues:
+        Image scaling is wrong when image is big -- scales vertically but not horizontally
+        X Y coordinates (and Z values) are wrong
+        Presumably this is the source of the trouble with the CROP command
+    
+UI Needs
+    release window when click on close
+    find which window is active
+    -> open a lineplot window and plot graphics
+        get the bitmap data from a window for line plots
+    copy from an image window
+
+    Prefs:
+        -> select color bar
+
+
+Display a data window
+
+in comdec.mm:
+display_data (alias to #define display_data [appController showDataWindow:(char*) args]; in UI.h)
+
+
+appController showDataWindow:windowname (invoked from from display as above)
+    // figure out where to place image
+    screen size is:
+        screenRect.size.width
+        screenRect.size.height
+
