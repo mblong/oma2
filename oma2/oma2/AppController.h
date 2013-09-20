@@ -12,6 +12,7 @@
 // This isn't the right way to do this
 #define TITLEBAR_HEIGHT 24
 
+
 #define WINDOW_OFFSET 20
 
 
