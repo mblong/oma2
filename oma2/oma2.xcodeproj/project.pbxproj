@@ -36,6 +36,7 @@
 		DB268239159374AC00B40AE1 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = DB268238159374AC00B40AE1 /* Notes.txt */; };
 		DB2BC300151930D7009D9AED /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
 		DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
+		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DBA3B5F716FC781300B7FF27 /* oma help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma help.txt */; };
@@ -96,6 +97,8 @@
 		DB2BC302151933C9009D9AED /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
 		DB2BC303151933C9009D9AED /* PreferenceController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PreferenceController.mm; sourceTree = "<group>"; };
 		DB2E76B8152611BD004B6502 /* ImageBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBitmap.h; sourceTree = "<group>"; };
+		DB4329B417EF13E900A51802 /* gluedCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gluedCommands.h; sourceTree = "<group>"; };
+		DB4329B517EF13E900A51802 /* gluedCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gluedCommands.mm; sourceTree = "<group>"; };
 		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
 		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
 		DBA3B5F616FC781300B7FF27 /* oma help.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = "oma help.txt"; sourceTree = "<group>"; usesTabs = 1; };
@@ -240,6 +243,8 @@
 				DB021E7715211EFA001D1B05 /* image_support.mm */,
 				DB021E7615211EFA001D1B05 /* commands_1.h */,
 				DB021E7515211EFA001D1B05 /* commands_1.mm */,
+				DB4329B417EF13E900A51802 /* gluedCommands.h */,
+				DB4329B517EF13E900A51802 /* gluedCommands.mm */,
 				DB021E7F15214040001D1B05 /* comdec.h */,
 				DBA96AB91520C7090043754E /* comdec.mm */,
 			);
@@ -339,6 +344,7 @@
 				DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */,
 				DBA96ABA1520C7090043754E /* comdec.mm in Sources */,
 				DB021E7B15211EFA001D1B05 /* commands_1.mm in Sources */,
+				DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */,
 				DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */,
 				DB021E7D15211EFA001D1B05 /* image.mm in Sources */,
 				DB17A30C15247965004F810A /* DataWindowController.mm in Sources */,

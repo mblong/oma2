@@ -91,7 +91,6 @@ extern AppController* appController;
 
 -(void) placeImage:(NSRect) theRect{
     windowRect = theRect;
-    //windowRect.origin.y += TITLEBAR_HEIGHT;
     
     [[self window] setTitle:windowName];
     
@@ -109,18 +108,17 @@ extern AppController* appController;
         NSLog(@"Invalid Image");
     }
     
-    
-    [imageView setImage:im];
-    //[imageView setFrame:windowRect];
+    NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
+    [imageView setFrame:rect];
     [imageView setImageScaling:NSScaleToFit];
-    [imageView setImageAlignment:NSImageAlignTop];
+    [imageView setImage:im];
     //[imageView setNeedsDisplay:YES]; // for display in macro, this doesn't do the job
     [imageView display];
 
 }
 
 -(void) updateImage{
-    
+    // this is called when redisplaying the current image from events in the status window
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
                                 initWithBitmapDataPlanes: iBitmap.getpixdatap() 
                                 pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
@@ -135,8 +133,11 @@ extern AppController* appController;
         NSLog(@"Invalid Image");
     }
     
+    NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
+    [imageView setFrame:rect];
+    [imageView setImageScaling:NSScaleToFit];
     [imageView setImage:im];
-    [imageView setImageScaling:NSImageScaleAxesIndependently];
+
     [imageView display];
 
 }
