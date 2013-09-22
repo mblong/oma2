@@ -55,7 +55,7 @@ int temp_image_index (char* name,int define);
 
 
 
-void update_UI();    // return ibuffer to the old oma
+void update_UI();    
 
 char* fullname(char* fnam,int  type);
 int calc(point,point);

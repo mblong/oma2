@@ -16,6 +16,9 @@ ADDFILE <filename>
 ADDTEMPIMAGE name
 	Adds the contents of the named temporary image to the data in the current image data buffer.
 
+BLOCK n [m]
+	Group the image data into n x m blocks (rows x cols). This command reduces the size of the data buffer. The values are summed, pending implementation of the BLKAVE command. If the image is flagged as color, the three color planes are treated separately.
+	 
 CALCULATE
 	Print calculations on the rectangle specified with the RECTANGLE command or with the rectangle tools. The average, rms, # of points, and the x and y "center of mass" are printed. The mean, rms, centroid_X and centroid_Y are passed to the command_return_variables.
 

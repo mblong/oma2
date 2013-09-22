@@ -14,6 +14,7 @@
     NSPoint startPoint,endPoint;
     NSPoint startRect,endRect;
     int mouse_down;
+    
 
 }
 

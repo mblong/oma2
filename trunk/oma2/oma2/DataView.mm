@@ -11,6 +11,7 @@
 #import "ImageBitmap.h"
 #import "UI.h"
 
+
 extern ImageBitmap iBitmap;
 extern Image iBuffer;
 extern AppController* appController; 
@@ -21,7 +22,7 @@ extern oma2UIData UIData;
 @implementation DataView
 
 - (void)drawRect:(NSRect)dirtyRect{
-    [super drawRect:dirtyRect];
+    [super drawRect:dirtyRect];         // crash here when resizing data window that is not the current one
     //NSLog(@"TooL: %d",statusController.tool_selected);    // don't know why this doesn't work
     
     if (mouse_down) {
@@ -67,12 +68,18 @@ extern oma2UIData UIData;
     NSPoint point = [theEvent locationInWindow];
     startPoint = [self convertPoint:point fromView:nil];
     int x = startPoint.x;
-    int y = self.frame.size.height - TITLEBAR_HEIGHT - startPoint.y;
+    int y = self.frame.size.height - startPoint.y;
     if(x < 0) x = 0;
     if(x > self.frame.size.width-1) x = self.frame.size.width-1;
     if(y < 0) y = 0;
-    if(y > self.frame.size.height- TITLEBAR_HEIGHT -1) 
-        y = self.frame.size.height- TITLEBAR_HEIGHT -1;
+    if(y > self.frame.size.height -1)
+        y = self.frame.size.height -1;
+    
+    float widthScale = iBitmap.getwidth()/self.frame.size.width;
+    float heightScale = iBitmap.getheight()/self.frame.size.height;
+    x *= widthScale;
+    y *= heightScale;
+    
     startRect.x = x;
     startRect.y = y;
     
@@ -85,12 +92,18 @@ extern oma2UIData UIData;
     NSPoint point = [theEvent locationInWindow];
     endPoint = [self convertPoint:point fromView:nil];
     int x = endPoint.x;
-    int y = self.frame.size.height - TITLEBAR_HEIGHT - endPoint.y;
+    int y = self.frame.size.height - endPoint.y;
     if(x < 0) x = 0;
     if(x > self.frame.size.width-1) x = self.frame.size.width-1;
     if(y < 0) y = 0;
-    if(y > self.frame.size.height- TITLEBAR_HEIGHT -1) 
-        y = self.frame.size.height- TITLEBAR_HEIGHT -1;
+    if(y > self.frame.size.height -1)
+        y = self.frame.size.height -1;
+    
+    float widthScale = iBitmap.getwidth()/self.frame.size.width;
+    float heightScale = iBitmap.getheight()/self.frame.size.height;
+    x *= widthScale;
+    y *= heightScale;
+    
     endRect.x = x;
     endRect.y = y;
     
@@ -111,6 +124,11 @@ extern oma2UIData UIData;
     
     int x = endRect.x;
     int y = endRect.y;
+    
+    float widthScale = iBitmap.getwidth()/self.frame.size.width;
+    float heightScale = iBitmap.getheight()/self.frame.size.height;
+    x *= widthScale;
+    y *= heightScale;
     
     if(endRect.x < startRect.x){
         endRect.x = startRect.x;

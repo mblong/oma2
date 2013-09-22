@@ -10,14 +10,17 @@
 #import "oma2.h"
 
 // This isn't the right way to do this
-#define TITLEBAR_HEIGHT 24
-
+#define TITLEBAR_HEIGHT 20
 
 #define WINDOW_OFFSET 20
 
 
 // function prototypes for UI independent routines that we need
 int comdec(char*);
+
+// this is the main control for oma
+// its window is the "oma2" (i.e, command) window
+
 
 
 @class PreferenceController;

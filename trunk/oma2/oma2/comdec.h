@@ -12,6 +12,7 @@
 #include "oma2.h"
 #include "UI.h"
 #include "commands_1.h"
+#include "gluedCommands.h"
 #include "ImageBitmap.h"
 
 // Things for loops in macros

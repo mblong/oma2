@@ -14,6 +14,7 @@ ComDef   commands[] =    {
     {{"/              "},	divide_c,},		
     {{"ADDFILE        "},	addfile_c},
     {{"ADDTEMPIMAGE   "},	addtmp_c},
+    {{"BLOCK          "},	block_c},
     {{"CALCULATE      "},	calc_cmd_c},
     {{"CALCALL        "},	calcall_c},    
     {{"CROP           "},	croprectangle_c},

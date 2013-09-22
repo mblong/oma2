@@ -28,7 +28,9 @@ extern Image iBuffer;
 
 
 -(void)awakeFromNib{
-    appController = [self whoami];
+    // this global lets the UI independent code get in touch with us
+    // see definitions in UI.h -- these defines are used in the UI independent part of the code
+    appController = self;
     [self appendText: @"OMA2>"];
     
     NSScreen *mainScreen = [NSScreen mainScreen];
@@ -111,14 +113,16 @@ extern Image iBuffer;
 }
 
 -(void) showDataWindow: (char*) windowname{
+    // come here from the DISPLAY command
     
     // figure out where to place image
     // window_placement needs to have the right position and size
     
+    // this is for possibly scaling down images that won't fit on screen
     int windowHeight = iBitmap.getheight();
     int windowWidth = iBitmap.getwidth();
     float scaleWidth = (float)windowWidth/(float)screenRect.size.width;
-    float scaleHeight = (float)windowHeight/(float)screenRect.size.height;
+    float scaleHeight = (float)windowHeight/(float)(screenRect.size.height-TITLEBAR_HEIGHT);
     float scaleWindow = 1.0;
     if (scaleHeight > 1.0 || scaleWidth > 1.0) {
         if(scaleHeight > scaleWidth)
@@ -133,7 +137,7 @@ extern Image iBuffer;
         
     }
     
-    
+    // now, figure out where to place the window
     if(window_placement.origin.x == WINDOW_OFFSET+screenRect.origin.x) {   // left column
         window_placement.origin.y -= (windowHeight+TITLEBAR_HEIGHT);
     }
@@ -155,10 +159,13 @@ extern Image iBuffer;
          
     }
     
+    // create a new window controller object
     DataWindowController* dataWindowController = [[DataWindowController alloc] initWithWindowNibName:@"DataWindow"];
     
+    // add that to the array of windows
     [windowArray addObject:dataWindowController];
     
+    // name the window appropriately
     if(*windowname){
         NSString *text  = [[NSString alloc] initWithCString:windowname encoding:NSASCIIStringEncoding];
         [dataWindowController setWindowName:text] ; 
@@ -166,24 +173,17 @@ extern Image iBuffer;
          [dataWindowController setWindowName:@"Data"] ; 
     }
     
+    // display the data
     [dataWindowController placeImage:window_placement];
     
     window_placement.origin.x += windowWidth;            // increment for next one
-    /*
-    if (window_placement.origin.x > screenRect.size.width){     //
-        window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
-        if(window_placement.origin.y - iBitmap.getheight() - TITLEBAR_HEIGHT > 0){
-            window_placement.origin.y -= (iBitmap.getheight() + TITLEBAR_HEIGHT);
-        } else{
-            window_placement.origin.y = screenRect.size.height;
-        }
-    }
-    */
+
     [dataWindowController showWindow:self];
     
 }
 
 -(void) updateDataWindow{
+    // call this as needed when redisplaying the current image from events in the status window
     iBitmap = iBuffer;
     [[windowArray lastObject] updateImage];
     [[windowArray lastObject] showWindow:self];
