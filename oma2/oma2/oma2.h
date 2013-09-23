@@ -86,6 +86,17 @@ name of the units. Occupies trailer[5] to trailer[12] */
 #define DATAMSG " %g\n"
 #define DATAFMT "%g"
 
+// Things for loops in macros
+#define NESTDEPTH 20		// Should add checking for overflow; just make big for now
+// depth of execute commands
+#define EX_NEST_DEPTH 40	// Should add checking for overflow; just make big for now
+
+#define MAX_VAR_LENGTH 32
+#define MAX_VAR 200
+#define ESTRING_LENGTH 128
+#define MBUFLEN 10240     	/* number of bytes in macro buffer */
+#define VBUFLEN	1024		/* the storage for variable names in macros */
+
 
 /* Prefix and Suffix Types */
 enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_DATA,CSV_DATA,FTS_DATA,
@@ -199,6 +210,41 @@ typedef struct {
     
     
 }oma2UIData;
+
+typedef struct {
+	char name[16];
+} Cname;
+
+typedef struct {
+	Cname text;
+	int (*fnc)(int,char*);
+} ComDef;
+
+typedef struct {
+	char vname[MAX_VAR_LENGTH];
+	int ivalue;
+	float fvalue;
+	int is_float;       // = 1 -> float; = 0 -> int; = -1 -> string
+	char estring[ESTRING_LENGTH];
+} Variable;
+
+
+typedef struct {
+	char op_char;
+	int ivalue;
+	float fvalue;
+	char estring[ESTRING_LENGTH];
+} Expression_Element;
+/*
+ allowed op_char values:
+ s      a string
+ v      a numerical value (from a constant or a variable)
+ e      error
+ + = * / ^
+ ( )
+ < >
+ 
+ */
 
 #define _OMA2_h
 #endif
