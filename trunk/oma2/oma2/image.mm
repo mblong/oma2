@@ -78,6 +78,9 @@ Image::Image(char* filename)
         error = FILE_ERR;
         return;
     }
+    if (strncmp(&filename[strlen(filename)-4],".nef",4) == 0) {
+        dcrawGlue(filename,-1);
+    }
     
     nr = read((int)fd,(char*)header,HEADLEN);
     nr = read((int)fd,comment,COMLEN);
