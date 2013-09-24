@@ -57,7 +57,7 @@ int multiply_c(int n,char* args){
 }
 
 int getfile_c(int n,char* args){
-    Image new_im(fullname(args,GET_DATA));
+    Image new_im(args);
     if(new_im.err()){
         printf2("Could not load %s\n",args);
         return new_im.err();
@@ -70,7 +70,7 @@ int getfile_c(int n,char* args){
 }
 
 int addfile_c(int n,char* args){
-    Image new_im(fullname(args,GET_DATA));
+    Image new_im(args);
     if(new_im.err()){
         printf2("Could not open %s\n",args);
         return new_im.err();
@@ -89,7 +89,7 @@ int addfile_c(int n,char* args){
 }
 
 int mulfile_c(int n,char* args){
-    Image new_im(fullname(args,GET_DATA));
+    Image new_im(args);
     if(new_im.err()){
         printf2("Could not open %s\n",args);
         return new_im.err();
@@ -108,7 +108,7 @@ int mulfile_c(int n,char* args){
 }
 
 int subfile_c(int n,char* args){
-    Image new_im(fullname(args,GET_DATA));
+    Image new_im(args);
     if(new_im.err()){
         printf2("Could not open %s\n",args);
         return new_im.err();
@@ -127,7 +127,7 @@ int subfile_c(int n,char* args){
 }
 
 int divfile_c(int n,char* args){
-    Image new_im(fullname(args,GET_DATA));
+    Image new_im(args);
     if(new_im.err()){
         printf2("Could not open %s\n",args);
         return new_im.err();
@@ -146,7 +146,7 @@ int divfile_c(int n,char* args){
 }
 
 int compositefile_c(int n,char* args){
-    Image new_im(fullname(args,GET_DATA));
+    Image new_im(args);
     if(new_im.err()){
         printf2("Could not open %s\n",args);
         return new_im.err();

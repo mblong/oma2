@@ -1,4 +1,6 @@
-#pragma warning( disable: "No Previous Prototype" )
+#pragma clang diagnostic ignored "-Wall"
+#pragma clang diagnostic ignored "-Wdeprecated"
+
 #define VERSION "8.89"
 
 #define _GNU_SOURCE
@@ -216,6 +218,6 @@ void CLASS wavelet_denoise();
 
 
 
-void CLASS oma_write_ppm_tiff (int thecolor);
-
+void CLASS oma_write_ppm_tiff (int thecolor, Image* im);
+int dcrawGlue(char* name, int thecolor, Image* im);
 

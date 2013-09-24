@@ -53,6 +53,8 @@ Image::Image(int rows, int cols)
     
 }
 
+int getrgb_c(char*);
+
 Image::Image(char* filename)
 {
     unsigned long fd,nr,nbyte;
@@ -67,19 +69,24 @@ Image::Image(char* filename)
     
     specs[Y0] = specs[X0] = specs[IS_COLOR] = specs[HAVE_MAX] = 0;
     specs[DX] = specs[DY] = 1;
-    error = 0;
+    error = NO_ERR;
     specs[HAS_RULER]=0;
     values[RULER_SCALE]=1.;
     unit_text[0] = 0;
     is_big_endian = IS_BIG_ENDIAN;
     
-    fd = open(filename,O_RDONLY);
+    // default specs set -- now decide what kind of file we are opening
+    
+    if (strncmp(&filename[strlen(filename)-4],".nef",4) == 0) {
+        int color = dcrawGlue(fullname(filename,RAW_DATA),-1,this);
+        if(color < 0) error = FILE_ERR;
+        return;
+    }
+    
+    fd = open(fullname(filename,GET_DATA),O_RDONLY);
     if(fd == -1) {
         error = FILE_ERR;
         return;
-    }
-    if (strncmp(&filename[strlen(filename)-4],".nef",4) == 0) {
-        dcrawGlue(filename,-1);
     }
     
     nr = read((int)fd,(char*)header,HEADLEN);

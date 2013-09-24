@@ -19,7 +19,7 @@ int saveprefs(char*);
 int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* );
 int getpalettefile(char*);
 
-int dcrawGlue(char* name, int thecolor);
+int dcrawGlue(char* name, int thecolor,Image*);
 
 #endif
 
