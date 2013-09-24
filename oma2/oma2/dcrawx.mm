@@ -22,7 +22,7 @@
    $Revision: 1.408 $
    $Date: 2008/12/06 23:35:55 $
  */
-//#pragma warning(disable)
+
 /*
    All global variables are defined here, and all functions that
    access them are prefixed with "CLASS".  Note that a thread-safe
@@ -8160,20 +8160,16 @@ void CLASS write_ppm_tiff (FILE *ofp)
 }
 
 // -- oma
-void CLASS oma_write_ppm_tiff (int thecolor)
+void CLASS oma_write_ppm_tiff (int thecolor, Image* im)
 {
 	int row, col, soff, rstep, cstep;
 	 uchar  lut[0x10000];
 	
- 	extern DATAWORD *datpt;
-	extern TWOBYTE 	header[],trailer[];
-	extern int 		doffset;
-	extern int		npts;		/* number of data points */
-	extern short	detector;
-	extern int		nbyte;
+	//extern int		npts;		/* number of data points */
+	//extern int		nbyte;
 
 	
-	DATAWORD *pt,*pt_green,*pt_blue;
+    int pt_green,pt_blue,pt=0;
 
 	
 	iheight = height;
@@ -8182,39 +8178,30 @@ void CLASS oma_write_ppm_tiff (int thecolor)
 	
 	if(colors == 1) thecolor = 0;	// this happens in document mode
 									// the picture is the CFA mosaic as intensity only
-	
-  	header[NCHAN] = width;
+	int* specs = im->getspecs();
+  	specs[COLS] = width;
+    
 	if(thecolor == -1)
-		header[NTRAK] = (height)*3;
+		specs[ROWS] = (height)*3;
 	else
-		header[NTRAK] = (height);
+		specs[ROWS] = (height);
 
+	specs[DX] = specs[DY] = 1;
+	specs[X0] = specs[Y0] = 0;
+    if (thecolor == -1)
+        specs[IS_COLOR] = 1;
+    else
+        specs[IS_COLOR] = 0;
 	
-	
-	header[NDX] = header[NDY] = 1;
-	header[NX0] = header[NY0] = 0;		
-	nbyte = (header[NCHAN]*header[NTRAK]) * DATABYTES;
-#define CCD 1
-	detector = CCD;
-	doffset = 80;					
-	trailer[SFACTR] = 1;
-
+    // this will allocate memory
+    im->setspecs(specs);
+    free(specs);
+    
 	printf("%d Colors\n",colors);
-	// this could be big!
-	//dlen = 5000;
-	//dhi = 15000;
 	
-	if(nbyte <= 0 || checkpar()==1) {
-		beep();
-		printf(" Cannot Read %d Bytes!\n",nbyte);
-		printf(" %d Channels & %d Tracks Reset to 1.\n",header[NCHAN],header[NTRAK]);
-		header[NCHAN] = header[NTRAK] = npts = 1;
-		//close(fd);
-		return;
-	}
 	
-	pt = datpt+doffset;
-	pt_green = pt + width*height;
+	
+	pt_green = width*height;
 	pt_blue =  pt_green + width*height;
 	
 	if (output_bps == 8) gamma_lut (lut);
@@ -8226,11 +8213,11 @@ void CLASS oma_write_ppm_tiff (int thecolor)
 		for (col=0; col < width; col++, soff += cstep){
 			 
 			if(thecolor != -1)
-				*pt++ = image[soff][thecolor];
+				im->setpix(row, col, image[soff][thecolor]);
 			else {
-				*pt++ = image[soff][0];
-				*pt_green++ = image[soff][1];
-				*pt_blue++ = image[soff][2];
+                im->setpix(row, col, image[soff][0]);
+                im->setpix(row+height, col, image[soff][1]);
+                im->setpix(row+2*height, col, image[soff][2]);
 			}
 		}				
 	}
@@ -8239,7 +8226,7 @@ void CLASS oma_write_ppm_tiff (int thecolor)
 
 // -----------------------------
 
-int dcrawGlue(char* name, int thecolor){
+int dcrawGlue(char* name, int thecolor, Image* im){
 	
 	int arg,status=0;
 	int timestamp_only=0, thumbnail_only=0, identify_only=0;
@@ -8346,7 +8333,7 @@ int dcrawGlue(char* name, int thecolor){
 		puts("");
 		return -1;
 	}
-	
+/*
 	argv[argc] = "";
 	for (arg=1; (((opm = argv[arg][0]) - 2) | 2) == '+'; ) {
 		opt = argv[arg++][1];
@@ -8406,15 +8393,15 @@ int dcrawGlue(char* name, int thecolor){
 				return -1;
 		}
 	}
-	
+*/	
 	// -- oma
-#define IS_COLOR 0
+
     if(document_mode) {
         image_is_color = 0;
-        trailer[IS_COLOR] = 0;
+        trailer[IS_COLOR_] = 0;
     } else {
         image_is_color = 1;
-        trailer[IS_COLOR] = 1;
+        trailer[IS_COLOR_] = 1;
     }
 	
 	if (use_camera_matrix < 0)
@@ -8741,7 +8728,7 @@ int dcrawGlue(char* name, int thecolor){
 	 fclose(ifp);
 	 if (ofp != stdout) fclose(ofp);
 	 */
-	oma_write_ppm_tiff(thecolor);
+	oma_write_ppm_tiff(thecolor, im);
 	fclose(ifp);
 	//cleanup:
 	//free(ofname);

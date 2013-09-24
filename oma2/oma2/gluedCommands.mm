@@ -124,7 +124,8 @@ int nbyte;
 int	open_file_chans;
 int	open_file_tracks;
 
-
+char txt[4096];
+float r_scale,g_scale,b_scale;
 
 /* _________________________________________
  
@@ -657,5 +658,4 @@ int blockrgb(int n,int index)
 	setarrow();
 	return 0;
 }
-
 

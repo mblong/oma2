@@ -97,6 +97,8 @@ name of the units. Occupies trailer[5] to trailer[12] */
 #define MBUFLEN 10240     	/* number of bytes in macro buffer */
 #define VBUFLEN	1024		/* the storage for variable names in macros */
 
+#define OMA_OK 0
+#define OMA_FILE -1
 
 /* Prefix and Suffix Types */
 enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_DATA,CSV_DATA,FTS_DATA,
