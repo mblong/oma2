@@ -8333,7 +8333,7 @@ int dcrawGlue(char* name, int thecolor, Image* im){
 		puts("");
 		return -1;
 	}
-/*
+
 	argv[argc] = "";
 	for (arg=1; (((opm = argv[arg][0]) - 2) | 2) == '+'; ) {
 		opt = argv[arg++][1];
@@ -8393,7 +8393,7 @@ int dcrawGlue(char* name, int thecolor, Image* im){
 				return -1;
 		}
 	}
-*/	
+	
 	// -- oma
 
     if(document_mode) {
