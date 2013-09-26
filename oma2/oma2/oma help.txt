@@ -80,9 +80,9 @@ EXECUTE <filename>
 FLOATVARIABLE variable_name
 	Specifies that variable_name is to be used as a floating point variable.
 
-FTEMPIMAGE n
-	Free memory associated with temporary image n.
-	n must be in the range 0-9.
+FTEMPIMAGE tempImage
+	Free memory associated with temporary image tempImage.
+    tempImage must be in the range 0-9, or correspond to a named image.
 
 GET <filename>  
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix and suffix are used.

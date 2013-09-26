@@ -210,8 +210,8 @@
 		DBA96AB21520C34F0043754E /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				DBC81582153DFBB7002BEFD4 /* UI.mm */,
 				DBA96ABC1520CA9C0043754E /* UI.h */,
+				DBC81582153DFBB7002BEFD4 /* UI.mm */,
 				DB0FC0341519183D008A9B54 /* oma2AppDelegate.h */,
 				DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */,
 				DB17A30A15247965004F810A /* DataWindowController.h */,

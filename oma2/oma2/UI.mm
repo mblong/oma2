@@ -7,8 +7,10 @@
 //
 
 #include <iostream>
+#include <stdarg.h>
 #include "UI.h"
 #include "PreferenceController.h"
+
 
 extern char    reply[1024];   // buffer for sending messages to be typed out by the user interface
 extern Image   iBuffer;       // the image buffer
@@ -66,12 +68,12 @@ void update_UI(){
 
 void dropped_file(char* extension, char* name){
     
-    printf2("File ext is: %s\n",extension);
-    printf2("File name is: %s\n",name);
+    printf("File ext is: %s\n",extension);
+    printf("File name is: %s\n",name);
     if(strcmp(extension, "dat")==0){
         Image new_im(name);
         if(new_im.err()){
-            printf2("Could not load %s\n",name);
+            printf("Could not load %s\n",name);
             [appController appendText: @"OMA2>"];
             return;
         }
@@ -86,4 +88,17 @@ void dropped_file(char* extension, char* name){
 }
 
 
+int omaprintf(const char* format, ...)
+{
+    va_list args;
+    va_start(args,format);
+    
+    int return_status = 0;
+    
+    return_status = vsprintf(reply,format, args);
+    [appController appendCText: reply];
+    
+    va_end(args);
+    return return_status;
+}
 

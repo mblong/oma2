@@ -276,7 +276,7 @@ char* fullname(char* fnam,int  type)
     
 	if( (strlen(long_name) + 8) >= CHPERLN) {
 	    //beep();
-	    printf1(" File Name Is Too Long!\n"); 
+	    printf(" File Name Is Too Long!\n"); 
 	} else  {
 	    strlcpy(fnam,long_name,CHPERLN);
     }
@@ -600,10 +600,10 @@ int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im)
         
         strcpy(im->unit_text,(char*) &trailer[RULER_UNITS]);
         if( im->unit_text[0] ){
-            printf3("%f Pixels per %s.\n",im->values[RULER_SCALE],im->unit_text);
+            printf("%f Pixels per %s.\n",im->values[RULER_SCALE],im->unit_text);
             
         } else {
-            printf2("%f Pixels per Unit.\n",im->values[RULER_SCALE]);
+            printf("%f Pixels per Unit.\n",im->values[RULER_SCALE]);
             
         }
     } else {

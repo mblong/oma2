@@ -59,7 +59,7 @@ int multiply_c(int n,char* args){
 int getfile_c(int n,char* args){
     Image new_im(args);
     if(new_im.err()){
-        printf2("Could not load %s\n",args);
+        printf("Could not load %s\n",args);
         return new_im.err();
     }
     iBuffer.free();     // release the old data
@@ -72,7 +72,7 @@ int getfile_c(int n,char* args){
 int addfile_c(int n,char* args){
     Image new_im(args);
     if(new_im.err()){
-        printf2("Could not open %s\n",args);
+        printf("Could not open %s\n",args);
         return new_im.err();
     }
     if(iBuffer == new_im){
@@ -83,7 +83,7 @@ int addfile_c(int n,char* args){
         return NO_ERR;
     }
     new_im.free();
-    printf1("Files are not the same size.\n");
+    printf("Files are not the same size.\n");
     iBuffer.errclear();
     return SIZE_ERR;
 }
@@ -91,7 +91,7 @@ int addfile_c(int n,char* args){
 int mulfile_c(int n,char* args){
     Image new_im(args);
     if(new_im.err()){
-        printf2("Could not open %s\n",args);
+        printf("Could not open %s\n",args);
         return new_im.err();
     }
     if(iBuffer == new_im){
@@ -102,7 +102,7 @@ int mulfile_c(int n,char* args){
         return NO_ERR;
     }
     new_im.free();
-    printf1("Files are not the same size.\n");
+    printf("Files are not the same size.\n");
     iBuffer.errclear();
     return SIZE_ERR;
 }
@@ -110,7 +110,7 @@ int mulfile_c(int n,char* args){
 int subfile_c(int n,char* args){
     Image new_im(args);
     if(new_im.err()){
-        printf2("Could not open %s\n",args);
+        printf("Could not open %s\n",args);
         return new_im.err();
     }
     if(iBuffer == new_im){
@@ -121,7 +121,7 @@ int subfile_c(int n,char* args){
         return NO_ERR;
     }
     new_im.free();
-    printf1("Files are not the same size.\n");
+    printf("Files are not the same size.\n");
     iBuffer.errclear();
     return SIZE_ERR;
 }
@@ -129,7 +129,7 @@ int subfile_c(int n,char* args){
 int divfile_c(int n,char* args){
     Image new_im(args);
     if(new_im.err()){
-        printf2("Could not open %s\n",args);
+        printf("Could not open %s\n",args);
         return new_im.err();
     }
     if(iBuffer == new_im){
@@ -140,7 +140,7 @@ int divfile_c(int n,char* args){
         return NO_ERR;
     }
     new_im.free();
-    printf1("Files are not the same size.\n");
+    printf("Files are not the same size.\n");
     iBuffer.errclear();
     return SIZE_ERR;
 }
@@ -148,14 +148,14 @@ int divfile_c(int n,char* args){
 int compositefile_c(int n,char* args){
     Image new_im(args);
     if(new_im.err()){
-        printf2("Could not open %s\n",args);
+        printf("Could not open %s\n",args);
         return new_im.err();
     }
     iBuffer.composite(new_im);
     if(iBuffer.err()){
         new_im.free();
         int err = iBuffer.err();
-        printf2("Error: %d.\n",err);
+        printf("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
     }
@@ -189,7 +189,7 @@ int rectan_c(int n, char* args)
     
     if(*args == 0){
         
-        printf5("Current Rectangle is %d %d %d %d.\n",
+        printf("Current Rectangle is %d %d %d %d.\n",
                UIData.iRect.ul.h,UIData.iRect.ul.v,UIData.iRect.lr.h,UIData.iRect.lr.v);
         /*
         user_variables[0].ivalue = substart.h;
@@ -206,7 +206,7 @@ int rectan_c(int n, char* args)
     
     if(narg != 4) {
         //beep();
-        printf1("Need 4 Arguments.\n"); 
+        printf("Need 4 Arguments.\n"); 
         return -1;
     }
     UIData.iRect = new_rect;
@@ -223,7 +223,7 @@ int rectan_c(int n, char* args)
         UIData.iRect.ul.v = end.v;
     }
 
-    printf5("Current Rectangle is %d %d %d %d.\n",
+    printf("Current Rectangle is %d %d %d %d.\n",
            UIData.iRect.ul.h,UIData.iRect.ul.v,UIData.iRect.lr.h,UIData.iRect.lr.v);
     /*
     user_variables[0].ivalue = substart.h;
@@ -250,7 +250,7 @@ int rgb2red_c(int n,char* args){
     iBuffer.rgb2color(0);
     if(iBuffer.err()){
         int err = iBuffer.err();
-        printf2("Error: %d.\n",err);
+        printf("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
     }
@@ -263,7 +263,7 @@ int rgb2green_c(int n,char* args){
     iBuffer.rgb2color(1);
     if(iBuffer.err()){
         int err = iBuffer.err();
-        printf2("Error: %d.\n",err);
+        printf("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
     }
@@ -276,7 +276,7 @@ int rgb2blue_c(int n,char* args){
     iBuffer.rgb2color(2);    
     if(iBuffer.err()){
         int err = iBuffer.err();
-        printf2("Error: %d.\n",err);
+        printf("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
     }
@@ -297,7 +297,7 @@ int colorflag_c(int n, char* args){
             specs[IS_COLOR]= 0;
         iBuffer.setspecs(specs);
     } 
-    printf2("Image Color Flag is %d\n", specs[IS_COLOR])
+    printf("Image Color Flag is %d\n", specs[IS_COLOR]);
     free(specs);
     update_UI();
     return NO_ERR;    
@@ -312,7 +312,7 @@ int rotate_c(int n,char* args){
         iBuffer.rotate(angle);
         if(iBuffer.err()){
             int err = iBuffer.err();
-            printf2("Error: %d.\n",err);
+            printf("Error: %d.\n",err);
             iBuffer.errclear();
             return err;
         }
@@ -340,7 +340,7 @@ int rotate_c(int n,char* args){
         free(specs);
         if(iBuffer.err()){
             int err = iBuffer.err();
-            printf2("Error: %d.\n",err);
+            printf("Error: %d.\n",err);
             iBuffer.errclear();
             return err;
         }
@@ -414,7 +414,7 @@ int size_c(int n,char* args){
         if (narg == 2){
             Image new_im(height,width);
             if(new_im.err()){
-                printf2("Could not load %s\n",args);
+                printf("Could not load %s\n",args);
                 return new_im.err();
             }
             iBuffer.free();     // release the old data
@@ -425,7 +425,7 @@ int size_c(int n,char* args){
         }
     } 
     int* specs = iBuffer.getspecs();
-    printf3("Current Image is %d by %d\n",specs[COLS],specs[ROWS]);
+    printf("Current Image is %d by %d\n",specs[COLS],specs[ROWS]);
     free(specs);
     return NO_ERR;
  
@@ -476,7 +476,7 @@ int calc_cmd_c(int n, char* args)
         substart.h < 0 ||
         substart.v < 0){
         free(bufferspecs);
-        printf1("Rectangle not contained in current image.\n");
+        printf("Rectangle not contained in current image.\n");
         return ARG_ERR;
     }
 	
@@ -532,17 +532,17 @@ int calc(point start,point end){
 	rms = rms/icount - ave*ave;	
 	rms = sqrt(rms);
 	
-	printf3("Ave:\t%g\trms:\t%g\t# Pts:\t",ave,rms);
-	printf2("%d",icount);
+	printf("Ave:\t%g\trms:\t%g\t# Pts:\t",ave,rms);
+	printf("%d",icount);
 	if( bufferspecs[HAS_RULER] ) {
 		xcom /= buffervalues[RULER_SCALE];
 		ycom /= buffervalues[RULER_SCALE];
 	}
-	printf3("\tx:\t%g\ty:\t%g",xcom,ycom);
+	printf("\tx:\t%g\ty:\t%g",xcom,ycom);
 	if( bufferspecs[HAS_RULER]!= 0  && unit_text[0]!=0 ){
-		printf2("\t%s\n",unit_text);
+		printf("\t%s\n",unit_text);
 	} else {
-		printf1("\n");
+		printf("\n");
     }
 
     free( buffervalues);
@@ -565,7 +565,7 @@ int temp_image_index (char* name,int define)
         // just to be sure, be sure this isn't a number > 9
         sscanf(name, "%d",&i);
         if( i > 9){
-            printf1("Numbered temporary images must be between 0-9\n");
+            printf("Numbered temporary images must be between 0-9\n");
             return -1;
         } else
             return name[0] - '0';
@@ -595,10 +595,10 @@ int temp_image_index (char* name,int define)
             return NUMBERED_TEMP_IMAGES+numberNamedTempImages-1;
         }
 		//beep();
-		printf2("Temporary image %s not defined.\n",name);
+		printf("Temporary image %s not defined.\n",name);
 		return(-1);
     }
-    printf2("%s is not a valid image name.\n",name);
+    printf("%s is not a valid image name.\n",name);
 	return -1;
 }
 
@@ -627,7 +627,7 @@ int gtemp_c(int n, char* args)
     if(n >=0){
 
         if( iTempImages[n].isEmpty()){
-            printf1("Temporary image is not defined.\n");
+            printf("Temporary image is not defined.\n");
             return MEM_ERR;
         }
         iBuffer << iTempImages[n];
@@ -639,7 +639,11 @@ int gtemp_c(int n, char* args)
 }
 
 /* ********** */
-
+/*
+FTEMPIMAGE tempImage
+    Free memory associated with temporary image tempImage.
+    tempImage must be in the range 0-9, or correspond to a named image.
+*/
 int ftemp_c(int n, char* args)
 {
     n = temp_image_index(args,0);
@@ -672,7 +676,7 @@ int ltemp_c(int n, char* args)
                 ncolors=3;
             else
                 ncolors=1;
-            printf5("Temp Image %d: %d x %d x %d\n",n,
+            printf("Temp Image %d: %d x %d x %d\n",n,
                    iTempImages[n].width(),iTempImages[n].height(),ncolors);
         }
     }
@@ -682,7 +686,7 @@ int ltemp_c(int n, char* args)
             ncolors=3;
         else
             ncolors=1;
-        printf5("Temp Image %s: %d x %d x %d\n",namedTempImages[i].vname,
+        printf("Temp Image %s: %d x %d x %d\n",namedTempImages[i].vname,
                iTempImages[n].width(),iTempImages[n].height(),ncolors);
     }
     
@@ -695,7 +699,7 @@ int addtmp_c(int n, char* args)
     n = temp_image_index(args,0);
     if(n >=0){
         if (iBuffer != iTempImages[n]) {
-            printf1("Images are not the same size.\n");
+            printf("Images are not the same size.\n");
             return SIZE_ERR;
         }
         iBuffer + iTempImages[n];
@@ -712,7 +716,7 @@ int subtmp_c(int n, char* args)
     n = temp_image_index(args,0);
     if(n >=0){
         if (iBuffer != iTempImages[n]) {
-            printf1("Images are not the same size.\n");
+            printf("Images are not the same size.\n");
             return SIZE_ERR;
         }
         iBuffer - iTempImages[n];
@@ -730,7 +734,7 @@ int multmp_c(int n, char* args)
     n = temp_image_index(args,0);
     if(n >=0){
         if (iBuffer != iTempImages[n]) {
-            printf1("Images are not the same size.\n");
+            printf("Images are not the same size.\n");
             return SIZE_ERR;
         }
         iBuffer * iTempImages[n];
@@ -748,7 +752,7 @@ int divtmp_c(int n, char* args)
     n = temp_image_index(args,0);
     if(n >=0){
         if (iBuffer != iTempImages[n]) {
-            printf1("Images are not the same size.\n");
+            printf("Images are not the same size.\n");
             return SIZE_ERR;
         }
         iBuffer / iTempImages[n];
@@ -767,7 +771,7 @@ int comtmp_c(int n, char* args)
     n = temp_image_index(args,0);
     if(n >=0){
         if (iBuffer.width() != iTempImages[n].width()) {
-            printf1("Images are not the same width.\n");
+            printf("Images are not the same width.\n");
             return SIZE_ERR;
         }
         iBuffer.composite(iTempImages[n]);
