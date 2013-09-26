@@ -188,7 +188,7 @@ int comdec(char* cmnd)
             /* Now have the command, echo it to terminal */
             
             exe_line_number[which_ex_buffer]++;					/* next line unless modified by loop */
-            printf4(" E-%d-%d: %s\n",which_ex_buffer+1,exe_line_number[which_ex_buffer],cmnd);
+            printf(" E-%d-%d: %s\n",which_ex_buffer+1,exe_line_number[which_ex_buffer],cmnd);
             
             /* Now adjust pointers */
             
@@ -225,7 +225,7 @@ int comdec(char* cmnd)
                 /* Now have the command, echo it to terminal */
                 
                 macro_line_number++;				/* next line unless modified by loop */
-                printf3(" M%d: %s\n",macro_line_number,cmnd);
+                printf(" M%d: %s\n",macro_line_number,cmnd);
                 
                 while ( *(macbuf + (++macptr) ) ) ;
                 
@@ -319,11 +319,11 @@ int comdec(char* cmnd)
                      clist_ptr = commands;
                      cp = 0;
                      } else {
-                     printf2("No such command: %s\n",cmnd);
+                     printf("No such command: %s\n",cmnd);
                      return -1;
                      }
                      */
-                    printf2("No such command:%s\n",cmnd);
+                    printf("No such command:%s\n",cmnd);
                     return CMND_ERR;
                 }
             } else {
@@ -617,7 +617,7 @@ int fill_in_command(char* dest,char* source,int val)
                     *(dest+j) = 0; // end the returned command line here
                     if (if_condition_met) {     // only call out errors if we are actually doing this command
                         //beep();
-                        printf2(" No variable to match %s.\n",txt);
+                        printf(" No variable to match %s.\n",txt);
                         return arg_index;
                     } else {
                         // this command isn't going to be done 
@@ -1032,11 +1032,11 @@ Expression_Element evaluate(int start, int end)
 int vprint(int index)
 {
 	if(user_variables[index].is_float > 0){
-		printf3("%s: %g\n", user_variables[index].vname,user_variables[index].fvalue);
+		printf("%s: %g\n", user_variables[index].vname,user_variables[index].fvalue);
 	}else if(user_variables[index].is_float == 0){
-		printf3("%s: %d\n", user_variables[index].vname,user_variables[index].ivalue);
+		printf("%s: %d\n", user_variables[index].vname,user_variables[index].ivalue);
 	}else{
-		printf3("%s: %s\n", user_variables[index].vname,&user_variables[index].estring[0]);
+		printf("%s: %s\n", user_variables[index].vname,&user_variables[index].estring[0]);
     }
 	return 0;
 }
@@ -1148,7 +1148,7 @@ int defmac(int n,char* args)
             i++;
             if ( k+1 == i) {
                 //beep();
-                printf1("Macro Is Not That Long.\n");
+                printf("Macro Is Not That Long.\n");
                 return ARG_ERR;
             }
 
@@ -1173,7 +1173,7 @@ int defmac(int n,char* args)
                 
                 if ( (i + k + j) >= MBUFLEN) {
                     //beep();
-                    printf1 ("Macro Buffer Overflow.\n");
+                    printf ("Macro Buffer Overflow.\n");
                     return MEM_ERR;
                 }
                 while((args[index] != EOL) && (args[index] != ';')) { 
@@ -1191,7 +1191,7 @@ int defmac(int n,char* args)
         }
         
         // at this point we are looking for new lines of text
-        printf2("Line #%d: ",line_num++);
+        printf("Line #%d: ",line_num++);
         get_next_line = 1;
         return GET_MACRO_LINE;
     }
@@ -1199,7 +1199,7 @@ int defmac(int n,char* args)
     if (nc) {
         if ( (i+nc) >= MBUFLEN ) {
 			//beep();
-            printf1 ("Macro Buffer Overflow.\n");
+            printf ("Macro Buffer Overflow.\n");
             *(macbuf+i) = EOL;
             clear_macro_to_end();
             get_next_line=i=0;
@@ -1210,7 +1210,7 @@ int defmac(int n,char* args)
             *(macbuf + i++) = args[j];
         }
         *(macbuf + i++) = EOL;
-        printf2("Line #%d: ",line_num++);
+        printf("Line #%d: ",line_num++);
         return GET_MACRO_LINE;
     }
     *(macbuf+i) = EOL;
@@ -1227,8 +1227,8 @@ int lmacro(int n, char* args)
     lc = 1;
     i = 0;
     while (*(macbuf+i)) {
-        printf2( "Line #%d: ",lc++);
-		printf2( "%s\n",macbuf+i);
+        printf( "Line #%d: ",lc++);
+		printf( "%s\n",macbuf+i);
         while (*(macbuf+i)) {
             i++;
         }
@@ -1266,7 +1266,7 @@ int rmacro(int n, char* args)
     
     if ( *macbuf == 0){
 		//beep();
-        printf1("No Macro Defined.\n");
+        printf("No Macro Defined.\n");
         return 1;
     }
 	
@@ -1287,7 +1287,7 @@ int rmacro(int n, char* args)
 	}
     if (maccount <= 0)  maccount = 1;
     macptr = 0;
-	printf4("Start Macro: from %d to %d, steps of %d.\n",macval,j,macincrement);
+	printf("Start Macro: from %d to %d, steps of %d.\n",macval,j,macincrement);
 	return 0;
 }
 /*
@@ -1358,13 +1358,13 @@ int execut(int n, char* args)
     
 	if(fd == -1) {
 		//beep();
-		printf2("Execute File '%s' Not Found.\n",args);
+		printf("Execute File '%s' Not Found.\n",args);
 		//free(exbuf[which_ex_buffer]);
 		which_ex_buffer--;
 		return -1;
 	}
 	nread = (int)read(fd,exbuf[which_ex_buffer],MBUFLEN);
-	printf2("%d Bytes Read.\n",nread);
+	printf("%d Bytes Read.\n",nread);
 	
  	// the format of macro files has changed -- now they are formatted text files 
 	// previously, they were constant length files containing C strings 
@@ -1590,7 +1590,7 @@ int ifcmnd(int n, char* args)
 	
 	if( (macflag == 0) && (exflag == 0)) {
 		//beep();
-		printf1("IF must be within a Macro.\n");
+		printf("IF must be within a Macro.\n");
 		return -1;
 	}
 	
@@ -1624,7 +1624,7 @@ int ifcmnd(int n, char* args)
 	ifdepth++;
     if(ifdepth >= NESTDEPTH){
         //beep();
-        printf1("IF buffer overflow.\n");
+        printf("IF buffer overflow.\n");
         return -1;
     }
 	//printf("if condition: %d; depth %d\n",if_condition_met,ifdepth);
@@ -1638,8 +1638,8 @@ int endifcmnd(int n, char* args)
 {
 	if( ifdepth <1){
 		//beep();
-		printf1("IF nesting error,\n");
-		printf3("IF condition: %d; depth %d\n",if_condition_met,ifdepth);
+		printf("IF nesting error,\n");
+		printf("IF condition: %d; depth %d\n",if_condition_met,ifdepth);
 		ifdepth = 0;
 		if_condition_met = 1;
 		return 1;
@@ -1667,14 +1667,14 @@ int loop(int n,char* args)
 	
 	if( (macflag == 0) && (exflag == 0)) {
 		//beep();
-		printf1("Loops must be within a Macro.\n");
+		printf("Loops must be within a Macro.\n");
 		return -1;
 	}
 	
 	narg = sscanf(args,"%s %d %d %d",vname,&start,&end,&step);
 	if( narg < 3 ){
 		//beep();
-		printf1("Not enough arguments for LOOP.\n");
+		printf("Not enough arguments for LOOP.\n");
 		return -2;
 	}
 	if( narg == 3 )
@@ -1684,7 +1684,7 @@ int loop(int n,char* args)
        ((start < end) && step < 0) ||
        (step == 0) ) {
         //beep();
-        printf1("Invalid arguments for LOOP.\n");
+        printf("Invalid arguments for LOOP.\n");
         return -3;
 	}
 	
@@ -1755,7 +1755,7 @@ int loopbreak(int n,char* args)			// break out of the current loop
 	
 	if(loopdepth <= 0) {
 		//beep();
-		printf1("Loop break not in a loop\n");
+		printf("Loop break not in a loop\n");
 		return -1;
 	}
 	
@@ -2068,16 +2068,16 @@ int help(int n, char* args)
     enum {LOOKING_FOR_MATCH,LISTING};
        
     if(*args == 0) {
-        printf1("Available Commands are:\n" );
+        printf("Available Commands are:\n" );
        
         for (i = 0; commands[i].text.name[0] != EOL; i++ ) {
-            printf2( "%s\n", commands[i].text.name);
+            printf( "%s\n", commands[i].text.name);
         }
     }
     else {
         fd = open(HELPFILE,O_RDONLY);
         if( fd == -1) {
-            printf1("'OMA HELP' File Not Found.\n");
+            printf("'OMA HELP' File Not Found.\n");
             return FILE_ERR;
         }
 
@@ -2093,16 +2093,16 @@ int help(int n, char* args)
 					}
 					if( j != i )
 						break;
-					printf2("%s",string);
+					printf("%s",string);
 					status = LISTING;
 					break;
 				case LISTING:
 					if( length <= 2) {
 						status = LOOKING_FOR_MATCH;
-						printf1("\n");
+						printf("\n");
 						break; 
 					}
-					printf2("%s",string);
+					printf("%s",string);
             }
         }
         close(fd);

@@ -109,12 +109,12 @@ Image::Image(char* filename)
     nr = read((int)fd,data,doffset*DATABYTES);
     
     nr = read((int)fd,(char*)data, nbyte);
-    printf2("%d Bytes read.\n",(int)nr);
+    printf("%d Bytes read.\n",(int)nr);
     
     if(nbyte/nr == 2) {
         // this is a 2-byte data file
         // adjust to 4-byte format
-        printf1("2-byte input file\n");
+        printf("2-byte input file\n");
         if(swap_bytes)  swap_bytes_routine((char*) data,(int) nr,2);
 		two_to_four(data,(int)nr/2,trailer[SFACTR]);
     } else {
@@ -371,18 +371,18 @@ void Image::getmaxx()
      */
     
     if(specs[IS_COLOR]){
-        printf4("Red Maximum %g at Row %d and Column %d\n", values[RMAX], specs[LRMAX]/specs[COLS], specs[LRMAX]%specs[COLS]);
-        printf4("Red Minimum %g at Row %d and Column %d\n\n", values[RMIN], specs[LRMIN]/specs[COLS], specs[LRMIN]%specs[COLS]);
+        printf("Red Maximum %g at Row %d and Column %d\n", values[RMAX], specs[LRMAX]/specs[COLS], specs[LRMAX]%specs[COLS]);
+        printf("Red Minimum %g at Row %d and Column %d\n\n", values[RMIN], specs[LRMIN]/specs[COLS], specs[LRMIN]%specs[COLS]);
 
-        printf4("Green Maximum %g at Row %d and Column %d\n", values[GMAX], specs[LGMAX]/specs[COLS], specs[LGMAX]%specs[COLS]);
-        printf4("Green Minimum %g at Row %d and Column %d\n\n", values[GMIN], specs[LGMIN]/specs[COLS], specs[LGMIN]%specs[COLS]);
+        printf("Green Maximum %g at Row %d and Column %d\n", values[GMAX], specs[LGMAX]/specs[COLS], specs[LGMAX]%specs[COLS]);
+        printf("Green Minimum %g at Row %d and Column %d\n\n", values[GMIN], specs[LGMIN]/specs[COLS], specs[LGMIN]%specs[COLS]);
 
-        printf4("Blue Maximum %g at Row %d and Column %d\n", values[BMAX], specs[LBMAX]/specs[COLS], specs[LBMAX]%specs[COLS]);
-        printf4("Blue Minimum %g at Row %d and Column %d\n", values[BMIN], specs[LBMIN]/specs[COLS], specs[LBMIN]%specs[COLS]);
+        printf("Blue Maximum %g at Row %d and Column %d\n", values[BMAX], specs[LBMAX]/specs[COLS], specs[LBMAX]%specs[COLS]);
+        printf("Blue Minimum %g at Row %d and Column %d\n", values[BMIN], specs[LBMIN]/specs[COLS], specs[LBMIN]%specs[COLS]);
 
     } else {
-        printf4("Maximum %g at Row %d and Column %d\n", values[MAX], specs[LMAX]/specs[COLS], specs[LMAX]%specs[COLS]);
-        printf4("Minimum %g at Row %d and Column %d\n", values[MIN], specs[LMIN]/specs[COLS], specs[LMIN]%specs[COLS]);
+        printf("Maximum %g at Row %d and Column %d\n", values[MAX], specs[LMAX]/specs[COLS], specs[LMAX]%specs[COLS]);
+        printf("Minimum %g at Row %d and Column %d\n", values[MIN], specs[LMIN]/specs[COLS], specs[LMIN]%specs[COLS]);
     }
     
 }
@@ -517,7 +517,7 @@ void Image::crop(rect crop_rect){
     
     if(x0 + sizx > specs[COLS] || y0 + sizy > specs[ROWS]){
         //beep();
-        printf1("Rectangle is not contained within the current image.\n");
+        printf("Rectangle is not contained within the current image.\n");
         error = SIZE_ERR;
         //return *this;
         return;
@@ -528,7 +528,7 @@ void Image::crop(rect crop_rect){
     if(save_rgb_rectangle){
         if( y0 + sizy*3 >= specs[ROWS] ){
             //beep();
-            printf1("Can't save rectangle as RGB image -- rectangle size problem.\n");
+            printf("Can't save rectangle as RGB image -- rectangle size problem.\n");
             error = SIZE_ERR;
             //return *this;
             return;
@@ -556,8 +556,8 @@ void Image::crop(rect crop_rect){
 		}
 	}
 
-    printf3("%d x %d Image.\n",sizx,sizy);
-	printf3("Current image starts at: %d\t%d\n",x0,y0);
+    printf("%d x %d Image.\n",sizx,sizy);
+	printf("Current image starts at: %d\t%d\n",x0,y0);
     
     cropped_image.specs[X0] = x0*specs[DX];
     cropped_image.specs[Y0] = y0*specs[DY];
@@ -645,15 +645,15 @@ void Image::rotate(float angle){
         //return *this;
         return;
     } else {
-        printf3("%f theta, %f sin, ",theta,sintheta);
-        printf2("%f cos\n",costheta);
+        printf("%f theta, %f sin, ",theta,sintheta);
+        printf("%f cos\n",costheta);
         
         width = specs[COLS]*fabs(costheta) + specs[ROWS]*fabs(sintheta);
         height = specs[ROWS]*fabs(costheta) + specs[COLS]*fabs(sintheta);
         midx = width/2;
         midy = height/2;
         size = width * height;
-        printf3("%d %d width height\n",width,height);
+        printf("%d %d width height\n",width,height);
         
         Image rotated(width,height); // new data space
         if(rotated.err()){

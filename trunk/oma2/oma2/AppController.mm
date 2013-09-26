@@ -122,7 +122,8 @@ extern Image iBuffer;
     int windowHeight = iBitmap.getheight();
     int windowWidth = iBitmap.getwidth();
     float scaleWidth = (float)windowWidth/(float)screenRect.size.width;
-    float scaleHeight = (float)windowHeight/(float)(screenRect.size.height-TITLEBAR_HEIGHT);
+    // leave a little space at the bottom of the sreen
+    float scaleHeight = (float)windowHeight/(float)(screenRect.size.height-2*TITLEBAR_HEIGHT);
     float scaleWindow = 1.0;
     if (scaleHeight > 1.0 || scaleWidth > 1.0) {
         if(scaleHeight > scaleWidth)

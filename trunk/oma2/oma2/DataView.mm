@@ -176,11 +176,11 @@ extern oma2UIData UIData;
                 dx /= buffervalues[RULER_SCALE];
                 dy /= buffervalues[RULER_SCALE];
             }              
-            printf4("dx:\t%g\tdy:\t%g\tL:\t%g",dx,dy,dist);
+            printf("dx:\t%g\tdy:\t%g\tL:\t%g",dx,dy,dist);
             if( bufferspecs[HAS_RULER]!= 0  && unit_text[0]!=0 ){
-                printf2("\t%s\n",unit_text);
+                printf("\t%s\n",unit_text);
             } else {
-                printf1("\n");
+                printf("\n");
             }
             
             free( buffervalues);
