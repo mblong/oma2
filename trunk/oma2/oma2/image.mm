@@ -13,10 +13,15 @@ Image  iTempImages[NUM_TEMP_IMAGES];  // temporary in-memmory images
 int numberNamedTempImages = 0;
 Variable namedTempImages[NUM_TEMP_IMAGES-NUMBERED_TEMP_IMAGES];
 
+int argc = 0;
+char *argv[200];
+char dcraw_arg[CHPERLN];
+
+
 //extern "C" int get_byte_swap_value(short);
 //extern "C" void swap_bytes_routine(char* co, int num,int nb);
 
-Image::Image()              // create an empty Image
+Image::Image()              // create an empty Image with default values
 {
     data = NULL;
     specs[ROWS]=specs[COLS]=0;
@@ -28,12 +33,17 @@ Image::Image()              // create an empty Image
     values[RULER_SCALE]=1.;
     unit_text[0] = 0;
     is_big_endian = IS_BIG_ENDIAN;
+    commentSize = 0;
+    comment = NULL;
+    extraSize = 0;
+    extra = NULL;
 }
 
 
 
 Image::Image(int rows, int cols)
 {
+    *this = Image();    // default specs
     data = new DATAWORD[rows*cols];
     if(data == 0){
         specs[ROWS]=specs[COLS]=0;
@@ -41,63 +51,95 @@ Image::Image(int rows, int cols)
     } else {
         specs[ROWS]=rows;
         specs[COLS]=cols;
+        error = 0;
     }
-    specs[Y0] = specs[X0] = specs[IS_COLOR] = specs[HAVE_MAX] = 0;
-    specs[DX] = specs[DY] = 1;
-    error = 0;
-    specs[HAS_RULER]=0;
-    values[RULER_SCALE]=1.;
-    unit_text[0] = 0;
-    is_big_endian = IS_BIG_ENDIAN;
-    
-    
 }
 
-int getrgb_c(char*);
-
-Image::Image(char* filename)
+Image::Image(char* filename, int isLongName)
 {
-    unsigned long fd,nr,nbyte;
-    TWOBYTE header[HEADLEN];
-    char comment[COMLEN];
-    TWOBYTE trailer[TRAILEN];
+    unsigned long nr,nbyte;
+    TWOBYTE header[HEADLEN/2];
+    char comment_[COMLEN];
+    TWOBYTE trailer[TRAILEN/2];
     int swap_bytes;
     int doffset=80;
+    int fd,color;
     
-    data=NULL;
-    specs[ROWS]=specs[COLS]=0;
-    
-    specs[Y0] = specs[X0] = specs[IS_COLOR] = specs[HAVE_MAX] = 0;
-    specs[DX] = specs[DY] = 1;
-    error = NO_ERR;
-    specs[HAS_RULER]=0;
-    values[RULER_SCALE]=1.;
-    unit_text[0] = 0;
-    is_big_endian = IS_BIG_ENDIAN;
+    *this = Image();
     
     // default specs set -- now decide what kind of file we are opening
-    
     if (strncmp(&filename[strlen(filename)-4],".nef",4) == 0) {
-        int color = dcrawGlue(fullname(filename,RAW_DATA),-1,this);
+        if (isLongName) {
+            color = dcrawGlue(filename,-1,this);
+        } else {
+            color = dcrawGlue(fullname(filename,RAW_DATA),-1,this);
+        }
         if(color < 0) error = FILE_ERR;
         return;
     }
     
-    fd = open(fullname(filename,GET_DATA),O_RDONLY);
+    if (isLongName) {
+        fd = open(filename,O_RDONLY);
+    } else {
+        fd = open(fullname(filename,GET_DATA),O_RDONLY);
+    }
     if(fd == -1) {
         error = FILE_ERR;
         return;
     }
     
-    nr = read((int)fd,(char*)header,HEADLEN);
-    nr = read((int)fd,comment,COMLEN);
+    nr = read(fd,(char*)header,HEADLEN);
+    if (strncmp((char*)header, OMA2_BINARY_DATA_STRING,HEADLEN) == 0) { // new save format
+        int nspecs,nvalues,nrulerchar;
+        read(fd,&nspecs,sizeof(int));
+        read(fd,&nvalues,sizeof(int));
+        read(fd,&nrulerchar,sizeof(int));
+        // we'll assume that the number of specs, values, and ruler characters won't decreease in future versions, but allow for them to increase
+        read(fd,specs,sizeof(int)*nspecs);
+        read(fd,values,sizeof(DATAWORD)*nvalues);
+        read(fd,unit_text,nrulerchar);
+        read(fd,&error,sizeof(int));
+        read(fd,&is_big_endian,sizeof(int));
+        read(fd,&commentSize,sizeof(int));
+        read(fd,&extraSize,sizeof(int));
+        if(commentSize)
+            comment = new char[commentSize];
+            read(fd,comment,commentSize);
+        if(extraSize)
+            extra = new float[extraSize];
+            read(fd,extra,extraSize*sizeof(float));
+        // finally the data
+        data = new DATAWORD[specs[ROWS]*specs[COLS]];
+        if(data == 0){
+            specs[ROWS]=specs[COLS]=0;
+            error = MEM_ERR;
+            close(fd);
+            return;
+        }
+        nr = read(fd,data,sizeof(DATAWORD)*specs[ROWS]*specs[COLS ]);
+        if (nr != sizeof(DATAWORD)*specs[ROWS]*specs[COLS]) {
+            error = FILE_ERR;
+        }
+        close(fd);
+        return;
+    }
+    
+    // old data save format
+    nr = read((int)fd,comment_,COMLEN);
     nr = read((int)fd,(char*)trailer,TRAILEN);
     
-    swap_bytes = process_old_header((TWOBYTE*)header,(char*)comment,(TWOBYTE*)trailer, this);
+    swap_bytes = process_old_header((TWOBYTE*)header,(char*)comment_,(TWOBYTE*)trailer, this);
+    // add the comment
+    commentSize = COMLEN;
+    comment = new char[COMLEN];
+    for(int i = 0; i<COMLEN;i++){
+        comment[i] = comment_[i];
+    }
+    
+    
     nbyte = specs[ROWS]*specs[COLS]*DATABYTES;
     
     // problem of how to get rid of the old 80 data word offset and still read in old oma files
-    
     data = new DATAWORD[specs[ROWS]*specs[COLS]];
     if(data == 0){
         specs[ROWS]=specs[COLS]=0;
@@ -121,7 +163,7 @@ Image::Image(char* filename)
         if(swap_bytes) swap_bytes_routine((char*) data, (int)nr, DATABYTES);
     }
     
-    close((int)fd);
+    close(fd);
     return;
 }
 
@@ -387,6 +429,40 @@ void Image::getmaxx()
     
 }
 
+void Image::saveFile(char* name){
+    char txt[HEADLEN];
+    int nspecs = NSPECS;
+    int nvalues = NVALUES;
+    int nrulerchar = NRULERCHAR;
+    
+    int fd = creat(fullname(name,SAVE_DATA),PMODE);
+    if(fd == -1) {
+		//beep();
+		error = FILE_ERR;
+        return;
+	}
+    strcpy(txt, OMA2_BINARY_DATA_STRING);
+    write(fd,txt,HEADLEN);   // data identifier string
+    // now write information on the sizes of fixed-length buffers (in case this changes)
+    write(fd,&nspecs,sizeof(int));
+    write(fd,&nvalues,sizeof(int));
+    write(fd,&nrulerchar,sizeof(int));
+    // now write the image data minus the pointers
+    write(fd,this,sizeof(Image)- NUM_IMAGE_PTRS*sizeof(Ptr));
+    if (commentSize) {
+        write(fd,comment,commentSize);
+    }
+    if (extraSize) {
+        write(fd,extra,extraSize*sizeof(float));
+    }
+    // now the data
+    write(fd,data,sizeof(DATAWORD)*specs[ROWS]*specs[COLS ]);
+
+    close(fd);
+    error = NO_ERR;
+    
+}
+
 DATAWORD Image::getpix(int r ,int c)   // get a pixel value at the specified row and column
 {
 	if (data == NULL) return 0.;
@@ -448,7 +524,7 @@ void Image::setpix(int r ,int c,DATAWORD val)   // set a pixel value at the spec
     *(data + c + r*specs[COLS]) = val;
 }
 
-int* Image::getspecs(){
+int* Image::getspecs(){             // this allocates space for specs that the user must free
     int* thespecs;
     thespecs = new int [NSPECS];
     for(int i=0; i<NSPECS; i++){
@@ -457,7 +533,7 @@ int* Image::getspecs(){
     return thespecs;
 }
 
-DATAWORD* Image::getvalues(){
+DATAWORD* Image::getvalues(){       // this allocates space for values that the user must free
    DATAWORD* thevalues = new DATAWORD[NVALUES];
     for(int i=0; i<NVALUES; i++){
         thevalues[i] = values[i];
@@ -465,7 +541,7 @@ DATAWORD* Image::getvalues(){
     return thevalues;
 }
 
-char* Image::getunit_text(){
+char* Image::getunit_text(){       // this allocates space for unit text that the user must free
     char* thetext = new char[NRULERCHAR];
     for(int i=0; i<NRULERCHAR; i++){
         thetext[i] = unit_text[i];
@@ -473,6 +549,17 @@ char* Image::getunit_text(){
     return thetext;
 }
 
+
+char* Image::getComment()     // returns a copy of comment buffer (NULL if no such line)
+{                               // this allocates space for text that the user must free
+    char* thecomment = NULL;
+    
+    if (commentSize){
+        thecomment = new char[commentSize];
+        for(int i=0; i<commentSize;i++) thecomment[i]=comment[i];
+    }
+    return thecomment;
+}
 
 void Image::setspecs(int* newspecs){
     // resize if necessary

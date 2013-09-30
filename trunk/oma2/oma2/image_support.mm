@@ -291,10 +291,7 @@ int loadprefs(char* name)
     
     char oldname[CHPERLN];
     int fd;
-    char txt[CHPERLN];
     extern Image iBuffer;
-
-    extern char contents_path[];
     
     TWOBYTE	header[HEADLEN/2] = { 0,0,0,0,0,1,500,500,1,1,0,0,0,1,1 };
     TWOBYTE	trailer[TRAILEN/2];
@@ -308,6 +305,7 @@ int loadprefs(char* name)
 #endif
 	if(name == nil) {
    		/*
+        // load using dialog
 		err = getfile_dialog(  PREFS_file);
 		if(err) return -1;
 #ifdef DO_MACH_O
@@ -316,21 +314,15 @@ int loadprefs(char* name)
         //printf("%s\n",curname);
 #endif
          */
-	} else {
-		if(strcmp(name,SETTINGSFILE) == 0){
-			//chdir(contents_path);
-		}
-		strcpy(txt,name);
+        return FILE_ERR;
 	}
-
-    fd = open(txt,O_RDONLY);
+    
+    fd = open(name,O_RDONLY);
     
     if(fd == -1) {
 		//beep();
-		return -1;
+		return FILE_ERR;
 	}
-	
-	//oldfont = c_font;
 	
     read(fd,(char*)header,HEADLEN);
     if (strcmp((const char*)header, SETTINGS_VERSION_1) == 0) {
@@ -349,37 +341,20 @@ int loadprefs(char* name)
         iBuffer.setspecs(thespecs);
         //iBuffer.getmaxx();
 
-
-        return 0;
+        free(thespecs);
+        return NO_ERR;
     }
 	
+    // read old oma settings files
+    
     read(fd,(char*)comment,COMLEN);
     read(fd,(char*)trailer,TRAILEN);
     
     Image tmp;
     process_old_header(header, comment, trailer, &tmp);
-    iBuffer.setspecs(tmp.getspecs());
-    
-	/*
-	if( detectorspecified == 0) {
-		if(nbyte > 110*110*2) { // assume that big pics are CCD, small ones from a SIT 
-			detector = CCD;
-			doffset = 80;}
-		else {
-			detector = SIT;
-			doffset = 0;
-		}
-	}
-	nbyte += doffset*DATABYTES; 
-	nbyte = (nbyte+511)/512*512;
-	
-	if(nbyte == 0 || checkpar()==1) {
-		beep();
-		printf(" Problem in Default Settings!\n");
-		header[NCHAN] = header[NTRAK] = 1;
-	}
-	*/
-	
+    int* specs = tmp.getspecs();
+    iBuffer.setspecs(specs);
+    free(specs);
     
 	
   	read(fd,(char*)UIData.saveprefixbuf,PREFIX_CHPERLN);		// file prefixes and suffixes 
@@ -538,7 +513,7 @@ int loadprefs(char* name)
 		update_status();
 	}
      */
-	return 0;
+	return NO_ERR;
 	
 }
 
@@ -547,7 +522,7 @@ int saveprefs(char* name)
     int fd = creat(name,PMODE);
     if(fd == -1) {
 		//beep();
-		return -1;
+		return FILE_ERR;
 	}
     
     int nbytes = sizeof(oma2UIData);
@@ -555,7 +530,7 @@ int saveprefs(char* name)
     
 
     close(fd);
-    return 0;
+    return NO_ERR;
 }
 
 int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im){

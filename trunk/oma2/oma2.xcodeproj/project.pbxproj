@@ -43,6 +43,8 @@
 		DBA3B5F716FC781300B7FF27 /* oma help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma help.txt */; };
 		DBA96ABA1520C7090043754E /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
 		DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */; };
+		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
+		DBB2C37517F9A258008C03BB /* jpegIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB2C37417F9A258008C03BB /* jpegIO.mm */; };
 		DBBD397D155AD06000D5B56B /* OMA palette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMA palette.pa1 */; };
 		DBBD3984155ADD5100D5B56B /* OMA palette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */; };
 		DBBD3985155ADD5100D5B56B /* OMA palette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */; };
@@ -109,6 +111,8 @@
 		DBA96ABB1520C7820043754E /* oma2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oma2.h; sourceTree = "<group>"; };
 		DBA96ABC1520CA9C0043754E /* UI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
 		DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageBitmap.mm; path = ../ImageBitmap.mm; sourceTree = "<group>"; };
+		DBB2C37217F9A187008C03BB /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		DBB2C37417F9A258008C03BB /* jpegIO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = jpegIO.mm; path = ../../../jpegIO.mm; sourceTree = "<group>"; };
 		DBBD397C155AD06000D5B56B /* OMA palette.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette.pa1"; sourceTree = "<group>"; };
 		DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette3.pa1"; sourceTree = "<group>"; };
 		DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette2.pa1"; sourceTree = "<group>"; };
@@ -123,6 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */,
 				DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -151,6 +156,7 @@
 		DB0FC0211519183C008A9B54 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBB2C37217F9A187008C03BB /* ImageIO.framework */,
 				DB0FC0221519183C008A9B54 /* Cocoa.framework */,
 				DB0FC0241519183C008A9B54 /* Other Frameworks */,
 			);
@@ -246,6 +252,7 @@
 				DB021E7715211EFA001D1B05 /* image_support.mm */,
 				DB52C79E17F102130048F57A /* dcrawx.h */,
 				DB87BF0117F08DA200E1BF68 /* dcrawx.mm */,
+				DBB2C37417F9A258008C03BB /* jpegIO.mm */,
 				DB021E7615211EFA001D1B05 /* commands_1.h */,
 				DB021E7515211EFA001D1B05 /* commands_1.mm */,
 				DB4329B417EF13E900A51802 /* gluedCommands.h */,
@@ -358,6 +365,7 @@
 				DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */,
 				DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */,
 				DB2113591540219200B23364 /* DataView.mm in Sources */,
+				DBB2C37517F9A258008C03BB /* jpegIO.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

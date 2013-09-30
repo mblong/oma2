@@ -22,6 +22,13 @@ Status Window:
     √ show color bar
 
 √ help file
+
+√printf
+
+√GET anImage.nef     -- implemented; needs verification
+√SAVE command -- added
+√LIST command
+
 _____________________________
 Addressed Existing Command Issues:
     √CROP has bugs when image is big
@@ -34,9 +41,8 @@ Addressed UI Issues:
 
 _____________________________
 Needed Commands
- SAVE command
  LOG command
- GET command -- should get any kind of readable file?
+ GET command --  ".tif" and ".jpg" are still needed.
  
 Existing Command Issues:
     ERASE [n] to just erase nth window
@@ -44,6 +50,7 @@ Existing Command Issues:
  UI Issues:
     when the status window is selected, typing a space isn't sent to the command window
     Crash on resizing data windows when there are multiple windows open
+    Drop Files onto status broken.
     
 UI Needs
     release window when click on close

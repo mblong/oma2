@@ -26,6 +26,7 @@ ComDef   commands[] =    {
     {{"DMACRO         "},	defmac},
     {{"DIVFILE        "},	divfile_c},
     {{"DIVTEMPIMAGE   "},	divtmp_c},
+    {{"DCRAWARGS      "},	dcrawarg_c},
     {{"ERASE          "},	erase},
     {{"EXECUTE        "},	execut},
     {{"FLOATVARIABLE  "},	vfloat},
@@ -36,6 +37,7 @@ ComDef   commands[] =    {
     {{"HELP           "},	help},
     {{"INVERT         "},	invert_c},
     {{"INTVARIABLE    "},	vint},
+    {{"LIST           "},	list_c},
     {{"LMACRO         "},	lmacro},
     {{"LOOP           "},	loop},
     {{"LOOBBREAK      "},	loopbreak},
@@ -50,6 +52,7 @@ ComDef   commands[] =    {
     {{"RGB2GREEN      "},	rgb2green_c},
     {{"RGB2BLUE       "},	rgb2blue_c},
     {{"ROTATE         "},	rotate_c},
+    {{"SAVEFILE       "},	savefile_c},
     {{"SAVSETTINGS    "},	savsettings},
     {{"SIZE           "},	size_c},
     {{"STEMPIMAGE     "},	stemp_c},
@@ -1944,7 +1947,6 @@ int getsettings(int n,char* args)
 int savsettings(int n,char* args)
 {
 	char txt[CHPERLN];
-    //extern char txt[];
 	int err;
 	
 	if(*args == 0){	// no file name was specified, use the default name and put it in the oma application

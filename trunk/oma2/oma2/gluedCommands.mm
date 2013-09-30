@@ -113,9 +113,6 @@ int start_oma_time;
 
 extern ComDef    commands[];
 
-int argc = 0;
-char *argv[200];
-char dcraw_arg[CHPERLN];
 
 Point		substart,subend;
 

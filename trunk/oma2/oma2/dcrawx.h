@@ -31,6 +31,7 @@
 #define NO_JPEG 1
 #define NO_LCMS 1
 
+
 #define histogram dcraw_histogram
 
 //int printf();

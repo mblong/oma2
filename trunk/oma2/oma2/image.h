@@ -13,6 +13,7 @@
 #define NSPECS  32   // number of integers in an Image specification array
 #define NVALUES 16   // number of values associated with an Image (things like min, max, etc.)
 #define NRULERCHAR 16   // number of characters in the units of the ruler
+#define NUM_IMAGE_PTRS 3    // the number of pointers in the Image Class
 
 // locations within the specs array
 enum {ROWS,COLS,X0,Y0,DX,DY,LMAX,LMIN,IS_COLOR,HAVE_MAX,HAS_RULER,
@@ -29,16 +30,21 @@ enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR,ARG_ERR,CMND_ERR,GET_MACRO_LINE};
 class Image
 {
 protected:
-    DATAWORD*   data;
     int         specs[NSPECS];      // information on Image size, type, etc.
     DATAWORD    values[NVALUES];    // important values (things like min, max, etc.)
     char        unit_text[NRULERCHAR];
     int         error;
     int         is_big_endian;
+    int         commentSize;
+    int         extraSize;
+    char*       comment;
+    float*      extra;
+    DATAWORD*   data;
 public:
     Image();            // default constructor with no arguments
     Image(int,int);     // constructor -- specify rows and columns, other values are defaults
-    Image(char*);       // constructor -- new Image from filename
+    Image(char*,int);   // constructor -- new Image from filename;
+                        // second argument says what to do with filling in name
     
     void operator+(DATAWORD);  // constant arithmetic, modifies the current Image
     void operator-(DATAWORD);  //    does not calculate min/max
@@ -64,13 +70,15 @@ public:
     void errclear();            // clear the image error code
     void free();                // release the data associated with an Image
     void getmaxx();             // fill in the min and max for the current Image
+    void saveFile(char*);       // write the Image to a file
     
     void copyABD(Image);        // copy All But Data from one image to another
     int* getspecs();            // returns a copy of the image specs array
     void setspecs(int*);        // sets the image specs array
     DATAWORD* getvalues();      // returns a copy of the image values array
     char* getunit_text();       // returns a copy of the image ruler units
-
+    char* getComment();        // returns a copy of the comment buffer
+    
     DATAWORD getpix(int,int);     // get a pixel value at the specified row and column
     DATAWORD getpix(float,float); // get an interpoated pixel value at the specified 
                                   // fractional row and column
@@ -81,6 +89,8 @@ public:
     void invert();             // invert the current image
     void rgb2color(int);       // crop an rgb image to color 0,1, or 2 (red, green, or blue)
     void composite(Image);        // composite two images. Error if images are not the same width.
+    
+    
     friend class ImageBitmap; 
     friend int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im);
 };

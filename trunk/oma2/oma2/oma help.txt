@@ -102,7 +102,10 @@ INVERT
 INTVARIABLE variable_name
 	Specifies that variable_name is to be used as an integer variable.
 
-LMACRO 
+LIST
+	Lists the current detector parameters and log block.
+
+LMACRO
 	Lists the contents in the current macro buffer.
 
 LOOP variable_name start end [step]
@@ -154,6 +157,9 @@ RGB2BLUE
 
 ROTATE [value]
 	Rotates the data in the current image buffer.  If no value is specified, the image is rotated by 90 degrees. If a value is specified, the image is rotated by the specified number of degrees (this may be a real number).
+
+SAVE <filename>
+	Saves the current data buffer to the specified file.
 
 SAVSETTINGS [filename]
 	Saves the current settings to the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings are saved within the oma application. 

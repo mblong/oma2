@@ -36,10 +36,14 @@ void setUpUIData();
     setUpUIData();
     
     // Load preferences
+    int dcrawarg_c(int n, char* args);
 
     char text[NEW_PREFIX_CHPERLN];
     strcpy(text,SETTINGSFILE);
     loadprefs(text);
+    
+    strcpy(text,DCRAW_ARG);
+    dcrawarg_c(0,text);
     
 
     update_UI();
