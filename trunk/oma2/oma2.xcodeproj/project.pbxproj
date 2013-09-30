@@ -37,6 +37,7 @@
 		DB2BC300151930D7009D9AED /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
 		DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
+		DB53F51817FA1D6500A12259 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB53F51717FA1D6500A12259 /* libjpeg.a */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
@@ -45,7 +46,6 @@
 		DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
 		DBB4233617F9B6C3005BCF33 /* jpegIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB4233517F9B6C3005BCF33 /* jpegIO.mm */; };
-		DBB4233B17F9B90C005BCF33 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB4233A17F9B90C005BCF33 /* libjpeg.a */; };
 		DBBD397D155AD06000D5B56B /* OMA palette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMA palette.pa1 */; };
 		DBBD3984155ADD5100D5B56B /* OMA palette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */; };
 		DBBD3985155ADD5100D5B56B /* OMA palette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */; };
@@ -104,6 +104,7 @@
 		DB4329B417EF13E900A51802 /* gluedCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gluedCommands.h; sourceTree = "<group>"; };
 		DB4329B517EF13E900A51802 /* gluedCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gluedCommands.mm; sourceTree = "<group>"; };
 		DB52C79E17F102130048F57A /* dcrawx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dcrawx.h; sourceTree = "<group>"; };
+		DB53F51717FA1D6500A12259 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
 		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
 		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
 		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
@@ -117,7 +118,6 @@
 		DBB4233717F9B765005BCF33 /* jpeglib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpeglib.h; path = ../jpeglib.h; sourceTree = "<group>"; };
 		DBB4233817F9B892005BCF33 /* jconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jconfig.h; sourceTree = "<group>"; };
 		DBB4233917F9B892005BCF33 /* jmorecfg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jmorecfg.h; sourceTree = "<group>"; };
-		DBB4233A17F9B90C005BCF33 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
 		DBBD397C155AD06000D5B56B /* OMA palette.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette.pa1"; sourceTree = "<group>"; };
 		DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette3.pa1"; sourceTree = "<group>"; };
 		DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette2.pa1"; sourceTree = "<group>"; };
@@ -134,7 +134,7 @@
 			files = (
 				DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */,
 				DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */,
-				DBB4233B17F9B90C005BCF33 /* libjpeg.a in Frameworks */,
+				DB53F51817FA1D6500A12259 /* libjpeg.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,7 +276,7 @@
 		DBB4233C17F9B942005BCF33 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				DBB4233A17F9B90C005BCF33 /* libjpeg.a */,
+				DB53F51717FA1D6500A12259 /* libjpeg.a */,
 			);
 			name = Libraries;
 			path = oma2;
@@ -421,7 +421,7 @@
 		DB0FC03A1519183D008A9B54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -455,7 +455,7 @@
 		DB0FC03B1519183D008A9B54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -489,8 +489,9 @@
 				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
 				INFOPLIST_FILE = "oma2/oma2-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/**",
 					"$(inherited)",
-					/Users/mblong/oma2/oma2/oma2,
+					/Users/mblong/oma2_trunk/oma2/oma2,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -507,8 +508,9 @@
 				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
 				INFOPLIST_FILE = "oma2/oma2-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/**",
 					"$(inherited)",
-					/Users/mblong/oma2/oma2/oma2,
+					/Users/mblong/oma2_trunk/oma2/oma2,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

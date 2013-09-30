@@ -126,9 +126,9 @@ nrows = jpeg_read_scanlines (&cinfo, rowptr, 1);
         return iBuffer.err();
     }
 	
-	//pt = datpt+doffset;
-	//pt_green = pt + cinfo.output_height*cinfo.output_width;
-	//pt_blue =  pt_green + cinfo.output_height*cinfo.output_width;
+	pt = iBuffer.data;
+	pt_green = pt + cinfo.output_height*cinfo.output_width;
+	pt_blue =  pt_green + cinfo.output_height*cinfo.output_width;
 	jpeg_start_decompress(&cinfo);
 
 	/*
