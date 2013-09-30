@@ -44,7 +44,8 @@
 		DBA96ABA1520C7090043754E /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
 		DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
-		DBB2C37517F9A258008C03BB /* jpegIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB2C37417F9A258008C03BB /* jpegIO.mm */; };
+		DBB4233617F9B6C3005BCF33 /* jpegIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB4233517F9B6C3005BCF33 /* jpegIO.mm */; };
+		DBB4233B17F9B90C005BCF33 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB4233A17F9B90C005BCF33 /* libjpeg.a */; };
 		DBBD397D155AD06000D5B56B /* OMA palette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMA palette.pa1 */; };
 		DBBD3984155ADD5100D5B56B /* OMA palette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */; };
 		DBBD3985155ADD5100D5B56B /* OMA palette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */; };
@@ -112,7 +113,11 @@
 		DBA96ABC1520CA9C0043754E /* UI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
 		DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageBitmap.mm; path = ../ImageBitmap.mm; sourceTree = "<group>"; };
 		DBB2C37217F9A187008C03BB /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		DBB2C37417F9A258008C03BB /* jpegIO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = jpegIO.mm; path = ../../../jpegIO.mm; sourceTree = "<group>"; };
+		DBB4233517F9B6C3005BCF33 /* jpegIO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = jpegIO.mm; path = ../jpegIO.mm; sourceTree = "<group>"; };
+		DBB4233717F9B765005BCF33 /* jpeglib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpeglib.h; path = ../jpeglib.h; sourceTree = "<group>"; };
+		DBB4233817F9B892005BCF33 /* jconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jconfig.h; sourceTree = "<group>"; };
+		DBB4233917F9B892005BCF33 /* jmorecfg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jmorecfg.h; sourceTree = "<group>"; };
+		DBB4233A17F9B90C005BCF33 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
 		DBBD397C155AD06000D5B56B /* OMA palette.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette.pa1"; sourceTree = "<group>"; };
 		DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette3.pa1"; sourceTree = "<group>"; };
 		DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette2.pa1"; sourceTree = "<group>"; };
@@ -129,6 +134,7 @@
 			files = (
 				DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */,
 				DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */,
+				DBB4233B17F9B90C005BCF33 /* libjpeg.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +146,7 @@
 			children = (
 				DB0FC03F15191886008A9B54 /* oma-icns.icns */,
 				DB0FC0281519183C008A9B54 /* oma2 */,
+				DBB4233C17F9B942005BCF33 /* Libraries */,
 				DB0FC0211519183C008A9B54 /* Frameworks */,
 				DB0FC01F1519183C008A9B54 /* Products */,
 			);
@@ -252,7 +259,10 @@
 				DB021E7715211EFA001D1B05 /* image_support.mm */,
 				DB52C79E17F102130048F57A /* dcrawx.h */,
 				DB87BF0117F08DA200E1BF68 /* dcrawx.mm */,
-				DBB2C37417F9A258008C03BB /* jpegIO.mm */,
+				DBB4233717F9B765005BCF33 /* jpeglib.h */,
+				DBB4233817F9B892005BCF33 /* jconfig.h */,
+				DBB4233917F9B892005BCF33 /* jmorecfg.h */,
+				DBB4233517F9B6C3005BCF33 /* jpegIO.mm */,
 				DB021E7615211EFA001D1B05 /* commands_1.h */,
 				DB021E7515211EFA001D1B05 /* commands_1.mm */,
 				DB4329B417EF13E900A51802 /* gluedCommands.h */,
@@ -261,6 +271,15 @@
 				DBA96AB91520C7090043754E /* comdec.mm */,
 			);
 			name = "UI Independent";
+			sourceTree = "<group>";
+		};
+		DBB4233C17F9B942005BCF33 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				DBB4233A17F9B90C005BCF33 /* libjpeg.a */,
+			);
+			name = Libraries;
+			path = oma2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -365,7 +384,7 @@
 				DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */,
 				DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */,
 				DB2113591540219200B23364 /* DataView.mm in Sources */,
-				DBB2C37517F9A258008C03BB /* jpegIO.mm in Sources */,
+				DBB4233617F9B6C3005BCF33 /* jpegIO.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,6 +488,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
 				INFOPLIST_FILE = "oma2/oma2-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/mblong/oma2/oma2/oma2,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -483,6 +506,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
 				INFOPLIST_FILE = "oma2/oma2-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/mblong/oma2/oma2/oma2,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
