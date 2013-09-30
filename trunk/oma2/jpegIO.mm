@@ -1,7 +1,7 @@
 #include "oma2.h"
+#include "image.h"
 #include "jpeglib.h"
 
-int printf();
 
 int read_jpeg(char* filename,int thecolor)
 {
@@ -12,18 +12,20 @@ int read_jpeg(char* filename,int thecolor)
 	
 	JSAMPROW row = 0;
 	
-	int i;
+	int i,nbyte;
 	
-	extern int have_max;
-	extern DATAWORD *datpt;
-	extern TWOBYTE 	header[],trailer[];
-	extern int 		doffset;
-	extern int		npts;		/* number of data points */
-	extern short	detector;
-	extern int		nbyte,dhi,dlen;
-	extern char     		comment[];
-    extern short image_is_color;
+	//extern int have_max;
+	//extern DATAWORD *datpt;
+	//extern TWOBYTE 	header[],trailer[];
+	//extern int 		doffset;
+	//extern int		npts;		/* number of data points */
+	//extern short	detector;
+	//extern int		nbyte,dhi,dlen;
+	//extern char     		comment[];
+    //extern short image_is_color;
 	DATAWORD *pt,*pt_green,*pt_blue;
+    
+    extern Image iBuffer;
 	
 	
 /*
@@ -52,18 +54,18 @@ nrows = jpeg_read_scanlines (&cinfo, rowptr, 1);
 	
 	// the source of the data
 	if ((infile = fopen(filename, "r")) == NULL) {
-        beep();
+        //beep();
 	    printf( "Can't open %s\n", filename);
-	   return(-1);
+	   return(FILE_ERR);
 	}
     
     // Be sure this is not 0 bytes long or the program will exit
     char c;
     i = fscanf(infile, "%c",&c);
     if (i !=1 ){
-         printf( "%s is empty.\n", filename);
+        printf( "%s is empty.\n", filename);
         fclose(infile);
-        return 0;   // don't flag this as an error for now
+        return NO_ERR;   // don't flag this as an error for now
     }
     rewind(infile);
     
@@ -72,8 +74,8 @@ nrows = jpeg_read_scanlines (&cinfo, rowptr, 1);
 	// obtain image info
 	i = jpeg_read_header(&cinfo, TRUE);
     if (i == 0) {
-        printf( "Header Problem.\n", filename);
-        return(-1);
+        printf( "Header Problem in %s.\n", filename);
+        return(FILE_ERR);
     }
 	
 	jpeg_calc_output_dimensions(&cinfo);
@@ -81,27 +83,31 @@ nrows = jpeg_read_scanlines (&cinfo, rowptr, 1);
 	// allocate memory
 	row = (JSAMPROW)calloc(cinfo.output_width * cinfo.output_components,sizeof(JSAMPLE));
 	
-
+    // add the original file name as a comment
+    /*
 	for(i=0;i<COMLEN;i++) comment[i] = 0;
 	sprintf(comment,"Original file: %s",filename);
-
+    */
+    int* specs = iBuffer.getspecs();
 	
-	header[NCHAN] = cinfo.output_width;
-	if(thecolor == -1)
-		header[NTRAK] = cinfo.output_height*cinfo.output_components;
-	else 
-		header[NTRAK] = cinfo.output_height;
-	header[NDX] = header[NDY] = 1;
-	header[NX0] = header[NY0] = 0;		
-	nbyte = (header[NCHAN]*header[NTRAK]) * DATABYTES;
-	detector = CCD;
-	doffset = 80;					
-	trailer[SFACTR] = 1;
+	specs[COLS] = cinfo.output_width;
+	if(thecolor == -1){
+		specs[ROWS] = cinfo.output_height*cinfo.output_components;
+        specs[IS_COLOR] = 1;
+	} else {
+		specs[ROWS] = cinfo.output_height;
+        specs[IS_COLOR] = 0;
+    }
+	specs[DX] = specs[DY] = 1;
+	specs[X0] = specs[Y0] = 0;
+	nbyte = (specs[NCHAN]*specs[NTRAK]) * DATABYTES;
 	
 	if (cinfo.output_components == 1) thecolor = 0;
 	// this could be big!
-	dlen = 5000;
-	dhi = 15000;
+	//dlen = 5000;
+	//dhi = 15000;
+    
+    /*
 	
 	if(nbyte <= 0 || checkpar()==1) {
 			beep();
@@ -111,10 +117,18 @@ nrows = jpeg_read_scanlines (&cinfo, rowptr, 1);
 			//close(fd);
 			return -1;
 	}
+     */
+    iBuffer.setspecs(specs);
+    free(specs);
+    if (iBuffer.err() != NO_ERR) {
+        fclose(infile);
+        free(row);
+        return iBuffer.err();
+    }
 	
-	pt = datpt+doffset;
-	pt_green = pt + cinfo.output_height*cinfo.output_width;
-	pt_blue =  pt_green + cinfo.output_height*cinfo.output_width;
+	//pt = datpt+doffset;
+	//pt_green = pt + cinfo.output_height*cinfo.output_width;
+	//pt_blue =  pt_green + cinfo.output_height*cinfo.output_width;
 	jpeg_start_decompress(&cinfo);
 
 	/*
@@ -140,21 +154,20 @@ nrows = jpeg_read_scanlines (&cinfo, rowptr, 1);
 		
 		}
 	}
-	if(thecolor == -1){         
-        image_is_color = 1;
-        trailer[IS_COLOR] = 1;
+	if(thecolor == -1){
+        
     } else {
-        image_is_color = 0;
-        trailer[IS_COLOR] = 0;
+        specs[IS_COLOR] = 0;
     }
+    
 	jpeg_finish_decompress(&cinfo);
     
     fclose(infile);
     
 	free(row);
-	have_max = 0;
-	maxx();
-	update_status();
-	return 0;
+	//have_max = 0;
+	//maxx();
+	//update_status();
+	return NO_ERR;
 
 }
