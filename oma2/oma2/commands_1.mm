@@ -56,8 +56,19 @@ int multiply_c(int n,char* args){
     return NO_ERR;
 }
 
+int savefile_c(int n,char* args)
+{
+	if(*args == 0){	// no file name was specified
+		return FILE_ERR;
+	} else { // otherwise, add the prefix and suffix and use the name specified
+		iBuffer.saveFile(args);
+		return iBuffer.err();
+	}
+}
+
+
 int getfile_c(int n,char* args){
-    Image new_im(args);
+    Image new_im(args,SHORT_NAME);
     if(new_im.err()){
         printf("Could not load %s\n",args);
         return new_im.err();
@@ -70,7 +81,7 @@ int getfile_c(int n,char* args){
 }
 
 int addfile_c(int n,char* args){
-    Image new_im(args);
+    Image new_im(args,SHORT_NAME);
     if(new_im.err()){
         printf("Could not open %s\n",args);
         return new_im.err();
@@ -89,7 +100,7 @@ int addfile_c(int n,char* args){
 }
 
 int mulfile_c(int n,char* args){
-    Image new_im(args);
+    Image new_im(args,SHORT_NAME);
     if(new_im.err()){
         printf("Could not open %s\n",args);
         return new_im.err();
@@ -108,7 +119,7 @@ int mulfile_c(int n,char* args){
 }
 
 int subfile_c(int n,char* args){
-    Image new_im(args);
+    Image new_im(args,SHORT_NAME);
     if(new_im.err()){
         printf("Could not open %s\n",args);
         return new_im.err();
@@ -127,7 +138,7 @@ int subfile_c(int n,char* args){
 }
 
 int divfile_c(int n,char* args){
-    Image new_im(args);
+    Image new_im(args,SHORT_NAME);
     if(new_im.err()){
         printf("Could not open %s\n",args);
         return new_im.err();
@@ -146,7 +157,7 @@ int divfile_c(int n,char* args){
 }
 
 int compositefile_c(int n,char* args){
-    Image new_im(args);
+    Image new_im(args,SHORT_NAME);
     if(new_im.err()){
         printf("Could not open %s\n",args);
         return new_im.err();
@@ -237,6 +248,59 @@ int rectan_c(int n, char* args)
     */
     update_UI();
     return NO_ERR;
+}
+
+int list_c(int n, char* args){
+    
+    int lc,i;
+    
+    lc = 1;
+    i = 0;
+    char* comment = iBuffer.getComment();
+    int* specs = iBuffer.getspecs();
+    if(comment){
+        while (comment[i]) {
+            printf( "Line #%d: ",lc++);
+            printf( "%s\n",&comment[i]);
+            while (comment[i]) {
+                i++;
+            }
+            i++;
+        }
+        free(comment);
+    }
+    printf("\n");
+    printf(" %7d  Data Points\n",specs[ROWS]*specs[COLS]);
+    printf(" %7d  Columns (Channels)\n",specs[COLS]);
+    printf(" %7d  Rows (Tracks)\n",specs[ROWS]);
+    printf(" %7d  X0\n",specs[X0]);
+    printf(" %7d  Y0\n",specs[Y0]);
+    printf(" %7d  Delta X\n",specs[DX]);
+    printf(" %7d  Delta Y\n",specs[DY]);
+    /*
+     #ifdef FLOAT
+     printf(" %g  Color Minimum\n %g  Color Maximum\n",cmin,cmax);
+     #else
+     printf(" %7d  Color Minimum\n %7d  Color Maximum\n",cmin,cmax);
+     #endif
+     */
+    /*	printf(" File Prefix: '%s'\n",prefixbuf); */
+    /*	printf(" File Suffix: '%s'\n",suffixbuf); */
+    /*	printf("\nDisplay Type  : dt  = %d\n",disp_dflag);
+     pprintf("Max height of any pixel in a row : dhi = %d\n",disp_height);
+     pprintf("3D grid resolution : ddx = %d ddy = %d ddz = %d\n",
+     disp_dx,disp_dy,disp_dz);
+     pprintf("Display origin: orgx= %d orgy = %d\n",disp_x0,disp_y0);
+     
+     if (passflag)
+     pprintf("\nUnknown Commands Passed to Camera Controller.\n");
+     else
+     pprintf("\nUnknown Commands Flagged.\n");  */
+    free(specs);
+    return NO_ERR;
+    
+    
+    
 }
 
 int invert_c(int n,char* args){
@@ -334,6 +398,7 @@ int rotate_c(int n,char* args){
             iBuffer.composite(color[c]);
             color[c].free();
         }
+        free(specs);                 // free the old specs array
         specs = iBuffer.getspecs();  // get the new specs
         specs[IS_COLOR] = 1;        // reset the color flag
         iBuffer.setspecs(specs);
@@ -781,4 +846,51 @@ int comtmp_c(int n, char* args)
     } else
         return MEM_ERR;
 }
+
+/* ********** */
+int dcrawarg_c(int n, char* args){
+	
+	int next = 0, i;
+    static int first = 1;
+	extern char txt[];
+    extern int argc;
+    extern char *argv[];
+    extern char dcraw_arg[];
+
+	
+	if(*args == 0){
+		i = argc;
+		argc = 1;
+		dcrawGlue(txt,-1,NULL);
+		argc = i;
+		printf("\nCurrent settings are: ");
+		for(i=0; i<argc; i++){
+			printf("%s ",argv[i]);
+		}
+		printf("\n");
+		return NO_ERR;
+	}
+	
+	argc = 0;
+	strcpy(dcraw_arg, args);
+	argv[argc++] = &dcraw_arg[next];
+	for(i=0; i<strlen(args); i++){
+		if(args[i] == ' '){
+			dcraw_arg[i] = 0;
+			next = i+1;
+			argv[argc++] = &dcraw_arg[next];
+		}
+	}
+
+	if(!first){
+		printf("%d arguments:\n",argc);
+		printf("DCRAW arguments are: %s\n",args);
+		
+	}
+
+	
+	return NO_ERR;
+}
+
+/* ********** */
 

@@ -99,6 +99,10 @@ name of the units. Occupies trailer[5] to trailer[12] */
 
 #define OMA_OK 0
 #define OMA_FILE -1
+#define SHORT_NAME 0
+#define LONG_NAME 1
+
+#define DCRAW_ARG "dcraw -v -4 -o 0 -h -r 1 1 1 1"
 
 /* Prefix and Suffix Types */
 enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_DATA,CSV_DATA,FTS_DATA,
@@ -131,7 +135,7 @@ enum  {DEFAULTMAP,BGRBOW,GRAYMAP,REDMAP,GREENMAP,BLUEMAP,FROMAFILE2,FROMAFILE3};
 
 
 #define SETTINGS_VERSION_1  "OMA2 Settings Version 1.0"
-
+#define OMA2_BINARY_DATA_STRING  "OMA2 Binary Data 1.0"
 
 /******************** Structures ********************/
 
