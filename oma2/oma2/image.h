@@ -93,6 +93,7 @@ public:
     
     friend class ImageBitmap; 
     friend int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im);
+    friend int read_jpeg(char* filename,int thecolor);
 };
 
 #endif
