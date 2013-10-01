@@ -91,9 +91,11 @@ public:
     void composite(Image);        // composite two images. Error if images are not the same width.
     
     
-    friend class ImageBitmap; 
+    friend class ImageBitmap;
+    // These friends help read in images
     friend int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im);
-    friend int read_jpeg(char* filename,int thecolor);
+    friend int read_jpeg(char* filename,int thecolor, Image*);
+    friend void oma_write_ppm_tiff (int thecolor, Image* im);
 };
 
 #endif

@@ -65,8 +65,6 @@ Image::Image(char* filename, int isLongName)
     int doffset=80;
     int fd,color;
     
-    
-    
     *this = Image();
     
     // default specs set -- now decide what kind of file we are opening
@@ -82,9 +80,9 @@ Image::Image(char* filename, int isLongName)
 
     if (strncmp(&filename[strlen(filename)-4],".jpg",4) == 0) {
         if (isLongName) {
-            error = read_jpeg(filename,-1);
+            error = read_jpeg(filename,-1,this);
         } else {
-            error = read_jpeg(fullname(filename,RAW_DATA),-1);
+            error = read_jpeg(fullname(filename,RAW_DATA),-1,this);
         }
         
         return;

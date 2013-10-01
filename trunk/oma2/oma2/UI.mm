@@ -70,7 +70,7 @@ void dropped_file(char* extension, char* name){
     
     printf("File ext is: %s\n",extension);
     printf("File name is: %s\n",name);
-    if(strcmp(extension, "dat")==0 || strcmp(extension, "nef")==0){
+    if(strcmp(extension, "dat")==0 || strcmp(extension, "nef")==0 || strcmp(extension, "jpg")==0){
         Image new_im(name,LONG_NAME);
         if(new_im.err()){
             printf("Could not load %s\n",name);
