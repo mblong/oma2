@@ -491,7 +491,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
-					/Users/mblong/oma2_trunk/oma2/oma2,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -510,7 +509,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
-					/Users/mblong/oma2_trunk/oma2/oma2,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

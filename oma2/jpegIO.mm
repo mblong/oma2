@@ -3,7 +3,7 @@
 #include "jpeglib.h"
 
 
-int read_jpeg(char* filename,int thecolor)
+int read_jpeg(char* filename,int thecolor,Image* im)
 {
 
 	struct jpeg_decompress_struct cinfo;
@@ -25,8 +25,6 @@ int read_jpeg(char* filename,int thecolor)
     //extern short image_is_color;
 	DATAWORD *pt,*pt_green,*pt_blue;
     
-    extern Image iBuffer;
-	
 	
 /*
 http://www.php-websource.com/php500/source-gd_jpeg.htm
@@ -88,7 +86,7 @@ nrows = jpeg_read_scanlines (&cinfo, rowptr, 1);
 	for(i=0;i<COMLEN;i++) comment[i] = 0;
 	sprintf(comment,"Original file: %s",filename);
     */
-    int* specs = iBuffer.getspecs();
+    int* specs = im->getspecs();
 	
 	specs[COLS] = cinfo.output_width;
 	if(thecolor == -1){
@@ -118,15 +116,15 @@ nrows = jpeg_read_scanlines (&cinfo, rowptr, 1);
 			return -1;
 	}
      */
-    iBuffer.setspecs(specs);
+    im->setspecs(specs);
     free(specs);
-    if (iBuffer.err() != NO_ERR) {
+    if (im->error != NO_ERR) {
         fclose(infile);
         free(row);
-        return iBuffer.err();
+        return im->error;
     }
 	
-	pt = iBuffer.data;
+	pt = im->data;
 	pt_green = pt + cinfo.output_height*cinfo.output_width;
 	pt_blue =  pt_green + cinfo.output_height*cinfo.output_width;
 	jpeg_start_decompress(&cinfo);
@@ -154,11 +152,6 @@ nrows = jpeg_read_scanlines (&cinfo, rowptr, 1);
 		
 		}
 	}
-	if(thecolor == -1){
-        
-    } else {
-        specs[IS_COLOR] = 0;
-    }
     
 	jpeg_finish_decompress(&cinfo);
     

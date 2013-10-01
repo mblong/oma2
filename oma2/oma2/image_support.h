@@ -20,7 +20,7 @@ int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* );
 int getpalettefile(char*);
 
 int dcrawGlue(char* name, int thecolor,Image*);
-int read_jpeg(char* filename,int thecolor);
+int read_jpeg(char* filename,int thecolor,Image*);
 
 #endif
 
