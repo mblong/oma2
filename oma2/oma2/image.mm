@@ -16,6 +16,7 @@ Variable namedTempImages[NUM_TEMP_IMAGES-NUMBERED_TEMP_IMAGES];
 int argc = 0;
 char *argv[200];
 char dcraw_arg[CHPERLN];
+int newWindowFlag = 1;
 
 
 //extern "C" int get_byte_swap_value(short);
@@ -68,7 +69,8 @@ Image::Image(char* filename, int isLongName)
     *this = Image();
     
     // default specs set -- now decide what kind of file we are opening
-    if (strncmp(&filename[strlen(filename)-4],".nef",4) == 0) {
+    if (strncmp(&filename[strlen(filename)-4],".nef",4) == 0 ||
+        strncmp(&filename[strlen(filename)-4],".NEF",4) == 0) {
         if (isLongName) {
             color = dcrawGlue(filename,-1,this);
         } else {
@@ -78,7 +80,8 @@ Image::Image(char* filename, int isLongName)
         return;
     }
 
-    if (strncmp(&filename[strlen(filename)-4],".jpg",4) == 0) {
+    if (strncmp(&filename[strlen(filename)-4],".jpg",4) == 0 ||
+        strncmp(&filename[strlen(filename)-4],".JPG",4) == 0) {
         if (isLongName) {
             error = read_jpeg(filename,-1,this);
         } else {
@@ -104,7 +107,7 @@ Image::Image(char* filename, int isLongName)
         read(fd,&nspecs,sizeof(int));
         read(fd,&nvalues,sizeof(int));
         read(fd,&nrulerchar,sizeof(int));
-        // we'll assume that the number of specs, values, and ruler characters won't decreease in future versions, but allow for them to increase
+        // we'll assume that the number of specs, values, and ruler characters won't decrease in future versions, but allow for them to increase
         read(fd,specs,sizeof(int)*nspecs);
         read(fd,values,sizeof(DATAWORD)*nvalues);
         read(fd,unit_text,nrulerchar);
@@ -126,7 +129,7 @@ Image::Image(char* filename, int isLongName)
             close(fd);
             return;
         }
-        nr = read(fd,data,sizeof(DATAWORD)*specs[ROWS]*specs[COLS ]);
+        nr = read(fd,data,sizeof(DATAWORD)*specs[ROWS]*specs[COLS]);
         if (nr != sizeof(DATAWORD)*specs[ROWS]*specs[COLS]) {
             error = FILE_ERR;
         }

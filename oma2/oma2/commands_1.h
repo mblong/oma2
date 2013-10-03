@@ -39,6 +39,8 @@ int mulfile_c(int,char*);
 int multmp_c(int n, char* args);
 int multiply_c(int,char*);
 
+int newWindow_c(int,char*);
+
 int palette_c(int,char*);
 int plus_c(int,char*);
 

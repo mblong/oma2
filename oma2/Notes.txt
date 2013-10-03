@@ -25,10 +25,10 @@ Status Window:
 
 √printf
 
-√GET anImage.nef     -- implemented; needs verification
+√GET anImage.nef and anImage.jpg    -- implemented; needs verification
 √SAVE command -- added
 √LIST command
-
+√NEWWINDOW command
 _____________________________
 Addressed Existing Command Issues:
     √CROP has bugs when image is big
@@ -42,12 +42,14 @@ Addressed UI Issues:
 _____________________________
 Needed Commands
  LOG command
- GET command --  ".tif" and ".jpg" are still needed.
+ GET command --  ".tif" still needed.
  
+_____________________________
 Existing Command Issues:
     ERASE [n] to just erase nth window
  
- UI Issues:
+_____________________________
+UI Issues:
     when the status window is selected, typing a space isn't sent to the command window
     Crash on resizing data windows when there are multiple windows open
     Drop Files onto status broken.
