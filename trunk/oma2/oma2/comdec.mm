@@ -46,6 +46,7 @@ ComDef   commands[] =    {
     {{"MACRO          "},	macro},
     {{"MULFILE        "},	mulfile_c},
     {{"MULTEMPIMAGE   "},	multmp_c},
+    {{"NEWWINDOW      "},	newWindow_c},
     {{"PALETTE        "},	palette_c},
     {{"RECTANGLE      "},	rectan_c},
     {{"RGB2RED        "},	rgb2red_c},

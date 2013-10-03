@@ -894,3 +894,13 @@ int dcrawarg_c(int n, char* args){
 
 /* ********** */
 
+int newWindow_c(int n,char* args){
+    extern int newWindowFlag;
+    if(n)
+        newWindowFlag = 1;
+    else
+        newWindowFlag =0;
+    return NO_ERR;
+    
+}
+/* ********** */

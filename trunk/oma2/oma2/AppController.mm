@@ -114,6 +114,13 @@ extern Image iBuffer;
 
 -(void) showDataWindow: (char*) windowname{
     // come here from the DISPLAY command
+    extern int newWindowFlag;
+    
+    if (!newWindowFlag && [windowArray count]) {    // put the current bitmap in the last window if there is one
+        [[windowArray lastObject] updateImage];
+        [[windowArray lastObject] showWindow:self];
+        return;
+    }
     
     // figure out where to place image
     // window_placement needs to have the right position and size

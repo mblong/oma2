@@ -140,6 +140,9 @@ MULFILE <filename>
 MULTEMPIMAGE name
 	Multiplies the contents of the current data buffer by the contents of the named temporary image.
 
+NEWWINDOW flag
+	If flag = 1 (default), a new window will be opened for each "DISPLAY" command. If flag = 0, the results of "DISPLAY" commands will be placed in the last-opened window. If no window exists, a new one will be opened. 
+
 PALETTE n
 	Specifies that the nth predefined color palette should be used. Palette 0 is a color palette; 1 is a gray-scale palette.
 
