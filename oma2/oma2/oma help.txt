@@ -87,8 +87,14 @@ FTEMPIMAGE tempImage
 GET <filename>  
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix and suffix are used.
 
+GETFILENAMES NameFile
+	Open NameFile (currently uses macro prefix and suffix) which contains the names of files. The NEXTFILE command is used to open the next file. NameFile is left open until all files have been accessed.
+
 GETSETTINGS [filename]
 	Gets settings from the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings from within the oma application are loaded. 
+
+GMACRO <filename>
+	Loads the contents of the specified file into the current macro buffer.
 
 GTEMPIMAGE name
 	Get temporary image that has been previously saved using STEMP.
@@ -143,6 +149,9 @@ MULTEMPIMAGE name
 NEWWINDOW flag
 	If flag = 1 (default), a new window will be opened for each "DISPLAY" command. If flag = 0, the results of "DISPLAY" commands will be placed in the last-opened window. If no window exists, a new one will be opened. 
 
+NEXTFILE [prefix]
+	Open the next file specified in the FileNames file that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. command_return_1 is the the filename without any prefix and without the extension (last 4 characters).
+
 PALETTE n
 	Specifies that the nth predefined color palette should be used. Palette 0 is a color palette; 1 is a gray-scale palette.
 
@@ -173,7 +182,10 @@ SIZE width height
 STEMPIMAGE name
 	Save current image as temporary image with specified name. The name can be 0-9 or a text string beginning with a lower case letter. This can be retrieved with GTEMP.
 
-SMOOTH [n,m] 
+STRMACRO string
+	Specifies that "string" is to be substituted for any "%s" found in macro or execute commands. If no string is specified, the current string is printed.
+
+SMOOTH [n,m]
 	Performs an n x m smoothing operation on data in the current image buffer.  If only n is specified, an n x n smoothing is done; with no argument, a 2 x 2 smoothing is performed.  For the smoothing operation to be perfectly centered on each data point, the arguments must be odd. For Gaussian smoothing, use GSMOOTH.
 
 SUBFILE <filename>

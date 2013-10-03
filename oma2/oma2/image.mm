@@ -13,10 +13,14 @@ Image  iTempImages[NUM_TEMP_IMAGES];  // temporary in-memmory images
 int numberNamedTempImages = 0;
 Variable namedTempImages[NUM_TEMP_IMAGES-NUMBERED_TEMP_IMAGES];
 
-int argc = 0;
+int argc = 0;               // these three fro dcraw
 char *argv[200];
 char dcraw_arg[CHPERLN];
-int newWindowFlag = 1;
+
+int newWindowFlag = 1;      // set by NEWWINDOW
+
+FILE* nameFilePtr = NULL;   // used in the GETFILENAMES and NEXTFILE commands
+
 
 
 //extern "C" int get_byte_swap_value(short);
@@ -56,7 +60,7 @@ Image::Image(int rows, int cols)
     }
 }
 
-Image::Image(char* filename, int isLongName)
+Image::Image(char* filename, int kindOfName)
 {
     unsigned long nr,nbyte;
     TWOBYTE header[HEADLEN/2];
@@ -71,7 +75,7 @@ Image::Image(char* filename, int isLongName)
     // default specs set -- now decide what kind of file we are opening
     if (strncmp(&filename[strlen(filename)-4],".nef",4) == 0 ||
         strncmp(&filename[strlen(filename)-4],".NEF",4) == 0) {
-        if (isLongName) {
+        if (kindOfName == LONG_NAME) {
             color = dcrawGlue(filename,-1,this);
         } else {
             color = dcrawGlue(fullname(filename,RAW_DATA),-1,this);
@@ -82,7 +86,7 @@ Image::Image(char* filename, int isLongName)
 
     if (strncmp(&filename[strlen(filename)-4],".jpg",4) == 0 ||
         strncmp(&filename[strlen(filename)-4],".JPG",4) == 0) {
-        if (isLongName) {
+        if (kindOfName == LONG_NAME) {
             error = read_jpeg(filename,-1,this);
         } else {
             error = read_jpeg(fullname(filename,RAW_DATA),-1,this);
@@ -91,11 +95,21 @@ Image::Image(char* filename, int isLongName)
         return;
     }
 
-    if (isLongName) {
-        fd = open(filename,O_RDONLY);
-    } else {
-        fd = open(fullname(filename,GET_DATA),O_RDONLY);
+    switch (kindOfName) {
+        case LONG_NAME:
+            fd = open(filename,O_RDONLY);
+            break;
+        case SHORT_NAME:
+            fd = open(fullname(filename,GET_DATA),O_RDONLY);
+            break;
+        case HAS_SUFFIX:
+            fd = open(fullname(filename,RAW_DATA),O_RDONLY);    // means don't add the suffix
+            break;
+        default:
+            fd = -1;
+            break;
     }
+    
     if(fd == -1) {
         error = FILE_ERR;
         return;

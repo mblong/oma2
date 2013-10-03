@@ -27,6 +27,8 @@ int divide_c(int,char*);
 int ftemp_c(int, char*);
 
 int getfile_c(int,char*);
+int getFileNames_c(int n,char* args);
+int gmacro_c(int n,char* args);
 int gtemp_c(int, char*);
 
 int invert_c(int,char*);
@@ -40,6 +42,7 @@ int multmp_c(int n, char* args);
 int multiply_c(int,char*);
 
 int newWindow_c(int,char*);
+int nextFile_c(int,char*);
 
 int palette_c(int,char*);
 int plus_c(int,char*);
@@ -54,6 +57,7 @@ int setcminmax_c(int,char*);
 int size_c(int,char*);
 int smooth_c(int,char*);
 int stemp_c(int n, char* args);
+int stringmacro_c(int n,char* args);
 int subfile_c(int,char*);
 int subtmp_c(int n, char* args);
 int savefile_c(int n,char* args);

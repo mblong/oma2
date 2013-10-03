@@ -198,13 +198,22 @@ extern Image iBuffer;
 }
 
 -(void) eraseWindow:(int) n{
-    for (DataWindowController* thewindow in windowArray){
-        [[thewindow window ] close];
+    if (n < 0) {            // erase everything
+        for (DataWindowController* thewindow in windowArray){
+            [[thewindow window ] close];
+        }
+        [windowArray removeAllObjects];
+        wraps=1;
+        window_placement.origin.x = screenRect.origin.x+WINDOW_OFFSET;
+        window_placement.origin.y = screenRect.size.height;
+        return;
     }
-    [windowArray removeAllObjects];
-    wraps=1;
-    window_placement.origin.x = screenRect.origin.x+WINDOW_OFFSET;
-    window_placement.origin.y = screenRect.size.height;
+    
+    if (n < [windowArray count]) {
+        DataWindowController* thewindow = [windowArray objectAtIndex:n];
+        [[thewindow window ] close];
+        [windowArray removeObjectAtIndex:n];
+    }
 }
 
 -(void) dataWindowClosing{
