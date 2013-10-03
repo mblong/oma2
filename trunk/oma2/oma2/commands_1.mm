@@ -904,3 +904,139 @@ int newWindow_c(int n,char* args){
     
 }
 /* ********** */
+
+/*
+ GETFILENAMES NameFile
+ Open NameFile (currently uses macro prefix and suffix) which contains the names of files.
+ The NEXTFILE command is used to open the next file. NameFile is left open until all files
+ have been accessed.
+ */
+
+int getFileNames_c(int n,char* args)			// open a file containing file names
+{
+    extern FILE* nameFilePtr;
+    
+    if( nameFilePtr != NULL) fclose(nameFilePtr);
+    
+    nameFilePtr = fopen(fullname(args,MACROS_DATA),"r");
+	if( nameFilePtr != NULL) {
+		return NO_ERR;
+	}
+	else {
+		beep();
+		printf("Could not open %s\n",args);
+		return FILE_ERR;
+	}
+}
+/* ********** */
+
+/*
+ NEXTFILE [prefix]
+ Open the next file specified in the FileNames file that was opened with the GetFileNames command.
+ If a prefix is specified, that is added to to the name before trying to open the file.
+ command_return_1 is the the filename without any prefix and without the extension (last 4 characters)
+ */
+int nextFile_c(int n,char* args){
+    char 	txt[256];          // read the filename in here initially
+    char 	fulltxt[512];
+    extern Variable user_variables[];
+    extern FILE* nameFilePtr;
+    
+    if( nameFilePtr == NULL){
+		beep();
+		printf("No Names file is open. Use the GetFileNames command first.\n");
+		return FILE_ERR;
+    }
+    if(fscanf(nameFilePtr, "%s",txt) == EOF){
+        beep();
+		printf("All files have been read.\n");
+        fclose(nameFilePtr);
+        nameFilePtr = NULL;
+		return FILE_ERR;
+    }
+    
+    // return the file name without the extension as the first  return value
+    
+    user_variables[0].fvalue = user_variables[0].ivalue = 0;
+	user_variables[0].is_float = -1;
+    strncpy( user_variables[0].estring,txt,strlen(txt)-4);
+    user_variables[0].estring[strlen(txt)-4] = 0;   // need to end this explicitly
+    
+    printf("%s\n",user_variables[0].estring);
+    
+    if(*args)
+        strcpy(fulltxt, args);
+    else
+        fulltxt[0]=0;
+    n = (int)strlen(fulltxt);
+    
+    strcpy(&fulltxt[n], txt);
+    printf("%s\n",fulltxt);
+    
+    Image new_im(fulltxt,HAS_SUFFIX);
+    if(new_im.err()){
+        printf("Could not load %s\n",fulltxt);
+        return new_im.err();
+    }
+    iBuffer.free();     // release the old data
+    iBuffer = new_im;   // this is the new data
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+    
+}
+/* ********** */
+
+int stringmacro_c(int n,char* args)
+{
+    extern char macstring[];
+    
+	if (*args == 0) {
+		printf("%s\n",macstring);
+	} else {
+        strncpy(macstring,args,COMLEN);
+	}
+	return 0;
+}
+
+/* ********** */
+
+
+
+int gmacro_c(int n,char* args)
+{
+	extern char	macbuf[];
+    
+	int fd,nread,i;
+	
+	if(*args == 0)
+		fd = open(args,O_RDONLY);
+	else
+		fd = open(fullname(args,MACROS_DATA),O_RDONLY);
+	
+	if(fd == -1) {
+		beep();
+		printf("Macro File '%s' Not Found.\n",args);
+		return FILE_ERR;
+	}
+	for(i=0; i<MBUFLEN; i++) *(macbuf+i) = 0;	// clear the buffer
+	nread = (int)read(fd,macbuf,MBUFLEN);		/* read the largest buffer  */
+	printf("%d Bytes Read.\n",nread);
+	
+	
+	/* the format of macro files has changed -- now they are formatted text files */
+	/* previously, they were constant length files containing C strings */
+	/* this code should read both formats */
+	
+	for(i=0; i<nread ; i++) {
+		if( *(macbuf+i) == 0x0D || *(macbuf+i) == 0x0A)
+			*(macbuf+i) = 0x00;	/* change CR or LF to null */
+	}
+	*(macbuf+nread) = 0;				/* one extra to signify end of buffer */
+	*(macbuf+nread+1) = 0;
+	
+	close(fd);
+	clear_macro_to_end();		/* insert trailing zeros after the macro */
+	return NO_ERR;
+}
+/* ********** */

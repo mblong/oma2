@@ -32,7 +32,9 @@ ComDef   commands[] =    {
     {{"FLOATVARIABLE  "},	vfloat},
     {{"FTEMPIMAGE     "},	ftemp_c},
     {{"GET            "},	getfile_c},
+    {{"GETFILENAMES   "},	getFileNames_c},
     {{"GETSETTINGS    "},	getsettings},
+    {{"GMACRO         "},	gmacro_c},
     {{"GTEMPIMAGE     "},	gtemp_c},
     {{"HELP           "},	help},
     {{"INVERT         "},	invert_c},
@@ -47,6 +49,7 @@ ComDef   commands[] =    {
     {{"MULFILE        "},	mulfile_c},
     {{"MULTEMPIMAGE   "},	multmp_c},
     {{"NEWWINDOW      "},	newWindow_c},
+    {{"NEXTFILE       "},	nextFile_c},
     {{"PALETTE        "},	palette_c},
     {{"RECTANGLE      "},	rectan_c},
     {{"RGB2RED        "},	rgb2red_c},
@@ -57,6 +60,7 @@ ComDef   commands[] =    {
     {{"SAVSETTINGS    "},	savsettings},
     {{"SIZE           "},	size_c},
     {{"STEMPIMAGE     "},	stemp_c},
+    {{"STRMACRO       "},	stringmacro_c},
     {{"SMOOTH         "},	smooth_c},
     {{"SUBFILE        "},	subfile_c},
     {{"SUBTEMPIMAGE   "},	subtmp_c},
@@ -111,7 +115,7 @@ int update_pause(),vprint(),get_variable_index();
 
 char    macbuf[MBUFLEN] = {0};    	    	/* the macro buffer */
 char*   exbuf[EX_NEST_DEPTH];    	    	// the execute buffers 
-char	macstring[COMLEN]={0};		/* strings that can be inserted in macros */
+char	macstring[COMLEN]={0};             /* strings that can be inserted in macros */
 char	variable_names[VBUFLEN] = {0};		/* variable names in macros */
 
 int     maccount,macflag,macptr,macval;
@@ -1068,6 +1072,9 @@ int display(int n, char* args){
 // **********
 
 int erase(int n, char* args){
+    if (*args == 0 || n < 0) { // of no argument or negative argument
+        n = -1;
+    }
     erase_window;
     return 0;
 }

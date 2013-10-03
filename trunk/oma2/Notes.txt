@@ -29,9 +29,15 @@ Status Window:
 √SAVE command -- added
 √LIST command
 √NEWWINDOW command
+√ GETFILENAMES
+√ NEXTFILE
+√ STRMACRO
+√ GMACRO
+
 _____________________________
 Addressed Existing Command Issues:
     √CROP has bugs when image is big
+    √ERASE [n] to just erase nth window
 
 Addressed UI Issues:
     √Big image issues:
@@ -43,10 +49,13 @@ _____________________________
 Needed Commands
  LOG command
  GET command --  ".tif" still needed.
+ GETFILENAMES
+ NEXT
+ 
  
 _____________________________
 Existing Command Issues:
-    ERASE [n] to just erase nth window
+
  
 _____________________________
 UI Issues:
