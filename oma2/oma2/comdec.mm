@@ -28,6 +28,7 @@ ComDef   commands[] =    {
     {{"DIVTEMPIMAGE   "},	divtmp_c},
     {{"DCRAWARGS      "},	dcrawarg_c},
     {{"ERASE          "},	erase},
+    {{"ENDIF          "},	endifcmnd},
     {{"EXECUTE        "},	execut},
     {{"FLOATVARIABLE  "},	vfloat},
     {{"FTEMPIMAGE     "},	ftemp_c},
@@ -37,12 +38,13 @@ ComDef   commands[] =    {
     {{"GMACRO         "},	gmacro_c},
     {{"GTEMPIMAGE     "},	gtemp_c},
     {{"HELP           "},	help},
+    {{"IF             "},	ifcmnd},
     {{"INVERT         "},	invert_c},
     {{"INTVARIABLE    "},	vint},
     {{"LIST           "},	list_c},
     {{"LMACRO         "},	lmacro},
     {{"LOOP           "},	loop},
-    {{"LOOBBREAK      "},	loopbreak},
+    {{"LOOPBREAK      "},	loopbreak},
     {{"LOOPND         "},	loopend},
     {{"LTEMPIMAGE     "},	ltemp_c},
     {{"MACRO          "},	macro},
@@ -178,7 +180,7 @@ int comdec(char* cmnd)
         if (exflag == 0) which_ex_buffer=-1;    // this was not reset in the stop macro command, so do it now
         
         if (exflag) {
-            
+            chindx = 0;
             /* Get next line from the execute buffer. */
             
             exptr[which_ex_buffer] = 0;
@@ -219,7 +221,7 @@ int comdec(char* cmnd)
             
         } else {
             if (macflag) {
-                
+                chindx = 0;
                 // Get the appropriate line from the macro buffer. 
                 macptr = 0;
                 for( i=0; i<macro_line_number; i++) {
@@ -1679,14 +1681,14 @@ int loop(int n,char* args)
 	if( (macflag == 0) && (exflag == 0)) {
 		//beep();
 		printf("Loops must be within a Macro.\n");
-		return -1;
+		return CMND_ERR;
 	}
 	
 	narg = sscanf(args,"%s %d %d %d",vname,&start,&end,&step);
 	if( narg < 3 ){
 		//beep();
 		printf("Not enough arguments for LOOP.\n");
-		return -2;
+		return CMND_ERR;
 	}
 	if( narg == 3 )
 		step = 1;
@@ -1696,7 +1698,7 @@ int loop(int n,char* args)
        (step == 0) ) {
         //beep();
         printf("Invalid arguments for LOOP.\n");
-        return -3;
+        return CMND_ERR;
 	}
 	
 	
@@ -1749,7 +1751,7 @@ int loop(int n,char* args)
 	inloop=1;
 	
 	// printf("%s %d %d %d var,start,end,step\n",vname,start,end,step); 
-	return 0;
+	return NO_ERR;
     
 }
 // ********** 
