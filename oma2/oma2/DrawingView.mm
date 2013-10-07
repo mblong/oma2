@@ -19,4 +19,8 @@ extern oma2UIData UIData;
 
 @implementation DrawingView
 
+- (void)drawRect:(NSRect)dirtyRect{
+    [super drawRect:dirtyRect];
+}
+
 @end

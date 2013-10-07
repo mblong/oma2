@@ -81,72 +81,52 @@ extern Image iBuffer;
  // figure out where to place image
  // window_placement needs to have the right position and size
     NSSize theWindowSize = [ [ activemain contentView ] frame ].size;
+    NSRect theDataWindowRect =  [ [ activemain contentView ] frame ];
  
     int windowHeight = 256;
     int windowWidth = theWindowSize.width;
-/*
- int windowWidth = iBitmap.getwidth();
- float scaleWidth = (float)windowWidth/(float)screenRect.size.width;
- // leave a little space at the bottom of the sreen
- float scaleHeight = (float)windowHeight/(float)(screenRect.size.height-2*TITLEBAR_HEIGHT);
- float scaleWindow = 1.0;
- if (scaleHeight > 1.0 || scaleWidth > 1.0) {
- if(scaleHeight > scaleWidth)
- scaleWindow = scaleHeight;
- else
- scaleWindow = scaleWidth;
- windowHeight /= scaleWindow;
- windowWidth /= scaleWindow;
- char txt[128];
- sprintf(txt," Window scaled by %f\n",scaleWindow);
- [self appendCText:txt];
- 
- }
- 
- // now, figure out where to place the window
- if(window_placement.origin.x == WINDOW_OFFSET+screenRect.origin.x) {   // left column
- window_placement.origin.y -= (windowHeight+TITLEBAR_HEIGHT);
- }
- 
- window_placement=NSMakeRect(window_placement.origin.x,
- window_placement.origin.y,
- windowWidth, windowHeight+TITLEBAR_HEIGHT);
- 
- if (window_placement.origin.x+windowWidth>screenRect.size.width) {
- window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
- 
- if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > 0){
- window_placement.origin.y -= (windowHeight + TITLEBAR_HEIGHT);
- } else{
- wraps++;
- window_placement.origin.y = screenRect.size.height
- -windowHeight- wraps*TITLEBAR_HEIGHT; // wrap to top
- }
- 
- }
- 
- // create a new window controller object
- DataWindowController* dataWindowController = [[DataWindowController alloc] initWithWindowNibName:@"DataWindow"];
- 
- // add that to the array of windows
- [windowArray addObject:dataWindowController];
- 
- // name the window appropriately
- if(*windowname){
- NSString *text  = [[NSString alloc] initWithCString:windowname encoding:NSASCIIStringEncoding];
- [dataWindowController setWindowName:text] ;
- } else{
- [dataWindowController setWindowName:@"Data"] ;
- }
- 
- // display the data
- [dataWindowController placeImage:window_placement];
- 
- window_placement.origin.x += windowWidth;            // increment for next one
- 
- [dataWindowController showWindow:self];
 
- */
+    
+    // now, figure out where to place the window
+    if(window_placement.origin.x == WINDOW_OFFSET+screenRect.origin.x) {   // left column
+        window_placement.origin.y -= (windowHeight+TITLEBAR_HEIGHT);
+    }
+    
+    window_placement=NSMakeRect(window_placement.origin.x,
+                                window_placement.origin.y,
+                                windowWidth, windowHeight+TITLEBAR_HEIGHT);
+    
+    if (window_placement.origin.x+windowWidth>screenRect.size.width) {
+        window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
+        
+        if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > 0){
+            window_placement.origin.y -= (windowHeight + TITLEBAR_HEIGHT);
+        } else{
+            wraps++;
+            window_placement.origin.y = screenRect.size.height
+            -windowHeight- wraps*TITLEBAR_HEIGHT; // wrap to top
+        }
+        
+    }
+    
+    // create a new window controller object
+    DrawingWindowController* drawingWindowController = [[DrawingWindowController alloc] initWithWindowNibName:@"DrawingWindow"];
+    
+    // add that to the array of windows
+    [windowArray addObject:drawingWindowController];
+    
+    // name the window appropriately
+    [drawingWindowController setWindowName:@"Line Graphics"] ;
+
+    
+    // display the data
+    [drawingWindowController placeDrawing:window_placement fromRect: theDataWindowRect];
+    
+    window_placement.origin.x += windowWidth;            // increment for next one
+    
+    [drawingWindowController showWindow:self];
+    
+
     //NSLog(@"%d %d ",key,main);
     
     
