@@ -150,6 +150,22 @@ extern AppController* appController;
     [[appController theWindow] sendEvent: anEvent];
 }
 
+- (IBAction)copy:sender {
+    NSImage *image = [imageView image];
+    if (image != nil) {
+        NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+        [pasteboard clearContents];
+        NSArray *copiedObjects = [NSArray arrayWithObject:image];
+        [pasteboard writeObjects:copiedObjects];
+    }
+}
+/* // Thought this might be a way to keep track of window with focus
+- (IBAction)showWindow:(id)sender {
+    NSLog(@"showWindow in DataWindowController");
+}
+ - (void) mouseDown:(NSEvent *)theEvent{
+ NSLog(@"mouseDown in DataWindowController");
+ }
 
-
+ */
 @end

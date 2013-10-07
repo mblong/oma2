@@ -33,6 +33,8 @@ Status Window:
 √ NEXTFILE
 √ STRMACRO
 √ GMACRO
+√ GETFILENAMES
+√ NEXT
 
 _____________________________
 Addressed Existing Command Issues:
@@ -44,6 +46,7 @@ Addressed UI Issues:
         Image scaling is wrong when image is big -- scales vertically but not horizontally
         X Y coordinates (and Z values) are wrong
         Presumably this is the source of the trouble with the CROP command
+  √copy from an image window
 
 _____________________________
 Needed Commands
@@ -68,7 +71,7 @@ UI Needs
     find which window is active
     -> open a lineplot window and plot graphics
         get the bitmap data from a window for line plots
-    copy from an image window
+
 
     Prefs:
         -> select color bar

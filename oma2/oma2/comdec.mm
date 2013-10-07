@@ -174,13 +174,17 @@ int comdec(char* cmnd)
         default:
             break;
     }
-    
+
     while(true){
+        chindx = 0;     /* index of first character after command */
+        sign = 1;       /* sign of integer argument */
+        ivalue = 0;     /* integer value */
+
         /* --------------------- Code Starts Here ------------------------- */
         if (exflag == 0) which_ex_buffer=-1;    // this was not reset in the stop macro command, so do it now
         
         if (exflag) {
-            chindx = 0;
+        
             /* Get next line from the execute buffer. */
             
             exptr[which_ex_buffer] = 0;
@@ -221,7 +225,7 @@ int comdec(char* cmnd)
             
         } else {
             if (macflag) {
-                chindx = 0;
+                
                 // Get the appropriate line from the macro buffer. 
                 macptr = 0;
                 for( i=0; i<macro_line_number; i++) {

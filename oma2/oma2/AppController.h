@@ -34,7 +34,8 @@ int comdec(char*);
     NSUInteger last_return;
     NSUInteger wraps;
     
-    NSMutableArray *windowArray; 
+    NSMutableArray *windowArray;
+    NSMutableArray *windowTypeArray;
     
     NSRect window_placement;
     NSRect screenRect;
@@ -52,10 +53,11 @@ int comdec(char*);
 -(void) appendCText:(char *) string;
 
 
--(id) whoami;
 
 
 - (IBAction)showPrefs:(id)sender;
+
+- (IBAction)plotRows:(id)sender;
 
 -(void) showDataWindow:(char*) windowname;
 -(void) eraseWindow:(int) n;
