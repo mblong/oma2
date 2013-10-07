@@ -20,4 +20,6 @@
 @property (weak) IBOutlet DrawingView *drawingView;
 @property NSRect windowRect;
 
+//-(void) placeDrawing: (NSRect) theRect;
+-(void) placeDrawing: (NSRect) theLocation fromRect:(NSRect) dataRect;
 @end

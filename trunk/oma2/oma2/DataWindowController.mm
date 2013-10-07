@@ -108,10 +108,15 @@ extern AppController* appController;
         NSLog(@"Invalid Image");
     }
     
+    
+    
     NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
     [imageView setFrame:rect];
     [imageView setImageScaling:NSScaleToFit];
     [imageView setImage:im];
+    
+    //NSBitmapImageRep* bitmap2 = [imageview bitmapData];
+    
     //[imageView setNeedsDisplay:YES]; // for display in macro, this doesn't do the job
     [imageView display];
 
