@@ -71,8 +71,14 @@ DIVFILE <filename>
 DIVTEMPIMAGE name
 	Divides the data in the current buffer by the contents of the named temporary image.
 
+DCRAWARGS  [arguments]
+	Allows the user to specify the arguments passed to the dcraw routine, which decodes camera raw files to OMA format. Omitting the argument lists the allowed arguments and gives the current argument settings. The filename field is ignored.
+
 ERASE [n] 
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.
+
+ENDIF
+	Terminates an IF command. This is applicable within Macros only.
 
 EXECUTE <filename>
 	Reads OMA commands stored in the specified file into a special execute buffer and then performs those commands. Unlike macros, these should not contain dummy numerical arguments (%d).
@@ -101,6 +107,9 @@ GTEMPIMAGE name
 
 HELP [command name or fragment]
 	If a command name is given, a brief explanation of the command is printed in the command window. If only part of the command is given, a description of all commands that match the command fragment is printed. All help information is from the file "OMA HELP." If no argument is given, all command names are printed with no explanation.
+
+IF condition
+	If condition evaluates to a non-zero value, the commands following the IF are executed. However, if the condition is zero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators < (less than), > (greater than), others to come....
 
 INVERT
 	Inverts the image in the current image data buffer, causing the first data point to become the last data point.
@@ -170,7 +179,7 @@ RGB2BLUE
 ROTATE [value]
 	Rotates the data in the current image buffer.  If no value is specified, the image is rotated by 90 degrees. If a value is specified, the image is rotated by the specified number of degrees (this may be a real number).
 
-SAVE <filename>
+SAVEFILE <filename>
 	Saves the current data buffer to the specified file.
 
 SAVSETTINGS [filename]
