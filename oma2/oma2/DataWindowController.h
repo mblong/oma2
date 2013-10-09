@@ -13,11 +13,15 @@
 @interface DataWindowController : NSWindowController{
     NSString    *windowName;
     DataView    *__weak imageView;
+    int         hasRowPlot;
+    int         hasColPlot;
 }
 
 @property (copy) NSString *windowName;
 @property (weak) IBOutlet DataView *imageView;
 @property NSRect windowRect;
+@property int         hasRowPlot;
+@property int         hasColPlot;
 
 -(void) placeImage: (NSRect) theRect;
 -(void) updateImage;
