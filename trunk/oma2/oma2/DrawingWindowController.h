@@ -24,6 +24,7 @@
 @property NSRect windowRect;
 @property DataWindowController *dataWindowController;
 
-//-(void) placeDrawing: (NSRect) theRect;
+
 -(void) placeDrawing: (NSRect) theLocation;
+-(void) updateDrawing: (int) theRow;
 @end

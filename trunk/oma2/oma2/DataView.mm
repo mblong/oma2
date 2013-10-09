@@ -8,6 +8,7 @@
 
 #import "DataView.h"
 #import "AppController.h"
+#import "DrawingWindowController.h"
 #import "ImageBitmap.h"
 #import "UI.h"
 
@@ -20,6 +21,10 @@ extern oma2UIData UIData;
 
 
 @implementation DataView
+
+@synthesize rowLine;
+@synthesize colLine;
+@synthesize drawingWindowController;
 
 - (void)drawRect:(NSRect)dirtyRect{
     [super drawRect:dirtyRect];         // crash here when resizing data window that is not the current one
@@ -61,6 +66,19 @@ extern oma2UIData UIData;
                 break;
         }
     }
+    if (rowLine < 0) return;
+    NSBezierPath *path = [NSBezierPath bezierPath];
+    [[NSColor grayColor] set];
+    [path setLineWidth:2.0];
+    NSPoint pt;
+    pt.x = 0.;
+    pt.y = rowLine;
+    [path moveToPoint:pt];
+    pt.x = [self frame].size.width -1;
+    [path lineToPoint:pt];
+    [path stroke];
+
+
 }
 
 - (void) mouseDown:(NSEvent *)theEvent{
@@ -82,6 +100,11 @@ extern oma2UIData UIData;
     
     startRect.x = x;
     startRect.y = y;
+    
+    if (rowLine >= 0){
+        rowLine = self.frame.size.height-y;
+        [drawingWindowController updateDrawing:y];
+    }
     
     [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
     [statusController labelX1:-1 Y1:-1 Z1: 0];
@@ -112,7 +135,12 @@ extern oma2UIData UIData;
         [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
     else
         [statusController labelX1:x Y1:y Z1: iBuffer.getpix(y,x)];
-        
+    
+    if (rowLine >= 0){
+        rowLine = self.frame.size.height-y;
+        [drawingWindowController updateDrawing:y];
+    }
+    
     [self setNeedsDisplay:YES];
 }
 
