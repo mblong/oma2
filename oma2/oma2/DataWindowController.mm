@@ -23,6 +23,7 @@ extern AppController* appController;
 @synthesize hasRowPlot;
 @synthesize hasColPlot;
 
+
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
@@ -93,8 +94,8 @@ extern AppController* appController;
 
 -(void) placeImage:(NSRect) theRect{
     windowRect = theRect;
-    hasColPlot = 0;
-    hasRowPlot = 0;
+    hasColPlot = -1;
+    hasRowPlot = -1;
     
     [[self window] setTitle:windowName];
     
@@ -147,6 +148,10 @@ extern AppController* appController;
 
     [imageView display];
 
+}
+-(void) placeRowLine: (int) theRow{
+    [imageView setRowLine:theRow];
+    [imageView display];
 }
 
 -(BOOL) acceptsFirstResponder{

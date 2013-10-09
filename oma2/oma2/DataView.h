@@ -8,14 +8,19 @@
 
 #import <AppKit/AppKit.h>
 
-
+@class DrawingWindowController;
 
 @interface DataView : NSImageView{
     NSPoint startPoint,endPoint;
     NSPoint startRect,endRect;
     int mouse_down;
-    
-
+    int rowLine;
+    int colLine;
+    DrawingWindowController *drawingWindowController;
 }
 
+@property int rowLine;
+@property int colLine;
+@property DrawingWindowController *drawingWindowController;
 @end
+

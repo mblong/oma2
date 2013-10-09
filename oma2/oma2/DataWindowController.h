@@ -15,6 +15,7 @@
     DataView    *__weak imageView;
     int         hasRowPlot;
     int         hasColPlot;
+    
 }
 
 @property (copy) NSString *windowName;
@@ -23,7 +24,9 @@
 @property int         hasRowPlot;
 @property int         hasColPlot;
 
+
 -(void) placeImage: (NSRect) theRect;
+-(void) placeRowLine: (int) theRow;
 -(void) updateImage;
 
 @end

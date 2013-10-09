@@ -77,19 +77,20 @@ extern AppController* appController;
 }
 
 -(void) placeDrawing: (NSRect) theLocation {
-
+    // where the data comes from
     NSRect dataRect =  [[dataWindowController imageView] frame ];
-    
+    // get the bitmap from the data window
     [[dataWindowController imageView] lockFocus];
     NSBitmapImageRep* imageRep=[[NSBitmapImageRep alloc] initWithFocusedViewRect: dataRect] ;
     unsigned char* bytes = [imageRep bitmapData];
     int bytesPerRow = (int)[imageRep bytesPerRow];
-    int theRow = [[dataWindowController imageView] frame ].size.height/2;
-    int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;
-    bytes += theRow*bytesPerRow*pixPerPt;
-
+    int theRow = [[dataWindowController imageView] frame ].size.height/2;       // start in the middle
+    int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;  // for retina displays
     [[dataWindowController imageView] unlockFocus];
+    
     [dataWindowController setHasRowPlot:theRow];
+    [dataWindowController placeRowLine:theRow];
+    [[dataWindowController imageView] setDrawingWindowController:self];
     
     windowRect = theLocation;
     [[self window] setTitle:windowName];
@@ -98,11 +99,33 @@ extern AppController* appController;
     [drawingView setFrame:rect];
     
     //[drawingView plotRow:bytes rowBytes: bytesPerRow];
-    [drawingView setRowData:bytes];
-    [drawingView setBytesPerRow:bytesPerRow];
+    [drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
+    [drawingView setBytesPerRow: bytesPerRow];
     
     [drawingView display];
 
+}
+
+-(void) updateDrawing: (int) theRow {
+    // where the data comes from
+    NSRect dataRect =  [[dataWindowController imageView] frame ];
+    // get the bitmap from the data window
+    [[dataWindowController imageView] lockFocus];
+    NSBitmapImageRep* imageRep=[[NSBitmapImageRep alloc] initWithFocusedViewRect: dataRect] ;
+    unsigned char* bytes = [imageRep bitmapData];
+    int bytesPerRow = (int)[imageRep bytesPerRow];
+    //int theRow = [[dataWindowController imageView] frame ].size.height/2;       // start in the middle
+    int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;  // for retina displays
+    [[dataWindowController imageView] unlockFocus];
+    
+    //[dataWindowController setHasRowPlot:theRow];
+    //[dataWindowController placeRowLine:theRow];
+    
+    [drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
+    [drawingView setBytesPerRow: bytesPerRow];
+    
+    [drawingView display];
+    
 }
 
 
