@@ -11,6 +11,7 @@
 #import "AppController.h"
 #import "ImageBitmap.h"
 #import "DataView.h"
+#import "DataWindowController.h"
 
 extern ImageBitmap iBitmap;
 extern Image iBuffer;
@@ -28,6 +29,7 @@ extern AppController* appController;
 @synthesize windowName;
 @synthesize drawingView;
 @synthesize windowRect;
+@synthesize dataWindowController;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -74,25 +76,33 @@ extern AppController* appController;
     //[myArrayOfWindowControllers removeObject: theWindowController];
 }
 
--(void) placeDrawing: (NSRect) theLocation fromRect:(NSRect) dataRect{
+-(void) placeDrawing: (NSRect) theLocation {
+
+    NSRect dataRect =  [[dataWindowController imageView] frame ];
     
+    [[dataWindowController imageView] lockFocus];
     NSBitmapImageRep* imageRep=[[NSBitmapImageRep alloc] initWithFocusedViewRect: dataRect] ;
     unsigned char* bytes = [imageRep bitmapData];
-    int bitsPerPixel  = [imageRep bitsPerPixel];
-    int bytesPerRow = [imageRep bytesPerRow];
+    int bytesPerRow = (int)[imageRep bytesPerRow];
+    int theRow = [[dataWindowController imageView] frame ].size.height/2;
+    int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;
+    bytes += theRow*bytesPerRow*pixPerPt;
+
+    [[dataWindowController imageView] unlockFocus];
+    [dataWindowController setHasRowPlot:theRow];
     
     windowRect = theLocation;
-    
     [[self window] setTitle:windowName];
-    
     
     NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
     [drawingView setFrame:rect];
     
+    //[drawingView plotRow:bytes rowBytes: bytesPerRow];
+    [drawingView setRowData:bytes];
+    [drawingView setBytesPerRow:bytesPerRow];
+    
     [drawingView display];
-    
-    
-    
+
 }
 
 
@@ -103,6 +113,7 @@ extern AppController* appController;
 - (void)keyDown:(NSEvent *)anEvent{
     [[appController theWindow] sendEvent: anEvent];
 }
+
 /*
 - (IBAction)copy:sender {
     NSImage *image = [imageView image];

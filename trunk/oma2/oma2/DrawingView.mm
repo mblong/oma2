@@ -11,6 +11,7 @@
 #import "ImageBitmap.h"
 #import "UI.h"
 
+#define SAMPLESPERPIX 4
 
 extern ImageBitmap iBitmap;
 extern Image iBuffer;
@@ -19,8 +20,49 @@ extern oma2UIData UIData;
 
 @implementation DrawingView
 
-- (void)drawRect:(NSRect)dirtyRect{
-    [super drawRect:dirtyRect];
-}
+@synthesize rowData;
+@synthesize bytesPerRow;
 
+- (void)drawRect:(NSRect)dirtyRect{
+
+    [super drawRect:dirtyRect];
+    if(rowData){
+        NSBezierPath *path = [NSBezierPath bezierPath];
+        [[NSColor redColor] set];
+        [path setLineWidth:1.0];
+        float pixPerPt = bytesPerRow/[self frame].size.width/SAMPLESPERPIX;
+        
+        NSPoint pt;
+        pt.x = 0.;
+        pt.y = *rowData;
+        [path moveToPoint:pt];
+        for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
+            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
+            pt.y = *(rowData+i);
+            [path lineToPoint:pt];
+        }
+        [path stroke];
+    }
+}
+/*
+-(void) plotRow: (unsigned char*) rowData rowBytes: (int) bytesPerRow{
+    
+    NSBezierPath *path = [NSBezierPath bezierPath];
+    [[NSColor redColor] set];
+    [path setLineWidth:2.0];
+    
+    NSPoint pt;
+    pt.x = 0;
+    pt.y = *rowData;
+    [path moveToPoint:pt];
+    for (int i=4; i< bytesPerRow;i+=4){
+        pt.x = i/4;
+        pt.y = *(rowData+i);
+        [path lineToPoint:pt];
+        //printf("%d %d %d %d\n",*(rowData+i),*(rowData+i+1),*(rowData+i+2),*(rowData+i+3));
+    }
+    [path stroke];
+    [self display];
+}
+*/
 @end

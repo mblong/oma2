@@ -9,17 +9,21 @@
 #import <Cocoa/Cocoa.h>
 
 @class DrawingView;
+@class DataWindowController;
 
 @interface DrawingWindowController : NSWindowController{
     NSString    *windowName;
     DrawingView    *__weak drawingView;
+    DataWindowController *dataWindowController;
+    
 
 }
 
 @property (copy) NSString *windowName;
 @property (weak) IBOutlet DrawingView *drawingView;
 @property NSRect windowRect;
+@property DataWindowController *dataWindowController;
 
 //-(void) placeDrawing: (NSRect) theRect;
--(void) placeDrawing: (NSRect) theLocation fromRect:(NSRect) dataRect;
+-(void) placeDrawing: (NSRect) theLocation;
 @end

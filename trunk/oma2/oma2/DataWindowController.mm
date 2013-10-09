@@ -20,6 +20,8 @@ extern AppController* appController;
 @synthesize  windowName;
 @synthesize imageView;
 @synthesize windowRect;
+@synthesize hasRowPlot;
+@synthesize hasColPlot;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -91,6 +93,8 @@ extern AppController* appController;
 
 -(void) placeImage:(NSRect) theRect{
     windowRect = theRect;
+    hasColPlot = 0;
+    hasRowPlot = 0;
     
     [[self window] setTitle:windowName];
     
@@ -98,7 +102,7 @@ extern AppController* appController;
                                 initWithBitmapDataPlanes: iBitmap.getpixdatap() 
                                 pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
                                 bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
-                                colorSpaceName:NSCalibratedRGBColorSpace 
+                                colorSpaceName:NSDeviceRGBColorSpace 
                                 bytesPerRow: 4*iBitmap.getwidth()  
                                 bitsPerPixel: 32];
     
@@ -107,8 +111,6 @@ extern AppController* appController;
     if ( ![im isValid] ) {
         NSLog(@"Invalid Image");
     }
-    
-    
     
     NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
     [imageView setFrame:rect];
@@ -119,7 +121,7 @@ extern AppController* appController;
     
     //[imageView setNeedsDisplay:YES]; // for display in macro, this doesn't do the job
     [imageView display];
-
+    
 }
 
 -(void) updateImage{

@@ -9,7 +9,12 @@
 #import <Cocoa/Cocoa.h>
 
 @interface DrawingView : NSView{
+    unsigned char* rowData;
+    int bytesPerRow;
     
 }
+@property unsigned char* rowData;
+@property int bytesPerRow;
+
 
 @end

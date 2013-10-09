@@ -74,17 +74,26 @@ extern Image iBuffer;
         if( [thewindow window ] == activemain) main=i;
         i++;
     }
+
+    if (key == -1) {
+        return;
+    }
+
     if ([[windowArray objectAtIndex: key] isKindOfClass:[DataWindowController class]]){
         NSLog(@"%d %d ",key,main);
+    } else {
+        return; // active window wasn't a data window
     }
 
  // figure out where to place image
  // window_placement needs to have the right position and size
     NSSize theWindowSize = [ [ activemain contentView ] frame ].size;
-    NSRect theDataWindowRect =  [ [ activemain contentView ] frame ];
+    
  
     int windowHeight = 256;
     int windowWidth = theWindowSize.width;
+    
+    //DataView* activeView = [activemain imageView ];
 
     
     // now, figure out where to place the window
@@ -117,10 +126,11 @@ extern Image iBuffer;
     
     // name the window appropriately
     [drawingWindowController setWindowName:@"Line Graphics"] ;
-
+    // tell the window who its data controller is
+    [drawingWindowController setDataWindowController:[windowArray objectAtIndex: key]];
     
     // display the data
-    [drawingWindowController placeDrawing:window_placement fromRect: theDataWindowRect];
+    [drawingWindowController placeDrawing:window_placement];
     
     window_placement.origin.x += windowWidth;            // increment for next one
     
