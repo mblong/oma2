@@ -35,7 +35,6 @@ int comdec(char*);
     NSUInteger wraps;
     
     NSMutableArray *windowArray;
-    NSMutableArray *windowTypeArray;
     
     NSRect window_placement;
     NSRect screenRect;
@@ -47,7 +46,7 @@ int comdec(char*);
 @property (strong) IBOutlet NSTextView *theCommands;
 @property (strong) IBOutlet NSWindow *theWindow;
 @property int tool;     // the tool selected in the status window, used in DataView
-
+@property NSMutableArray *windowArray;
 
 -(void) appendText:(NSString *) string; 
 -(void) appendCText:(char *) string;

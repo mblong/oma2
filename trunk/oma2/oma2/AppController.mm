@@ -12,12 +12,14 @@
 #import "DrawingWindowController.h"
 #import "StatusController.h"
 #import "ImageBitmap.h"
+#import "DataView.h"
 
 
 
 AppController   *appController;
 extern ImageBitmap iBitmap;
 extern Image iBuffer;
+extern oma2UIData UIData;
 
 @implementation AppController
 
@@ -25,7 +27,7 @@ extern Image iBuffer;
 @synthesize theWindow;
 @synthesize tool;
 @synthesize preferenceController;
-
+@synthesize windowArray;
 
 
 -(void)awakeFromNib{
@@ -65,13 +67,14 @@ extern Image iBuffer;
     int key = -1;
     int main = -1;
     int i=0;
-    for (DataWindowController* thewindow in windowArray){
-        if( [thewindow window ] == activekey) key=i;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activekey) key=i;
         i++;
     }
     i=0;
-    for (DataWindowController* thewindow in windowArray){
-        if( [thewindow window ] == activemain) main=i;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activemain) main=i;
+        
         i++;
     }
 
@@ -119,23 +122,27 @@ extern Image iBuffer;
     }
     
     // create a new window controller object
-    DrawingWindowController* drawingWindowController = [[DrawingWindowController alloc] initWithWindowNibName:@"DrawingWindow"];
+    DrawingWindowController* rowWindowController = [[DrawingWindowController alloc] initWithWindowNibName:@"DrawingWindow"];
     
     // add that to the array of windows
-    [windowArray addObject:drawingWindowController];
+    [windowArray addObject:rowWindowController];
     
     // name the window appropriately
-    [drawingWindowController setWindowName:@"Line Graphics"] ;
+    [rowWindowController setWindowName:@"Line Graphics"] ;
     // tell the window who its data controller is
-    [drawingWindowController setDataWindowController:[windowArray objectAtIndex: key]];
+    [rowWindowController setDataWindowController:[windowArray objectAtIndex: key]];
     
     // display the data
-    [drawingWindowController placeDrawing:window_placement];
+    [rowWindowController placeDrawing:window_placement];
     
     window_placement.origin.x += windowWidth;            // increment for next one
     
-    [drawingWindowController showWindow:self];
-    
+    [rowWindowController showWindow:self];
+    tool = CROSS;
+    UIData.toolselected = tool;
+    [statusController setTool_selected:tool];
+    [[statusController toolSelected] selectCellAtRow:0 column:tool];
+
 
     //NSLog(@"%d %d ",key,main);
     
@@ -289,9 +296,39 @@ extern Image iBuffer;
     }
     
     if (n < [windowArray count]) {
-        DataWindowController* thewindow = [windowArray objectAtIndex:n];
-        [[thewindow window ] close];
+        id thewindowController = [windowArray objectAtIndex:n];
+        if ([thewindowController isKindOfClass:[DataWindowController class]]){
+            // erasing a data window
+            // check to see if this has any row or column plots
+            if([thewindowController hasRowPlot] >=0){
+                // this data window is going away, so don't leave the pointer laying around
+                [[[(DataWindowController*)thewindowController imageView] rowWindowController] setDataWindowController:NULL];
+            }
+            if([thewindowController hasColPlot] >=0){
+                // this data window is going away, so don't leave the pointer laying around
+                [[[(DataWindowController*)thewindowController imageView] colWindowController] setDataWindowController:NULL];
+            }
+
+        }
+        
+        if ([thewindowController isKindOfClass:[DrawingWindowController class]]){
+            // if we are erasing a row or column plot, let the data window know they are gone
+            if([thewindowController drawingType] == ROW_DRAWING){
+                [[thewindowController dataWindowController] setHasRowPlot:-1];
+                [[[thewindowController dataWindowController] imageView] setRowLine:-1];
+                [[[thewindowController dataWindowController] imageView] setRowWindowController:NULL];
+            }
+            if([thewindowController drawingType] == COL_DRAWING){
+                [[thewindowController dataWindowController] setHasColPlot:-1];
+                [[[thewindowController dataWindowController] imageView] setColLine:-1];
+                [[[thewindowController dataWindowController] imageView] setColWindowController:NULL];
+            }
+            [[[thewindowController dataWindowController] imageView] setNeedsDisplay:YES];
+        }
+        
+        [[thewindowController window ] close];
         [windowArray removeObjectAtIndex:n];
+
     }
 }
 

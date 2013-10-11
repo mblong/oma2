@@ -24,7 +24,8 @@ extern oma2UIData UIData;
 
 @synthesize rowLine;
 @synthesize colLine;
-@synthesize drawingWindowController;
+@synthesize rowWindowController;
+@synthesize colWindowController;
 
 - (void)drawRect:(NSRect)dirtyRect{
     [super drawRect:dirtyRect];         // crash here when resizing data window that is not the current one
@@ -102,8 +103,16 @@ extern oma2UIData UIData;
     startRect.y = y;
     
     if (rowLine >= 0){
-        rowLine = self.frame.size.height-y;
-        [drawingWindowController updateDrawing:y];
+        int newLine = self.frame.size.height-y/heightScale;
+        if (rowLine != newLine){
+            if(rowLine > newLine){
+                [rowWindowController updateDrawing:y/heightScale];
+            }else{
+                if (y<=0) y=1;
+                [rowWindowController updateDrawing:(y-1)/heightScale];
+            }
+            rowLine = newLine;
+        }
     }
     
     [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
@@ -137,8 +146,16 @@ extern oma2UIData UIData;
         [statusController labelX1:x Y1:y Z1: iBuffer.getpix(y,x)];
     
     if (rowLine >= 0){
-        rowLine = self.frame.size.height-y;
-        [drawingWindowController updateDrawing:y];
+        int newLine = self.frame.size.height-y/heightScale;
+        if (rowLine != newLine){
+            if(rowLine > newLine){
+                [rowWindowController updateDrawing:y/heightScale];
+            }else{
+                if (y<=0) y=1;
+                [rowWindowController updateDrawing:(y-1)/heightScale];
+            }
+            rowLine = newLine;
+        }
     }
     
     [self setNeedsDisplay:YES];

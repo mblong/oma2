@@ -83,6 +83,17 @@ extern AppController* appController;
 
 - (void) windowWillClose:(NSNotification *) notification
 {
+   
+    int number = -1;
+    int i=0;
+    NSMutableArray*  theArray = [appController windowArray];
+    for (id thewindowController in theArray){
+        if( thewindowController == self) number=i;
+        i++;
+    }
+    NSLog(@"Data Window %d Closing",number);
+    if (number != -1)[appController eraseWindow:number];
+
     //NSWindowController *theWindowController = [[notification object] delegate];
     
     //[theWindowController release];
@@ -117,6 +128,9 @@ extern AppController* appController;
     [imageView setFrame:rect];
     [imageView setImageScaling:NSScaleToFit];
     [imageView setImage:im];
+    [imageView setRowLine: -1];
+    [imageView setColLine: -1];
+    [imageView setRowWindowController: NULL];
     
     //NSBitmapImageRep* bitmap2 = [imageview bitmapData];
     

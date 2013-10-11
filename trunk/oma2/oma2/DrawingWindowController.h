@@ -11,10 +11,13 @@
 @class DrawingView;
 @class DataWindowController;
 
+enum {ROW_DRAWING,COL_DRAWING};
+
 @interface DrawingWindowController : NSWindowController{
     NSString    *windowName;
     DrawingView    *__weak drawingView;
     DataWindowController *dataWindowController;
+    int drawingType;
     
 
 }
@@ -23,7 +26,7 @@
 @property (weak) IBOutlet DrawingView *drawingView;
 @property NSRect windowRect;
 @property DataWindowController *dataWindowController;
-
+@property int drawingType;
 
 -(void) placeDrawing: (NSRect) theLocation;
 -(void) updateDrawing: (int) theRow;
