@@ -28,8 +28,9 @@ extern oma2UIData UIData;
     [super drawRect:dirtyRect];
     if(rowData){
         NSBezierPath *path = [NSBezierPath bezierPath];
-        [[NSColor redColor] set];
+        [[NSColor redColor] setStroke];
         [path setLineWidth:1.0];
+        
         float pixPerPt = bytesPerRow/[self frame].size.width/SAMPLESPERPIX;
         
         NSPoint pt;
@@ -41,7 +42,33 @@ extern oma2UIData UIData;
             pt.y = *(rowData+i);
             [path lineToPoint:pt];
         }
+
         [path stroke];
+        
+        NSBezierPath *path2 = [NSBezierPath bezierPath];
+        [[NSColor greenColor] setStroke];
+        pt.x = 0.;
+        pt.y = *rowData+1;
+        [path2 moveToPoint:pt];
+        for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
+            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
+            pt.y = *(rowData+i+1);
+            [path2 lineToPoint:pt];
+        }
+        [path2 stroke];
+        
+        NSBezierPath *path3 = [NSBezierPath bezierPath];
+        [[NSColor blueColor] setStroke];
+        pt.x = 0.;
+        pt.y = *rowData+2;
+        [path3 moveToPoint:pt];
+        for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
+            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
+            pt.y = *(rowData+i+2);
+            [path3 lineToPoint:pt];
+        }
+        
+        [path3 stroke];
     }
 }
 /*

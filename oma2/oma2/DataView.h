@@ -16,11 +16,13 @@
     int mouse_down;
     int rowLine;
     int colLine;
-    DrawingWindowController *drawingWindowController;
+    DrawingWindowController *rowWindowController;
+    DrawingWindowController *colWindowController;
 }
 
 @property int rowLine;
 @property int colLine;
-@property DrawingWindowController *drawingWindowController;
+@property DrawingWindowController *rowWindowController;
+@property DrawingWindowController *colWindowController;
 @end
 

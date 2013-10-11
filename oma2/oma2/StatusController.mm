@@ -183,9 +183,6 @@ StatusController *statusController;
     
 }
 
--(id) whoami{
-    return self;
-}
 
 - (IBAction)scaleCheckbox:(id)sender {
     if([scaleState state] )

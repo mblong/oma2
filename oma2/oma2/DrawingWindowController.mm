@@ -30,6 +30,7 @@ extern AppController* appController;
 @synthesize drawingView;
 @synthesize windowRect;
 @synthesize dataWindowController;
+@synthesize drawingType;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -77,6 +78,7 @@ extern AppController* appController;
 }
 
 -(void) placeDrawing: (NSRect) theLocation {
+    drawingType = ROW_DRAWING;
     // where the data comes from
     NSRect dataRect =  [[dataWindowController imageView] frame ];
     // get the bitmap from the data window
@@ -90,7 +92,7 @@ extern AppController* appController;
     
     [dataWindowController setHasRowPlot:theRow];
     [dataWindowController placeRowLine:theRow];
-    [[dataWindowController imageView] setDrawingWindowController:self];
+    [[dataWindowController imageView] setRowWindowController:self];
     
     windowRect = theLocation;
     [[self window] setTitle:windowName];

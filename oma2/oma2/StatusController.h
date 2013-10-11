@@ -75,6 +75,5 @@
 - (void) labelX1:(int) x Y1:(int) y Z1:(float) z;
 - (void) updatePaletteBox;
 
--(id) whoami;
 
 @end
