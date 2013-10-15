@@ -27,6 +27,7 @@ private:
     PIXBYTES*   pixdata;            //
     int         width;              // 
     int         height;
+    int         thePalette;
     DATAWORD    cmin;
     DATAWORD    crange;
 
@@ -41,6 +42,7 @@ public:
     PIXBYTES** getpixdatap();
     int getwidth();
     int getheight();
+    int getpalette();
     int scale_pixval(DATAWORD);
 };
 

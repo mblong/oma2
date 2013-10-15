@@ -16,6 +16,8 @@
     int mouse_down;
     int rowLine;
     int colLine;
+    int eraseLines;
+
     DrawingWindowController *rowWindowController;
     DrawingWindowController *colWindowController;
 }
@@ -24,5 +26,7 @@
 @property int colLine;
 @property DrawingWindowController *rowWindowController;
 @property DrawingWindowController *colWindowController;
+@property int eraseLines;
+
 @end
 
