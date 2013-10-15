@@ -26,60 +26,75 @@ extern oma2UIData UIData;
 @synthesize colLine;
 @synthesize rowWindowController;
 @synthesize colWindowController;
+@synthesize eraseLines;
+
 
 - (void)drawRect:(NSRect)dirtyRect{
     [super drawRect:dirtyRect];         // crash here when resizing data window that is not the current one
     //NSLog(@"TooL: %d",statusController.tool_selected);    // don't know why this doesn't work
     
-    if (mouse_down) {
-        
-        // only want to do this if mouse is pressed -- 
-        // without this condition, this gets done for every DISPLAY command
-        
-        //tools are: CROSS,RECT,CALCRECT,RULER,LINEPLOT
-        NSBezierPath *path = [NSBezierPath bezierPath];
-        [[NSColor grayColor] set];
-        [path setLineWidth:2.0];
-        
-        switch  (appController.tool){     
-            case CALCRECT:
-            case RECT:
-                //[[NSBezierPath bezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y, 
-                //      endPoint.x-startPoint.x, endPoint.y-startPoint.y)]stroke];
-                
-                [path appendBezierPathWithRect:
-                 NSMakeRect(startPoint.x, startPoint.y,
-                            endPoint.x-startPoint.x, endPoint.y-startPoint.y)];
-                [path stroke];
-                break;
-                
-            case RULER:
-            case LINEPLOT:
-                [path moveToPoint:startPoint];
-                [path lineToPoint:endPoint];
-                [path stroke];
-                
-                //[NSBezierPath strokeLineFromPoint:startPoint toPoint: endPoint];
-                
-                break;
-                
-            default:
-                break;
+    if (!eraseLines) {
+        if (mouse_down) {
+            
+            // only want to do this if mouse is pressed --
+            // without this condition, this gets done for every DISPLAY command
+            
+            //tools are: CROSS,RECT,CALCRECT,RULER,LINEPLOT
+            NSBezierPath *path = [NSBezierPath bezierPath];
+            [[NSColor grayColor] set];
+            [path setLineWidth:2.0];
+            
+            switch  (appController.tool){
+                case CALCRECT:
+                case RECT:
+                    //[[NSBezierPath bezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y,
+                    //      endPoint.x-startPoint.x, endPoint.y-startPoint.y)]stroke];
+                    
+                    [path appendBezierPathWithRect:
+                     NSMakeRect(startPoint.x, startPoint.y,
+                                endPoint.x-startPoint.x, endPoint.y-startPoint.y)];
+                    [path stroke];
+                    break;
+                    
+                case RULER:
+                case LINEPLOT:
+                    [path moveToPoint:startPoint];
+                    [path lineToPoint:endPoint];
+                    [path stroke];
+                    
+                    //[NSBezierPath strokeLineFromPoint:startPoint toPoint: endPoint];
+                    
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+        if (rowLine >= 0) {
+            NSBezierPath *path = [NSBezierPath bezierPath];
+            [[NSColor grayColor] set];
+            [path setLineWidth:2.0];
+            NSPoint pt;
+            pt.x = 0.;
+            pt.y = rowLine;
+            [path moveToPoint:pt];
+            pt.x = [self frame].size.width -1;
+            [path lineToPoint:pt];
+            [path stroke];
+        }
+        if (colLine >= 0) {
+            NSBezierPath *path = [NSBezierPath bezierPath];
+            [[NSColor grayColor] set];
+            [path setLineWidth:2.0];
+            NSPoint pt;
+            pt.x = colLine;
+            pt.y = 0.;
+            [path moveToPoint:pt];
+            pt.y = [self frame].size.height -1;
+            [path lineToPoint:pt];
+            [path stroke];
         }
     }
-    if (rowLine < 0) return;
-    NSBezierPath *path = [NSBezierPath bezierPath];
-    [[NSColor grayColor] set];
-    [path setLineWidth:2.0];
-    NSPoint pt;
-    pt.x = 0.;
-    pt.y = rowLine;
-    [path moveToPoint:pt];
-    pt.x = [self frame].size.width -1;
-    [path lineToPoint:pt];
-    [path stroke];
-
-
 }
 
 - (void) mouseDown:(NSEvent *)theEvent{
@@ -105,13 +120,32 @@ extern oma2UIData UIData;
     if (rowLine >= 0){
         int newLine = self.frame.size.height-y/heightScale;
         if (rowLine != newLine){
+            [rowWindowController updateRowDrawing:y/heightScale];
+            /*
             if(rowLine > newLine){
-                [rowWindowController updateDrawing:y/heightScale];
+                [rowWindowController updateRowDrawing:y/heightScale];
             }else{
                 if (y<=0) y=1;
-                [rowWindowController updateDrawing:(y-1)/heightScale];
+                [rowWindowController updateRowDrawing:(y-1)/heightScale];
             }
+            */
             rowLine = newLine;
+        }
+    }
+    
+    if (colLine >= 0){
+        int newLine = x/heightScale;
+        if (colLine != newLine){
+            [colWindowController updateColDrawing:x/heightScale];
+            /*
+             if(colLine > newLine){
+             if (x<=0) x=1;
+             [colWindowController updateColDrawing:x-1/heightScale];
+             }else{
+             [colWindowController updateColDrawing:x/heightScale];
+             }
+             */
+            colLine = newLine;
         }
     }
     
@@ -148,13 +182,31 @@ extern oma2UIData UIData;
     if (rowLine >= 0){
         int newLine = self.frame.size.height-y/heightScale;
         if (rowLine != newLine){
-            if(rowLine > newLine){
-                [rowWindowController updateDrawing:y/heightScale];
-            }else{
-                if (y<=0) y=1;
-                [rowWindowController updateDrawing:(y-1)/heightScale];
-            }
+            [rowWindowController updateRowDrawing:y/heightScale];
+            /*
+             if(rowLine > newLine){
+             [rowWindowController updateRowDrawing:y/heightScale];
+             }else{
+             if (y<=0) y=1;
+             [rowWindowController updateRowDrawing:(y-1)/heightScale];
+             }
+             */
             rowLine = newLine;
+        }
+    }
+    if (colLine >= 0){
+        int newLine = x/heightScale;
+        if (colLine != newLine){
+            [colWindowController updateColDrawing:x/heightScale];
+            /*
+            if(colLine > newLine){
+                if (x<=0) x=1;
+                [colWindowController updateColDrawing:x-1/heightScale];
+            }else{
+                [colWindowController updateColDrawing:x/heightScale];
+            }
+             */
+            colLine = newLine;
         }
     }
     

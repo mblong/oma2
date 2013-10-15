@@ -343,7 +343,11 @@
                                     <action selector="plotRows:" target="536" id="vlL-mO-MAu"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Plot Columns" keyEquivalent="2" id="496"/>
+                            <menuItem title="Plot Columns" keyEquivalent="2" id="496">
+                                <connections>
+                                    <action selector="plotCols:" target="536" id="NZB-CX-UG0"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>

@@ -28,6 +28,9 @@ enum {ROW_DRAWING,COL_DRAWING};
 @property DataWindowController *dataWindowController;
 @property int drawingType;
 
--(void) placeDrawing: (NSRect) theLocation;
--(void) updateDrawing: (int) theRow;
+-(void) placeRowDrawing: (NSRect) theLocation;
+-(void) updateRowDrawing: (int) theRow;
+-(void) placeColDrawing: (NSRect) theLocation;
+-(void) updateColDrawing: (int) theCol;
+
 @end

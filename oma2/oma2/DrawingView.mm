@@ -21,6 +21,7 @@ extern oma2UIData UIData;
 @implementation DrawingView
 
 @synthesize rowData;
+@synthesize colData;
 @synthesize bytesPerRow;
 
 - (void)drawRect:(NSRect)dirtyRect{
@@ -70,6 +71,51 @@ extern oma2UIData UIData;
         
         [path3 stroke];
     }
+    if(colData){
+        NSBezierPath *path = [NSBezierPath bezierPath];
+        [[NSColor redColor] setStroke];
+        [path setLineWidth:1.0];
+        
+        float pixPerPt = bytesPerRow/[self frame].size.width/SAMPLESPERPIX;
+        
+        NSPoint pt;
+        pt.x = 0.;
+        pt.y = *colData;
+        [path moveToPoint:pt];
+        for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
+            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
+            pt.y = *(colData+i);
+            [path lineToPoint:pt];
+        }
+        
+        [path stroke];
+        
+        NSBezierPath *path2 = [NSBezierPath bezierPath];
+        [[NSColor greenColor] setStroke];
+        pt.x = 0.;
+        pt.y = *colData+1;
+        [path2 moveToPoint:pt];
+        for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
+            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
+            pt.y = *(colData+i+1);
+            [path2 lineToPoint:pt];
+        }
+        [path2 stroke];
+        
+        NSBezierPath *path3 = [NSBezierPath bezierPath];
+        [[NSColor blueColor] setStroke];
+        pt.x = 0.;
+        pt.y = *colData+2;
+        [path3 moveToPoint:pt];
+        for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
+            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
+            pt.y = *(colData+i+2);
+            [path3 lineToPoint:pt];
+        }
+        
+        [path3 stroke];
+    }
+
 }
 /*
 -(void) plotRow: (unsigned char*) rowData rowBytes: (int) bytesPerRow{

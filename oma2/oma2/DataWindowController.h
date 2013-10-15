@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define CLOSE_CLEANUP_DONE -10
+
 @class DataView;
 
 @interface DataWindowController : NSWindowController{
@@ -15,7 +17,7 @@
     DataView    *__weak imageView;
     int         hasRowPlot;
     int         hasColPlot;
-    
+    int         thePalette;
 }
 
 @property (copy) NSString *windowName;
@@ -23,10 +25,11 @@
 @property NSRect windowRect;
 @property int         hasRowPlot;
 @property int         hasColPlot;
-
+@property int thePalette;
 
 -(void) placeImage: (NSRect) theRect;
 -(void) placeRowLine: (int) theRow;
+-(void) placeColLine: (int) theCol;
 -(void) updateImage;
 
 @end

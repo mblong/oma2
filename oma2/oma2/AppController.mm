@@ -133,7 +133,7 @@ extern oma2UIData UIData;
     [rowWindowController setDataWindowController:[windowArray objectAtIndex: key]];
     
     // display the data
-    [rowWindowController placeDrawing:window_placement];
+    [rowWindowController placeRowDrawing:window_placement];
     
     window_placement.origin.x += windowWidth;            // increment for next one
     
@@ -149,6 +149,92 @@ extern oma2UIData UIData;
     
 }
 
+- (IBAction)plotCols:(id)sender{
+    NSWindow* activekey = [NSApp keyWindow];
+    NSWindow* activemain = [NSApp mainWindow];
+    int key = -1;
+    int main = -1;
+    int i=0;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activekey) key=i;
+        i++;
+    }
+    i=0;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activemain) main=i;
+        
+        i++;
+    }
+    
+    if (key == -1) {
+        return;
+    }
+    
+    if ([[windowArray objectAtIndex: key] isKindOfClass:[DataWindowController class]]){
+        NSLog(@"%d %d ",key,main);
+    } else {
+        return; // active window wasn't a data window
+    }
+    
+    // figure out where to place image
+    // window_placement needs to have the right position and size
+    NSSize theWindowSize = [ [ activemain contentView ] frame ].size;
+    
+    int windowHeight = 256;
+    int windowWidth = theWindowSize.height;
+    
+    //DataView* activeView = [activemain imageView ];
+    
+    
+    // now, figure out where to place the window
+    if(window_placement.origin.x == WINDOW_OFFSET+screenRect.origin.x) {   // left column
+        window_placement.origin.y -= (windowHeight+TITLEBAR_HEIGHT);
+    }
+    
+    window_placement=NSMakeRect(window_placement.origin.x,
+                                window_placement.origin.y,
+                                windowWidth, windowHeight+TITLEBAR_HEIGHT);
+    
+    if (window_placement.origin.x+windowWidth>screenRect.size.width) {
+        window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
+        
+        if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > 0){
+            window_placement.origin.y -= (windowHeight + TITLEBAR_HEIGHT);
+        } else{
+            wraps++;
+            window_placement.origin.y = screenRect.size.height
+            -windowHeight- wraps*TITLEBAR_HEIGHT; // wrap to top
+        }
+        
+    }
+    
+    // create a new window controller object
+    DrawingWindowController* colWindowController = [[DrawingWindowController alloc] initWithWindowNibName:@"DrawingWindow"];
+    
+    // add that to the array of windows
+    [windowArray addObject:colWindowController];
+    
+    // name the window appropriately
+    [colWindowController setWindowName:@"Line Graphics"] ;
+    // tell the window who its data controller is
+    [colWindowController setDataWindowController:[windowArray objectAtIndex: key]];
+    
+    // display the data
+    [colWindowController placeColDrawing:window_placement];
+    
+    window_placement.origin.x += windowWidth;            // increment for next one
+    
+    [colWindowController showWindow:self];
+    tool = CROSS;
+    UIData.toolselected = tool;
+    [statusController setTool_selected:tool];
+    [[statusController toolSelected] selectCellAtRow:0 column:tool];
+    
+    
+    //NSLog(@"%d %d ",key,main);
+    
+    
+}
 
 // this attempt to be notified when text changes in prefixes doesn't work
 // It gets called once only when the window opens, not when the text changes
@@ -285,7 +371,13 @@ extern oma2UIData UIData;
 
 -(void) eraseWindow:(int) n{
     if (n < 0) {            // erase everything
-        for (DataWindowController* thewindow in windowArray){
+        for (id thewindow in windowArray){
+            if ([thewindow isKindOfClass:[DataWindowController class]]){
+                [thewindow setHasRowPlot:CLOSE_CLEANUP_DONE];
+            }
+            if ([thewindow isKindOfClass:[DrawingWindowController class]]){
+                [thewindow setDrawingType:CLOSE_CLEANUP_DONE];
+            }
             [[thewindow window ] close];
         }
         [windowArray removeAllObjects];
@@ -308,6 +400,8 @@ extern oma2UIData UIData;
                 // this data window is going away, so don't leave the pointer laying around
                 [[[(DataWindowController*)thewindowController imageView] colWindowController] setDataWindowController:NULL];
             }
+            // signal that we are done with the housekeeping
+            [thewindowController setHasRowPlot:CLOSE_CLEANUP_DONE];
 
         }
         
@@ -323,6 +417,9 @@ extern oma2UIData UIData;
                 [[[thewindowController dataWindowController] imageView] setColLine:-1];
                 [[[thewindowController dataWindowController] imageView] setColWindowController:NULL];
             }
+            // signal that we are done with the housekeeping
+            [thewindowController setDrawingType:CLOSE_CLEANUP_DONE];
+
             [[[thewindowController dataWindowController] imageView] setNeedsDisplay:YES];
         }
         
@@ -330,6 +427,12 @@ extern oma2UIData UIData;
         [windowArray removeObjectAtIndex:n];
 
     }
+    if([windowArray count] == 0){
+        wraps=1;
+        window_placement.origin.x = screenRect.origin.x+WINDOW_OFFSET;
+        window_placement.origin.y = screenRect.size.height;
+    }
+
 }
 
 -(void) dataWindowClosing{

@@ -10,10 +10,12 @@
 
 @interface DrawingView : NSView{
     unsigned char* rowData;
+    unsigned char* colData;
     int bytesPerRow;
     
 }
 @property unsigned char* rowData;
+@property unsigned char* colData;
 @property int bytesPerRow;
 
 

@@ -57,6 +57,7 @@ int comdec(char*);
 - (IBAction)showPrefs:(id)sender;
 
 - (IBAction)plotRows:(id)sender;
+- (IBAction)plotCols:(id)sender;
 
 -(void) showDataWindow:(char*) windowname;
 -(void) eraseWindow:(int) n;

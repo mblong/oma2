@@ -22,7 +22,7 @@ extern AppController* appController;
 @synthesize windowRect;
 @synthesize hasRowPlot;
 @synthesize hasColPlot;
-
+@synthesize thePalette;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -88,18 +88,19 @@ extern AppController* appController;
     int i=0;
     NSMutableArray*  theArray = [appController windowArray];
     for (id thewindowController in theArray){
-        if( thewindowController == self) number=i;
+        if( [thewindowController window] == [self window]) number=i;
         i++;
     }
     NSLog(@"Data Window %d Closing",number);
-    if (number != -1)[appController eraseWindow:number];
+    if (number != -1 && [[theArray objectAtIndex:number ] hasRowPlot] != CLOSE_CLEANUP_DONE)
+                         [appController eraseWindow:number];
 
     //NSWindowController *theWindowController = [[notification object] delegate];
     
     //[theWindowController release];
     
     //[self release];
-    //[super dealloc]
+    //[super dealloc];
     //[myArrayOfWindowControllers removeObject: theWindowController];
 }
 
@@ -109,14 +110,17 @@ extern AppController* appController;
     hasRowPlot = -1;
     
     [[self window] setTitle:windowName];
+    [self setThePalette:iBitmap.getpalette()];
     
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
                                 initWithBitmapDataPlanes: iBitmap.getpixdatap() 
                                 pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
                                 bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
-                                colorSpaceName:NSDeviceRGBColorSpace 
+                                colorSpaceName:NSCalibratedRGBColorSpace
                                 bytesPerRow: 4*iBitmap.getwidth()  
                                 bitsPerPixel: 32];
+    
+    bitmap = [bitmap  bitmapImageRepByRetaggingWithColorSpace:[NSColorSpace genericRGBColorSpace]];
     
     NSImage *im = [[NSImage alloc] init];
     [im addRepresentation:bitmap];
@@ -145,9 +149,11 @@ extern AppController* appController;
                                 initWithBitmapDataPlanes: iBitmap.getpixdatap() 
                                 pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
                                 bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
-                                colorSpaceName:NSCalibratedRGBColorSpace 
+                                colorSpaceName:NSCalibratedRGBColorSpace
                                 bytesPerRow: 4*iBitmap.getwidth()  
                                 bitsPerPixel: 32];
+    
+    bitmap = [bitmap  bitmapImageRepByRetaggingWithColorSpace:[NSColorSpace genericRGBColorSpace]];
     
     NSImage *im = [[NSImage alloc] init];
     [im addRepresentation:bitmap];
@@ -161,12 +167,20 @@ extern AppController* appController;
     [imageView setImage:im];
 
     [imageView display];
+    
 
 }
+
 -(void) placeRowLine: (int) theRow{
     [imageView setRowLine:theRow];
     [imageView display];
 }
+
+-(void) placeColLine: (int) theCol{
+    [imageView setColLine:theCol];
+    [imageView display];
+}
+
 
 -(BOOL) acceptsFirstResponder{
     return YES;

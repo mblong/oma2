@@ -91,6 +91,7 @@ void ImageBitmap::operator=(Image im){
 		//return pixdata;
 	}
     if (im.specs[IS_COLOR]) {
+        thePalette = -1;
         DATAWORD *pt_green,*pt_blue;
         pt_green = im.data + nchan*ntrack/3;
         pt_blue =  pt_green + nchan*ntrack/3;
@@ -121,6 +122,7 @@ void ImageBitmap::operator=(Image im){
             }
         }
     } else {
+        thePalette = UIData.thepalette;
         if( UIData.pixsiz > 0 ) {
             for(i=0; i < ntrack; i++){
                 for(j=0; j < nchan; j++){
@@ -164,6 +166,10 @@ int ImageBitmap::getwidth(){
 
 int ImageBitmap::getheight(){
     return height;
+}
+
+int ImageBitmap::getpalette(){
+    return thePalette;
 }
 
 //************************************
