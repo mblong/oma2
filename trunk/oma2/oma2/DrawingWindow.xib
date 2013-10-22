@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4510"/>
@@ -7,35 +7,35 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="DrawingWindowController">
             <connections>
-                <outlet property="drawingView" destination="z82-q0-cNq" id="ihd-eA-oHB"/>
-                <outlet property="window" destination="1" id="0Qi-q9-rPe"/>
+                <outlet property="drawingView" destination="13" id="oBE-iq-gqs"/>
+                <outlet property="window" destination="1" id="aMy-ZU-wjH"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" wantsToBeColor="NO" animationBehavior="default" id="1">
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" wantsToBeColor="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="contentRect" x="196" y="240" width="434" height="471"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <rect key="frame" x="0.0" y="0.0" width="434" height="471"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z82-q0-cNq" customClass="DrawingView">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <customView id="13" customClass="DrawingView">
+                        <rect key="frame" x="0.0" y="0.0" width="434" height="471"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </customView>
                 </subviews>
             </view>
             <connections>
-                <outlet property="delegate" destination="owL-te-tRu" id="5YB-VI-2DA"/>
+                <outlet property="delegate" destination="1Tx-8u-mXD" id="Zfl-NZ-BWX"/>
             </connections>
         </window>
-        <customObject id="owL-te-tRu" customClass="DrawingWindowController">
+        <customObject id="1Tx-8u-mXD" customClass="DrawingWindowController">
             <connections>
-                <outlet property="drawingView" destination="z82-q0-cNq" id="oeN-Yf-TQN"/>
-                <outlet property="window" destination="1" id="T86-0D-WKh"/>
+                <outlet property="drawingView" destination="13" id="RA5-tP-KH6"/>
+                <outlet property="window" destination="1" id="3og-Sc-ahK"/>
             </connections>
         </customObject>
     </objects>

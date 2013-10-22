@@ -26,8 +26,8 @@ int comdec(char*);
 @class PreferenceController;
 @class DataWindowController;
 
-@interface AppController : NSObject{
-    
+@interface AppController : NSObject
+{
     PreferenceController *__strong preferenceController;
     
     NSWindow *__strong theWindow;
@@ -40,8 +40,8 @@ int comdec(char*);
     NSRect screenRect;
     NSTextView *__strong theCommands;
     char oma2Command[CHPERLN];
-
 }
+ 
 @property (strong) PreferenceController *preferenceController;
 @property (strong) IBOutlet NSTextView *theCommands;
 @property (strong) IBOutlet NSWindow *theWindow;

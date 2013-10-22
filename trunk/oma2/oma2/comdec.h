@@ -52,6 +52,6 @@ int savsettings(int,char*);
 int defmac(int,char*);
 
 int gettextline(int, char*);
-
+int keylimit(int n);
 
 #endif

@@ -92,7 +92,7 @@ extern AppController* appController;
         i++;
     }
     NSLog(@"Data Window %d Closing",number);
-    if (number != -1 && [[theArray objectAtIndex:number ] hasRowPlot] != CLOSE_CLEANUP_DONE)
+    if (number != -1 && [theArray[number] hasRowPlot] != CLOSE_CLEANUP_DONE)
                          [appController eraseWindow:number];
 
     //NSWindowController *theWindowController = [[notification object] delegate];
@@ -195,7 +195,7 @@ extern AppController* appController;
     if (image != nil) {
         NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
         [pasteboard clearContents];
-        NSArray *copiedObjects = [NSArray arrayWithObject:image];
+        NSArray *copiedObjects = @[image];
         [pasteboard writeObjects:copiedObjects];
     }
 }

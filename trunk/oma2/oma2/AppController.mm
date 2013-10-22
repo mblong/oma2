@@ -82,7 +82,7 @@ extern oma2UIData UIData;
         return;
     }
 
-    if ([[windowArray objectAtIndex: key] isKindOfClass:[DataWindowController class]]){
+    if ([windowArray[key] isKindOfClass:[DataWindowController class]]){
         NSLog(@"%d %d ",key,main);
     } else {
         return; // active window wasn't a data window
@@ -130,7 +130,7 @@ extern oma2UIData UIData;
     // name the window appropriately
     [rowWindowController setWindowName:@"Line Graphics"] ;
     // tell the window who its data controller is
-    [rowWindowController setDataWindowController:[windowArray objectAtIndex: key]];
+    [rowWindowController setDataWindowController:windowArray[key]];
     
     // display the data
     [rowWindowController placeRowDrawing:window_placement];
@@ -170,7 +170,7 @@ extern oma2UIData UIData;
         return;
     }
     
-    if ([[windowArray objectAtIndex: key] isKindOfClass:[DataWindowController class]]){
+    if ([windowArray[key] isKindOfClass:[DataWindowController class]]){
         NSLog(@"%d %d ",key,main);
     } else {
         return; // active window wasn't a data window
@@ -217,7 +217,7 @@ extern oma2UIData UIData;
     // name the window appropriately
     [colWindowController setWindowName:@"Line Graphics"] ;
     // tell the window who its data controller is
-    [colWindowController setDataWindowController:[windowArray objectAtIndex: key]];
+    [colWindowController setDataWindowController:windowArray[key]];
     
     // display the data
     [colWindowController placeColDrawing:window_placement];
@@ -244,7 +244,7 @@ extern oma2UIData UIData;
                        context:(void *)context {
     if ([keyPath isEqualToString:@"macroPrefix"]) {
         
-        const char* text = [[[change objectForKey:NSKeyValueChangeNewKey] stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+        const char* text = [[change[NSKeyValueChangeNewKey] stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
         fullname((char*)text,LOAD_SAVE_PREFIX);
     }
 }
@@ -280,6 +280,7 @@ extern oma2UIData UIData;
             [self appendText: @"OMA2>"];
         }
         
+        
     }
     
 }
@@ -292,6 +293,11 @@ extern oma2UIData UIData;
         [[windowArray lastObject] updateImage];
         [[windowArray lastObject] showWindow:self];
         return;
+    }
+    // delete the first window if this will take us over the max limit
+    
+    if ([windowArray count] == MAX_WINDOW_COUNT) {
+        [self eraseWindow:0];
     }
     
     // figure out where to place image
@@ -388,7 +394,7 @@ extern oma2UIData UIData;
     }
     
     if (n < [windowArray count]) {
-        id thewindowController = [windowArray objectAtIndex:n];
+        id thewindowController = windowArray[n];
         if ([thewindowController isKindOfClass:[DataWindowController class]]){
             // erasing a data window
             // check to see if this has any row or column plots

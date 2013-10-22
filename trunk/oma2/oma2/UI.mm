@@ -90,8 +90,14 @@ void dropped_file(char* extension, char* name){
 
 int omaprintf(const char* format, ...)
 {
+    
     va_list args;
     va_start(args,format);
+    extern unsigned char printall,no_print;
+    
+    if(!printall) return 0;
+	if(no_print) return 0;
+
     
     int return_status = 0;
     

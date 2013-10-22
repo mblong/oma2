@@ -13,7 +13,8 @@
 
 enum {ROW_DRAWING,COL_DRAWING};
 
-@interface DrawingWindowController : NSWindowController{
+@interface DrawingWindowController : NSWindowController
+/*{
     NSString    *windowName;
     DrawingView    *__weak drawingView;
     DataWindowController *dataWindowController;
@@ -21,9 +22,11 @@ enum {ROW_DRAWING,COL_DRAWING};
     
 
 }
+*/
+//@property (assign) IBOutlet NSWindow *window;
 
 @property (copy) NSString *windowName;
-@property (weak) IBOutlet DrawingView *drawingView;
+@property __weak IBOutlet DrawingView *drawingView;
 @property NSRect windowRect;
 @property DataWindowController *dataWindowController;
 @property int drawingType;
