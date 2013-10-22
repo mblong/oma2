@@ -14,7 +14,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
+        [self registerForDraggedTypes:@[NSURLPboardType]];
         // Initialization code here.
     }
     

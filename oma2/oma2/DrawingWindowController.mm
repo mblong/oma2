@@ -26,6 +26,7 @@ extern AppController* appController;
 
 @implementation DrawingWindowController
 
+//@synthesize window;
 @synthesize windowName;
 @synthesize drawingView;
 @synthesize windowRect;
@@ -76,7 +77,7 @@ extern AppController* appController;
         i++;
     }
     NSLog(@"Drawing Window %d Closing",number);
-    if (number != -1 && [[theArray objectAtIndex:number ] drawingType] != CLOSE_CLEANUP_DONE)
+    if (number != -1 && [theArray[number] drawingType] != CLOSE_CLEANUP_DONE)
         [appController eraseWindow:number];
 
 }
@@ -102,7 +103,7 @@ extern AppController* appController;
     
     //imageRep = [imageRep bitmapImageRepByRetaggingWithColorSpace:[NSColorSpace sRGBColorSpace]];
     
-    
+    NSData* rowData = [[NSData alloc] initWithBytes:[imageRep bitmapData] length:[imageRep bytesPerRow]];
     unsigned char* bytes = [imageRep bitmapData];
     int bytesPerRow = (int)[imageRep bytesPerRow];
     
@@ -145,8 +146,9 @@ extern AppController* appController;
     [drawingView setFrame:rect];
     
     //[drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
-    [drawingView setRowData: bytes];
+    [drawingView setRowData: rowData];
     [drawingView setBytesPerRow: bytesPerRow];
+    [drawingView setPixPerPt: bytesPerRow/4/[[dataWindowController imageView] frame ].size.width];
     
     [drawingView display];
     [[dataWindowController imageView] setEraseLines:0];
@@ -173,12 +175,13 @@ extern AppController* appController;
     
     unsigned char* bytes = [imageRep bitmapData];
     int bytesPerRow = (int)[imageRep bytesPerRow];
+    NSData* rowData = [[NSData alloc] initWithBytes:[imageRep bitmapData] length:[imageRep bytesPerRow]];
     //int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;  // for retina displays
     [[dataWindowController imageView] unlockFocus];
     
     
     //[drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
-    [drawingView setRowData: bytes];
+    [drawingView setRowData: rowData];
     [drawingView setBytesPerRow: bytesPerRow];
     
     [drawingView display];

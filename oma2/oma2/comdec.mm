@@ -72,8 +72,9 @@ ComDef   commands[] =    {
 
 
 // if this is set, don't print anything
-int no_print = 0;
-int from_noprint=0;
+unsigned char no_print = 0;
+unsigned char from_noprint=0;
+unsigned char printall = 1;		// the flag for "priority only" printing
 
 /* Things for loops in macros */
 
@@ -256,7 +257,7 @@ int comdec(char* cmnd)
                         //ifdepth = 0;
                         if_condition_met = 1;
                         if(from_noprint) {
-                            //keylimit(-2);
+                            keylimit(-2);
                             from_noprint = 0;
                         }
                     }
@@ -1260,7 +1261,7 @@ int macro(int n, char* args)
 {
 	//extern unsigned char from_noprint;
 	
-	//keylimit(-1);
+	keylimit(-1);
 	from_noprint = 1;
 	rmacro(n,args);
 	return 0;
@@ -1307,6 +1308,46 @@ int rmacro(int n, char* args)
 	printf("Start Macro: from %d to %d, steps of %d.\n",macval,j,macincrement);
 	return 0;
 }
+
+/* ********** */
+
+int keylimit(int n)
+/* limit printing command */
+{
+    // make a buffer so nested klimit commands work in macro/execute when klimit is built in
+    // to commands
+	extern unsigned char printall;
+	static unsigned char saveprintall[100];
+    static int printall_depth = 0;
+	
+	switch(n) {
+        case 0:
+            printall = 1;
+            break;
+        case -1:				/* turn off printing now but save old status */
+            saveprintall[printall_depth++] = printall;
+            if(printall_depth >= 100){
+                printall_depth = 99;
+                beep();
+                printf("KLIMIT depth overflow.\n");
+            }
+            printall = 0;
+            break;
+        case -2:
+            if(printall_depth <= 0){
+                printall_depth = 1;
+                beep();
+                printf("KLIMIT depth underflow.\n");
+                break;
+            }
+            printall = saveprintall[--printall_depth];	/* restore old status */
+            break;
+        default:
+            printall = 1;
+	}
+	return 0;
+}
+
 /*
 // ********** 
 

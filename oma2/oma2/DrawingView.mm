@@ -23,6 +23,7 @@ extern oma2UIData UIData;
 @synthesize rowData;
 @synthesize colData;
 @synthesize bytesPerRow;
+@synthesize pixPerPt;
 
 - (void)drawRect:(NSRect)dirtyRect{
 
@@ -31,16 +32,18 @@ extern oma2UIData UIData;
         NSBezierPath *path = [NSBezierPath bezierPath];
         [[NSColor redColor] setStroke];
         [path setLineWidth:1.0];
+        unsigned char* rowData_ = (unsigned char*)[rowData bytes];
         
-        float pixPerPt = bytesPerRow/[self frame].size.width/SAMPLESPERPIX;
+        float scalex = self.window.frame.size.width/(float)bytesPerRow/pixPerPt;
+        float scaley = self.window.frame.size.height/(255.-20.);
         
         NSPoint pt;
         pt.x = 0.;
-        pt.y = *rowData;
+        pt.y = *rowData_*scaley;
         [path moveToPoint:pt];
         for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
-            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
-            pt.y = *(rowData+i);
+            pt.x = (float)i*scalex*pixPerPt;
+            pt.y = *(rowData_+i)*scaley;
             [path lineToPoint:pt];
         }
 
@@ -49,11 +52,11 @@ extern oma2UIData UIData;
         NSBezierPath *path2 = [NSBezierPath bezierPath];
         [[NSColor greenColor] setStroke];
         pt.x = 0.;
-        pt.y = *rowData+1;
+        pt.y = (*rowData_+1)*scaley;
         [path2 moveToPoint:pt];
         for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
-            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
-            pt.y = *(rowData+i+1);
+            pt.x = (float)i*scalex*pixPerPt;
+            pt.y = *(rowData_+i+1)*scaley;
             [path2 lineToPoint:pt];
         }
         [path2 stroke];
@@ -61,11 +64,11 @@ extern oma2UIData UIData;
         NSBezierPath *path3 = [NSBezierPath bezierPath];
         [[NSColor blueColor] setStroke];
         pt.x = 0.;
-        pt.y = *rowData+2;
+        pt.y = (*rowData_+2)*scaley;
         [path3 moveToPoint:pt];
         for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
-            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
-            pt.y = *(rowData+i+2);
+            pt.x = (float)i*scalex*pixPerPt;
+            pt.y = *(rowData_+i+2)*scaley;
             [path3 lineToPoint:pt];
         }
         

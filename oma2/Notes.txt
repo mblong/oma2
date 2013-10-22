@@ -47,13 +47,14 @@ Addressed UI Issues:
         X Y coordinates (and Z values) are wrong
         Presumably this is the source of the trouble with the CROP command
   √copy from an image window
+  √release window when click on close
+  Drop Files onto status broken. -- seems to work
 
 _____________________________
 Needed Commands
  LOG command
  GET command --  ".tif" still needed.
- GETFILENAMES
- NEXT
+
  
  
 _____________________________
@@ -62,15 +63,19 @@ Existing Command Issues:
  
 _____________________________
 UI Issues:
-    when the status window is selected, typing a space isn't sent to the command window
-    Crash on resizing data windows when there are multiple windows open
-    Drop Files onto status broken.
+    when the status window is selected, typing a space isn't sent to the command window -- sometimes?
+    
+    Crash on resizing data window that isn't the current one when size is smaller than original. in DataView.mm drawRect
+
     
 UI Needs
-    release window when click on close
-    find which window is active
+
+
     -> open a lineplot window and plot graphics
         get the bitmap data from a window for line plots
+        Still issues here:
+            Bitmap returned is different than the one set due to display profile mapping
+            Crashes on print or resize of drawing window
 
 
     Prefs:
@@ -85,9 +90,11 @@ in comdec.mm:
 display_data (alias to #define display_data [appController showDataWindow:(char*) args]; in UI.h)
 
 
-appController showDataWindow:windowname (invoked from from display as above)
+  appController showDataWindow:windowname (invoked from from display as above)
     // figure out where to place image
     screen size is:
         screenRect.size.width
         screenRect.size.height
 
+To find which window is active:
+    [NSApp keyWindow]       -- NSApp is a global defined in Cocoa

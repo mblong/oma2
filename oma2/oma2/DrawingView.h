@@ -8,15 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface DrawingView : NSView{
-    unsigned char* rowData;
-    unsigned char* colData;
-    int bytesPerRow;
-    
-}
-@property unsigned char* rowData;
-@property unsigned char* colData;
+@interface DrawingView : NSView
+
+@property NSData* rowData;
+@property unsigned char *colData;
 @property int bytesPerRow;
+@property int pixPerPt;
 
 
 @end

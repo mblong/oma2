@@ -12,16 +12,17 @@
 
 @class DataView;
 
-@interface DataWindowController : NSWindowController{
+@interface DataWindowController : NSWindowController
+/*{
     NSString    *windowName;
     DataView    *__weak imageView;
     int         hasRowPlot;
     int         hasColPlot;
     int         thePalette;
 }
-
+*/
 @property (copy) NSString *windowName;
-@property (weak) IBOutlet DataView *imageView;
+@property __strong IBOutlet DataView *imageView;
 @property NSRect windowRect;
 @property int         hasRowPlot;
 @property int         hasColPlot;
