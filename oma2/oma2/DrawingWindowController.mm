@@ -76,7 +76,7 @@ extern AppController* appController;
         if( [thewindowController window] == [self window]) number=i;
         i++;
     }
-    NSLog(@"Drawing Window %d Closing",number);
+    //NSLog(@"Drawing Window %d Closing",number);
     if (number != -1 && [theArray[number] drawingType] != CLOSE_CLEANUP_DONE)
         [appController eraseWindow:number];
 
@@ -173,7 +173,7 @@ extern AppController* appController;
     
     //imageRep = [imageRep bitmapImageRepByRetaggingWithColorSpace:[NSColorSpace sRGBColorSpace]];
     
-    unsigned char* bytes = [imageRep bitmapData];
+    //unsigned char* bytes = [imageRep bitmapData];
     int bytesPerRow = (int)[imageRep bytesPerRow];
     NSData* rowData = [[NSData alloc] initWithBytes:[imageRep bitmapData] length:[imageRep bytesPerRow]];
     //int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;  // for retina displays
@@ -203,12 +203,14 @@ extern AppController* appController;
     NSBitmapImageRep* imageRep=[[NSBitmapImageRep alloc] initWithFocusedViewRect: dataRect] ;
     unsigned char* bytes = [imageRep bitmapData];
     int bytesPerRow = (int)[imageRep bytesPerRow];
-    int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;  // = 2 for retina displays
+    
+    int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;
+    
     unsigned char* colbytes = new unsigned char[(int)dataRect.size.height*pixPerPt*4];
     int n=0;
     for(int i=0; i < (int)dataRect.size.height*pixPerPt; i++){
         for(int j=0; j < 4; j++){
-            colbytes[n++] = *(bytes+i*bytesPerRow+theCol*4+j);
+            colbytes[n++] = *(bytes+i*bytesPerRow+theCol*4*pixPerPt+j);
         }
     }
     
@@ -225,8 +227,10 @@ extern AppController* appController;
     [drawingView setFrame:rect];
     
     //[drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
-    [drawingView setColData: colbytes];
+    NSData* colData = [[NSData alloc] initWithBytes:colbytes length:(int)dataRect.size.height*pixPerPt*4];
+    [drawingView setColData: colData];
     [drawingView setBytesPerRow: (int)dataRect.size.height*pixPerPt*4];
+    [drawingView setPixPerPt: pixPerPt];
     
     [drawingView display];
     delete colbytes;
@@ -247,18 +251,21 @@ extern AppController* appController;
     NSBitmapImageRep* imageRep=[[NSBitmapImageRep alloc] initWithFocusedViewRect: dataRect] ;
     unsigned char* bytes = [imageRep bitmapData];
     int bytesPerRow = (int)[imageRep bytesPerRow];
-    int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;  // = 2 for retina displays
+    int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;
+    // = 2 for retina displays
     unsigned char* colbytes = new unsigned char[(int)dataRect.size.height*pixPerPt*4];
     int n=0;
     for(int i=0; i < (int)dataRect.size.height*pixPerPt; i++){
         for(int j=0; j < 4; j++){
-            colbytes[n++] = *(bytes+i*bytesPerRow+theCol*4+j);
+            colbytes[n++] = *(bytes+i*bytesPerRow+theCol*4*pixPerPt+j);
         }
     }
     [[dataWindowController imageView] unlockFocus];
     
     //[drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
-    [drawingView setColData: colbytes];
+    NSData* colData = [[NSData alloc] initWithBytes:colbytes length:(int)dataRect.size.height*pixPerPt*4];
+
+    [drawingView setColData: colData];
     [drawingView setBytesPerRow: (int)dataRect.size.height*pixPerPt*4];
     
     [drawingView display];
@@ -276,16 +283,20 @@ extern AppController* appController;
     [[appController theWindow] sendEvent: anEvent];
 }
 
-/*
+
 - (IBAction)copy:sender {
-    NSImage *image = [imageView image];
-    if (image != nil) {
+    // need things here to copy line drawings
+    // also can add same to data window
+    
+    NSView *view = [sender drawingView];
+    if (view != nil) {
         NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
         [pasteboard clearContents];
-        NSArray *copiedObjects = [NSArray arrayWithObject:image];
+        NSArray *copiedObjects = [NSArray arrayWithObject:view];
         [pasteboard writeObjects:copiedObjects];
     }
+    
 }
-*/
+
 
 @end
