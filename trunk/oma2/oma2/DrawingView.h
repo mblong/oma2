@@ -11,7 +11,7 @@
 @interface DrawingView : NSView
 
 @property NSData* rowData;
-@property unsigned char *colData;
+@property NSData* colData;
 @property int bytesPerRow;
 @property int pixPerPt;
 

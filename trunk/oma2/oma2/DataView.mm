@@ -99,6 +99,14 @@ extern oma2UIData UIData;
 }
 
 - (void) mouseDown:(NSEvent *)theEvent{
+    // toggle alpha if right click
+    if ([theEvent modifierFlags] & 1){              // need to figure out the name of this constant
+        if ([[theEvent window] alphaValue] == 1.0)
+            [[theEvent window] setAlphaValue:UIData.alphaValue];
+        else
+            [[theEvent window] setAlphaValue:1.0];
+    }
+
     mouse_down = 1;
     NSPoint point = [theEvent locationInWindow];
     startPoint = [self convertPoint:point fromView:nil];
@@ -291,5 +299,13 @@ extern oma2UIData UIData;
     
     mouse_down = 0;
 }
+
+- (void) rightMouseDown:(NSEvent *)theEvent{
+    if ([[theEvent window] alphaValue] == 1.0)
+        [[theEvent window] setAlphaValue:UIData.alphaValue];
+    else
+        [[theEvent window] setAlphaValue:1.0];
+}
+
 
 @end

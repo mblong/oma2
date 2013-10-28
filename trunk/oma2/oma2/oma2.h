@@ -199,6 +199,8 @@ typedef struct {
     float g_scale;
     float b_scale;
     
+    float alphaValue = 0.5;
+    
     
     
     /*

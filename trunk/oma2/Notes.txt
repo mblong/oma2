@@ -75,7 +75,8 @@ UI Needs
         get the bitmap data from a window for line plots
         Still issues here:
             Bitmap returned is different than the one set due to display profile mapping
-            Crashes on print or resize of drawing window
+            Crashes on print or resize of drawing window (fixed)
+            Can't copy (but can print)
 
 
     Prefs:

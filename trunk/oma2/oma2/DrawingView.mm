@@ -78,16 +78,19 @@ extern oma2UIData UIData;
         NSBezierPath *path = [NSBezierPath bezierPath];
         [[NSColor redColor] setStroke];
         [path setLineWidth:1.0];
+        unsigned char* colData_ = (unsigned char*)[colData bytes];
         
-        float pixPerPt = bytesPerRow/[self frame].size.width/SAMPLESPERPIX;
+        float scalex = self.window.frame.size.width/(float)bytesPerRow/pixPerPt;
+        float scaley = self.window.frame.size.height/(255.-20.);
+
         
         NSPoint pt;
         pt.x = 0.;
-        pt.y = *colData;
+        pt.y = *colData_*scaley;
         [path moveToPoint:pt];
         for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
-            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
-            pt.y = *(colData+i);
+            pt.x = (float)i*scalex*pixPerPt;
+            pt.y = *(colData_+i)*scaley;
             [path lineToPoint:pt];
         }
         
@@ -96,11 +99,11 @@ extern oma2UIData UIData;
         NSBezierPath *path2 = [NSBezierPath bezierPath];
         [[NSColor greenColor] setStroke];
         pt.x = 0.;
-        pt.y = *colData+1;
+        pt.y = (*colData_+1)*scaley;
         [path2 moveToPoint:pt];
         for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
-            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
-            pt.y = *(colData+i+1);
+            pt.x = (float)i*scalex*pixPerPt;
+            pt.y = *(colData_+i+1)*scaley;
             [path2 lineToPoint:pt];
         }
         [path2 stroke];
@@ -108,11 +111,11 @@ extern oma2UIData UIData;
         NSBezierPath *path3 = [NSBezierPath bezierPath];
         [[NSColor blueColor] setStroke];
         pt.x = 0.;
-        pt.y = *colData+2;
+        pt.y = (*colData_+2)*scaley;
         [path3 moveToPoint:pt];
         for (int i=SAMPLESPERPIX; i< bytesPerRow;i+=SAMPLESPERPIX){
-            pt.x = (float)i/pixPerPt/SAMPLESPERPIX;
-            pt.y = *(colData+i+2);
+            pt.x = (float)i*scalex*pixPerPt;
+            pt.y = *(colData_+i+2)*scaley;
             [path3 lineToPoint:pt];
         }
         
@@ -120,25 +123,26 @@ extern oma2UIData UIData;
     }
 
 }
-/*
--(void) plotRow: (unsigned char*) rowData rowBytes: (int) bytesPerRow{
-    
-    NSBezierPath *path = [NSBezierPath bezierPath];
-    [[NSColor redColor] set];
-    [path setLineWidth:2.0];
-    
-    NSPoint pt;
-    pt.x = 0;
-    pt.y = *rowData;
-    [path moveToPoint:pt];
-    for (int i=4; i< bytesPerRow;i+=4){
-        pt.x = i/4;
-        pt.y = *(rowData+i);
-        [path lineToPoint:pt];
-        //printf("%d %d %d %d\n",*(rowData+i),*(rowData+i+1),*(rowData+i+2),*(rowData+i+3));
+
+- (void) mouseDown:(NSEvent *)theEvent{
+    // toggle alpha if right click
+    //int number =[theEvent buttonNumber];
+    //if ([theEvent buttonNumber] == NSRightMouseDown){
+    if ([theEvent modifierFlags] & 1){              // need to figure out the name of this constant
+        if ([[theEvent window] alphaValue] == 1.0)
+            [[theEvent window] setAlphaValue:UIData.alphaValue];
+        else
+            [[theEvent window] setAlphaValue:1.0];
     }
-    [path stroke];
-    [self display];
+    
 }
-*/
+
+- (void) rightMouseDown:(NSEvent *)theEvent{
+    if ([[theEvent window] alphaValue] == 1.0)
+        [[theEvent window] setAlphaValue:UIData.alphaValue];
+    else
+        [[theEvent window] setAlphaValue:1.0];
+}
+
+
 @end
