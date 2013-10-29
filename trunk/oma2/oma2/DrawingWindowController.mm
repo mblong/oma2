@@ -287,13 +287,14 @@ extern AppController* appController;
 - (IBAction)copy:sender {
     // need things here to copy line drawings
     // also can add same to data window
+
+    NSView *view = [self drawingView];
+    NSRect r = [view bounds];
     
-    NSView *view = [sender drawingView];
     if (view != nil) {
         NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
         [pasteboard clearContents];
-        NSArray *copiedObjects = [NSArray arrayWithObject:view];
-        [pasteboard writeObjects:copiedObjects];
+        [view writePDFInsideRect:r toPasteboard: pasteboard];
     }
     
 }
