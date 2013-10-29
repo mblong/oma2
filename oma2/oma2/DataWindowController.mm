@@ -191,6 +191,7 @@ extern AppController* appController;
 }
 
 - (IBAction)copy:sender {
+    /*
     NSImage *image = [imageView image];
     if (image != nil) {
         NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
@@ -198,6 +199,16 @@ extern AppController* appController;
         NSArray *copiedObjects = @[image];
         [pasteboard writeObjects:copiedObjects];
     }
+    */
+    // this copies the image and any other stuff written on it
+    NSView *view = [self imageView];
+    NSRect r = [view bounds];
+    if (view != nil) {
+        NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+        [pasteboard clearContents];
+        [view writePDFInsideRect:r toPasteboard: pasteboard];
+    }
+
 }
 /* // Thought this might be a way to keep track of window with focus
 - (IBAction)showWindow:(id)sender {
