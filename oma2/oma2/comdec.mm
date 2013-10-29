@@ -27,6 +27,7 @@ ComDef   commands[] =    {
     {{"DIVFILE        "},	divfile_c},
     {{"DIVTEMPIMAGE   "},	divtmp_c},
     {{"DCRAWARGS      "},	dcrawarg_c},
+    {{"DELAY          "},	delay_c},
     {{"ERASE          "},	erase},
     {{"ENDIF          "},	endifcmnd},
     {{"EXECUTE        "},	execut},
@@ -66,6 +67,7 @@ ComDef   commands[] =    {
     {{"SMOOTH         "},	smooth_c},
     {{"SUBFILE        "},	subfile_c},
     {{"SUBTEMPIMAGE   "},	subtmp_c},
+    {{"SHELL          "},	sysCommand_c},
     {{"VARIABLES      "},	variab},
     {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},0}};
 
@@ -338,6 +340,7 @@ int comdec(char* cmnd)
                      return -1;
                      }
                      */
+                    beep();
                     printf("No such command:%s\n",cmnd);
                     return CMND_ERR;
                 }
@@ -631,7 +634,7 @@ int fill_in_command(char* dest,char* source,int val)
 				if(arg_index < 0 ) {
                     *(dest+j) = 0; // end the returned command line here
                     if (if_condition_met) {     // only call out errors if we are actually doing this command
-                        //beep();
+                        beep();
                         printf(" No variable to match %s.\n",txt);
                         return arg_index;
                     } else {
@@ -729,7 +732,7 @@ int do_assignment(char* cmnd)
 	// get the index of this variable -- define it if not already there
 	var_index = get_variable_index(name,1);
 	if(var_index < 0) {
-		//beep();
+		beep();
 		printf("Assignment error variable index:%d\n",var_index);
 		return var_index;
 	}
@@ -742,7 +745,7 @@ int do_assignment(char* cmnd)
 	//
 	ex_result = evaluate_string(&cmnd[i]);	// get the result of the expression
 	if( ex_result.op_char == 'e'){
-		//beep();
+		beep();
 		printf("Assignment error -2\n");
 		return -2;
 	}
@@ -845,7 +848,7 @@ Expression_Element evaluate_string(char* ex_string)
 			j = sscanf(&ex_string[i],"%d",&exp_el[rhs_vals].ivalue);
 			j = sscanf(&ex_string[i],"%f",&exp_el[rhs_vals].fvalue);
 			if(j != 1){
-				//beep();
+				beep();
 				printf("Assignment error -4\n");
 				ex_result.op_char = 'e';
 				return(ex_result);	// some problem here
@@ -870,7 +873,7 @@ Expression_Element evaluate_string(char* ex_string)
 			
 			arg_index = get_variable_index(vname,0);
 			if(arg_index < 0) {
-				//beep();
+				beep();
 				printf("Assignment error -- name: %s\n",vname);
 				ex_result.op_char = 'e';
 				return(ex_result);	// some problem here
@@ -910,7 +913,7 @@ Expression_Element evaluate_string(char* ex_string)
                     if(exp_el[j].op_char == ')') { // matched pair, evaluate
                         ex_result = evaluate(i+1,j);
                         if( ex_result.op_char == 'e'){
-                            //beep();
+                            beep();
                             printf("Assignment error -3\n");
                             ex_result.op_char = 'e';
                             return(ex_result);	// some problem here
@@ -1113,7 +1116,7 @@ int pmacro(int n)
     extern char* macbuf;
     
     if ( *macbuf == 0){
-        //beep();
+        beep();
         printf ("No Macro Defined.\n");
         return -1;
     }
@@ -1165,7 +1168,7 @@ int defmac(int n,char* args)
             for(k = i; macbuf[i];i++ ){}; 
             i++;
             if ( k+1 == i) {
-                //beep();
+                beep();
                 printf("Macro Is Not That Long.\n");
                 return ARG_ERR;
             }
@@ -1190,7 +1193,7 @@ int defmac(int n,char* args)
                 }
                 
                 if ( (i + k + j) >= MBUFLEN) {
-                    //beep();
+                    beep();
                     printf ("Macro Buffer Overflow.\n");
                     return MEM_ERR;
                 }
@@ -1216,7 +1219,7 @@ int defmac(int n,char* args)
     nc = (int)strlen(args);
     if (nc) {
         if ( (i+nc) >= MBUFLEN ) {
-			//beep();
+			beep();
             printf ("Macro Buffer Overflow.\n");
             *(macbuf+i) = EOL;
             clear_macro_to_end();
@@ -1260,6 +1263,11 @@ int lmacro(int n, char* args)
 int macro(int n, char* args)
 {
 	//extern unsigned char from_noprint;
+    if ( *macbuf == 0){
+		beep();
+        printf("No Macro Defined.\n");
+        return 1;
+    }
 	
 	keylimit(-1);
 	from_noprint = 1;
@@ -1283,7 +1291,7 @@ int rmacro(int n, char* args)
     
     
     if ( *macbuf == 0){
-		//beep();
+		beep();
         printf("No Macro Defined.\n");
         return 1;
     }
@@ -1415,7 +1423,7 @@ int execut(int n, char* args)
 	fd = open(fullname(args,MACROS_DATA),READMODE);
     
 	if(fd == -1) {
-		//beep();
+		beep();
 		printf("Execute File '%s' Not Found.\n",args);
 		//free(exbuf[which_ex_buffer]);
 		which_ex_buffer--;
@@ -1468,7 +1476,7 @@ int ifnotexist(int n, int index)
 	
 	
 	if( (macflag == 0) && (exflag == 0)) {
-		//beep();
+		beep();
 		printf("IFNEXS must be within a Macro.\n");
 		
 		return -1;
@@ -1496,7 +1504,7 @@ int ifnotexist(int n, int index)
 	if_condition[ifdepth] = this_test;
 	ifdepth++;
     if(ifdepth >= NESTDEPTH){
-        //beep();
+        beep();
         printf("IF buffer overflow.\n");
         return -1;
     }
@@ -1516,7 +1524,7 @@ int ifexist(int n, int index)
 	
 	
 	if( (macflag == 0) && (exflag == 0)) {
-		//beep();
+		beep();
 		printf("IFEXST must be within a Macro.\n");
 		
 		return -1;
@@ -1543,7 +1551,7 @@ int ifexist(int n, int index)
 	if_condition[ifdepth] = this_test;
 	ifdepth++;
     if(ifdepth >= NESTDEPTH){
-        //beep();
+        beep();
         printf("IF buffer overflow.\n");
         return -1;
     }
@@ -1561,7 +1569,7 @@ int ifnotdefined(int n, int index)	// set flag to use integer value of a variabl
 	int arg_index;
 	
 	if( (macflag == 0) && (exflag == 0)) {
-		//beep();
+		beep();
 		printf("IFNDEF must be within a Macro.\n");
 		return -1;
 	}
@@ -1585,7 +1593,7 @@ int ifnotdefined(int n, int index)	// set flag to use integer value of a variabl
 	if_condition[ifdepth] = this_test;
 	ifdepth++;
     if(ifdepth >= NESTDEPTH){
-        //beep();
+        beep();
         printf("IF buffer overflow.\n");
         return -1;
     }
@@ -1604,7 +1612,7 @@ int ifdefined(int n, int index)	// set flag to use integer value of a variable
 	int arg_index;
 	
 	if( (macflag == 0) && (exflag == 0)) {
-		//beep();
+		beep();
 		printf("IFNDEF must be within a Macro.\n");
 		return -1;
 	}
@@ -1628,7 +1636,7 @@ int ifdefined(int n, int index)	// set flag to use integer value of a variable
 	if_condition[ifdepth] = this_test;
 	ifdepth++;
     if(ifdepth >= NESTDEPTH){
-        //beep();
+        beep();
         printf("IF buffer overflow.\n");
         return -1;
     }
@@ -1647,7 +1655,7 @@ int ifcmnd(int n, char* args)
 	int this_test,i,j;
 	
 	if( (macflag == 0) && (exflag == 0)) {
-		//beep();
+		beep();
 		printf("IF must be within a Macro.\n");
 		return -1;
 	}
@@ -1681,7 +1689,7 @@ int ifcmnd(int n, char* args)
 	if_condition[ifdepth] = this_test;
 	ifdepth++;
     if(ifdepth >= NESTDEPTH){
-        //beep();
+        beep();
         printf("IF buffer overflow.\n");
         return -1;
     }
@@ -1695,7 +1703,7 @@ int ifcmnd(int n, char* args)
 int endifcmnd(int n, char* args)
 {
 	if( ifdepth <1){
-		//beep();
+		beep();
 		printf("IF nesting error,\n");
 		printf("IF condition: %d; depth %d\n",if_condition_met,ifdepth);
 		ifdepth = 0;
@@ -1724,14 +1732,14 @@ int loop(int n,char* args)
 	extern int macflag,exflag;
 	
 	if( (macflag == 0) && (exflag == 0)) {
-		//beep();
+		beep();
 		printf("Loops must be within a Macro.\n");
 		return CMND_ERR;
 	}
 	
 	narg = sscanf(args,"%s %d %d %d",vname,&start,&end,&step);
 	if( narg < 3 ){
-		//beep();
+		beep();
 		printf("Not enough arguments for LOOP.\n");
 		return CMND_ERR;
 	}
@@ -1741,7 +1749,7 @@ int loop(int n,char* args)
 	if( ((start > end) && step > 0) ||
        ((start < end) && step < 0) ||
        (step == 0) ) {
-        //beep();
+        beep();
         printf("Invalid arguments for LOOP.\n");
         return CMND_ERR;
 	}
@@ -1812,7 +1820,7 @@ int loopbreak(int n,char* args)			// break out of the current loop
 	
 	
 	if(loopdepth <= 0) {
-		//beep();
+		beep();
 		printf("Loop break not in a loop\n");
 		return -1;
 	}
@@ -1931,7 +1939,7 @@ int loopend(int n,char* args)
 	extern int exflag;
     
 	if(loopdepth <= 0) {
-		//beep();
+		beep();
 		printf("Loop Mismatch\n");
 		return -1;
 	}
@@ -2038,7 +2046,7 @@ int vfloat(int n, char* args)	// set flag to use floating pt value of a variable
 	if(arg_index < 0) {	// it wasn't defined yet, so define it and set it to 0
 		arg_index = get_variable_index(args,1);
 		if(arg_index < 0) {	// maybe there was still a problem
-            //beep();
+            beep();
             printf("Assignment error arg index:%d\n",arg_index);
             return arg_index;
 		}
@@ -2062,7 +2070,7 @@ int vint(int n, char* args)	// set flag to use integer value of a variable
 	if(arg_index < 0) {	// it wasn't defined yet, so define it and set it to 0
 		arg_index = get_variable_index(args,1);
 		if(arg_index < 0) {	// maybe there was still a problem
-            //beep();
+            beep();
             printf("Assignment error arg index:%d\n",arg_index);
             return arg_index;
 		}

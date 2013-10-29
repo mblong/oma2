@@ -52,7 +52,7 @@ nrows = jpeg_read_scanlines (&cinfo, rowptr, 1);
 	
 	// the source of the data
 	if ((infile = fopen(filename, "r")) == NULL) {
-        //beep();
+        beep();
 	    printf( "Can't open %s\n", filename);
 	   return(FILE_ERR);
 	}

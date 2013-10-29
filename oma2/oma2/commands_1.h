@@ -23,6 +23,7 @@ int dcrawarg_c(int n, char* args);
 int divfile_c(int,char*);
 int divtmp_c(int n, char* args);
 int divide_c(int,char*);
+int delay_c(int,char*);
 
 int ftemp_c(int, char*);
 
@@ -61,6 +62,7 @@ int stringmacro_c(int n,char* args);
 int subfile_c(int,char*);
 int subtmp_c(int n, char* args);
 int savefile_c(int n,char* args);
+int sysCommand_c(int,char*);
 
 // Others
 int temp_image_index (char* name,int define);

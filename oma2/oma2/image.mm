@@ -464,7 +464,7 @@ void Image::saveFile(char* name){
     
     int fd = creat(fullname(name,SAVE_DATA),PMODE);
     if(fd == -1) {
-		//beep();
+		beep();
 		error = FILE_ERR;
         return;
 	}
@@ -630,7 +630,7 @@ void Image::crop(rect crop_rect){
     sizy = crop_rect.lr.v - crop_rect.ul.v +1;
     
     if(x0 + sizx > specs[COLS] || y0 + sizy > specs[ROWS]){
-        //beep();
+        beep();
         printf("Rectangle is not contained within the current image.\n");
         error = SIZE_ERR;
         //return *this;
@@ -641,7 +641,7 @@ void Image::crop(rect crop_rect){
     
     if(save_rgb_rectangle){
         if( y0 + sizy*3 >= specs[ROWS] ){
-            //beep();
+            beep();
             printf("Can't save rectangle as RGB image -- rectangle size problem.\n");
             error = SIZE_ERR;
             //return *this;

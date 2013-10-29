@@ -275,7 +275,7 @@ char* fullname(char* fnam,int  type)
 	strcat(long_name,suffixbuf);
     
 	if( (strlen(long_name) + 8) >= CHPERLN) {
-	    //beep();
+	    beep();
 	    printf(" File Name Is Too Long!\n"); 
 	} else  {
 	    strlcpy(fnam,long_name,CHPERLN);
@@ -320,7 +320,7 @@ int loadprefs(char* name)
     fd = open(name,O_RDONLY);
     
     if(fd == -1) {
-		//beep();
+		beep();
 		return FILE_ERR;
 	}
 	
@@ -521,7 +521,7 @@ int saveprefs(char* name)
 {
     int fd = creat(name,PMODE);
     if(fd == -1) {
-		//beep();
+		beep();
 		return FILE_ERR;
 	}
     
@@ -607,7 +607,7 @@ int getpalettefile(char* name)
 	
     fd = open(name,O_RDONLY);
     if(fd == -1) {
-        //beep();
+        beep();
         return -1;
     }
     read(fd,thecolors,256);

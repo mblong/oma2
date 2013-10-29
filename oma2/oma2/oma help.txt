@@ -74,6 +74,9 @@ DIVTEMPIMAGE name
 DCRAWARGS  [arguments]
 	Allows the user to specify the arguments passed to the dcraw routine, which decodes camera raw files to OMA format. Omitting the argument lists the allowed arguments and gives the current argument settings. The filename field is ignored.
 
+DELAY nticks
+	Waits nticks/60 seconds before continuing on to the next command. Use this for rough timing operations.
+
 ERASE [n] 
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.
 
@@ -199,6 +202,9 @@ SMOOTH [n,m]
 
 SUBFILE <filename>
 	Subtracts the contents of the specified file from the data in the current buffer.
+
+SHELL shell_command
+	Opens a pipe to a shell and sends along the command. Output from the command is echoed to the command window.
 
 SUBTEMPIMAGE name
 	Subtracts the contents of the named temporary image from the data in the current buffer.
