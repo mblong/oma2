@@ -70,6 +70,7 @@ int savefile_c(int n,char* args)
 int getfile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
     if(new_im.err()){
+        beep();
         printf("Could not load %s\n",args);
         return new_im.err();
     }
@@ -83,6 +84,7 @@ int getfile_c(int n,char* args){
 int addfile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
     if(new_im.err()){
+        beep();
         printf("Could not open %s\n",args);
         return new_im.err();
     }
@@ -102,6 +104,7 @@ int addfile_c(int n,char* args){
 int mulfile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
     if(new_im.err()){
+        beep();
         printf("Could not open %s\n",args);
         return new_im.err();
     }
@@ -113,6 +116,7 @@ int mulfile_c(int n,char* args){
         return NO_ERR;
     }
     new_im.free();
+    beep();
     printf("Files are not the same size.\n");
     iBuffer.errclear();
     return SIZE_ERR;
@@ -121,6 +125,7 @@ int mulfile_c(int n,char* args){
 int subfile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
     if(new_im.err()){
+        beep();
         printf("Could not open %s\n",args);
         return new_im.err();
     }
@@ -132,6 +137,7 @@ int subfile_c(int n,char* args){
         return NO_ERR;
     }
     new_im.free();
+    beep();
     printf("Files are not the same size.\n");
     iBuffer.errclear();
     return SIZE_ERR;
@@ -140,6 +146,7 @@ int subfile_c(int n,char* args){
 int divfile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
     if(new_im.err()){
+        beep();
         printf("Could not open %s\n",args);
         return new_im.err();
     }
@@ -151,6 +158,7 @@ int divfile_c(int n,char* args){
         return NO_ERR;
     }
     new_im.free();
+    beep();
     printf("Files are not the same size.\n");
     iBuffer.errclear();
     return SIZE_ERR;
@@ -159,6 +167,7 @@ int divfile_c(int n,char* args){
 int compositefile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
     if(new_im.err()){
+        beep();
         printf("Could not open %s\n",args);
         return new_im.err();
     }
@@ -166,6 +175,7 @@ int compositefile_c(int n,char* args){
     if(iBuffer.err()){
         new_im.free();
         int err = iBuffer.err();
+        beep();
         printf("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
@@ -179,6 +189,7 @@ int compositefile_c(int n,char* args){
 int croprectangle_c(int n,char* args){
     iBuffer.crop(UIData.iRect);
     if(iBuffer.err()){
+        // crop already prints out error messages (an exception -- normally error messages are done in the command)
         int err = iBuffer.err();
         iBuffer.errclear();
         return err;
@@ -216,7 +227,7 @@ int rectan_c(int n, char* args)
     }
     
     if(narg != 4) {
-        //beep();
+        beep();
         printf("Need 4 Arguments.\n"); 
         return -1;
     }
@@ -314,6 +325,7 @@ int rgb2red_c(int n,char* args){
     iBuffer.rgb2color(0);
     if(iBuffer.err()){
         int err = iBuffer.err();
+        beep();
         printf("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
@@ -327,6 +339,7 @@ int rgb2green_c(int n,char* args){
     iBuffer.rgb2color(1);
     if(iBuffer.err()){
         int err = iBuffer.err();
+        beep();
         printf("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
@@ -340,6 +353,7 @@ int rgb2blue_c(int n,char* args){
     iBuffer.rgb2color(2);    
     if(iBuffer.err()){
         int err = iBuffer.err();
+        beep();
         printf("Error: %d.\n",err);
         iBuffer.errclear();
         return err;
@@ -376,6 +390,7 @@ int rotate_c(int n,char* args){
         iBuffer.rotate(angle);
         if(iBuffer.err()){
             int err = iBuffer.err();
+            beep();
             printf("Error: %d.\n",err);
             iBuffer.errclear();
             return err;
@@ -405,6 +420,7 @@ int rotate_c(int n,char* args){
         free(specs);
         if(iBuffer.err()){
             int err = iBuffer.err();
+            beep();
             printf("Error: %d.\n",err);
             iBuffer.errclear();
             return err;
@@ -479,6 +495,7 @@ int size_c(int n,char* args){
         if (narg == 2){
             Image new_im(height,width);
             if(new_im.err()){
+                beep();
                 printf("Could not load %s\n",args);
                 return new_im.err();
             }
@@ -541,6 +558,7 @@ int calc_cmd_c(int n, char* args)
         substart.h < 0 ||
         substart.v < 0){
         free(bufferspecs);
+        beep();
         printf("Rectangle not contained in current image.\n");
         return ARG_ERR;
     }
@@ -630,6 +648,7 @@ int temp_image_index (char* name,int define)
         // just to be sure, be sure this isn't a number > 9
         sscanf(name, "%d",&i);
         if( i > 9){
+            beep();
             printf("Numbered temporary images must be between 0-9\n");
             return -1;
         } else
@@ -659,10 +678,11 @@ int temp_image_index (char* name,int define)
             numberNamedTempImages++;
             return NUMBERED_TEMP_IMAGES+numberNamedTempImages-1;
         }
-		//beep();
+		beep();
 		printf("Temporary image %s not defined.\n",name);
 		return(-1);
     }
+    beep();
     printf("%s is not a valid image name.\n",name);
 	return -1;
 }
@@ -692,6 +712,7 @@ int gtemp_c(int n, char* args)
     if(n >=0){
 
         if( iTempImages[n].isEmpty()){
+            beep();
             printf("Temporary image is not defined.\n");
             return MEM_ERR;
         }
@@ -764,6 +785,7 @@ int addtmp_c(int n, char* args)
     n = temp_image_index(args,0);
     if(n >=0){
         if (iBuffer != iTempImages[n]) {
+            beep();
             printf("Images are not the same size.\n");
             return SIZE_ERR;
         }
@@ -781,6 +803,7 @@ int subtmp_c(int n, char* args)
     n = temp_image_index(args,0);
     if(n >=0){
         if (iBuffer != iTempImages[n]) {
+            beep();
             printf("Images are not the same size.\n");
             return SIZE_ERR;
         }
@@ -799,6 +822,7 @@ int multmp_c(int n, char* args)
     n = temp_image_index(args,0);
     if(n >=0){
         if (iBuffer != iTempImages[n]) {
+            beep();
             printf("Images are not the same size.\n");
             return SIZE_ERR;
         }
@@ -817,6 +841,7 @@ int divtmp_c(int n, char* args)
     n = temp_image_index(args,0);
     if(n >=0){
         if (iBuffer != iTempImages[n]) {
+            beep();
             printf("Images are not the same size.\n");
             return SIZE_ERR;
         }
@@ -836,6 +861,7 @@ int comtmp_c(int n, char* args)
     n = temp_image_index(args,0);
     if(n >=0){
         if (iBuffer.width() != iTempImages[n].width()) {
+            beep();
             printf("Images are not the same width.\n");
             return SIZE_ERR;
         }
@@ -933,7 +959,7 @@ int getFileNames_c(int n,char* args)			// open a file containing file names
 /*
  NEXTFILE [prefix]
  Open the next file specified in the FileNames file that was opened with the GetFileNames command.
- If a prefix is specified, that is added to to the name before trying to open the file.
+ If a prefix is specified, that is added to the name before trying to open the file.
  command_return_1 is the the filename without any prefix and without the extension (last 4 characters)
  */
 int nextFile_c(int n,char* args){
@@ -973,8 +999,9 @@ int nextFile_c(int n,char* args){
     strcpy(&fulltxt[n], txt);
     printf("%s\n",fulltxt);
     
-    Image new_im(fulltxt,HAS_SUFFIX);
+    Image new_im(fulltxt,LONG_NAME);
     if(new_im.err()){
+        beep();
         printf("Could not load %s\n",fulltxt);
         return new_im.err();
     }
@@ -1001,6 +1028,41 @@ int stringmacro_c(int n,char* args)
 
 /* ********** */
 
+int delay_c(int n,char* args)
+{
+	// n is in ticks (1/60 seconds)
+	
+	clock_t start;
+	start = clock();
+	while ( (clock()- start)*60/CLOCKS_PER_SEC < n);
+	return 0;
+}
+/* ********** */
+
+/* ********** */
+/*
+ SHELL shell_command
+ send a command to a shell
+ */
+int sysCommand_c(int n,char* args)
+{
+	FILE*	sf;
+	char     txt[256];
+	unsigned long i,j;
+	//system(&cmnd[index]);
+	sf = popen(args,"r");
+	i = fread(txt,1,255,sf);
+	while( i> 0){
+		for(j=0; j< i; j++){
+			printf("%c",txt[j]);
+		}
+		i = fread(txt,1,255,sf);
+	}
+	
+	pclose(sf);
+	return(0);
+	
+}
 
 
 int gmacro_c(int n,char* args)

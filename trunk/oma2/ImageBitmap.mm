@@ -86,7 +86,7 @@ void ImageBitmap::operator=(Image im){
          */
 	}
 	if(pixdata == NULL){
-		//beep();
+		beep();
 		printf("memory error\n");
 		//return pixdata;
 	}

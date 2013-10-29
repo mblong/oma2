@@ -59,7 +59,6 @@ void update_UI(){
         current_pal = UIData.thepalette;
     }
     
-    
     free(specs);
     free(values);
     
@@ -73,6 +72,7 @@ void dropped_file(char* extension, char* name){
     if(strcmp(extension, "dat")==0 || strcmp(extension, "nef")==0 || strcmp(extension, "jpg")==0){
         Image new_im(name,LONG_NAME);
         if(new_im.err()){
+            beep();
             printf("Could not load %s\n",name);
             [appController appendText: @"OMA2>"];
             return;
@@ -106,5 +106,9 @@ int omaprintf(const char* format, ...)
     
     va_end(args);
     return return_status;
+}
+
+void beep(){
+    NSBeep();
 }
 
