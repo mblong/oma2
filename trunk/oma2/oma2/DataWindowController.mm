@@ -36,7 +36,7 @@ extern AppController* appController;
 -(void)awakeFromNib{
     [[self window] setFrame:windowRect display:NO];   // display will happen later
     //NSLog(@"%f %f %f %f",windowRect.origin.x,windowRect.origin.y,
-          //windowRect.size.width,windowRect.size.height);
+    //windowRect.size.width,windowRect.size.height);
 }
 
 - (void)dealloc
@@ -210,13 +210,5 @@ extern AppController* appController;
     }
 
 }
-/* // Thought this might be a way to keep track of window with focus
-- (IBAction)showWindow:(id)sender {
-    NSLog(@"showWindow in DataWindowController");
-}
- - (void) mouseDown:(NSEvent *)theEvent{
- NSLog(@"mouseDown in DataWindowController");
- }
 
- */
 @end

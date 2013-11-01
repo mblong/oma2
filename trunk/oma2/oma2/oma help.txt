@@ -77,6 +77,9 @@ DCRAWARGS  [arguments]
 DELAY nticks
 	Waits nticks/60 seconds before continuing on to the next command. Use this for rough timing operations.
 
+DMNMX
+	Displays the color min and max in the window.
+
 ERASE [n] 
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.
 
@@ -122,6 +125,9 @@ INTVARIABLE variable_name
 
 LIST
 	Lists the current detector parameters and log block.
+
+LABEL text_string
+	Display the text_string in the upper left of the current window.
 
 LMACRO
 	Lists the contents in the current macro buffer.
@@ -178,6 +184,9 @@ RGB2GREEN
 
 RGB2BLUE
 	Get the blue channel of the current color image.
+
+RMACRO [n m] 
+	Starts executing commands in the macro buffer with %d being replaced first by value n. Subsequently, n is incremented by the amount specified in the INCMACRO command (default is 1). If the new numeric value is equal to m, the macro will be executed again. Menu items can be selected and the appropriate commands executed during macros. Commands typed during the execution of a macro will be echoed to the terminal but not performed. To stop a macro during execution type "cmd ." (hold down the apple key and type ".")
 
 ROTATE [value]
 	Rotates the data in the current image buffer.  If no value is specified, the image is rotated by 90 degrees. If a value is specified, the image is rotated by the specified number of degrees (this may be a real number).

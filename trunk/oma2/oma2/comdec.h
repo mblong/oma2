@@ -50,6 +50,8 @@ int vint(int, char*);
 int getsettings(int,char*);
 int savsettings(int,char*);
 int defmac(int,char*);
+int dmnmx(int,char*);
+int labelData(int, char*);
 
 int gettextline(int, char*);
 int keylimit(int n);

@@ -27,6 +27,8 @@ enum {CROSS,RECT,CALCRECT,RULER,LINEPLOT};
 
 #define display_data [appController showDataWindow:(char*) args];
 #define erase_window [appController eraseWindow:(int) n];
+#define label_data [appController labelDataWindow:(char*) args];
+#define label_data_minMax [appController labelMinMax];
 
 
 void dropped_file(char*,char*);

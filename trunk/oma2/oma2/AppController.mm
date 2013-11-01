@@ -285,6 +285,70 @@ extern oma2UIData UIData;
     
 }
 
+-(void) labelDataWindow: (char*) theLabel{
+    
+    NSWindow* activekey = [NSApp keyWindow];
+    NSWindow* activemain = [NSApp mainWindow];
+    int key = -1;
+    int main = -1;
+    int i=0;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activekey) key=i;
+        i++;
+    }
+    i=0;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activemain) main=i;
+        
+        i++;
+    }
+    
+    if (key == -1) {
+        return;
+    }
+    
+    if (![windowArray[key] isKindOfClass:[DataWindowController class]]){
+        return; // active window wasn't a data window
+    }
+    
+    NSString *label = [[NSString alloc] initWithCString:theLabel encoding:NSASCIIStringEncoding];
+    [[(DataWindowController*)windowArray[key] imageView ] setTheLabel:label];
+    [[(DataWindowController*)windowArray[key] imageView ] display];
+
+}
+
+-(void) labelMinMax{
+    
+    NSWindow* activekey = [NSApp keyWindow];
+    NSWindow* activemain = [NSApp mainWindow];
+    int key = -1;
+    int main = -1;
+    int i=0;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activekey) key=i;
+        i++;
+    }
+    i=0;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activemain) main=i;
+        
+        i++;
+    }
+    
+    if (key == -1) {
+        return;
+    }
+    
+    if (![windowArray[key] isKindOfClass:[DataWindowController class]]){
+        return; // active window wasn't a data window
+    }
+    NSString *label =[NSString stringWithFormat:@"%g\n%g",UIData.cmin,UIData.cmax];
+    [[(DataWindowController*)windowArray[key] imageView ] setMinMax:label];
+    [[(DataWindowController*)windowArray[key] imageView ] display];
+    
+}
+
+
 -(void) showDataWindow: (char*) windowname{
     // come here from the DISPLAY command
     extern int newWindowFlag;

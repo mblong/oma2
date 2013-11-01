@@ -35,6 +35,7 @@ Status Window:
 √ GMACRO
 √ GETFILENAMES
 √ NEXT
+√ RMACRO added
 
 _____________________________
 Addressed Existing Command Issues:
@@ -55,11 +56,13 @@ Needed Commands
  LOG command
  GET command --  ".tif" still needed.
 
+Need to implement command history and up arrow
  
  
 _____________________________
 Existing Command Issues:
 
+Need to be able to stop macros
  
 _____________________________
 UI Issues:
@@ -76,12 +79,14 @@ UI Needs
         Still issues here:
             Bitmap returned is different than the one set due to display profile mapping
             Crashes on print or resize of drawing window (fixed)
-            Can't copy (but can print)
+            Can't copy (but can print) (fixed)
 
 
     Prefs:
         -> select color bar
 
+    Status:
+        -> Display macro number
 
 _________________
 Implementation Notes
