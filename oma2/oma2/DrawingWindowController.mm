@@ -149,7 +149,7 @@ extern AppController* appController;
     [drawingView setRowData: rowData];
     [drawingView setBytesPerRow: bytesPerRow];
     [drawingView setPixPerPt: bytesPerRow/4/[[dataWindowController imageView] frame ].size.width];
-    
+    [drawingView setTheRow: theRow ];
     [drawingView display];
     [[dataWindowController imageView] setEraseLines:0];
     [[dataWindowController imageView] display];
@@ -183,6 +183,7 @@ extern AppController* appController;
     //[drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
     [drawingView setRowData: rowData];
     [drawingView setBytesPerRow: bytesPerRow];
+    [drawingView setTheRow: theRow ];
     
     [drawingView display];
     [[dataWindowController imageView] setEraseLines:0];
@@ -231,6 +232,7 @@ extern AppController* appController;
     [drawingView setColData: colData];
     [drawingView setBytesPerRow: (int)dataRect.size.height*pixPerPt*4];
     [drawingView setPixPerPt: pixPerPt];
+    [drawingView setTheCol: theCol ];
     
     [drawingView display];
     delete colbytes;
@@ -267,6 +269,7 @@ extern AppController* appController;
 
     [drawingView setColData: colData];
     [drawingView setBytesPerRow: (int)dataRect.size.height*pixPerPt*4];
+    [drawingView setTheCol: theCol ];
     
     [drawingView display];
     [[dataWindowController imageView] setEraseLines:0];

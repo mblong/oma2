@@ -24,11 +24,20 @@ extern oma2UIData UIData;
 @synthesize colData;
 @synthesize bytesPerRow;
 @synthesize pixPerPt;
+@synthesize theRow;
+@synthesize theCol;
+
 
 - (void)drawRect:(NSRect)dirtyRect{
 
     [super drawRect:dirtyRect];
     if(rowData){
+        NSString *label =[NSString stringWithFormat:@"Row %d",theRow];
+        NSPoint startPoint;
+        startPoint.x = 10;
+        startPoint.y = dirtyRect.size.height  - 20;
+        [label drawAtPoint:startPoint withAttributes:NULL];
+
         NSBezierPath *path = [NSBezierPath bezierPath];
         [[NSColor redColor] setStroke];
         [path setLineWidth:1.0];
@@ -75,6 +84,13 @@ extern oma2UIData UIData;
         [path3 stroke];
     }
     if(colData){
+        NSString *label =[NSString stringWithFormat:@"Column %d",theCol];
+        NSPoint startPoint;
+        startPoint.x = 10;
+        startPoint.y = dirtyRect.size.height  - 20;
+        [label drawAtPoint:startPoint withAttributes:NULL];
+
+        
         NSBezierPath *path = [NSBezierPath bezierPath];
         [[NSColor redColor] setStroke];
         [path setLineWidth:1.0];

@@ -28,11 +28,12 @@ extern oma2UIData UIData;
 @synthesize rowWindowController;
 @synthesize colWindowController;
 @synthesize eraseLines;
+@synthesize minMax;
+@synthesize theLabel;
 
 
 - (void)drawRect:(NSRect)dirtyRect{
     [super drawRect:dirtyRect];         // crash here when resizing data window that is not the current one
-    //NSLog(@"TooL: %d",statusController.tool_selected);    // don't know why this doesn't work
     
     if (!eraseLines) {
         if (mouse_down) {
@@ -96,6 +97,25 @@ extern oma2UIData UIData;
             [path stroke];
         }
     }
+    if (theLabel) {
+        NSPoint thePoint;
+        thePoint.x = 10;
+        thePoint.y = dirtyRect.size.height  - 20;;
+        NSMutableDictionary *stringAttributes = [[NSMutableDictionary alloc] init];
+        [stringAttributes setValue:[NSColor grayColor] forKey:NSForegroundColorAttributeName];
+        [stringAttributes setValue:[NSFont fontWithName:@"Helvetica" size:18] forKey:NSFontAttributeName];
+        [theLabel drawAtPoint:thePoint withAttributes:stringAttributes];
+    }
+    if (minMax) {
+        NSPoint thePoint;
+        thePoint.x = 10;
+        thePoint.y = 5;
+        NSMutableDictionary *stringAttributes = [[NSMutableDictionary alloc] init];
+        [stringAttributes setValue:[NSColor grayColor] forKey:NSForegroundColorAttributeName];
+        [stringAttributes setValue:[NSFont fontWithName:@"Helvetica" size:16] forKey:NSFontAttributeName];
+        [minMax drawAtPoint:thePoint withAttributes:stringAttributes];
+    }
+
 }
 
 - (void) mouseDown:(NSEvent *)theEvent{

@@ -24,6 +24,7 @@ ComDef   commands[] =    {
     {{"CMINMX         "},	setcminmax_c},
     {{"DISPLAY        "},	display},
     {{"DMACRO         "},	defmac},
+    {{"DMNMX          "},	dmnmx},
     {{"DIVFILE        "},	divfile_c},
     {{"DIVTEMPIMAGE   "},	divtmp_c},
     {{"DCRAWARGS      "},	dcrawarg_c},
@@ -43,6 +44,7 @@ ComDef   commands[] =    {
     {{"INVERT         "},	invert_c},
     {{"INTVARIABLE    "},	vint},
     {{"LIST           "},	list_c},
+    {{"LABELDATA      "},	labelData},
     {{"LMACRO         "},	lmacro},
     {{"LOOP           "},	loop},
     {{"LOOPBREAK      "},	loopbreak},
@@ -58,6 +60,7 @@ ComDef   commands[] =    {
     {{"RGB2RED        "},	rgb2red_c},
     {{"RGB2GREEN      "},	rgb2green_c},
     {{"RGB2BLUE       "},	rgb2blue_c},
+    {{"RMACRO         "},	rmacro},
     {{"ROTATE         "},	rotate_c},
     {{"SAVEFILE       "},	savefile_c},
     {{"SAVSETTINGS    "},	savsettings},
@@ -341,7 +344,7 @@ int comdec(char* cmnd)
                      }
                      */
                     beep();
-                    printf("No such command:%s\n",cmnd);
+                    printf("No such command: %s\n",cmnd);
                     return CMND_ERR;
                 }
             } else {
@@ -1076,9 +1079,22 @@ int display(int n, char* args){
     iBitmap = iBuffer;
     display_data;
     update_UI();
-    return 0;
+    return NO_ERR;
 }
 
+// **********
+
+int dmnmx(int n, char* args){
+    label_data_minMax;
+    return NO_ERR;
+}
+
+// **********
+
+int labelData(int n, char* args){
+    label_data;
+    return NO_ERR;
+}
 // **********
 
 int erase(int n, char* args){
@@ -1266,13 +1282,13 @@ int macro(int n, char* args)
     if ( *macbuf == 0){
 		beep();
         printf("No Macro Defined.\n");
-        return 1;
+        return CMND_ERR;
     }
 	
 	keylimit(-1);
 	from_noprint = 1;
 	rmacro(n,args);
-	return 0;
+	return NO_ERR;
     
 }
 
@@ -1293,7 +1309,7 @@ int rmacro(int n, char* args)
     if ( *macbuf == 0){
 		beep();
         printf("No Macro Defined.\n");
-        return 1;
+        return CMND_ERR;
     }
 	
 	macflag = 1;
@@ -1314,7 +1330,7 @@ int rmacro(int n, char* args)
     if (maccount <= 0)  maccount = 1;
     macptr = 0;
 	printf("Start Macro: from %d to %d, steps of %d.\n",macval,j,macincrement);
-	return 0;
+	return NO_ERR;
 }
 
 /* ********** */

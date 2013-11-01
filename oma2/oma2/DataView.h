@@ -27,6 +27,8 @@
 @property DrawingWindowController *rowWindowController;
 @property DrawingWindowController *colWindowController;
 @property int eraseLines;
+@property NSString *minMax;
+@property NSString *theLabel;
 
 @end
 

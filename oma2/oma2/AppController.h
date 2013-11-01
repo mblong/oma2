@@ -60,9 +60,13 @@ int comdec(char*);
 - (IBAction)plotCols:(id)sender;
 
 -(void) showDataWindow:(char*) windowname;
+-(void) labelDataWindow: (char*) theLabel;
+-(void) labelMinMax;
+
 -(void) eraseWindow:(int) n;
 -(void) dataWindowClosing;
 -(void) updateDataWindow;
+
 
 @end
 

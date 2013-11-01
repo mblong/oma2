@@ -12,6 +12,8 @@
 
 @property NSData* rowData;
 @property NSData* colData;
+@property int theRow;
+@property int theCol;
 @property int bytesPerRow;
 @property int pixPerPt;
 
