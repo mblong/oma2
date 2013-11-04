@@ -13,7 +13,7 @@
 #import "StatusController.h"
 #import "ImageBitmap.h"
 #import "DataView.h"
-
+#import "CommandView.h"
 
 
 AppController   *appController;
@@ -28,6 +28,7 @@ extern oma2UIData UIData;
 @synthesize tool;
 @synthesize preferenceController;
 @synthesize windowArray;
+@synthesize last_return;
 
 
 -(void)awakeFromNib{
@@ -251,24 +252,38 @@ extern oma2UIData UIData;
 
 
 -(void) appendText:(NSString *) string{
+    
+    
     last_return += [string length];
-    [[[theCommands textStorage] mutableString] appendString: string];
+    
+    // pass this on the theCommands
+    [theCommands appendText:string];
+    //[[[theCommands textStorage] mutableString] appendString: string];
 }
 
 -(void) appendCText:(char *) string{
+    // pass this on the theCommands
+    
     NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
     last_return += [reply length];
-    [[[theCommands textStorage] mutableString] appendString: reply];
+    
+    [theCommands appendCText: string];
+    
+    //[[[theCommands textStorage] mutableString] appendString: reply];
 }
+
 
 -(void) textDidChange:(NSNotification *) pNotify {
     
+    [theCommands textDidChange:(NSNotification *) pNotify];
+    /*
     NSString *text  = [[theCommands textStorage] string];
     NSString *ch = [text substringFromIndex:[text length] - 1];
     
     if([ch isEqualToString:@"\n"]){
         NSString *command = [text substringFromIndex:last_return];
         last_return = [text length];
+        theCommands.lastReturn = last_return;
         // pass this to the command decoder
         char* cmd = (char*) [command cStringUsingEncoding:NSASCIIStringEncoding];
         // replace the \n with an EOL
@@ -279,11 +294,10 @@ extern oma2UIData UIData;
         if (returnVal < GET_MACRO_LINE ) {
             [self appendText: @"OMA2>"];
         }
-        
-        
     }
-    
+    */
 }
+
 
 -(void) labelDataWindow: (char*) theLabel{
     

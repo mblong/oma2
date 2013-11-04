@@ -10,7 +10,7 @@
 #define oma2_ImageBitmap_h
 
 #include <iostream>
-#include "Image.h"
+#include "image.h"
 
 
 #define NCOLORS 256

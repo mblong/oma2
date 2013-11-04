@@ -49,6 +49,8 @@ Addressed UI Issues:
         Presumably this is the source of the trouble with the CROP command
   √copy from an image window
   √release window when click on close
+  √Need to implement command history and up arrow
+  
   Drop Files onto status broken. -- seems to work
 
 _____________________________
@@ -56,7 +58,7 @@ Needed Commands
  LOG command
  GET command --  ".tif" still needed.
 
-Need to implement command history and up arrow
+
  
  
 _____________________________
