@@ -25,6 +25,7 @@ int comdec(char*);
 
 @class PreferenceController;
 @class DataWindowController;
+@class CommandView;
 
 @interface AppController : NSObject
 {
@@ -38,15 +39,16 @@ int comdec(char*);
     
     NSRect window_placement;
     NSRect screenRect;
-    NSTextView *__strong theCommands;
-    char oma2Command[CHPERLN];
+    CommandView *__strong theCommands;
+    //char oma2Command[CHPERLN];
 }
  
 @property (strong) PreferenceController *preferenceController;
-@property (strong) IBOutlet NSTextView *theCommands;
+@property (strong) IBOutlet CommandView *theCommands;
 @property (strong) IBOutlet NSWindow *theWindow;
 @property int tool;     // the tool selected in the status window, used in DataView
 @property NSMutableArray *windowArray;
+@property NSUInteger last_return;
 
 -(void) appendText:(NSString *) string; 
 -(void) appendCText:(char *) string;

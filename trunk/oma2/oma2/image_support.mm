@@ -74,9 +74,7 @@ void setUpUIData(){
     UIData.g_scale = 1.;
     UIData.b_scale = 1.;
     
-    
-    
-
+    UIData.alphaValue = 0.5;
 }
 
 int two_to_four(DATAWORD* dpt, int num, TWOBYTE scale)

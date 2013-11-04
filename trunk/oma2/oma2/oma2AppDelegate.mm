@@ -8,7 +8,7 @@
 
 #import "oma2AppDelegate.h"
 #import "StatusController.h"
-#include "oma2.h"
+#import "oma2.h"
 
 extern StatusController *statusController;
 extern oma2UIData UIData;
