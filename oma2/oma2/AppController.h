@@ -32,7 +32,7 @@ int comdec(char*);
     PreferenceController *__strong preferenceController;
     
     NSWindow *__strong theWindow;
-    NSUInteger last_return;
+    //NSUInteger last_return;
     NSUInteger wraps;
     
     NSMutableArray *windowArray;
@@ -48,12 +48,10 @@ int comdec(char*);
 @property (strong) IBOutlet NSWindow *theWindow;
 @property int tool;     // the tool selected in the status window, used in DataView
 @property NSMutableArray *windowArray;
-@property NSUInteger last_return;
+//@property NSUInteger last_return;
 
 -(void) appendText:(NSString *) string; 
 -(void) appendCText:(char *) string;
-
-
 
 
 - (IBAction)showPrefs:(id)sender;

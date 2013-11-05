@@ -58,7 +58,7 @@ extern AppController* appController;
 - (void)dealloc
 {
     // more needed here
-    NSLog(@"deallocate DataWindowController");
+    // NSLog(@"deallocate DataWindowController");
     //[bitmap release];
     //[imageView release];          // this crashes things eventually
     
