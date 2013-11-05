@@ -29,6 +29,7 @@ Expression_Element evaluate_string(char* ex_string);
 Expression_Element evaluate(int start, int end);
 int vprint(int index);
 void clear_macro_to_end();
+int stopmacro();
 
 // function prototypes for commands in comdec.cpp
 int display(int, char*);

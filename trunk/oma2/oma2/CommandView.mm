@@ -35,11 +35,27 @@ extern AppController* appController;
     // Drawing code here.
 }
 
+// this does text completions -- over riding this gets rid of cmnd . listing of words
+- (void)complete:(id)sender{
+    
+}
+
 - (void)keyDown:(NSEvent *)anEvent{
     // we get keydown events here
     // do special processing before passing this event along the the NSTextView
-    //NSString *theKey = [theEvent charactersIgnoringModifiers];
-    NSString *theKey = [anEvent characters];
+    
+    if([anEvent modifierFlags] & NSCommandKeyMask){
+        NSString *theKey = [anEvent charactersIgnoringModifiers];
+        if([theKey isEqualToString:@";"]){
+            NSLog(@"Stop Macro");
+            stopmacro();
+            
+        }
+        return;
+    }
+    
+    NSString *theKey = [anEvent charactersIgnoringModifiers];
+    //NSString *theKey = [anEvent characters];
     unichar keyChar = 0;
     if ( [theKey length] == 0 )
         return;            // reject dead keys
@@ -134,15 +150,19 @@ extern AppController* appController;
 -(void) appendText:(NSString *) string{
     lastReturn += [string length];
     //[[[theCommands textStorage] mutableString] appendString: string];
-    [self.textStorage.mutableString appendString: string];
+    [self.textStorage.mutableString appendString:string];
 }
 
 -(void) appendCText:(char *) string{
     NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
     lastReturn += [reply length];
-    [self.textStorage.mutableString appendString: reply];
+    [self.textStorage.mutableString appendString:reply];
+    [self display];
 }
 
+-(BOOL) acceptsFirstResponder{
+    return YES;
+}
 
 
 @end

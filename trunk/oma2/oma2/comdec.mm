@@ -1,5 +1,6 @@
 
 #include "comdec.h"
+#import "CommandView.h"
 
 
 extern char    reply[1024];   // buffer for sending messages to be typed out by the user interface
@@ -226,7 +227,8 @@ int comdec(char* cmnd)
                     if_condition_met = 1;
                 }
             }
-            //if(macro_stopable) checkevents();		// if the macro is stopable, check for possible events 
+            //if(macro_stopable) checkevents();		// if the macro is stopable, check for possible events
+            if(macro_stopable) [appController appendCText:(char*)"."];
             // (such as cancel macro) before each command */	
             
         } else {
@@ -267,8 +269,12 @@ int comdec(char* cmnd)
                         }
                     }
                 }
-                /*if(macro_stopable)checkevents();		// if the macro is stopable, check for possible events 
-                 (such as cancel macro) before each command */	
+                //if(macro_stopable)checkevents();		// if the macro is stopable, check for possible events
+                if(macro_stopable){
+                    [appController appendCText:(char*)"."];
+                    [[appController theCommands] display];
+                }
+                // (such as cancel macro) before each command */
             }
             
             else {
@@ -1383,6 +1389,7 @@ int imacro(int n)			// set a flag that determines if a macro checks for events d
 	return 0;
 	
 }
+*/
 // ********** 
 
 int stopmacro()
@@ -1416,7 +1423,7 @@ int stopmacro()
 }
 
 // ********** 
-*/
+
 #define READMODE O_RDONLY  // Read file mode. 
 
 int execut(int n, char* args)
