@@ -84,7 +84,7 @@ extern oma2UIData UIData;
     }
 
     if ([windowArray[key] isKindOfClass:[DataWindowController class]]){
-        NSLog(@"%d %d ",key,main);
+        //NSLog(@"%d %d ",key,main);
     } else {
         return; // active window wasn't a data window
     }
@@ -172,7 +172,7 @@ extern oma2UIData UIData;
     }
     
     if ([windowArray[key] isKindOfClass:[DataWindowController class]]){
-        NSLog(@"%d %d ",key,main);
+        //NSLog(@"%d %d ",key,main);
     } else {
         return; // active window wasn't a data window
     }
@@ -264,6 +264,7 @@ extern oma2UIData UIData;
     // pass this on the theCommands
     [theCommands appendCText: string];
     
+    [[self theWindow] display];
     //NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
     //last_return += [reply length];
     //[[[theCommands textStorage] mutableString] appendString: reply];

@@ -13,7 +13,7 @@
 
 
 
-extern AppController* appController; 
+extern AppController* appController;
 
 @implementation CommandView
 
@@ -54,6 +54,7 @@ extern AppController* appController;
         return;
     }
     
+    // up arrow and down arrow 
     NSString *theKey = [anEvent charactersIgnoringModifiers];
     //NSString *theKey = [anEvent characters];
     unichar keyChar = 0;
@@ -137,9 +138,18 @@ extern AppController* appController;
         char* cmd = (char*) [command cStringUsingEncoding:NSASCIIStringEncoding];
         // replace the \n with an EOL
         cmd[strlen(cmd)-1] = 0;
-        //strlcpy(oma2Command, cmd, CHPERLN);
+        //strlcpy(oma2Command, cmd, CHPERLN);=
         int returnVal = comdec((char*) cmd);
         
+        extern int exflag, macflag;
+        int didMac = 0;
+        while (exflag || macflag) {
+            returnVal = comdec((char*) cmd);
+            didMac = 1;
+        }
+        if (didMac) {
+            [[appController theWindow ] makeKeyAndOrderFront:[appController theWindow]];
+        }
         if (returnVal < GET_MACRO_LINE ) {
             [self appendText: @"OMA2>"];
         }
@@ -157,12 +167,11 @@ extern AppController* appController;
     NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
     lastReturn += [reply length];
     [self.textStorage.mutableString appendString:reply];
-    [self display];
 }
-
+/*
 -(BOOL) acceptsFirstResponder{
     return YES;
 }
-
+*/
 
 @end

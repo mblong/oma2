@@ -91,7 +91,7 @@ extern AppController* appController;
         if( [thewindowController window] == [self window]) number=i;
         i++;
     }
-    NSLog(@"Data Window %d Closing",number);
+    //NSLog(@"Data Window %d Closing",number);
     if (number != -1 && [theArray[number] hasRowPlot] != CLOSE_CLEANUP_DONE)
                          [appController eraseWindow:number];
 
