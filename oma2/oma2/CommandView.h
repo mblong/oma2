@@ -7,9 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "oma2.h"
 
 
-@interface CommandView : NSTextView
+
+@interface CommandView : NSTextView{
+    char oma2Command[CHPERLN];
+}
 
 @property NSUInteger lastReturn;
 

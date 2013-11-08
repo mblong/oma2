@@ -51,6 +51,9 @@ Addressed UI Issues:
   √release window when click on close
   √Need to implement command history and up arrow
   
+  √Strange behavior on running oma2 from guilford -- fullname crashes when the suffix is present: re established oma2Command array in CommandView
+
+  
   Drop Files onto status broken. -- seems to work
 
 _____________________________
@@ -66,9 +69,8 @@ Need to be able to stop macros -- still problems with this
 
 When not started from Xcode, oma2 can't read resource files, which causes trouble with settings, help, and non-computed palettes
 
-Echo is macros still has challenges. if a macro is started when the command window does not have focus, nothing is echoed until the macro finishes
+Echo in macros still has challenges. if a macro is started when the command window does not have focus, nothing is echoed until the macro finishes
 
-Strange behavior on running oma2 from guilford -- fullname crashes when the suffix is present 
 _____________________________
 UI Issues:
     when the status window is selected, typing a space isn't sent to the command window -- sometimes?

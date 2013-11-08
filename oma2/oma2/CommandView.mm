@@ -138,13 +138,13 @@ extern AppController* appController;
         char* cmd = (char*) [command cStringUsingEncoding:NSASCIIStringEncoding];
         // replace the \n with an EOL
         cmd[strlen(cmd)-1] = 0;
-        //strlcpy(oma2Command, cmd, CHPERLN);=
-        int returnVal = comdec((char*) cmd);
+        strlcpy(oma2Command, cmd, CHPERLN);
+        int returnVal = comdec((char*) oma2Command);
         
         extern int exflag, macflag;
         int didMac = 0;
         while (exflag || macflag) {
-            returnVal = comdec((char*) cmd);
+            returnVal = comdec((char*) oma2Command);
             didMac = 1;
         }
         if (didMac) {
