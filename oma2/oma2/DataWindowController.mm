@@ -183,7 +183,7 @@ extern AppController* appController;
 
 
 -(BOOL) acceptsFirstResponder{
-    return YES;
+    return NO;
 }
 
 - (void)keyDown:(NSEvent *)anEvent{

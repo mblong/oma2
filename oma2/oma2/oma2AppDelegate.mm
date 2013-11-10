@@ -27,25 +27,29 @@ void setUpUIData();
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    int dcrawarg_c(int n, char* args);
+    
     // Insert code here to initialize your application
     if(!statusController){
         statusController = [[StatusController alloc] initWithWindowNibName: @"Status"];
     }
     [statusController showWindow:self];
     
+    char text[NEW_PREFIX_CHPERLN];
+    
+    // set the directory to oma2.app
+    strlcpy(text,[[[NSBundle mainBundle] bundlePath] cStringUsingEncoding:NSASCIIStringEncoding ],NEW_PREFIX_CHPERLN);
+    chdir(text);
+    
     setUpUIData();
     
     // Load preferences
-    int dcrawarg_c(int n, char* args);
-
-    char text[NEW_PREFIX_CHPERLN];
-    strcpy(text,SETTINGSFILE);
+    strlcpy(text,SETTINGSFILE,NEW_PREFIX_CHPERLN);
     loadprefs(text);
     
-    strcpy(text,DCRAW_ARG);
+    strlcpy(text,DCRAW_ARG,NEW_PREFIX_CHPERLN);
     dcrawarg_c(0,text);
     
-
     update_UI();
 
 }

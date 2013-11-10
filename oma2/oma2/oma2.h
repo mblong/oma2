@@ -114,13 +114,13 @@ enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_
 
 #ifdef DO_MACH_O
     #ifndef SETTINGSFILE
-        #define SETTINGSFILE "oma2.app/Contents/Resources/OMA Settings"
-        #define PALETTEFILE	"oma2.app/Contents/Resources/OMA palette.pa1"
-        #define PALETTEFILE2 "oma2.app/Contents/Resources/OMA palette2.pa1"
-        #define PALETTEFILE3 "oma2.app/Contents/Resources/OMA palette3.pa1"
+        #define SETTINGSFILE "Contents/Resources/OMA Settings"
+        #define PALETTEFILE	"Contents/Resources/OMA palette.pa1"
+        #define PALETTEFILE2 "Contents/Resources/OMA palette2.pa1"
+        #define PALETTEFILE3 "Contents/Resources/OMA palette3.pa1"
 
-        #define HELPFILE "oma2.app/Contents/Resources/oma help.txt"
-        #define HELPURL "oma2.app/Contents/Resources/oma_help/OMA_First_Steps.html"
+        #define HELPFILE "Contents/Resources/oma help.txt"
+        #define HELPURL "Contents/Resources/oma_help/OMA_First_Steps.html"
     #endif
 #else
     #define SETTINGSFILE "OMA Settings"

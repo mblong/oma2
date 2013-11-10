@@ -13,7 +13,7 @@ initializations:
       this also causes a malloc error in drawRect when guard malloc is enabled
       
 √crop of color image has bad access if rectangle goes all the way to the bottom of the image
-    √also trouble with monochrome crop -- problem is with verticle part of rectangle coorinates returned by the UI 
+    √also trouble with monochrome crop -- problem is with vertical part of rectangle coorinates returned by the UI
     I'm using a defined constant for the TITLEBAR_HEIGHT -- that probably isn't right
 
 √rework min/max
@@ -55,6 +55,13 @@ Addressed UI Issues:
 
   
   Drop Files onto status broken. -- seems to work
+  
+  Row/Column Plots:
+            √Crashes on print or resize of drawing window (fixed)
+            √Can't copy (but can print) (fixed)
+
+  
+  √When not started from Xcode, oma2 can't read resource files, which causes trouble with settings, help, and non-computed palettes
 
 _____________________________
 Needed Commands
@@ -67,10 +74,9 @@ Existing Command Issues:
 
 Need to be able to stop macros -- still problems with this
 
-When not started from Xcode, oma2 can't read resource files, which causes trouble with settings, help, and non-computed palettes
+Echo in macros still has challenges. If a macro is started when the command window does not have focus, nothing is echoed until the macro finishes
 
-Echo in macros still has challenges. if a macro is started when the command window does not have focus, nothing is echoed until the macro finishes
-
+Plot Rows and Cols -- scaling of plots needs attention -- y scale is wrong?
 _____________________________
 UI Issues:
     when the status window is selected, typing a space isn't sent to the command window -- sometimes?
@@ -85,12 +91,11 @@ UI Needs
         get the bitmap data from a window for line plots
         Still issues here:
             Bitmap returned is different than the one set due to display profile mapping
-            Crashes on print or resize of drawing window (fixed)
-            Can't copy (but can print) (fixed)
 
 
     Prefs:
         -> select color bar
+        -> Improve prefix/suffix setting
 
     Status:
         -> Display macro number
@@ -101,7 +106,6 @@ Implementation Notes
 Display a data window
 in comdec.mm:
 display_data (alias to #define display_data [appController showDataWindow:(char*) args]; in UI.h)
-
 
   appController showDataWindow:windowname (invoked from from display as above)
     // figure out where to place image
