@@ -12,7 +12,8 @@ ComDef   commands[] =    {
     {{"+              "},	plus_c},
     {{"-              "},	minus_c,},
     {{"*              "},	multiply_c},
-    {{"/              "},	divide_c,},		
+    {{"/              "},	divide_c,},
+    {{"^              "},	power_c,},
     {{"ADDFILE        "},	addfile_c},
     {{"ADDTEMPIMAGE   "},	addtmp_c},
     {{"BLOCK          "},	block_c},
@@ -52,11 +53,13 @@ ComDef   commands[] =    {
     {{"LOOPND         "},	loopend},
     {{"LTEMPIMAGE     "},	ltemp_c},
     {{"MACRO          "},	macro},
+    {{"MAKNEW         "},	resize_c},
     {{"MULFILE        "},	mulfile_c},
     {{"MULTEMPIMAGE   "},	multmp_c},
     {{"NEWWINDOW      "},	newWindow_c},
     {{"NEXTFILE       "},	nextFile_c},
     {{"PALETTE        "},	palette_c},
+    {{"POWER          "},	power_c},
     {{"RECTANGLE      "},	rectan_c},
     {{"RGB2RED        "},	rgb2red_c},
     {{"RGB2GREEN      "},	rgb2green_c},
@@ -66,6 +69,7 @@ ComDef   commands[] =    {
     {{"SAVEFILE       "},	savefile_c},
     {{"SAVSETTINGS    "},	savsettings},
     {{"SIZE           "},	size_c},
+    {{"SINGRID        "},	sinGrid_c},
     {{"STEMPIMAGE     "},	stemp_c},
     {{"STRMACRO       "},	stringmacro_c},
     {{"SMOOTH         "},	smooth_c},
@@ -272,8 +276,8 @@ int comdec(char* cmnd)
                 //if(macro_stopable)checkevents();		// if the macro is stopable, check for possible events
                 if(macro_stopable){
                     //[[appController theWindow] makeFirstResponder:[appController theCommands]];
-                    [appController appendCText:(char*)"."];
-                    //[[appController theCommands] display];
+                    //[appController appendCText:(char*)"."];
+                    //[[appController theWindow] display];
                 }
                 // (such as cancel macro) before each command */
             }

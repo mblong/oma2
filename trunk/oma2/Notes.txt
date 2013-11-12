@@ -36,22 +36,27 @@ Status Window:
 √ GETFILENAMES
 √ NEXT
 √ RMACRO added
+√ POWER added
+√ ^ added as alias of POWER
+√ added MAKNEW to resize image
+√ added SINGRID command
 
 _____________________________
 Addressed Existing Command Issues:
-    √CROP has bugs when image is big
-    √ERASE [n] to just erase nth window
+    √ CROP has bugs when image is big
+    √ ERASE [n] to just erase nth window
+    √ CALC -- doesn't fill in command return values; doesn't use the right rectangle?
 
 Addressed UI Issues:
-    √Big image issues:
+  √ Big image issues:
         Image scaling is wrong when image is big -- scales vertically but not horizontally
         X Y coordinates (and Z values) are wrong
         Presumably this is the source of the trouble with the CROP command
-  √copy from an image window
-  √release window when click on close
-  √Need to implement command history and up arrow
+  √ copy from an image window
+  √ release window when click on close
+  √ Need to implement command history and up arrow
   
-  √Strange behavior on running oma2 from guilford -- fullname crashes when the suffix is present: re established oma2Command array in CommandView
+  √ Strange behavior on running oma2 from guilford -- fullname crashes when the suffix is present: re established oma2Command array in CommandView
 
   
   Drop Files onto status broken. -- seems to work
@@ -61,8 +66,11 @@ Addressed UI Issues:
             √Can't copy (but can print) (fixed)
 
   
-  √When not started from Xcode, oma2 can't read resource files, which causes trouble with settings, help, and non-computed palettes
+  √ When not started from Xcode, oma2 can't read resource files, which causes trouble with settings, help, and non-computed palettes
 
+  √ when the status window is selected, typing a space isn't sent to the command window -- sometimes?
+  
+  √ redefined the way SIZE works; now SIZE rows columns
 _____________________________
 Needed Commands
  LOG command
@@ -77,11 +85,15 @@ Need to be able to stop macros -- still problems with this
 Echo in macros still has challenges. If a macro is started when the command window does not have focus, nothing is echoed until the macro finishes
 
 Plot Rows and Cols -- scaling of plots needs attention -- y scale is wrong?
+
+
 _____________________________
 UI Issues:
-    when the status window is selected, typing a space isn't sent to the command window -- sometimes?
+
     
     Crash on resizing data window that isn't the current one when size is smaller than original. in DataView.mm drawRect
+    
+    on typing, always move cursor to end of command buffer
 
     
 UI Needs
@@ -99,6 +111,9 @@ UI Needs
 
     Status:
         -> Display macro number
+        
+    Menu:
+        -> Open, Save, Save Settings
 
 _________________
 Implementation Notes

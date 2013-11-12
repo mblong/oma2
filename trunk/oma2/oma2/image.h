@@ -1,6 +1,7 @@
 #include "oma2.h"
 #include "Image_support.h"
 #include "UI.h"
+#include <math.h>
 //#include "ImageBitmap.h"
 
 
@@ -50,13 +51,17 @@ public:
     void operator-(DATAWORD);  //    does not calculate min/max
     void operator*(DATAWORD);
     void operator/(DATAWORD);
+    void power(DATAWORD);        // raise to the specified power
+    
     
     void operator+(Image);     // Image arithmetic, modifies the current Image
     void operator-(Image);     //    does not calculate min/max
     void operator*(Image);
     void operator/(Image);
     
+    
     Image operator<<(Image);    // make a copy of an image
+    
     
     bool operator==(Image);     // true if Images are the same size
     bool operator!=(Image);     // true if Images are not the same size
@@ -86,9 +91,11 @@ public:
     
     void crop(rect);           // crop the current image or return an error if there was one
     void rotate(float);        // rotate the current image or return an error if there was one
+    
     void invert();             // invert the current image
     void rgb2color(int);       // crop an rgb image to color 0,1, or 2 (red, green, or blue)
-    void composite(Image);        // composite two images. Error if images are not the same width.
+    void composite(Image);     // composite two images. Error if images are not the same width.
+    void resize(int,int);      // resize the current image
     
     
     friend class ImageBitmap;

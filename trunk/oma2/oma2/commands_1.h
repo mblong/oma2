@@ -47,8 +47,10 @@ int nextFile_c(int,char*);
 
 int palette_c(int,char*);
 int plus_c(int,char*);
+int power_c(int,char*);
 
 int rectan_c(int,char*);
+int resize_c(int,char*);
 int rgb2red_c(int,char*);
 int rgb2green_c(int,char*);
 int rgb2blue_c(int,char*);
@@ -56,12 +58,13 @@ int rotate_c(int,char*);
 
 int setcminmax_c(int,char*);
 int size_c(int,char*);
+int sinGrid_c(int, char*);
 int smooth_c(int,char*);
-int stemp_c(int n, char* args);
-int stringmacro_c(int n,char* args);
+int stemp_c(int, char*);
+int stringmacro_c(int,char*);
 int subfile_c(int,char*);
-int subtmp_c(int n, char* args);
-int savefile_c(int n,char* args);
+int subtmp_c(int, char*);
+int savefile_c(int,char*);
 int sysCommand_c(int,char*);
 
 // Others

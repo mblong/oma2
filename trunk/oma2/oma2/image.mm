@@ -227,6 +227,14 @@ void Image::operator/(DATAWORD val){
     //return *this;
 }
 
+void Image::power(DATAWORD val){
+    for(int i=0; i<specs[ROWS]*specs[COLS];i++){
+        *(data+i) = pow(*(data+i),val);
+    }
+    specs[HAVE_MAX]=0;
+    //return *this;
+}
+
 void Image::operator+(Image im2){
     if (*this != im2){
         error = SIZE_ERR;
@@ -298,7 +306,6 @@ Image Image::operator<<(Image im){
     *this = copy;
     return *this;
 }
-
 
 bool Image::operator==(Image im2){
     if (specs[ROWS] == im2.specs[ROWS] && specs[COLS] == im2.specs[COLS]) {
@@ -490,6 +497,39 @@ void Image::saveFile(char* name){
     
 }
 
+void Image::resize(int newRows, int newCols){
+    // allocate the new image
+    Image resized(newRows,newCols);
+    if(resized.err()){
+        error = resized.err();
+        return;
+    }
+    resized.copyABD(*this); // get the old specs, some of which will have to be changed
+    resized.specs[ROWS] = newRows;
+    resized.specs[COLS] = newCols;
+    
+    int i,j;
+	float xi,yi,sx,sy;
+    
+	sx = (float)(specs[COLS]-1)/(float)(newCols-1);
+	sy = (float)(specs[ROWS]-1)/(float)(newRows-1);
+	
+	for( j=0; j<newRows; j++) {
+		for( i=0; i<newCols; i++) {
+			xi = i * sx;
+			yi = j * sy;
+			resized.setpix(j,i,getpix(yi,xi));
+		}
+	}
+    resized.specs[HAVE_MAX]=0;
+    
+    free();
+    *this = resized;
+    
+    return;
+}
+
+
 DATAWORD Image::getpix(int r ,int c)   // get a pixel value at the specified row and column
 {
 	if (data == NULL) return 0.;
@@ -510,7 +550,7 @@ DATAWORD Image::getpix(float yi, float xi)
 	ix = xi;
 	iy = yi;
 	
-	if( (ix+1) == specs[COLS] || (iy+1) == specs[ROWS]) 
+	if( (ix+1) >= specs[COLS] || (iy+1) >= specs[ROWS])
 		return(getpix(iy,ix));
 	
 	xf = xi - ix;	/* the fraction part */
