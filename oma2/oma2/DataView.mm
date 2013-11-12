@@ -267,7 +267,6 @@ extern oma2UIData UIData;
     
     switch  (appController.tool){     
         case CALCRECT:
-            // in this implementation, this does not redefine the image rectangle
             // add calculation here
             point start,end;
             start.h = startRect.x;
@@ -276,7 +275,8 @@ extern oma2UIData UIData;
             end.v = endRect.y;
             calc(start,end);
             
-            break;
+            //break;    // in this implementation, this does redefine the image rectangle
+
         case RECT:
             
             UIData.iRect.ul.h = startRect.x;

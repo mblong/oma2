@@ -56,6 +56,18 @@ int multiply_c(int n,char* args){
     return NO_ERR;
 }
 
+int power_c(int n,char* args)				// raise the data to a power
+{
+    DATAWORD val;
+    if( sscanf(args,"%f",&val) != 1)
+		val = n;
+    iBuffer.power(val);
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+
 int savefile_c(int n,char* args)
 {
 	if(*args == 0){	// no file name was specified
@@ -193,6 +205,27 @@ int croprectangle_c(int n,char* args){
         int err = iBuffer.err();
         iBuffer.errclear();
         return err;
+    }
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+int resize_c(int n,char* args){
+    int newRows,newCols;
+    int narg = sscanf(args,"%d %d",&newRows,&newCols);
+    if (narg == 1) {
+        newCols = newRows;
+    }
+    if (newRows < 10) newRows = 10;
+    if (newCols < 10) newCols = 10;
+    
+    iBuffer.resize(newRows, newCols);
+    if(iBuffer.err()){
+        beep();
+        printf("Could not resize.\n");
+        iBuffer.errclear();
+        return iBuffer.err();
     }
     iBuffer.getmaxx();
     update_UI();
@@ -491,7 +524,7 @@ int smooth_c(int n,char* args){
 int size_c(int n,char* args){
     int width, height;
     if(*args){
-        int narg = sscanf(args,"%d %d",&width,&height); 
+        int narg = sscanf(args,"%d %d",&height,&width);     // rows and columns
         if (narg == 2){
             Image new_im(height,width);
             if(new_im.err()){
@@ -591,6 +624,7 @@ int calc(point start,point end){
     DATAWORD* buffervalues = iBuffer.getvalues();
     int* bufferspecs = iBuffer.getspecs();
     char* unit_text = iBuffer.getunit_text();
+    extern Variable user_variables[];
 
     icount = 0;
 	xcom = ycom = ave = rms = 0.0;
@@ -631,6 +665,16 @@ int calc(point start,point end){
     free( buffervalues);
     free( bufferspecs);
     free( unit_text);
+    // return values available as variables
+	user_variables[0].fvalue = ave;
+	user_variables[0].is_float = 1;
+	user_variables[1].fvalue = rms;
+	user_variables[1].is_float = 1;
+	user_variables[2].fvalue = xcom;
+	user_variables[2].is_float = 1;
+	user_variables[3].fvalue = ycom;
+	user_variables[3].is_float = 1;
+
     return 0;
 
 }
@@ -872,6 +916,39 @@ int comtmp_c(int n, char* args)
     } else
         return MEM_ERR;
 }
+
+
+/* ********** */
+int sinGrid_c(int n, char* args)				/* draw grid from sin function */
+{
+	int nc,nt;
+    float radius,dist,x,y;
+    
+    if( sscanf(args,"%f",&radius) != 1)
+		radius = n;
+    if (radius < 10.) {
+        radius = 10.;
+    }
+    int* theSpecs = iBuffer.getspecs();
+    
+	printf("radius = %f\n",radius);
+	//if (radius <= 0 || radius > header[NCHAN] || radius > header[NTRAK]) radius = 20.0;
+	
+	for(nt=0; nt<theSpecs[ROWS];nt++) {
+		for(nc=0;nc < theSpecs[COLS]; nc++){
+			x = radius - fmod(nc,radius*2);
+			y = radius - fmod(nt,radius*2);
+			dist = sqrt(y*y + x*x);
+            iBuffer.setpix(nt, nc, cos(dist/(.67*radius)*PI/2));
+		}
+	}
+    free(theSpecs);
+    iBuffer.getmaxx();
+    update_UI();
+
+    return NO_ERR;
+}
+
 
 /* ********** */
 int dcrawarg_c(int n, char* args){

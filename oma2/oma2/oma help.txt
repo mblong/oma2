@@ -10,6 +10,10 @@
 / x
 	Divides the data in the current image data buffer by x.
 
+^ x
+	Raises the data in the current image data to the power x.
+
+
 ADDFILE <filename>
 	Adds the contents of an OMA file of a given name to the data in the current image data buffer.
 
@@ -158,6 +162,9 @@ LTEMPIMAGE
 MACRO [n m]
 	Like "RMACRO [n m]" except that printing of intermediate output is automatically suppressed.
 
+MAKNEW n m
+	Change the resolution of the data in the current data buffer to be n rows x m columns. Bilinear interpolation is performed.
+
 MULFILE <filename>
 	Multiplies the contents of the current data buffer by the contents of the specified file.
 
@@ -172,6 +179,9 @@ NEXTFILE [prefix]
 
 PALETTE n
 	Specifies that the nth predefined color palette should be used. Palette 0 is a color palette; 1 is a gray-scale palette.
+
+POWER y
+	Raise the data in the current image buffer to the power y (float).
 
 RECTANGLE ulx uly lrx lry
 	Specify a rectangle that calculations are to be done on. The arguments are upper left x coordinate; upper left y coordinate; lower right x; lower right y.
@@ -197,8 +207,11 @@ SAVEFILE <filename>
 SAVSETTINGS [filename]
 	Saves the current settings to the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings are saved within the oma application. 
 
-SIZE width height
-	Set the width and height of the current image and zero the data.
+SIZE rows cols
+	Set the number of rows and columns of the current image and zero the data.
+
+SINGRID radius
+	Draw grid from the sine function.
 
 STEMPIMAGE name
 	Save current image as temporary image with specified name. The name can be 0-9 or a text string beginning with a lower case letter. This can be retrieved with GTEMP.
