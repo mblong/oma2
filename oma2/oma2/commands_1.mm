@@ -11,6 +11,8 @@ extern Image  iTempImages[];
 extern int numberNamedTempImages;
 extern Variable namedTempImages[];
 
+/* ********** */
+
 int plus_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
@@ -22,9 +24,13 @@ int plus_c(int n,char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
 int null_c(int n,char* args){
     return NO_ERR;
 }
+
+/* ********** */
 
 int minus_c(int n,char* args){
     DATAWORD val;
@@ -36,6 +42,8 @@ int minus_c(int n,char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
 int divide_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
@@ -46,6 +54,8 @@ int divide_c(int n,char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
 int multiply_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
@@ -55,6 +65,8 @@ int multiply_c(int n,char* args){
     update_UI();
     return NO_ERR;
 }
+
+/* ********** */
 
 int power_c(int n,char* args)				// raise the data to a power
 {
@@ -67,6 +79,7 @@ int power_c(int n,char* args)				// raise the data to a power
     return NO_ERR;
 }
 
+/* ********** */
 
 int savefile_c(int n,char* args)
 {
@@ -78,6 +91,7 @@ int savefile_c(int n,char* args)
 	}
 }
 
+/* ********** */
 
 int getfile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
@@ -92,6 +106,8 @@ int getfile_c(int n,char* args){
     update_UI();
     return NO_ERR;
 }
+
+/* ********** */
 
 int addfile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
@@ -112,6 +128,8 @@ int addfile_c(int n,char* args){
     iBuffer.errclear();
     return SIZE_ERR;
 }
+
+/* ********** */
 
 int mulfile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
@@ -134,6 +152,8 @@ int mulfile_c(int n,char* args){
     return SIZE_ERR;
 }
 
+/* ********** */
+
 int subfile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
     if(new_im.err()){
@@ -155,6 +175,8 @@ int subfile_c(int n,char* args){
     return SIZE_ERR;
 }
 
+/* ********** */
+
 int divfile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
     if(new_im.err()){
@@ -175,6 +197,8 @@ int divfile_c(int n,char* args){
     iBuffer.errclear();
     return SIZE_ERR;
 }
+
+/* ********** */
 
 int compositefile_c(int n,char* args){
     Image new_im(args,SHORT_NAME);
@@ -198,6 +222,8 @@ int compositefile_c(int n,char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
 int croprectangle_c(int n,char* args){
     iBuffer.crop(UIData.iRect);
     if(iBuffer.err()){
@@ -210,6 +236,8 @@ int croprectangle_c(int n,char* args){
     update_UI();
     return NO_ERR;
 }
+
+/* ********** */
 
 int resize_c(int n,char* args){
     int newRows,newCols;
@@ -232,6 +260,7 @@ int resize_c(int n,char* args){
     return NO_ERR;
 }
 
+/* ********** */
 
 int rectan_c(int n, char* args)
 {
@@ -294,6 +323,8 @@ int rectan_c(int n, char* args)
     return NO_ERR;
 }
 
+/* ********** */
+
 int list_c(int n, char* args){
     
     int lc,i;
@@ -347,12 +378,16 @@ int list_c(int n, char* args){
     
 }
 
+/* ********** */
+
 int invert_c(int n,char* args){
     iBuffer.invert();
     iBuffer.getmaxx();
     update_UI();
     return NO_ERR;
 }
+
+/* ********** */
 
 int rgb2red_c(int n,char* args){
     iBuffer.rgb2color(0);
@@ -368,6 +403,8 @@ int rgb2red_c(int n,char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
 int rgb2green_c(int n,char* args){
     iBuffer.rgb2color(1);
     if(iBuffer.err()){
@@ -382,6 +419,8 @@ int rgb2green_c(int n,char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
 int rgb2blue_c(int n,char* args){
     iBuffer.rgb2color(2);    
     if(iBuffer.err()){
@@ -395,6 +434,8 @@ int rgb2blue_c(int n,char* args){
     update_UI();
     return NO_ERR;
 }
+
+/* ********** */
 
 int colorflag_c(int n, char* args){
     int flag;
@@ -413,6 +454,8 @@ int colorflag_c(int n, char* args){
     update_UI();
     return NO_ERR;    
 }
+
+/* ********** */
 
 int rotate_c(int n,char* args){
     float angle;
@@ -463,6 +506,8 @@ int rotate_c(int n,char* args){
         return NO_ERR;
     }
 }
+
+/* ********** */
 
 int smooth_c(int n,char* args){
     int dx,dy,i,j,nt,nc,count,dxs,dys;
@@ -521,6 +566,8 @@ int smooth_c(int n,char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
 int size_c(int n,char* args){
     int width, height;
     if(*args){
@@ -545,6 +592,8 @@ int size_c(int n,char* args){
     return NO_ERR;
  
 }
+
+/* ********** */
 
 int setcminmax_c(int n,char* args)		/* get color min and max */
 {
@@ -574,7 +623,60 @@ int palette_c(int n,char* args){
     return 0;
 }
 
+/* ********** */
 
+int killBox_c(int n, char* args)
+{
+    point substart,subend;
+    int i,j;
+    int* bufferspecs = iBuffer.getspecs();
+    DATAWORD filval = 0.;
+    
+    sscanf(args,"%f",&filval);
+    
+	substart = UIData.iRect.ul;
+    subend = UIData.iRect.lr;
+    
+    if (subend.h > bufferspecs[COLS]-1 ||
+        subend.v > bufferspecs[ROWS]-1 ||
+        substart.h < 0 ||
+        substart.v < 0){
+        free(bufferspecs);
+        beep();
+        printf("Rectangle not contained in current image.\n");
+        return SIZE_ERR;
+    }
+    
+	for(i=substart.v; i<= subend.v; i++) {
+		for(j=substart.h; j<= subend.h; j++) {
+			iBuffer.setpix(i, j, filval);
+		}
+	}
+    free(bufferspecs);
+    
+    iBuffer.getmaxx();
+	update_UI();
+	return NO_ERR;
+}
+
+/* ********** */
+
+int positive_c(int n, char* args)
+{
+    int i,j;
+    int* bufferspecs = iBuffer.getspecs();
+    
+	for(i=0; i< bufferspecs[ROWS]; i++) {
+		for(j=0; j<= bufferspecs[COLS]; j++) {
+			if (iBuffer.getpix(i,j) < 0) iBuffer.setpix(i, j, 0.);
+		}
+	}
+    free(bufferspecs);
+    
+    iBuffer.getmaxx();
+	update_UI();
+	return NO_ERR;
+}
 
 /* ********** */
 
@@ -593,7 +695,7 @@ int calc_cmd_c(int n, char* args)
         free(bufferspecs);
         beep();
         printf("Rectangle not contained in current image.\n");
-        return ARG_ERR;
+        return SIZE_ERR;
     }
 	
 	calc(substart,subend);
@@ -917,8 +1019,8 @@ int comtmp_c(int n, char* args)
         return MEM_ERR;
 }
 
-
 /* ********** */
+
 int sinGrid_c(int n, char* args)				/* draw grid from sin function */
 {
 	int nc,nt;
@@ -949,8 +1051,8 @@ int sinGrid_c(int n, char* args)				/* draw grid from sin function */
     return NO_ERR;
 }
 
-
 /* ********** */
+
 int dcrawarg_c(int n, char* args){
 	
 	int next = 0, i;
@@ -1114,7 +1216,6 @@ int delay_c(int n,char* args)
 	while ( (clock()- start)*60/CLOCKS_PER_SEC < n);
 	return 0;
 }
-/* ********** */
 
 /* ********** */
 /*
@@ -1141,6 +1242,7 @@ int sysCommand_c(int n,char* args)
 	
 }
 
+/* ********** */
 
 int gmacro_c(int n,char* args)
 {

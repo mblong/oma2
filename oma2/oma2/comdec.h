@@ -14,7 +14,7 @@
 #include "commands_1.h"
 #include "gluedCommands.h"
 #include "ImageBitmap.h"
-
+#include "dofft.h"
 
 
 

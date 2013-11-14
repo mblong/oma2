@@ -38,6 +38,7 @@
 		DB2BC300151930D7009D9AED /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
 		DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
+		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
 		DB53F51817FA1D6500A12259 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB53F51717FA1D6500A12259 /* libjpeg.a */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
@@ -110,6 +111,8 @@
 		DB2E76B8152611BD004B6502 /* ImageBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBitmap.h; sourceTree = "<group>"; };
 		DB4329B417EF13E900A51802 /* gluedCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gluedCommands.h; sourceTree = "<group>"; };
 		DB4329B517EF13E900A51802 /* gluedCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gluedCommands.mm; sourceTree = "<group>"; };
+		DB4E036D1835272400250EA4 /* dofft.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dofft.mm; sourceTree = "<group>"; };
+		DB4E036F183527B200250EA4 /* dofft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dofft.h; sourceTree = "<group>"; };
 		DB52C79E17F102130048F57A /* dcrawx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dcrawx.h; sourceTree = "<group>"; };
 		DB53F51717FA1D6500A12259 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
 		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
@@ -280,6 +283,8 @@
 				DB021E7715211EFA001D1B05 /* image_support.mm */,
 				DB52C79E17F102130048F57A /* dcrawx.h */,
 				DB87BF0117F08DA200E1BF68 /* dcrawx.mm */,
+				DB4E036F183527B200250EA4 /* dofft.h */,
+				DB4E036D1835272400250EA4 /* dofft.mm */,
 				DBB4233717F9B765005BCF33 /* jpeglib.h */,
 				DBB4233817F9B892005BCF33 /* jconfig.h */,
 				DBB4233917F9B892005BCF33 /* jmorecfg.h */,
@@ -406,6 +411,7 @@
 				DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */,
 				DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */,
 				DB17A30C15247965004F810A /* DataWindowController.mm in Sources */,
+				DB4E036E1835272400250EA4 /* dofft.mm in Sources */,
 				DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */,
 				DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */,
 				DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */,

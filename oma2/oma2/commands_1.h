@@ -34,6 +34,8 @@ int gtemp_c(int, char*);
 
 int invert_c(int,char*);
 
+int killBox_c(int n, char* args);
+
 int list_c(int n, char* args);
 int ltemp_c(int n, char* args);
 
@@ -48,6 +50,7 @@ int nextFile_c(int,char*);
 int palette_c(int,char*);
 int plus_c(int,char*);
 int power_c(int,char*);
+int positive_c(int, char*);
 
 int rectan_c(int,char*);
 int resize_c(int,char*);
