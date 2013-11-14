@@ -93,6 +93,17 @@ ENDIF
 EXECUTE <filename>
 	Reads OMA commands stored in the specified file into a special execute buffer and then performs those commands. Unlike macros, these should not contain dummy numerical arguments (%d).
 
+FFT mode scale_factor
+	mode = 0  return the magnitude scaled by scale_factor
+	mode = 1  return the real part scaled by scale_factor
+	mode = 2  return the imaginary part scaled by scale_factor
+	mode = 3  return inverse - input is real part scaled by scale_factor
+	mode = 4  return inverse - input is imaginary part scaled by scale_factor
+	mode = 5  return the log of the magnitude squared scaled by scale_factor
+	mode = 6  return the magnitude squared scaled by scale_factor
+	mode = 7  return the autocorrelation scaled by scale_factor
+	mode = 8  return inverse - input is a filter scaled by n
+
 FLOATVARIABLE variable_name
 	Specifies that variable_name is to be used as a floating point variable.
 
@@ -126,6 +137,9 @@ INVERT
 
 INTVARIABLE variable_name
 	Specifies that variable_name is to be used as an integer variable.
+
+KILLBOX [value]
+	Much like FILLBOX, this command works on the region of the image that has been specified with the RECT command or mouse. The contents of this region are set to 'value'. Default for 'value' is 0.
 
 LIST
 	Lists the current detector parameters and log block.
@@ -179,6 +193,9 @@ NEXTFILE [prefix]
 
 PALETTE n
 	Specifies that the nth predefined color palette should be used. Palette 0 is a color palette; 1 is a gray-scale palette.
+
+POSITVE
+	Sets all negative values in the image buffer to 0.  Positive values are unaffected.
 
 POWER y
 	Raise the data in the current image buffer to the power y (float).

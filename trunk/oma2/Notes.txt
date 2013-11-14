@@ -40,7 +40,9 @@ Status Window:
 √ ^ added as alias of POWER
 √ added MAKNEW to resize image
 √ added SINGRID command
-
+√ added FFT command
+√ added FILLBOX command
+√ added POSITIVE command
 _____________________________
 Addressed Existing Command Issues:
     √ CROP has bugs when image is big
@@ -72,6 +74,8 @@ Addressed UI Issues:
   √ when the status window is selected, typing a space isn't sent to the command window -- sometimes?
   
   √ Plot Rows and Cols -- scaling of plots needs attention -- y scale is wrong?
+  
+  √ on typing, always move cursor to end of command buffer
 
 _____________________________
 Needed Commands

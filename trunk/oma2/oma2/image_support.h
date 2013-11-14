@@ -6,6 +6,7 @@
 #include    "oma2.h"
 #include    "UI.h"
 #include    "image.h"
+#include    "dofft.h"
 
 #define PMODE 0666 // RW  for writing files that we can open
 
