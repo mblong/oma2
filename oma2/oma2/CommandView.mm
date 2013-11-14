@@ -44,6 +44,10 @@ extern AppController* appController;
     // we get keydown events here
     // do special processing before passing this event along the the NSTextView
     
+    // move to the end of the commands
+    NSUInteger text_len = [[[self textStorage] string] length];
+    [self setSelectedRange:(NSRange){text_len, 0}];
+    
     if([anEvent modifierFlags] & NSCommandKeyMask){
         NSString *theKey = [anEvent charactersIgnoringModifiers];
         if([theKey isEqualToString:@";"]){
@@ -167,11 +171,12 @@ extern AppController* appController;
     NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
     lastReturn += [reply length];
     [self.textStorage.mutableString appendString:reply];
+    
 }
-/*
+
 -(BOOL) acceptsFirstResponder{
     return YES;
 }
-*/
+
 
 @end

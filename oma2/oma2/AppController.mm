@@ -264,7 +264,10 @@ extern oma2UIData UIData;
     // pass this on the theCommands
     [theCommands appendCText: string];
     
-    [[self theWindow] display];
+    // the following will let rmacro to behave reasonably, but slows things condsiderably
+    extern int exflag, macflag;
+    if (exflag || macflag) [[self theWindow] display];
+    
     //NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
     //last_return += [reply length];
     //[[[theCommands textStorage] mutableString] appendString: reply];
@@ -521,6 +524,11 @@ extern oma2UIData UIData;
 -(void) dataWindowClosing{
     //dataWindowController = nil;
 }
+
+-(BOOL) acceptsFirstResponder{
+    return YES;
+}
+
 
 
 @end
