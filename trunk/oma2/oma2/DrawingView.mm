@@ -35,7 +35,7 @@ extern oma2UIData UIData;
         NSString *label =[NSString stringWithFormat:@"Row %d",theRow];
         NSPoint startPoint;
         startPoint.x = 10;
-        startPoint.y = dirtyRect.size.height  - 20;
+        startPoint.y = dirtyRect.size.height  - TITLEBAR_HEIGHT;
         [label drawAtPoint:startPoint withAttributes:NULL];
 
         NSBezierPath *path = [NSBezierPath bezierPath];
@@ -44,7 +44,7 @@ extern oma2UIData UIData;
         unsigned char* rowData_ = (unsigned char*)[rowData bytes];
         
         float scalex = self.window.frame.size.width/(float)bytesPerRow/pixPerPt;
-        float scaley = self.window.frame.size.height/(255.-20.);
+        float scaley = (self.window.frame.size.height-TITLEBAR_HEIGHT)/(256.);
         
         NSPoint pt;
         pt.x = 0.;
@@ -87,7 +87,7 @@ extern oma2UIData UIData;
         NSString *label =[NSString stringWithFormat:@"Column %d",theCol];
         NSPoint startPoint;
         startPoint.x = 10;
-        startPoint.y = dirtyRect.size.height  - 20;
+        startPoint.y = dirtyRect.size.height  - TITLEBAR_HEIGHT;
         [label drawAtPoint:startPoint withAttributes:NULL];
 
         
@@ -97,7 +97,7 @@ extern oma2UIData UIData;
         unsigned char* colData_ = (unsigned char*)[colData bytes];
         
         float scalex = self.window.frame.size.width/(float)bytesPerRow/pixPerPt;
-        float scaley = self.window.frame.size.height/(255.-20.);
+        float scaley = (self.window.frame.size.height-TITLEBAR_HEIGHT)/(256.);
 
         
         NSPoint pt;

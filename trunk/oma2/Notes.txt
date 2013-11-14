@@ -46,6 +46,7 @@ Addressed Existing Command Issues:
     √ CROP has bugs when image is big
     √ ERASE [n] to just erase nth window
     √ CALC -- doesn't fill in command return values; doesn't use the right rectangle?
+    √ redefined the way SIZE works; now SIZE rows columns
 
 Addressed UI Issues:
   √ Big image issues:
@@ -70,7 +71,8 @@ Addressed UI Issues:
 
   √ when the status window is selected, typing a space isn't sent to the command window -- sometimes?
   
-  √ redefined the way SIZE works; now SIZE rows columns
+  √ Plot Rows and Cols -- scaling of plots needs attention -- y scale is wrong?
+
 _____________________________
 Needed Commands
  LOG command
@@ -84,7 +86,6 @@ Need to be able to stop macros -- still problems with this
 
 Echo in macros still has challenges. If a macro is started when the command window does not have focus, nothing is echoed until the macro finishes
 
-Plot Rows and Cols -- scaling of plots needs attention -- y scale is wrong?
 
 
 _____________________________
