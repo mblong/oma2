@@ -53,11 +53,12 @@ extern oma2UIData UIData;
     
     // this attempt to be notified when text changes in prefixes doesn't work
     // It gets called once only when the window opens, not when the text changes
+    /*
     [preferenceController addObserver:self
                            forKeyPath:@"macroPrefix"
                               options:NSKeyValueObservingOptionNew
                               context:NULL];
-    
+    */
     [preferenceController showWindow:self];
     [preferenceController fillInUIData];
 }
@@ -239,6 +240,7 @@ extern oma2UIData UIData;
 
 // this attempt to be notified when text changes in prefixes doesn't work
 // It gets called once only when the window opens, not when the text changes
+/*
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change
@@ -249,7 +251,7 @@ extern oma2UIData UIData;
         fullname((char*)text,LOAD_SAVE_PREFIX);
     }
 }
-
+*/
 
 -(void) appendText:(NSString *) string{
     //last_return += [string length];
