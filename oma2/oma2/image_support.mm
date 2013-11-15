@@ -282,6 +282,15 @@ char* fullname(char* fnam,int  type)
     return(fnam);
 }
 
+unsigned long fsize(char* file)
+{
+    FILE * f = fopen(file, "r");
+    fseek(f, 0, SEEK_END);
+    unsigned long len = (unsigned long)ftell(f);
+    fclose(f);
+    return len;
+}
+
 /* ____________________________ load settings... ____________________________*/
 
 int loadprefs(char* name)
@@ -520,6 +529,7 @@ int saveprefs(char* name)
     int fd = creat(name,PMODE);
     if(fd == -1) {
 		beep();
+        printf("Could not open preferences: %s",name);
 		return FILE_ERR;
 	}
     

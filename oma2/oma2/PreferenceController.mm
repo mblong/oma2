@@ -85,4 +85,15 @@ extern oma2UIData UIData;
     [[self macroSuffix] setStringValue:[[NSString alloc]initWithCString:UIData.macrosuffixbuf 
                                                                encoding:NSASCIIStringEncoding]];
 }
+
+-(BOOL) acceptsFirstResponder{
+    return YES;
+}
+
+
+- (void)keyDown:(NSEvent *)anEvent{
+    
+    [super keyDown:anEvent];
+    
+}
 @end
