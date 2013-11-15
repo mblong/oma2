@@ -285,6 +285,9 @@ char* fullname(char* fnam,int  type)
 unsigned long fsize(char* file)
 {
     FILE * f = fopen(file, "r");
+    if (f == NULL) {
+        return 0;
+    }
     fseek(f, 0, SEEK_END);
     unsigned long len = (unsigned long)ftell(f);
     fclose(f);
@@ -292,6 +295,8 @@ unsigned long fsize(char* file)
 }
 
 /* ____________________________ load settings... ____________________________*/
+// actual old length is 1872; new oma length is 4944; new oma2 length is 4232, but could change
+#define OLD_SETTINGS_LENGTH 2000
 
 int loadprefs(char* name)
 {
@@ -304,6 +309,8 @@ int loadprefs(char* name)
     TWOBYTE	trailer[TRAILEN/2];
     char	comment[COMLEN] = {0};
     TWOBYTE settings[16];
+    
+    int prefixLength = PREFIX_CHPERLN;
     
 
     
@@ -324,15 +331,22 @@ int loadprefs(char* name)
         return FILE_ERR;
 	}
     
+    unsigned long len = fsize(name);
+    if(len > OLD_SETTINGS_LENGTH) prefixLength = NEW_PREFIX_CHPERLN;
+        
+    
     fd = open(name,O_RDONLY);
     
     if(fd == -1) {
 		beep();
+        printf("Could not load settings from %s\n",name);
 		return FILE_ERR;
 	}
 	
+    
     read(fd,(char*)header,HEADLEN);
     if (strcmp((const char*)header, SETTINGS_VERSION_1) == 0) {
+        // read oma2 settings
         int nbytes = sizeof(oma2UIData);
         read(fd,(char*)UIData.saveprefixbuf,nbytes-HEADLEN);    // 
         close(fd);
@@ -364,12 +378,12 @@ int loadprefs(char* name)
     free(specs);
     
 	
-  	read(fd,(char*)UIData.saveprefixbuf,PREFIX_CHPERLN);		// file prefixes and suffixes 
-  	read(fd,(char*)UIData.savesuffixbuf,PREFIX_CHPERLN);
-  	read(fd,(char*)UIData.macroprefixbuf,PREFIX_CHPERLN);
-  	read(fd,(char*)UIData.macrosuffixbuf,PREFIX_CHPERLN);
-  	read(fd,(char*)UIData.graphicsprefixbuf,PREFIX_CHPERLN);
-  	read(fd,(char*)UIData.graphicssuffixbuf,PREFIX_CHPERLN);
+  	read(fd,(char*)UIData.saveprefixbuf,prefixLength);		// file prefixes and suffixes
+  	read(fd,(char*)UIData.savesuffixbuf,prefixLength);
+  	read(fd,(char*)UIData.macroprefixbuf,prefixLength);
+  	read(fd,(char*)UIData.macrosuffixbuf,prefixLength);
+  	read(fd,(char*)UIData.graphicsprefixbuf,prefixLength);
+  	read(fd,(char*)UIData.graphicssuffixbuf,prefixLength);
 	
     
 	read(fd,(char*)settings,32);
@@ -501,8 +515,8 @@ int loadprefs(char* name)
 	read(fd,(char*)&set_temp,4);	
     
     
-  	read(fd,(char*)UIData.getprefixbuf,PREFIX_CHPERLN);		// file prefixes and suffixes for get data commands
-  	read(fd,(char*)UIData.getsuffixbuf,PREFIX_CHPERLN);
+  	read(fd,(char*)UIData.getprefixbuf,prefixLength);		// file prefixes and suffixes for get data commands
+  	read(fd,(char*)UIData.getsuffixbuf,prefixLength);
     
     close(fd);
 	//err = setvol("", oldvol);
