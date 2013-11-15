@@ -19,6 +19,7 @@ int loadprefs(char*);
 int saveprefs(char*);
 int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* );
 int getpalettefile(char*);
+unsigned long fsize(char* file);
 
 int dcrawGlue(char* name, int thecolor,Image*);
 int read_jpeg(char* filename,int thecolor,Image*);

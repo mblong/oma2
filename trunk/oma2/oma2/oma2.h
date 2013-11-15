@@ -22,7 +22,7 @@
 
 #define CHPERLN 4096            // maximum number of characters per line 
 #define PREFIX_CHPERLN 128      // maximum number of characters in the prefix 
-#define NEW_PREFIX_CHPERLN 256  // maximum number of characters in the new prefix 
+#define NEW_PREFIX_CHPERLN 512  // maximum number of characters in the new prefix
 #define HEADLEN 30              // number of bytes in header 
 #define TRAILEN 62              // number of bytes in trailer 
 #define COMLEN 512-HEADLEN-TRAILEN  // number of bytes in comment buffer
