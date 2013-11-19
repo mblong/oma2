@@ -174,6 +174,12 @@ StatusController *statusController;
     }
 }
 
+- (IBAction)nextPalette:(id)sender{
+    UIData.thepalette++;
+    if(UIData.thepalette >= NUMPAL)UIData.thepalette = 0;
+    update_UI();
+}
+
 - (IBAction)selectTool:(id)sender {
     tool_selected = (int)[toolSelected selectedColumn];
     [self setTool_selected:(int)[toolSelected selectedColumn]];
