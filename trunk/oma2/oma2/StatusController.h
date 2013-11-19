@@ -69,6 +69,7 @@
 - (IBAction)decreaseColorMax:(id)sender;
 - (IBAction)increaseColorMax:(id)sender;
 
+- (IBAction)nextPalette:(id)sender;
 
 - (void) labelColorMinMax;
 - (void) labelX0:(int) x Y0:(int) y Z0:(float) z;
