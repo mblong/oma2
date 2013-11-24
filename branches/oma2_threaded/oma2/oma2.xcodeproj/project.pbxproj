@@ -1,0 +1,574 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DB021E7B15211EFA001D1B05 /* commands_1.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7515211EFA001D1B05 /* commands_1.mm */; };
+		DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7715211EFA001D1B05 /* image_support.mm */; };
+		DB021E7D15211EFA001D1B05 /* image.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7915211EFA001D1B05 /* image.mm */; };
+		DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
+		DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
+		DB0FC02F1519183C008A9B54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
+		DB0FC0331519183D008A9B54 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0311519183D008A9B54 /* Credits.rtf */; };
+		DB0FC0361519183D008A9B54 /* oma2AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */; };
+		DB0FC0391519183D008A9B54 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0371519183D008A9B54 /* MainMenu.xib */; };
+		DB0FC04015191886008A9B54 /* oma-icns.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC03F15191886008A9B54 /* oma-icns.icns */; };
+		DB0FC046151918F0008A9B54 /* StatusController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC041151918F0008A9B54 /* StatusController.mm */; };
+		DB0FC047151918F0008A9B54 /* Status.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC042151918F0008A9B54 /* Status.xib */; };
+		DB0FC048151918F0008A9B54 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC044151918F0008A9B54 /* AppController.mm */; };
+		DB16CA3A1826960F002588F4 /* CommandView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB16CA391826960F002588F4 /* CommandView.mm */; };
+		DB17A3051524754A004F810A /* DataWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB17A3041524754A004F810A /* DataWindow.xib */; };
+		DB17A30C15247965004F810A /* DataWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB17A30B15247965004F810A /* DataWindowController.mm */; };
+		DB1E9B1F15A27EA300F38CE2 /* ruler.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB1E9B1E15A27EA300F38CE2 /* ruler.jpg */; };
+		DB1E9B2215A2804C00F38CE2 /* curve.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB1E9B2115A2804C00F38CE2 /* curve.jpg */; };
+		DB2113591540219200B23364 /* DataView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2113581540219200B23364 /* DataView.mm */; };
+		DB238A4D15A2879900502B50 /* pal0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A4C15A2879900502B50 /* pal0.jpg */; };
+		DB238A5015A2884F00502B50 /* pal2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A4E15A2884F00502B50 /* pal2.jpg */; };
+		DB238A5115A2884F00502B50 /* pal1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A4F15A2884F00502B50 /* pal1.jpg */; };
+		DB238A5715A2895B00502B50 /* pal7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5215A2895B00502B50 /* pal7.jpg */; };
+		DB238A5815A2895B00502B50 /* pal6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5315A2895B00502B50 /* pal6.jpg */; };
+		DB238A5915A2895B00502B50 /* pal5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5415A2895B00502B50 /* pal5.jpg */; };
+		DB238A5A15A2895B00502B50 /* pal4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5515A2895B00502B50 /* pal4.jpg */; };
+		DB238A5B15A2895B00502B50 /* pal3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5615A2895B00502B50 /* pal3.jpg */; };
+		DB268239159374AC00B40AE1 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = DB268238159374AC00B40AE1 /* Notes.txt */; };
+		DB2BC300151930D7009D9AED /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
+		DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
+		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
+		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
+		DB53F51817FA1D6500A12259 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB53F51717FA1D6500A12259 /* libjpeg.a */; };
+		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
+		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
+		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
+		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
+		DBA3B5F716FC781300B7FF27 /* oma help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma help.txt */; };
+		DBA96ABA1520C7090043754E /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
+		DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD5691802050F007F8801 /* DrawingView.mm */; };
+		DBABD56C18020683007F8801 /* DrawingWindowx.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBABD56B18020683007F8801 /* DrawingWindowx.xib */; };
+		DBABD56F180208E7007F8801 /* DrawingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD56E180208E7007F8801 /* DrawingWindowController.mm */; };
+		DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */; };
+		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
+		DBB4233617F9B6C3005BCF33 /* jpegIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB4233517F9B6C3005BCF33 /* jpegIO.mm */; };
+		DBBD397D155AD06000D5B56B /* OMA palette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMA palette.pa1 */; };
+		DBBD3984155ADD5100D5B56B /* OMA palette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */; };
+		DBBD3985155ADD5100D5B56B /* OMA palette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */; };
+		DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
+		DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
+		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		DB021E7515211EFA001D1B05 /* commands_1.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = commands_1.mm; sourceTree = "<group>"; };
+		DB021E7615211EFA001D1B05 /* commands_1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = commands_1.h; sourceTree = "<group>"; };
+		DB021E7715211EFA001D1B05 /* image_support.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = image_support.mm; sourceTree = "<group>"; };
+		DB021E7815211EFA001D1B05 /* image_support.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_support.h; sourceTree = "<group>"; };
+		DB021E7915211EFA001D1B05 /* image.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = image.mm; sourceTree = "<group>"; };
+		DB021E7A15211EFA001D1B05 /* image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image.h; sourceTree = "<group>"; };
+		DB021E7F15214040001D1B05 /* comdec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comdec.h; sourceTree = "<group>"; };
+		DB0FC01E1519183C008A9B54 /* oma2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB0FC0221519183C008A9B54 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		DB0FC0251519183C008A9B54 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		DB0FC0261519183C008A9B54 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DB0FC0271519183C008A9B54 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DB0FC02A1519183C008A9B54 /* oma2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "oma2-Info.plist"; sourceTree = "<group>"; };
+		DB0FC02C1519183C008A9B54 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DB0FC02E1519183C008A9B54 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		DB0FC0301519183D008A9B54 /* oma2-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "oma2-Prefix.pch"; sourceTree = "<group>"; };
+		DB0FC0321519183D008A9B54 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		DB0FC0341519183D008A9B54 /* oma2AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = oma2AppDelegate.h; sourceTree = "<group>"; };
+		DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = oma2AppDelegate.mm; sourceTree = "<group>"; };
+		DB0FC0381519183D008A9B54 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		DB0FC03F15191886008A9B54 /* oma-icns.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "oma-icns.icns"; sourceTree = "<group>"; };
+		DB0FC041151918F0008A9B54 /* StatusController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatusController.mm; sourceTree = "<group>"; };
+		DB0FC042151918F0008A9B54 /* Status.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Status.xib; sourceTree = "<group>"; };
+		DB0FC043151918F0008A9B54 /* StatusController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusController.h; sourceTree = "<group>"; };
+		DB0FC044151918F0008A9B54 /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppController.mm; sourceTree = "<group>"; };
+		DB0FC045151918F0008A9B54 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
+		DB16CA381826960F002588F4 /* CommandView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandView.h; sourceTree = "<group>"; };
+		DB16CA391826960F002588F4 /* CommandView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CommandView.mm; sourceTree = "<group>"; };
+		DB17A3041524754A004F810A /* DataWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DataWindow.xib; sourceTree = "<group>"; };
+		DB17A30A15247965004F810A /* DataWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataWindowController.h; sourceTree = "<group>"; };
+		DB17A30B15247965004F810A /* DataWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DataWindowController.mm; sourceTree = "<group>"; };
+		DB1E9B1E15A27EA300F38CE2 /* ruler.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ruler.jpg; sourceTree = "<group>"; };
+		DB1E9B2115A2804C00F38CE2 /* curve.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = curve.jpg; sourceTree = "<group>"; };
+		DB2113571540219200B23364 /* DataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataView.h; sourceTree = "<group>"; };
+		DB2113581540219200B23364 /* DataView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DataView.mm; sourceTree = "<group>"; };
+		DB238A4C15A2879900502B50 /* pal0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal0.jpg; sourceTree = "<group>"; };
+		DB238A4E15A2884F00502B50 /* pal2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal2.jpg; sourceTree = "<group>"; };
+		DB238A4F15A2884F00502B50 /* pal1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal1.jpg; sourceTree = "<group>"; };
+		DB238A5215A2895B00502B50 /* pal7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal7.jpg; sourceTree = "<group>"; };
+		DB238A5315A2895B00502B50 /* pal6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal6.jpg; sourceTree = "<group>"; };
+		DB238A5415A2895B00502B50 /* pal5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal5.jpg; sourceTree = "<group>"; };
+		DB238A5515A2895B00502B50 /* pal4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal4.jpg; sourceTree = "<group>"; };
+		DB238A5615A2895B00502B50 /* pal3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal3.jpg; sourceTree = "<group>"; };
+		DB268238159374AC00B40AE1 /* Notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Notes.txt; path = ../Notes.txt; sourceTree = "<group>"; };
+		DB2BC2FF151930D7009D9AED /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		DB2BC302151933C9009D9AED /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
+		DB2BC303151933C9009D9AED /* PreferenceController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PreferenceController.mm; sourceTree = "<group>"; };
+		DB2E76B8152611BD004B6502 /* ImageBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBitmap.h; sourceTree = "<group>"; };
+		DB4329B417EF13E900A51802 /* gluedCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gluedCommands.h; sourceTree = "<group>"; };
+		DB4329B517EF13E900A51802 /* gluedCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gluedCommands.mm; sourceTree = "<group>"; };
+		DB4E036D1835272400250EA4 /* dofft.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dofft.mm; sourceTree = "<group>"; };
+		DB4E036F183527B200250EA4 /* dofft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dofft.h; sourceTree = "<group>"; };
+		DB52C79E17F102130048F57A /* dcrawx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dcrawx.h; sourceTree = "<group>"; };
+		DB53F51717FA1D6500A12259 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
+		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
+		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
+		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
+		DBA03741181704740042DF6F /* DrawingWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawingWindow.xib; sourceTree = "<group>"; };
+		DBA3B5F616FC781300B7FF27 /* oma help.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = "oma help.txt"; sourceTree = "<group>"; usesTabs = 1; };
+		DBA96AB91520C7090043754E /* comdec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = comdec.mm; sourceTree = "<group>"; };
+		DBA96ABB1520C7820043754E /* oma2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oma2.h; sourceTree = "<group>"; };
+		DBA96ABC1520CA9C0043754E /* UI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
+		DBABD5681802050F007F8801 /* DrawingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawingView.h; sourceTree = "<group>"; };
+		DBABD5691802050F007F8801 /* DrawingView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawingView.mm; sourceTree = "<group>"; };
+		DBABD56B18020683007F8801 /* DrawingWindowx.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawingWindowx.xib; sourceTree = "<group>"; };
+		DBABD56D180208E7007F8801 /* DrawingWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawingWindowController.h; sourceTree = "<group>"; };
+		DBABD56E180208E7007F8801 /* DrawingWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawingWindowController.mm; sourceTree = "<group>"; };
+		DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageBitmap.mm; path = ../ImageBitmap.mm; sourceTree = "<group>"; };
+		DBB2C37217F9A187008C03BB /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		DBB4233517F9B6C3005BCF33 /* jpegIO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = jpegIO.mm; path = ../jpegIO.mm; sourceTree = "<group>"; };
+		DBB4233717F9B765005BCF33 /* jpeglib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpeglib.h; path = ../jpeglib.h; sourceTree = "<group>"; };
+		DBB4233817F9B892005BCF33 /* jconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jconfig.h; sourceTree = "<group>"; };
+		DBB4233917F9B892005BCF33 /* jmorecfg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jmorecfg.h; sourceTree = "<group>"; };
+		DBBD397C155AD06000D5B56B /* OMA palette.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette.pa1"; sourceTree = "<group>"; };
+		DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette3.pa1"; sourceTree = "<group>"; };
+		DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette2.pa1"; sourceTree = "<group>"; };
+		DBC8157E153DCD54002BEFD4 /* StatusDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusDrop.h; sourceTree = "<group>"; };
+		DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatusDrop.mm; sourceTree = "<group>"; };
+		DBC81582153DFBB7002BEFD4 /* UI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UI.mm; sourceTree = "<group>"; };
+		DBF08DE2159D63980099CB4C /* c-box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "c-box.jpg"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DB0FC01B1519183C008A9B54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */,
+				DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */,
+				DB53F51817FA1D6500A12259 /* libjpeg.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DB0FC0131519183B008A9B54 = {
+			isa = PBXGroup;
+			children = (
+				DB0FC03F15191886008A9B54 /* oma-icns.icns */,
+				DB0FC0281519183C008A9B54 /* oma2 */,
+				DBB4233C17F9B942005BCF33 /* Libraries */,
+				DB0FC0211519183C008A9B54 /* Frameworks */,
+				DB0FC01F1519183C008A9B54 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DB0FC01F1519183C008A9B54 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DB0FC01E1519183C008A9B54 /* oma2.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DB0FC0211519183C008A9B54 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DBB2C37217F9A187008C03BB /* ImageIO.framework */,
+				DB0FC0221519183C008A9B54 /* Cocoa.framework */,
+				DB0FC0241519183C008A9B54 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DB0FC0241519183C008A9B54 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DB0FC0251519183C008A9B54 /* AppKit.framework */,
+				DB0FC0261519183C008A9B54 /* CoreData.framework */,
+				DB0FC0271519183C008A9B54 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		DB0FC0281519183C008A9B54 /* oma2 */ = {
+			isa = PBXGroup;
+			children = (
+				DBA96AB81520C6AC0043754E /* UI Independent */,
+				DBA96AB21520C34F0043754E /* UI */,
+				DB0FC0291519183C008A9B54 /* Supporting Files */,
+			);
+			path = oma2;
+			sourceTree = "<group>";
+		};
+		DB0FC0291519183C008A9B54 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DBA3B5F616FC781300B7FF27 /* oma help.txt */,
+				DB238A5215A2895B00502B50 /* pal7.jpg */,
+				DB238A5315A2895B00502B50 /* pal6.jpg */,
+				DB238A5415A2895B00502B50 /* pal5.jpg */,
+				DB238A5515A2895B00502B50 /* pal4.jpg */,
+				DB238A5615A2895B00502B50 /* pal3.jpg */,
+				DB238A4E15A2884F00502B50 /* pal2.jpg */,
+				DB238A4F15A2884F00502B50 /* pal1.jpg */,
+				DB238A4C15A2879900502B50 /* pal0.jpg */,
+				DB1E9B2115A2804C00F38CE2 /* curve.jpg */,
+				DB1E9B1E15A27EA300F38CE2 /* ruler.jpg */,
+				DB268238159374AC00B40AE1 /* Notes.txt */,
+				DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */,
+				DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */,
+				DBBD397C155AD06000D5B56B /* OMA palette.pa1 */,
+				DB593A36151B8B19007CA0C3 /* plus.jpg */,
+				DB593A3A151B9766007CA0C3 /* box.jpg */,
+				DBF08DE2159D63980099CB4C /* c-box.jpg */,
+				DB0FC02A1519183C008A9B54 /* oma2-Info.plist */,
+				DB0FC02B1519183C008A9B54 /* InfoPlist.strings */,
+				DB0FC02E1519183C008A9B54 /* main.m */,
+				DB0FC0301519183D008A9B54 /* oma2-Prefix.pch */,
+				DB0FC0311519183D008A9B54 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DBA96AB21520C34F0043754E /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				DBA96ABC1520CA9C0043754E /* UI.h */,
+				DBC81582153DFBB7002BEFD4 /* UI.mm */,
+				DB0FC0341519183D008A9B54 /* oma2AppDelegate.h */,
+				DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */,
+				DB0FC045151918F0008A9B54 /* AppController.h */,
+				DB0FC044151918F0008A9B54 /* AppController.mm */,
+				DB16CA381826960F002588F4 /* CommandView.h */,
+				DB16CA391826960F002588F4 /* CommandView.mm */,
+				DB17A30A15247965004F810A /* DataWindowController.h */,
+				DB17A30B15247965004F810A /* DataWindowController.mm */,
+				DB2113571540219200B23364 /* DataView.h */,
+				DB2113581540219200B23364 /* DataView.mm */,
+				DB17A3041524754A004F810A /* DataWindow.xib */,
+				DBABD56D180208E7007F8801 /* DrawingWindowController.h */,
+				DBABD56E180208E7007F8801 /* DrawingWindowController.mm */,
+				DBABD5681802050F007F8801 /* DrawingView.h */,
+				DBABD5691802050F007F8801 /* DrawingView.mm */,
+				DBABD56B18020683007F8801 /* DrawingWindowx.xib */,
+				DBA03741181704740042DF6F /* DrawingWindow.xib */,
+				DB0FC0371519183D008A9B54 /* MainMenu.xib */,
+				DB2BC2FF151930D7009D9AED /* Preferences.xib */,
+				DB2BC302151933C9009D9AED /* PreferenceController.h */,
+				DB2BC303151933C9009D9AED /* PreferenceController.mm */,
+				DB0FC042151918F0008A9B54 /* Status.xib */,
+				DB0FC043151918F0008A9B54 /* StatusController.h */,
+				DB0FC041151918F0008A9B54 /* StatusController.mm */,
+				DBC8157E153DCD54002BEFD4 /* StatusDrop.h */,
+				DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		DBA96AB81520C6AC0043754E /* UI Independent */ = {
+			isa = PBXGroup;
+			children = (
+				DB2E76B8152611BD004B6502 /* ImageBitmap.h */,
+				DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */,
+				DBA96ABB1520C7820043754E /* oma2.h */,
+				DB021E7A15211EFA001D1B05 /* image.h */,
+				DB021E7915211EFA001D1B05 /* image.mm */,
+				DB021E7815211EFA001D1B05 /* image_support.h */,
+				DB021E7715211EFA001D1B05 /* image_support.mm */,
+				DB52C79E17F102130048F57A /* dcrawx.h */,
+				DB87BF0117F08DA200E1BF68 /* dcrawx.mm */,
+				DB4E036F183527B200250EA4 /* dofft.h */,
+				DB4E036D1835272400250EA4 /* dofft.mm */,
+				DBB4233717F9B765005BCF33 /* jpeglib.h */,
+				DBB4233817F9B892005BCF33 /* jconfig.h */,
+				DBB4233917F9B892005BCF33 /* jmorecfg.h */,
+				DBB4233517F9B6C3005BCF33 /* jpegIO.mm */,
+				DB021E7615211EFA001D1B05 /* commands_1.h */,
+				DB021E7515211EFA001D1B05 /* commands_1.mm */,
+				DB4329B417EF13E900A51802 /* gluedCommands.h */,
+				DB4329B517EF13E900A51802 /* gluedCommands.mm */,
+				DB021E7F15214040001D1B05 /* comdec.h */,
+				DBA96AB91520C7090043754E /* comdec.mm */,
+			);
+			name = "UI Independent";
+			sourceTree = "<group>";
+		};
+		DBB4233C17F9B942005BCF33 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				DB53F51717FA1D6500A12259 /* libjpeg.a */,
+			);
+			name = Libraries;
+			path = oma2;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DB0FC01D1519183C008A9B54 /* oma2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB0FC03C1519183D008A9B54 /* Build configuration list for PBXNativeTarget "oma2" */;
+			buildPhases = (
+				DB0FC01A1519183C008A9B54 /* Sources */,
+				DB0FC01B1519183C008A9B54 /* Frameworks */,
+				DB0FC01C1519183C008A9B54 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = oma2;
+			productName = oma2;
+			productReference = DB0FC01E1519183C008A9B54 /* oma2.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DB0FC0151519183B008A9B54 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Yale University";
+			};
+			buildConfigurationList = DB0FC0181519183B008A9B54 /* Build configuration list for PBXProject "oma2" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = DB0FC0131519183B008A9B54;
+			productRefGroup = DB0FC01F1519183C008A9B54 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DB0FC01D1519183C008A9B54 /* oma2 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DB0FC01C1519183C008A9B54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */,
+				DB0FC0331519183D008A9B54 /* Credits.rtf in Resources */,
+				DB0FC0391519183D008A9B54 /* MainMenu.xib in Resources */,
+				DB0FC04015191886008A9B54 /* oma-icns.icns in Resources */,
+				DB0FC047151918F0008A9B54 /* Status.xib in Resources */,
+				DB2BC300151930D7009D9AED /* Preferences.xib in Resources */,
+				DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */,
+				DB593A3B151B9766007CA0C3 /* box.jpg in Resources */,
+				DBABD56C18020683007F8801 /* DrawingWindowx.xib in Resources */,
+				DB17A3051524754A004F810A /* DataWindow.xib in Resources */,
+				DBBD397D155AD06000D5B56B /* OMA palette.pa1 in Resources */,
+				DBBD3984155ADD5100D5B56B /* OMA palette3.pa1 in Resources */,
+				DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */,
+				DBBD3985155ADD5100D5B56B /* OMA palette2.pa1 in Resources */,
+				DB268239159374AC00B40AE1 /* Notes.txt in Resources */,
+				DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */,
+				DB1E9B1F15A27EA300F38CE2 /* ruler.jpg in Resources */,
+				DB1E9B2215A2804C00F38CE2 /* curve.jpg in Resources */,
+				DB238A4D15A2879900502B50 /* pal0.jpg in Resources */,
+				DB238A5015A2884F00502B50 /* pal2.jpg in Resources */,
+				DB238A5115A2884F00502B50 /* pal1.jpg in Resources */,
+				DB238A5715A2895B00502B50 /* pal7.jpg in Resources */,
+				DB238A5815A2895B00502B50 /* pal6.jpg in Resources */,
+				DB238A5915A2895B00502B50 /* pal5.jpg in Resources */,
+				DB238A5A15A2895B00502B50 /* pal4.jpg in Resources */,
+				DB238A5B15A2895B00502B50 /* pal3.jpg in Resources */,
+				DBA3B5F716FC781300B7FF27 /* oma help.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DB0FC01A1519183C008A9B54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB0FC02F1519183C008A9B54 /* main.m in Sources */,
+				DB0FC0361519183D008A9B54 /* oma2AppDelegate.mm in Sources */,
+				DB16CA3A1826960F002588F4 /* CommandView.mm in Sources */,
+				DBABD56F180208E7007F8801 /* DrawingWindowController.mm in Sources */,
+				DB0FC046151918F0008A9B54 /* StatusController.mm in Sources */,
+				DB0FC048151918F0008A9B54 /* AppController.mm in Sources */,
+				DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */,
+				DBA96ABA1520C7090043754E /* comdec.mm in Sources */,
+				DB021E7B15211EFA001D1B05 /* commands_1.mm in Sources */,
+				DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */,
+				DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */,
+				DB021E7D15211EFA001D1B05 /* image.mm in Sources */,
+				DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */,
+				DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */,
+				DB17A30C15247965004F810A /* DataWindowController.mm in Sources */,
+				DB4E036E1835272400250EA4 /* dofft.mm in Sources */,
+				DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */,
+				DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */,
+				DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */,
+				DB2113591540219200B23364 /* DataView.mm in Sources */,
+				DBB4233617F9B6C3005BCF33 /* jpegIO.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		DB0FC02B1519183C008A9B54 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB0FC02C1519183C008A9B54 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DB0FC0311519183D008A9B54 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB0FC0321519183D008A9B54 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		DB0FC0371519183D008A9B54 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB0FC0381519183D008A9B54 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DB0FC03A1519183D008A9B54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		DB0FC03B1519183D008A9B54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		DB0FC03D1519183D008A9B54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
+				INFOPLIST_FILE = "oma2/oma2-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/**",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		DB0FC03E1519183D008A9B54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
+				INFOPLIST_FILE = "oma2/oma2-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/**",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DB0FC0181519183B008A9B54 /* Build configuration list for PBXProject "oma2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB0FC03A1519183D008A9B54 /* Debug */,
+				DB0FC03B1519183D008A9B54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB0FC03C1519183D008A9B54 /* Build configuration list for PBXNativeTarget "oma2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB0FC03D1519183D008A9B54 /* Debug */,
+				DB0FC03E1519183D008A9B54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DB0FC0151519183B008A9B54 /* Project object */;
+}

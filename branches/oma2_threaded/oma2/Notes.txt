@@ -1,0 +1,137 @@
+√load and save prefs -- do on start and quit
+
+√macros enabled and define macros
+    √define macro starting at line number doesn't work right
+     
+initializations:
+    √palettes
+    √prefs
+
+√drag and drop -- shouldn't use fullname
+
+√when displaying in a macro, window should draw contents before the end of the macro
+      this also causes a malloc error in drawRect when guard malloc is enabled
+      
+√crop of color image has bad access if rectangle goes all the way to the bottom of the image
+    √also trouble with monochrome crop -- problem is with vertical part of rectangle coorinates returned by the UI
+    I'm using a defined constant for the TITLEBAR_HEIGHT -- that probably isn't right
+
+√rework min/max
+
+Status Window:
+    √ show color bar
+
+√ help file
+
+√printf
+
+√GET anImage.nef and anImage.jpg    -- implemented; needs verification
+√SAVE command -- added
+√LIST command
+√NEWWINDOW command
+√ GETFILENAMES
+√ NEXTFILE
+√ STRMACRO
+√ GMACRO
+√ GETFILENAMES
+√ NEXT
+√ RMACRO added
+√ POWER added
+√ ^ added as alias of POWER
+√ added MAKNEW to resize image
+√ added SINGRID command
+√ added FFT command
+√ added FILLBOX command
+√ added POSITIVE command
+_____________________________
+Addressed Existing Command Issues:
+    √ CROP has bugs when image is big
+    √ ERASE [n] to just erase nth window
+    √ CALC -- doesn't fill in command return values; doesn't use the right rectangle?
+    √ redefined the way SIZE works; now SIZE rows columns
+
+Addressed UI Issues:
+  √ Big image issues:
+        Image scaling is wrong when image is big -- scales vertically but not horizontally
+        X Y coordinates (and Z values) are wrong
+        Presumably this is the source of the trouble with the CROP command
+  √ copy from an image window
+  √ release window when click on close
+  √ Need to implement command history and up arrow
+  
+  √ Strange behavior on running oma2 from guilford -- fullname crashes when the suffix is present: re established oma2Command array in CommandView
+
+  
+  Drop Files onto status broken. -- seems to work
+  
+  Row/Column Plots:
+            √Crashes on print or resize of drawing window (fixed)
+            √Can't copy (but can print) (fixed)
+
+  
+  √ When not started from Xcode, oma2 can't read resource files, which causes trouble with settings, help, and non-computed palettes
+
+  √ when the status window is selected, typing a space isn't sent to the command window -- sometimes?
+  
+  √ Plot Rows and Cols -- scaling of plots needs attention -- y scale is wrong?
+  
+  √ on typing, always move cursor to end of command buffer
+
+_____________________________
+Needed Commands
+ LOG command
+ GET command --  ".tif" still needed.
+
+ 
+_____________________________
+Existing Command Issues:
+
+Need to be able to stop macros -- still problems with this
+
+Echo in macros still has challenges. If a macro is started when the command window does not have focus, nothing is echoed until the macro finishes
+
+
+
+_____________________________
+UI Issues:
+
+    
+    Crash on resizing data window that isn't the current one when size is smaller than original. in DataView.mm drawRect
+    
+    on typing, always move cursor to end of command buffer
+
+    
+UI Needs
+
+
+    -> open a lineplot window and plot graphics
+        get the bitmap data from a window for line plots
+        Still issues here:
+            Bitmap returned is different than the one set due to display profile mapping
+
+
+    Prefs:
+        -> select color bar
+        -> Improve prefix/suffix setting
+
+    Status:
+        -> Display macro number
+        
+    Menu:
+        -> Open, Save, Save Settings
+
+_________________
+Implementation Notes
+
+Display a data window
+in comdec.mm:
+display_data (alias to #define display_data [appController showDataWindow:(char*) args]; in UI.h)
+
+  appController showDataWindow:windowname (invoked from from display as above)
+    // figure out where to place image
+    screen size is:
+        screenRect.size.width
+        screenRect.size.height
+
+To find which window is active:
+    [NSApp keyWindow]       -- NSApp is a global defined in Cocoa
