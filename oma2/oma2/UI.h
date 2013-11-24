@@ -24,11 +24,20 @@ enum {CROSS,RECT,CALCRECT,RULER,LINEPLOT};
 
 
 #define printf omaprintf
-
+/*
 #define display_data [appController showDataWindow:(char*) args];
 #define erase_window [appController eraseWindow:(int) n];
 #define label_data [appController labelDataWindow:(char*) args];
 #define label_data_minMax [appController labelMinMax];
+*/
+
+// try this so that the command thread doesn't mess with things that need to be in the main thread
+
+#define display_data dispatch_sync(dispatch_get_main_queue(),^{[appController showDataWindow:(char*) args];});
+#define erase_window dispatch_sync(dispatch_get_main_queue(),^{[appController eraseWindow:(int) n];});
+#define label_data dispatch_sync(dispatch_get_main_queue(),^{[appController labelDataWindow:(char*) args];});
+#define label_data_minMax dispatch_sync(dispatch_get_main_queue(),^{[appController labelMinMax];});
+
 
 
 void dropped_file(char*,char*);

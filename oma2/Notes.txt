@@ -86,9 +86,13 @@ Needed Commands
 _____________________________
 Existing Command Issues:
 
+
+
 Need to be able to stop macros -- still problems with this
 
 Echo in macros still has challenges. If a macro is started when the command window does not have focus, nothing is echoed until the macro finishes
+
+    Using combination of threading and dispatch -- is this OK?
 
 
 
@@ -97,7 +101,9 @@ UI Issues:
 
     
     Crash on resizing data window that isn't the current one when size is smaller than original. in DataView.mm drawRect
-    
+        
+    Crash on copy data window that isn't the current one 
+
     on typing, always move cursor to end of command buffer
 
     

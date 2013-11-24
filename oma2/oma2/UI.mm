@@ -102,7 +102,8 @@ int omaprintf(const char* format, ...)
     int return_status = 0;
     
     return_status = vsprintf(reply,format, args);
-    [appController appendCText: reply];
+    //[appController appendCText: reply];
+    dispatch_sync(dispatch_get_main_queue(),^{[appController appendCText: reply];});
     
     va_end(args);
     return return_status;
