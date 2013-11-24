@@ -235,7 +235,7 @@ int comdec(char* cmnd)
                 }
             }
             //if(macro_stopable) checkevents();		// if the macro is stopable, check for possible events
-            if(macro_stopable) [appController appendCText:(char*)"."];
+            //if(macro_stopable) [appController appendCText:(char*)"."];
             // (such as cancel macro) before each command */	
             
         } else {
@@ -1426,6 +1426,14 @@ int stopmacro()
         keylimit(-2);
         from_noprint = 0;
     }
+    
+    if(macflag){
+		printf("Macro Stopped at Value %d.\n",macval);
+	}
+	if(exflag){
+		printf("Execute aborted.\n");
+	}
+
     
 	return 0;
     
