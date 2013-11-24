@@ -189,7 +189,7 @@ int comdec(char* cmnd)
             break;
     }
 
-    //while(true){
+    while(true){
         chindx = 0;     /* index of first character after command */
         sign = 1;       /* sign of integer argument */
         ivalue = 0;     /* integer value */
@@ -401,10 +401,11 @@ int comdec(char* cmnd)
              }
              */
             command_return = error_return = (*fnc)(ivalue,&cmnd[chindx]);
-            //if(exflag==0 && macflag==0) break;
+            if(exflag==0 && macflag==0) break;
             
         }
-    //}
+    }
+    printf("OMA2>");
     return command_return;
 }
 

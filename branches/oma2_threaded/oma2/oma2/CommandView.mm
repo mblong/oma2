@@ -18,6 +18,7 @@ extern AppController* appController;
 @implementation CommandView
 
 @synthesize lastReturn;
+@synthesize commandThread;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -43,6 +44,11 @@ extern AppController* appController;
 - (void)keyDown:(NSEvent *)anEvent{
     // we get keydown events here
     // do special processing before passing this event along the the NSTextView
+    
+    if (commandThread == NULL) {
+        [self setCommandThread:[[CommandThread alloc] init]] ;
+    }
+
     
     // move to the end of the commands
     NSUInteger text_len = [[[self textStorage] string] length];
@@ -139,26 +145,48 @@ extern AppController* appController;
         NSString *command = [text substringFromIndex:lastReturn];
         lastReturn = [text length];
         // pass this to the command decoder
+        /*
         char* cmd = (char*) [command cStringUsingEncoding:NSASCIIStringEncoding];
         // replace the \n with an EOL
         cmd[strlen(cmd)-1] = 0;
         strlcpy(oma2Command, cmd, CHPERLN);
+        
+        
         int returnVal = comdec((char*) oma2Command);
         
         extern int exflag, macflag;
         int didMac = 0;
         while (exflag || macflag) {
-            returnVal = comdec((char*) oma2Command);
+            returnVal = [self scheduleCommand:command];
+            //returnVal = comdec((char*) oma2Command);
             didMac = 1;
         }
         if (didMac) {
             [[appController theWindow ] makeKeyAndOrderFront:[appController theWindow]];
         }
+        */
+        
+        int returnVal = [self scheduleCommand:command];
+        
+        /*
         if (returnVal < GET_MACRO_LINE ) {
             [self appendText: @"OMA2>"];
         }
+        */
     }
 }
+
+- (int)scheduleCommand: (NSString*) theCommand{
+    int result=NO_ERR;
+    
+    [NSThread detachNewThreadSelector:@selector (doCommand:)
+                             toTarget:commandThread
+                           withObject:theCommand]; // Or you can send an object if you need to
+
+    
+    return result;
+}
+
 
 
 -(void) appendText:(NSString *) string{
