@@ -267,8 +267,8 @@ extern oma2UIData UIData;
     [theCommands appendCText: string];
     
     // the following will let rmacro to behave reasonably, but slows things condsiderably
-    extern int exflag, macflag;
-    if (exflag || macflag) [[self theWindow] display];
+    //extern int exflag, macflag;
+    //if (exflag || macflag) [[self theWindow] display];
     
     //NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
     //last_return += [reply length];

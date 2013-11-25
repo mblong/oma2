@@ -23,6 +23,5 @@
 -(void) appendCText:(char *) string;
 -(void) textDidChange:(NSNotification *) pNotify;
 
-- (int)scheduleCommand: (NSString*) theCommand;
 
 @end
