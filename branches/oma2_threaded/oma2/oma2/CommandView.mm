@@ -158,7 +158,10 @@ extern AppController* appController;
         //dispatch_queue_t queue = dispatch_get_global_queue(0,0);
         dispatch_queue_t queue = dispatch_queue_create("oma.oma2.CommandTask",NULL);
         
-        dispatch_async(queue,^{comdec((char*) oma2Command);});
+        dispatch_async(queue,^{
+            int returnValue = comdec((char*) oma2Command);
+            if(returnValue < GET_MACRO_LINE) printf("OMA2>");
+        });
 
         
         //int returnVal = comdec((char*) oma2Command);

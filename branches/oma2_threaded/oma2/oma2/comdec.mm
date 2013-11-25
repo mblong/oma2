@@ -413,7 +413,7 @@ int comdec(char* cmnd)
             
         }
     }
-    printf("OMA2>");
+    
     return command_return;
 }
 
