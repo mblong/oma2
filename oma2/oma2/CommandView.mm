@@ -42,6 +42,7 @@ extern AppController* appController;
 }
 
 - (void)keyDown:(NSEvent *)anEvent{
+    extern int stopMacroNow;
     // we get keydown events here
     // do special processing before passing this event along the the NSTextView
     
@@ -58,7 +59,8 @@ extern AppController* appController;
         NSString *theKey = [anEvent charactersIgnoringModifiers];
         if([theKey isEqualToString:@";"]){
             NSLog(@"Stop Macro");
-            stopmacro();
+            stopMacroNow = 1;
+            //stopmacro();
             
         }
         return;
@@ -145,15 +147,22 @@ extern AppController* appController;
         NSString *command = [text substringFromIndex:lastReturn];
         lastReturn = [text length];
         // pass this to the command decoder
-        /*
+        
         char* cmd = (char*) [command cStringUsingEncoding:NSASCIIStringEncoding];
         // replace the \n with an EOL
         cmd[strlen(cmd)-1] = 0;
         strlcpy(oma2Command, cmd, CHPERLN);
         
+        // these two seem to behave the same way
         
-        int returnVal = comdec((char*) oma2Command);
+        //dispatch_queue_t queue = dispatch_get_global_queue(0,0);
+        dispatch_queue_t queue = dispatch_queue_create("oma.oma2.CommandTask",NULL);
         
+        dispatch_async(queue,^{comdec((char*) oma2Command);});
+
+        
+        //int returnVal = comdec((char*) oma2Command);
+        /*
         extern int exflag, macflag;
         int didMac = 0;
         while (exflag || macflag) {
@@ -166,7 +175,7 @@ extern AppController* appController;
         }
         */
         
-        int returnVal = [self scheduleCommand:command];
+        //int returnVal = [self scheduleCommand:command];
         
         /*
         if (returnVal < GET_MACRO_LINE ) {
@@ -176,6 +185,7 @@ extern AppController* appController;
     }
 }
 
+/*
 - (int)scheduleCommand: (NSString*) theCommand{
     int result=NO_ERR;
     
@@ -183,22 +193,23 @@ extern AppController* appController;
                              toTarget:commandThread
                            withObject:theCommand]; // Or you can send an object if you need to
 
-    
     return result;
 }
-
+*/
 
 
 -(void) appendText:(NSString *) string{
     lastReturn += [string length];
     //[[[theCommands textStorage] mutableString] appendString: string];
     [self.textStorage.mutableString appendString:string];
+    [self scrollRangeToVisible: NSMakeRange(self.string.length, 0)];
 }
 
 -(void) appendCText:(char *) string{
     NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
     lastReturn += [reply length];
     [self.textStorage.mutableString appendString:reply];
+    [self scrollRangeToVisible: NSMakeRange(self.string.length, 0)];
     
 }
 

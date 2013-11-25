@@ -105,6 +105,7 @@ int branchto[NESTDEPTH];
 int macro_line_number = 0;
 int exe_line_number[EX_NEST_DEPTH] = {0};
 int macro_stopable = 1;
+int stopMacroNow = 0;
 int int_value = 0;			//%v in a macro is replaced by this value
 int inc_value = 1;			//%v is incremented by this amount after use
 int last_x_val,last_y_val;	// %x and %y fill in values -- should come from mouse interaction
@@ -179,6 +180,8 @@ int comdec(char* cmnd)
     
     int     (*fnc)(int,char*);
     
+    stopMacroNow = 0;
+    
     switch (command_return) {
         case GET_MACRO_LINE:
             command_return = error_return = defmac(1,cmnd);
@@ -193,6 +196,8 @@ int comdec(char* cmnd)
         chindx = 0;     /* index of first character after command */
         sign = 1;       /* sign of integer argument */
         ivalue = 0;     /* integer value */
+        
+
 
         /* --------------------- Code Starts Here ------------------------- */
         if (exflag == 0) which_ex_buffer=-1;    // this was not reset in the stop macro command, so do it now
@@ -235,8 +240,11 @@ int comdec(char* cmnd)
                 }
             }
             //if(macro_stopable) checkevents();		// if the macro is stopable, check for possible events
-            //if(macro_stopable) [appController appendCText:(char*)"."];
-            // (such as cancel macro) before each command */	
+            if(macro_stopable){
+                if (stopMacroNow) {
+                    stopmacro();
+                }
+            }
             
         } else {
             if (macflag) {
@@ -278,9 +286,9 @@ int comdec(char* cmnd)
                 }
                 //if(macro_stopable)checkevents();		// if the macro is stopable, check for possible events
                 if(macro_stopable){
-                    //[[appController theWindow] makeFirstResponder:[appController theCommands]];
-                    //[appController appendCText:(char*)"."];
-                    //[[appController theWindow] display];
+                    if (stopMacroNow) {
+                        stopmacro();
+                    }
                 }
                 // (such as cancel macro) before each command */
             }
