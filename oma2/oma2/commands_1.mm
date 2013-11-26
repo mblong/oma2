@@ -663,19 +663,72 @@ int killBox_c(int n, char* args)
 
 int positive_c(int n, char* args)
 {
-    int i,j;
-    int* bufferspecs = iBuffer.getspecs();
-    
-	for(i=0; i< bufferspecs[ROWS]; i++) {
-		for(j=0; j<= bufferspecs[COLS]; j++) {
-			if (iBuffer.getpix(i,j) < 0) iBuffer.setpix(i, j, 0.);
-		}
-	}
-    free(bufferspecs);
-    
+    iBuffer.floor(0.);
     iBuffer.getmaxx();
 	update_UI();
 	return NO_ERR;
+}
+
+/* ********** */
+
+int clip_c(int n, char* args)
+{
+    DATAWORD clipval = n;
+    sscanf(args,"%f",&clipval);
+    
+    iBuffer.clip(clipval);
+    iBuffer.getmaxx();
+	update_UI();
+	return NO_ERR;
+
+}
+
+/* ********** */
+
+int clipbottom_c(int n, char* args)
+{
+    DATAWORD clipval = n;
+    sscanf(args,"%f",&clipval);
+    
+    iBuffer.floor(clipval);
+    iBuffer.getmaxx();
+	update_UI();
+	return NO_ERR;
+    
+}
+
+/* ********** */
+
+int clipfraction_c(int n, char* args)
+{
+    DATAWORD clipval = n;
+    sscanf(args,"%f",&clipval);
+    DATAWORD* values = iBuffer.getvalues();
+    
+    iBuffer.clip(clipval*values[MAX]);
+    
+    free(values);
+    iBuffer.getmaxx();
+	update_UI();
+	return NO_ERR;
+    
+}
+
+/* ********** */
+
+int clipfbottom_c(int n, char* args)
+{
+    DATAWORD clipval = n;
+    sscanf(args,"%f",&clipval);
+    DATAWORD* values = iBuffer.getvalues();
+    
+    iBuffer.floor(clipval*values[MAX]);
+    
+    free(values);
+    iBuffer.getmaxx();
+	update_UI();
+	return NO_ERR;
+    
 }
 
 /* ********** */
@@ -750,18 +803,17 @@ int calc(point start,point end){
 	
 	rms = rms/icount - ave*ave;	
 	rms = sqrt(rms);
-	
-	printf("Ave:\t%g\trms:\t%g\t# Pts:\t",ave,rms);
-	printf("%d",icount);
-	if( bufferspecs[HAS_RULER] ) {
+    if( bufferspecs[HAS_RULER] ) {
 		xcom /= buffervalues[RULER_SCALE];
 		ycom /= buffervalues[RULER_SCALE];
 	}
-	printf("\tx:\t%g\ty:\t%g",xcom,ycom);
+	
+	printf("Ave:\t%g\t rms:\t%g\t # Pts:\t%d\t x:\t%g\t y:\t%g",ave,rms,icount,xcom,ycom);
+	
 	if( bufferspecs[HAS_RULER]!= 0  && unit_text[0]!=0 ){
-		printf("\t%s\n",unit_text);
+		printf("\t%s \n",unit_text);
 	} else {
-		printf("\n");
+		printf(" \n");
     }
 
     free( buffervalues);

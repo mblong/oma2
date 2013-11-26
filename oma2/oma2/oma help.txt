@@ -29,6 +29,18 @@ CALCULATE
 CALCALL
 	Print calculations on the entire image. The average, rms, # of points, and the x and y "center of mass" are printed. The mean, rms, centroid_X and centroid_Y are passed to the command_return_variables.
 
+CLIP value
+	Sets all data values in the current image buffer that are > value to value.
+
+CLIPBOTTOM clip_value
+	For the current image, set pixels whose value is < clip_value to be equal to clip_value.
+
+CLIPFBOTTOM clip_fraction
+	For the current image, set pixels whose value is < clip_fraction*image_max to be equal to clip_fraction*image_max.
+
+CLIPFRACTION fraction
+	Clip data at a fraction of the maximum value. Fraction is a real argument.
+
 CROP
 	Use the current rectangle to crop the image in the buffer.
 

@@ -18,6 +18,10 @@ int comtmp_c(int n, char* args);
 int croprectangle_c(int,char*);
 int calc_cmd_c(int,char*);
 int calcall_c(int,char*);
+int clip_c(int,char*);
+int clipfraction_c(int,char*);
+int clipbottom_c(int,char*);
+int clipfbottom_c(int,char*);
 
 int dcrawarg_c(int n, char* args);
 int divfile_c(int,char*);

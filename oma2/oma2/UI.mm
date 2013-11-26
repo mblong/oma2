@@ -85,6 +85,34 @@ void dropped_file(char* extension, char* name){
         display(0,(char*)"Data");
         [appController appendText: @"OMA2>"];
     }
+    if(strcmp(extension, "mac")==0){
+        extern char	macbuf[];
+        int fd,nread,i;
+        fd = open(name,O_RDONLY);
+        if(fd == -1) {
+            beep();
+            printf("Macro File '%s' Not Found.\n",name);
+        }
+        for(i=0; i<MBUFLEN; i++) *(macbuf+i) = 0;	// clear the buffer
+        nread = (int)read(fd,macbuf,MBUFLEN);		/* read the largest buffer  */
+        printf("%d Bytes Read.\n",nread);
+        
+        
+        /* the format of macro files has changed -- now they are formatted text files */
+        /* previously, they were constant length files containing C strings */
+        /* this code should read both formats */
+        
+        for(i=0; i<nread ; i++) {
+            if( *(macbuf+i) == 0x0D || *(macbuf+i) == 0x0A)
+                *(macbuf+i) = 0x00;	/* change CR or LF to null */
+        }
+        *(macbuf+nread) = 0;				/* one extra to signify end of buffer */
+        *(macbuf+nread+1) = 0;
+        
+        close(fd);
+        clear_macro_to_end();		/* insert trailing zeros after the macro */
+        [appController appendText: @"OMA2>"];
+    }
 }
 
 
@@ -103,7 +131,13 @@ int omaprintf(const char* format, ...)
     
     return_status = vsprintf(reply,format, args);
     //[appController appendCText: reply];
-    dispatch_sync(dispatch_get_main_queue(),^{[appController appendCText: reply];});
+    dispatch_queue_t theQueue = dispatch_get_current_queue();
+    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+    if (theQueue == mainQueue) {
+        [appController appendCText: reply];
+    } else {
+        dispatch_sync(mainQueue,^{[appController appendCText: reply];});
+    }
     
     va_end(args);
     return return_status;

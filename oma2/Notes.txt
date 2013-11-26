@@ -62,7 +62,7 @@ Addressed UI Issues:
   √ Strange behavior on running oma2 from guilford -- fullname crashes when the suffix is present: re established oma2Command array in CommandView
 
   
-  Drop Files onto status broken. -- seems to work
+
   
   Row/Column Plots:
             √Crashes on print or resize of drawing window (fixed)
@@ -76,25 +76,24 @@ Addressed UI Issues:
   √ Plot Rows and Cols -- scaling of plots needs attention -- y scale is wrong?
   
   √ on typing, always move cursor to end of command buffer
+  
+  √ Need to be able to stop macros -- seems OK now, but still potetial problems
+        using GCD seems OK for now
 
+  √ Echo in macros still has challenges. If a macro is started when the command window does not have focus, nothing is echoed until the macro finishes
+
+  √ on typing, always move cursor to end of command buffer
 _____________________________
 Needed Commands
  LOG command
  GET command --  ".tif" still needed.
+ 
 
  
 _____________________________
 Existing Command Issues:
 
-
-
-Need to be able to stop macros -- still problems with this
-
-Echo in macros still has challenges. If a macro is started when the command window does not have focus, nothing is echoed until the macro finishes
-
-    Using combination of threading and dispatch -- is this OK?
-
-
+Drop Files onto status broken. -- fixed again
 
 _____________________________
 UI Issues:
@@ -103,8 +102,6 @@ UI Issues:
     Crash on resizing data window that isn't the current one when size is smaller than original. in DataView.mm drawRect
         
     Crash on copy data window that isn't the current one 
-
-    on typing, always move cursor to end of command buffer
 
     
 UI Needs
@@ -125,6 +122,10 @@ UI Needs
         
     Menu:
         -> Open, Save, Save Settings
+        
+    Double Click: 
+    
+    File Typing
 
 _________________
 Implementation Notes
