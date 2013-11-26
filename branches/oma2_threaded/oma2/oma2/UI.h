@@ -33,10 +33,26 @@ enum {CROSS,RECT,CALCRECT,RULER,LINEPLOT};
 
 // try this so that the command thread doesn't mess with things that need to be in the main thread
 
-#define display_data dispatch_sync(dispatch_get_main_queue(),^{[appController showDataWindow:(char*) args];});
-#define erase_window dispatch_sync(dispatch_get_main_queue(),^{[appController eraseWindow:(int) n];});
-#define label_data dispatch_sync(dispatch_get_main_queue(),^{[appController labelDataWindow:(char*) args];});
-#define label_data_minMax dispatch_sync(dispatch_get_main_queue(),^{[appController labelMinMax];});
+#define display_data if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+                        [appController showDataWindow:(char*) args]; \
+                     else \
+                        dispatch_sync(dispatch_get_main_queue(),^{[appController showDataWindow:(char*) args];});
+
+
+#define erase_window if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+                        [appController eraseWindow:(int) n]; \
+                     else \
+                        dispatch_sync(dispatch_get_main_queue(),^{[appController eraseWindow:(int) n];});
+
+#define label_data if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+                        [appController labelDataWindow:(char*) args]; \
+                    else \
+                        dispatch_sync(dispatch_get_main_queue(),^{[appController labelDataWindow:(char*) args];});
+
+#define label_data_minMax if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+                            [appController labelMinMax]; \
+                          else \
+                            dispatch_sync(dispatch_get_main_queue(),^{[appController labelMinMax];});
 
 
 

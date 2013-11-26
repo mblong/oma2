@@ -366,6 +366,25 @@ void Image::free(){
     }
 }
 
+void Image::clip(DATAWORD clipVal){
+    int npts=specs[ROWS]*specs[COLS];
+    DATAWORD* mydatpt=data;
+    while ( mydatpt < data+npts ) {
+        if ( *mydatpt > clipVal ) *mydatpt = clipVal;
+        mydatpt++;
+    }
+}
+
+void Image::floor(DATAWORD floorVal){
+    int npts=specs[ROWS]*specs[COLS];
+    DATAWORD* mydatpt=data;
+    while ( mydatpt < data+npts ) {
+        if ( *mydatpt < floorVal ) *mydatpt = floorVal;
+        mydatpt++;
+    }
+}
+
+
 void Image::getmaxx()
 {
     DATAWORD *locmin,*locmax,*locrmin,*locrmax,*locgmin,*locgmax,*locbmin,*locbmax;
