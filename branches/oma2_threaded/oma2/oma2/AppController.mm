@@ -44,6 +44,8 @@ extern oma2UIData UIData;
     wraps = 1;
     
     windowArray = [[NSMutableArray alloc] initWithCapacity:10];
+    
+    theCommands.automaticQuoteSubstitutionEnabled = NO;
 }
 
 - (IBAction)showPrefs:(id)sender{
