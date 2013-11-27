@@ -87,6 +87,12 @@ DIVFILE <filename>
 DIVTEMPIMAGE name
 	Divides the data in the current buffer by the contents of the named temporary image.
 
+DIFFX
+	Differentiate the data in the current image data buffer in the x direction. 
+
+DIFFY
+	Differentiate the data in the current image data buffer in the y direction.
+
 DCRAWARGS  [arguments]
 	Allows the user to specify the arguments passed to the dcraw routine, which decodes camera raw files to OMA format. Omitting the argument lists the allowed arguments and gives the current argument settings. The filename field is ignored.
 
@@ -98,6 +104,9 @@ DMNMX
 
 ERASE [n] 
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.
+
+ECHO string
+	Prints "string" during macro execution. "string" can be replaced with any of the macro dummy arguments (e.g., ECHO %b).
 
 ENDIF
 	Terminates an IF command. This is applicable within Macros only.
@@ -120,10 +129,18 @@ FLOATVARIABLE variable_name
 	Specifies that variable_name is to be used as a floating point variable.
 
 FTEMPIMAGE tempImage
-	Free memory associated with temporary image tempImage.
-    tempImage must be in the range 0-9, or correspond to a named image.
+	Free memory associated with temporary image tempImage. tempImage must be in the range 0-9, or correspond to a named image.
 
-GET <filename>  
+FCLOSE
+	Closes the currently open text file (there can be only one). The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.
+
+FECHO string
+	Exactly as echo but instead of printing to the command window, it writes to the file opened with FOPEN. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.
+
+FOPEN <filename>
+	Open a text file with the name <filename> for I/O. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.
+
+GET <filename>
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix and suffix are used.
 
 GETFILENAMES NameFile
@@ -134,6 +151,9 @@ GETSETTINGS [filename]
 
 GMACRO <filename>
 	Loads the contents of the specified file into the current macro buffer.
+
+GRADIENT
+	Find the magnitude of the gradient of the data in the current image buffer. Use two pixels on either side of current pixel for gradient.
 
 GTEMPIMAGE name
 	Get temporary image that has been previously saved using STEMP.

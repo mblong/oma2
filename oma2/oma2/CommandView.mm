@@ -148,7 +148,8 @@ extern AppController* appController;
         lastReturn = [text length];
         // pass this to the command decoder
         
-        char* cmd = (char*) [command cStringUsingEncoding:NSASCIIStringEncoding];
+        char* cmd = (char*) [command cStringUsingEncoding:NSUTF8StringEncoding ];
+        if(cmd == NULL) return; // if for some reason this can't be translated, just give up
         // replace the \n with an EOL
         cmd[strlen(cmd)-1] = 0;
         strlcpy(oma2Command, cmd, CHPERLN);

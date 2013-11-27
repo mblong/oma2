@@ -568,6 +568,115 @@ int smooth_c(int n,char* args){
 
 /* ********** */
 
+int diffy_c(int n,char* args )				/* differentiate the data in the y direction  -- central difference */
+{
+    int* bufferspecs = iBuffer.getspecs();
+    Image newIm(bufferspecs[ROWS],bufferspecs[COLS]);
+    int nc,nt;
+    
+    if(newIm.err()){
+        return newIm.err();
+    }
+    newIm.copyABD(iBuffer);
+    
+	for(nc=0;nc < bufferspecs[COLS]; nc++){
+		newIm.setpix(0, nc,iBuffer.getpix(0,nc) - iBuffer.getpix(1,nc));
+	}
+    
+	
+	for(nt=1; nt<bufferspecs[ROWS]-1;nt++) {
+		for(nc=0;nc < bufferspecs[COLS]; nc++){
+            newIm.setpix(nt, nc,(iBuffer.getpix(nt-1,nc) - iBuffer.getpix(nt+1,nc))/2.);
+		}
+	}
+	
+	for(nc=0;nc < bufferspecs[COLS]; nc++){
+		//*(datp2++) = idat(bufferspecs[ROWS]-2,nc) - idat(bufferspecs[ROWS]-1,nc);
+        newIm.setpix(bufferspecs[ROWS]-1, nc,iBuffer.getpix(bufferspecs[ROWS]-2,nc) - iBuffer.getpix(bufferspecs[ROWS]-1,nc));
+	}
+    free(bufferspecs);  // release buffer copy
+    iBuffer.free();     // release the old data
+    iBuffer = newIm;   // this is the new data
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
+
+int diffx_c(int n,char* args)				/* differentiate the data in the x direction  -- central difference */
+{
+    int* bufferspecs = iBuffer.getspecs();
+    Image newIm(bufferspecs[ROWS],bufferspecs[COLS]);
+    int nc,nt;
+    
+    if(newIm.err()){
+        return newIm.err();
+    }
+    newIm.copyABD(iBuffer);
+    
+	for(nt=0; nt<bufferspecs[ROWS];nt++) {
+		newIm.setpix(nt, 0,iBuffer.getpix(nt,1) - iBuffer.getpix(nt,0));
+		for(nc=1;nc < bufferspecs[COLS]-1; nc++){
+			newIm.setpix(nt, nc,(iBuffer.getpix(nt,nc+1) - iBuffer.getpix(nt,nc-1))/2.);
+		}
+		//*(datp2++) = idat(nt, bufferspecs[COLS]-1) - idat(nt, bufferspecs[COLS]-2);
+        newIm.setpix(nt, bufferspecs[COLS]-1,iBuffer.getpix(nt, bufferspecs[COLS]-1) - iBuffer.getpix(nt, bufferspecs[COLS]-2));
+	}
+    free(bufferspecs);  // release buffer copy
+    iBuffer.free();     // release the old data
+    iBuffer = newIm;   // this is the new data
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
+
+int gradient_c(int n,char* args)				/* get the 2D (x & y) gradient magnitude */
+                                /* GRAD command -- uses points on either side of the
+                                    current point for gradient */
+{
+    int* specs = iBuffer.getspecs();
+    Image newIm(specs[ROWS],specs[COLS]);
+    int nc,nt;
+    float dx,dy;
+    
+    if(newIm.err()){
+        return newIm.err();
+    }
+    newIm.copyABD(iBuffer);
+	
+	for(nc=0;nc < specs[COLS]; nc++){
+		//*(datp2++) = 0;
+        newIm.setpix(0,nc,0);
+	}
+    
+	for(nt=1; nt<specs[ROWS]-1;nt++) {
+		//*(datp2++) = 0;
+        newIm.setpix(nt,0,0);
+		for(nc=1;nc < specs[COLS]-1; nc++){
+			dx = (iBuffer.getpix(nt,nc+1) - iBuffer.getpix(nt,nc-1))/2.0;
+			dy = (iBuffer.getpix(nt+1,nc) - iBuffer.getpix(nt-1,nc))/2.0;
+			newIm.setpix(nt,nc,sqrt(dx*dx +dy*dy));
+		}
+		//*(datp2++) = 0;
+        newIm.setpix(nt,0,0);
+	}
+	for(nc=0;nc < specs[COLS]; nc++){
+		//*(datp2++) = 0;
+        newIm.setpix(specs[ROWS]-1,nc,0);
+	}
+    free(specs);  // release buffer copy
+    iBuffer.free();     // release the old data
+    iBuffer = newIm;   // this is the new data
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
+
 int size_c(int n,char* args){
     int width, height;
     if(*args){
@@ -755,6 +864,7 @@ int calc_cmd_c(int n, char* args)
     free(bufferspecs);
 	return 0;
 }
+
 /* ********** */
 
 int calcall_c(int n, char* args)
@@ -808,12 +918,12 @@ int calc(point start,point end){
 		ycom /= buffervalues[RULER_SCALE];
 	}
 	
-	printf("Ave:\t%g\t rms:\t%g\t # Pts:\t%d\t x:\t%g\t y:\t%g",ave,rms,icount,xcom,ycom);
+	pprintf("Ave:\t%g\t rms:\t%g\t # Pts:\t%d\t x:\t%g\t y:\t%g",ave,rms,icount,xcom,ycom);
 	
 	if( bufferspecs[HAS_RULER]!= 0  && unit_text[0]!=0 ){
-		printf("\t%s \n",unit_text);
+		pprintf("\t%s \n",unit_text);
 	} else {
-		printf(" \n");
+		pprintf(" \n");
     }
 
     free( buffervalues);
@@ -1333,3 +1443,65 @@ int gmacro_c(int n,char* args)
 	return NO_ERR;
 }
 /* ********** */
+
+int echo_c(int n,char* args)
+{
+	if (*args != 0) {
+		pprintf("%s\n",args);
+	}
+	return NO_ERR;
+}
+
+
+/* ********** */
+
+//********************************************************
+//*** FECHO, FOPEN , FCLOSE
+//***         P. Kalt (2005)
+//********************************************************
+FILE 	*fptr_local;
+char    *fptr_name;
+
+int fopen_c (int n,char* args)
+{
+
+	fptr_name = fullname(args,CSV_DATA);
+	fptr_local = fopen(fptr_name,"w");
+	if( fptr_local != NULL) {
+		//settext(args);      /* text file type */
+		//fileflush(args]);	/* for updating directory */
+		return NO_ERR;
+	} else {
+		beep();
+		printf("Error: Could not open file: %s\n",fptr_name);
+		return FILE_ERR;
+	}
+}
+
+int fclose_c (int n,char* args)
+{
+	if( fptr_local != NULL) {
+		fclose(fptr_local);
+	} else {
+		beep();
+		printf("Error: No file open. File pointer is NULL\n");
+		return OMA_FILE;
+	}
+	
+	return NO_ERR;
+}
+
+int fecho_c (int n,char* args)
+{
+	if (index != 0) {
+		if( fptr_local != NULL) {
+			fprintf(fptr_local, "%s\n",args);
+		} else {
+			beep();
+			printf("Error: No file open. File pointer is NULL\n");
+			return OMA_FILE;
+		}
+	}
+	return NO_ERR;
+}
+

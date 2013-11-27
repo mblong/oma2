@@ -60,5 +60,6 @@ void dropped_file(char*,char*);
 void update_UI();
 
 int omaprintf(const char* format, ...);
+int pprintf(const char* format, ...);
 
 #endif

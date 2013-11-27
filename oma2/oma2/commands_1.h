@@ -25,15 +25,23 @@ int clipfbottom_c(int,char*);
 
 int dcrawarg_c(int n, char* args);
 int divfile_c(int,char*);
+int diffx_c(int n,char* args);
+int diffy_c(int n,char* args);
 int divtmp_c(int n, char* args);
 int divide_c(int,char*);
 int delay_c(int,char*);
 
+int echo_c(int,char*);
+
+int fopen_c (int n,char* args);
+int fclose_c (int n,char* args);
+int fecho_c (int n,char* args);
 int ftemp_c(int, char*);
 
 int getfile_c(int,char*);
 int getFileNames_c(int n,char* args);
 int gmacro_c(int n,char* args);
+int gradient_c(int n,char* args);
 int gtemp_c(int, char*);
 
 int invert_c(int,char*);
