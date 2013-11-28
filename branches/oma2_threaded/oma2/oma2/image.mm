@@ -95,6 +95,19 @@ Image::Image(char* filename, int kindOfName)
         return;
     }
 
+    if (strncmp(&filename[strlen(filename)-4],".tif",4) == 0 ||
+        strncmp(&filename[strlen(filename)-4],".TIF",4) == 0 ||
+        strncmp(&filename[strlen(filename)-4],".tiff",5) == 0||
+        strncmp(&filename[strlen(filename)-4],".TIFF",5) == 0) {
+        if (kindOfName == LONG_NAME) {
+            error = readTiff(filename,this);
+        } else {
+            error = readTiff(fullname(filename,RAW_DATA),this);
+        }
+        
+        return;
+    }
+
     switch (kindOfName) {
         case LONG_NAME:
             fd = open(filename,O_RDONLY);
@@ -651,6 +664,14 @@ void Image::setspecs(int* newspecs){
     // resize if necessary
     if(newspecs[ROWS]*newspecs[COLS] != specs[ROWS]*specs[COLS]){
         delete[] data;
+        data =  new DATAWORD[newspecs[ROWS]*newspecs[COLS]];
+        if (data==NULL) {
+            specs[ROWS]=specs[COLS]=0;
+            error = MEM_ERR;
+            return;
+        }
+    }
+    if (data == NULL) { // allocate if necessary
         data =  new DATAWORD[newspecs[ROWS]*newspecs[COLS]];
         if (data==NULL) {
             specs[ROWS]=specs[COLS]=0;
