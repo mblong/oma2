@@ -18,7 +18,6 @@ extern AppController* appController;
 @implementation CommandView
 
 @synthesize lastReturn;
-@synthesize commandThread;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -46,9 +45,6 @@ extern AppController* appController;
     // we get keydown events here
     // do special processing before passing this event along the the NSTextView
     
-    if (commandThread == NULL) {
-        [self setCommandThread:[[CommandThread alloc] init]] ;
-    }
 
     
     // move to the end of the commands
@@ -188,19 +184,6 @@ extern AppController* appController;
         */
     }
 }
-
-/*
-- (int)scheduleCommand: (NSString*) theCommand{
-    int result=NO_ERR;
-    
-    [NSThread detachNewThreadSelector:@selector (doCommand:)
-                             toTarget:commandThread
-                           withObject:theCommand]; // Or you can send an object if you need to
-
-    return result;
-}
-*/
-
 
 -(void) appendText:(NSString *) string{
     lastReturn += [string length];

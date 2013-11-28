@@ -34,15 +34,16 @@
 		DB238A5915A2895B00502B50 /* pal5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5415A2895B00502B50 /* pal5.jpg */; };
 		DB238A5A15A2895B00502B50 /* pal4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5515A2895B00502B50 /* pal4.jpg */; };
 		DB238A5B15A2895B00502B50 /* pal3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5615A2895B00502B50 /* pal3.jpg */; };
-		DB2486B9183E633500DD3CBF /* CommandThread.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2486B8183E633500DD3CBF /* CommandThread.mm */; };
 		DB268239159374AC00B40AE1 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = DB268238159374AC00B40AE1 /* Notes.txt */; };
 		DB2BC300151930D7009D9AED /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
 		DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
+		DB371F7918469FE400265D79 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
 		DB53F51817FA1D6500A12259 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB53F51717FA1D6500A12259 /* libjpeg.a */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
+		DB6FF6FE18467EA1002D728B /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
 		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
 		DBA3B5F716FC781300B7FF27 /* oma help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma help.txt */; };
@@ -59,6 +60,19 @@
 		DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DB371F7818469FD200265D79 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DB371F7918469FE400265D79 /* LibTiff_F.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		DB021E7515211EFA001D1B05 /* commands_1.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = commands_1.mm; sourceTree = "<group>"; };
@@ -104,8 +118,6 @@
 		DB238A5415A2895B00502B50 /* pal5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal5.jpg; sourceTree = "<group>"; };
 		DB238A5515A2895B00502B50 /* pal4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal4.jpg; sourceTree = "<group>"; };
 		DB238A5615A2895B00502B50 /* pal3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal3.jpg; sourceTree = "<group>"; };
-		DB2486B7183E633500DD3CBF /* CommandThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandThread.h; sourceTree = "<group>"; };
-		DB2486B8183E633500DD3CBF /* CommandThread.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CommandThread.mm; sourceTree = "<group>"; };
 		DB268238159374AC00B40AE1 /* Notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Notes.txt; path = ../Notes.txt; sourceTree = "<group>"; };
 		DB2BC2FF151930D7009D9AED /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		DB2BC302151933C9009D9AED /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
@@ -119,6 +131,10 @@
 		DB53F51717FA1D6500A12259 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
 		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
 		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
+		DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LibTiff_F.framework; sourceTree = "<group>"; };
+		DB6FF6FF18467F46002D728B /* tiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiff.h; sourceTree = "<group>"; };
+		DB6FF70018467F46002D728B /* tiffio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffio.h; sourceTree = "<group>"; };
+		DB6FF70118467F46002D728B /* tiffvers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffvers.h; sourceTree = "<group>"; };
 		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
 		DBA03741181704740042DF6F /* DrawingWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawingWindow.xib; sourceTree = "<group>"; };
 		DBA3B5F616FC781300B7FF27 /* oma help.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = "oma help.txt"; sourceTree = "<group>"; usesTabs = 1; };
@@ -149,6 +165,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB6FF6FE18467EA1002D728B /* LibTiff_F.framework in Frameworks */,
 				DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */,
 				DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */,
 				DB53F51817FA1D6500A12259 /* libjpeg.a in Frameworks */,
@@ -190,6 +207,7 @@
 		DB0FC0241519183C008A9B54 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */,
 				DB0FC0251519183C008A9B54 /* AppKit.framework */,
 				DB0FC0261519183C008A9B54 /* CoreData.framework */,
 				DB0FC0271519183C008A9B54 /* Foundation.framework */,
@@ -248,8 +266,6 @@
 				DB0FC044151918F0008A9B54 /* AppController.mm */,
 				DB16CA381826960F002588F4 /* CommandView.h */,
 				DB16CA391826960F002588F4 /* CommandView.mm */,
-				DB2486B7183E633500DD3CBF /* CommandThread.h */,
-				DB2486B8183E633500DD3CBF /* CommandThread.mm */,
 				DB17A30A15247965004F810A /* DataWindowController.h */,
 				DB17A30B15247965004F810A /* DataWindowController.mm */,
 				DB2113571540219200B23364 /* DataView.h */,
@@ -291,6 +307,9 @@
 				DBB4233817F9B892005BCF33 /* jconfig.h */,
 				DBB4233917F9B892005BCF33 /* jmorecfg.h */,
 				DBB4233517F9B6C3005BCF33 /* jpegIO.mm */,
+				DB6FF6FF18467F46002D728B /* tiff.h */,
+				DB6FF70018467F46002D728B /* tiffio.h */,
+				DB6FF70118467F46002D728B /* tiffvers.h */,
 				DB021E7615211EFA001D1B05 /* commands_1.h */,
 				DB021E7515211EFA001D1B05 /* commands_1.mm */,
 				DB4329B417EF13E900A51802 /* gluedCommands.h */,
@@ -320,6 +339,7 @@
 				DB0FC01A1519183C008A9B54 /* Sources */,
 				DB0FC01B1519183C008A9B54 /* Frameworks */,
 				DB0FC01C1519183C008A9B54 /* Resources */,
+				DB371F7818469FD200265D79 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -400,7 +420,6 @@
 				DB0FC02F1519183C008A9B54 /* main.m in Sources */,
 				DB0FC0361519183D008A9B54 /* oma2AppDelegate.mm in Sources */,
 				DB16CA3A1826960F002588F4 /* CommandView.mm in Sources */,
-				DB2486B9183E633500DD3CBF /* CommandThread.mm in Sources */,
 				DBABD56F180208E7007F8801 /* DrawingWindowController.mm in Sources */,
 				DB0FC046151918F0008A9B54 /* StatusController.mm in Sources */,
 				DB0FC048151918F0008A9B54 /* AppController.mm in Sources */,
@@ -518,6 +537,10 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/mblong/oma2_threaded/oma2,
+				);
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
@@ -536,6 +559,10 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/mblong/oma2_threaded/oma2,
+				);
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";

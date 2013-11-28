@@ -22,7 +22,13 @@ ADDTEMPIMAGE name
 
 BLOCK n [m]
 	Group the image data into n x m blocks (rows x cols). This command reduces the size of the data buffer. The values are summed, pending implementation of the BLKAVE command. If the image is flagged as color, the three color planes are treated separately.
-	 
+
+BIT8 [min] [max]
+	Converts the file in the OMA image buffer to have a dynamic range of 0 to 255. That is, 8 unsigned bits per pixel. This conversion is automatically done before saving the image buffer as a TIFF image. If the optional min and max are specified, they are used for the scaling rather than the min and max of the current image buffer.
+
+BIT16 [min] [max]
+	Converts the file in the OMA image buffer to have a dynamic range of 0 to 65535. That is, 16 unsigned bits per pixel. This conversion is automatically done before saving the image buffer as a TIFF image with the SATIFFSCALED command. If the optional min and max are specified, they are used for the scaling rather than the min and max of the current image buffer.
+
 CALCULATE
 	Print calculations on the rectangle specified with the RECTANGLE command or with the rectangle tools. The average, rms, # of points, and the x and y "center of mass" are printed. The mean, rms, centroid_X and centroid_Y are passed to the command_return_variables.
 
@@ -141,7 +147,7 @@ FOPEN <filename>
 	Open a text file with the name <filename> for I/O. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.
 
 GET <filename>
-	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix and suffix are used.
+	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.
 
 GETFILENAMES NameFile
 	Open NameFile (currently uses macro prefix and suffix) which contains the names of files. The NEXTFILE command is used to open the next file. NameFile is left open until all files have been accessed.
@@ -255,6 +261,12 @@ SAVEFILE <filename>
 
 SAVSETTINGS [filename]
 	Saves the current settings to the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings are saved within the oma application. 
+
+SATIFF <filename> 
+	Converts the contents of the OMA Image buffer to 8 bit unsigned data and then uses the LibTIFF TIFFWriteEncodedStrip function to save the data to a TIFF image specified on the command line. The 'save' file prefixes are used. A ".tif" extension is automatically appended to the filename. To save as a color image, use the COLORFLAG command to set the flag appropriately.
+
+SATIFFSCALED min max <filename>
+	Convert image to 16 bit and save as a TIFF file. Uses the specified min and max for scaling rather than the min and max of the image in the buffer. Results will be between 0 - 65535. Depending on min and max, the image may be clipped or the full 16-bit dynamic range may not be used. To save as a color image, use the COLORFLAG command to set the flag appropriately.
 
 SIZE rows cols
 	Set the number of rows and columns of the current image and zero the data.

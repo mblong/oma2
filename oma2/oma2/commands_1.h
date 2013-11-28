@@ -5,12 +5,20 @@
 #include "Image.h"
 #include "ImageBitmap.h"
 
+extern "C" {
+#include "tiffio.h"
+}
+
+
 // Commands
 
 int null_c(int,char*);
 
 int addfile_c(int,char*);
 int addtmp_c(int n, char* args);
+
+int bit8_c(int n, char* args);
+int bit16_c(int n, char* args);
 
 int colorflag_c(int n, char* args);
 int compositefile_c(int,char*);
@@ -80,6 +88,8 @@ int stringmacro_c(int,char*);
 int subfile_c(int,char*);
 int subtmp_c(int, char*);
 int savefile_c(int,char*);
+int satiff_c(int n, char* args);
+int satiffscaled_c(int n, char* args);
 int sysCommand_c(int,char*);
 
 // Others

@@ -142,3 +142,9 @@ display_data (alias to #define display_data [appController showDataWindow:(char*
 
 To find which window is active:
     [NSApp keyWindow]       -- NSApp is a global defined in Cocoa
+    
+
+the jpeg library (libjpeg.a) was copied from the MacPorts directory /opt/local/lib
+the jpeg .h files were copied from /opt/local/include
+
+

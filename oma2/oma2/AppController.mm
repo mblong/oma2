@@ -46,6 +46,7 @@ extern oma2UIData UIData;
     windowArray = [[NSMutableArray alloc] initWithCapacity:10];
     
     theCommands.automaticQuoteSubstitutionEnabled = NO;
+    theCommands.enabledTextCheckingTypes = 0;
 }
 
 - (IBAction)showPrefs:(id)sender{
