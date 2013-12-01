@@ -60,6 +60,7 @@ int list_c(int n, char* args);
 int ltemp_c(int n, char* args);
 
 int minus_c(int,char*);
+int mirror_c(int,char*);
 int mulfile_c(int,char*);
 int multmp_c(int n, char* args);
 int multiply_c(int,char*);

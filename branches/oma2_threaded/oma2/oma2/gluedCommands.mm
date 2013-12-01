@@ -193,20 +193,12 @@ int moveOMA2toOMA(int n,char* args){
     image_is_color = imspecs[IS_COLOR];
     
     // fill in the command
-    strncpy(cmnd, args, CHPERLN);
-    
-    // ignore spaces or tabs at the beginning of a command
-	while( *(args+index) == ' ' || *(args+index) == '\t') {
-		index++;
-	}
-    // skip past the command itself
-	while( *(args+index) != ' ' && *(args+index) != '\0' && *(args+index) != ';') {
-		index++;
-	}
-    if( *(args+index) == '\0')
-        index = 0;
+    // args has just the argument, but some old commands may use index=0 for some other purpose
+    // so pad args with a leading space
+    cmnd[0] = ' ';
+    strncpy(cmnd+1, args, CHPERLN-1);
+    index = 1;
 
-	
 	if (datpt != NULL) {
         free(datpt);
     }
@@ -448,16 +440,12 @@ int get_float_image()			// copy the current floating image into the image buffer
     return(1);
 }
 
-/* ***************** */
-
-
-
 // *************************************************************************************************************
 
 
 /* ********** */
 
-int block_c(int n,char* args){
+int block_g(int n,char* args){
     int index = moveOMA2toOMA(n,args);
     int err;
     if (iBuffer.isColor()) {
@@ -507,7 +495,6 @@ int block(int n,int index)
 		}
 	}
     
-	
 	size = (header[NCHAN]/dx * header[NTRAK]/dy + MAXDOFFSET) * DATABYTES;
 	size = (size+511)/512*512;	/* make a bit bigger for file reads */
 	datp2 = datp = (DATAWORD*)malloc(size);
@@ -655,4 +642,647 @@ int blockrgb(int n,int index)
 	setarrow();
 	return 0;
 }
+
+/***********************************************************/
+/*
+ *  Cyl2.c
+ *
+ *
+ *  Created by clduser on 3/5/12.
+ *
+ */
+
+int cyl2_g(int n,char* args){
+    int index = moveOMA2toOMA(n,args);
+    int err;
+
+    err = Cyl2( n, index);
+    
+    moveOMAtoOMA2();
+    iBuffer.getmaxx();
+    update_UI();
+    return err;
+}
+
+int Cyl2(int n,int index)    {                // cylindrical image
+    
+    DATAWORD *fdatp=0;
+    int row,col,depth;
+    int i,j,k,DI,size;
+    float D,dr,V,V1,V2;
+    
+    // space for the new image
+    size = (header[NCHAN] * header[NTRAK] + MAXDOFFSET) * DATABYTES;
+    size = (size+511)/512*512;    // make a bit bigger for file reads
+    
+    fdatp = (float*) calloc(size,1);
+    
+    if(fdatp == 0) {
+        nomemory();
+        return -2;
+    }
+    
+    row = header[NTRAK];
+    col = header[NCHAN];
+    depth = col;
+    
+    for    (j=0;j<row;j++) {
+        for (i=0;i<col;i++){
+            V = 0.;
+            
+            for (k=0; k<depth; k++) {
+                D = sqrt(pow(i,2)+pow(k,2));
+                DI = floor(D);
+                dr = D-DI;
+                if (D<col-1) {
+                    V1 = *(datpt+doffset+j*col+DI);
+                    V2 = *(datpt+doffset+j*col+DI+1);
+                }
+                else if (D==col-1) {
+                    V1 = *(datpt+doffset+j*col+DI);
+                    V2 = 0;
+                }
+                else if (D>col-1) {
+                    V1 = 0;
+                    V2 = 0;
+                }
+                V = V+(V1+(V2-V1)*dr);
+            }
+            
+            V = 2*V-*(datpt+doffset+j*col); //The first column is repeated only once.
+            *(fdatp+doffset+j*col+i) = V;
+        }
+    }
+    // copy the 2nd column to the 1st one.
+    for (j=0;j<row;j++) {
+        *(fdatp+doffset+j*col) = *(fdatp+doffset+j*col+1);
+    }
+    
+    free(datpt);
+    datpt = fdatp;
+    
+    have_max=0;
+    maxx();
+    
+    return(0);
+}
+
+/***********************************************************/
+
+/* ************************************************************ */
+/* Slightly different abel inversion, Kevin Walsh,June 26, 1996 */
+/* 																*/
+/* 			     uses analytic evaluation of integral required  */
+/*               for abel inversion, which involves a lot of    */
+/*               evaluations of ln(x)             	            */
+/*           													*/
+/*    n is a scale factor for the image       					*/
+/*           													*/
+/* ************************************************************ */
+
+int kwabel_g(int n, char* args){
+    //int index =
+    moveOMA2toOMA(n,args);
+    int err;
+    
+    err = kwabel(n);
+    
+    moveOMAtoOMA2();
+    iBuffer.getmaxx();
+    update_UI();
+    return err;
+
+}
+
+int kwabel(int n)			/* 	calculate abel inversion */
+{
+	int nc,nt,x,j;
+	float di;
+	DATAWORD idat(int,int),*datp;
+	float sum=0, datsum, xsum, x2sum, xdatsum,frac;
+	float top,bot,fx,fnc;
+	float coldat[1024];    /* dummy array to hold one row of data during calculation */
+	float deriv[1024];
+	float area1,area2,norm=0,scale;
+	
+	datp = datpt+doffset;
+    
+    if (n==0) scale=1.0;
+	else scale=(float)n;
+    
+	/* do reconstruction replacing data */
+	for(nt=0; nt<header[NTRAK];nt++) {
+		/*********** get area under curve of a single row of intigrated data **********/
+		area1 = 0.0;
+		area2 = 0.0;
+		for(nc=0;nc < header[NCHAN]; nc++){
+			area1 += (float)(*(datp + nt*header[NCHAN] + nc));
+			coldat[nc] = (float)(*(datp + nt*header[NCHAN] + nc));
+		}
+		area1 *= 2.0;
+		area1 -= coldat[0];
+		for(x=0;x < header[NCHAN]; x++){
+            /*********** use least sqrs approx. with 3 pts. to calc. derivative ********/
+            datsum = 0.0;
+            xsum = 0.0;
+            x2sum = 0.0;
+            xdatsum = 0.0;
+            if(x == 0){
+                di = idat(nt,x+1) - idat(nt,x);
+            }
+            else {
+                if(x == header[NCHAN]-1){
+                    di = idat(nt,x) - idat(nt,x-1);
+                }
+                else {
+                    for(j=0; j < 3; j++) {
+                        datsum += idat(nt,x-1+j);
+                        xsum += x+j;
+                        x2sum += (x+j)*(x+j);
+                        xdatsum += idat(nt,x-1+j)*(x+j);
+                    }
+                    di = (xdatsum - datsum * xsum / 3.0) / ( x2sum - xsum * xsum / 3.0);
+                }
+            }
+            deriv[x]=di;
+        }
+		/*********** do inversion **********/
+		for(nc=1;nc < header[NCHAN]; nc++){
+			sum = 0.0;
+			for(x=nc;x < header[NCHAN]; x++){
+				fx = (float)x;
+				fnc = (float)nc;
+				top = fx + sqrt(fx*fx-fnc*fnc);
+				bot = fx+1.0+sqrt((fx+1.0)*(fx+1.0)-fnc*fnc);
+				frac= top/bot;
+				sum += (1.0/PI)*deriv[x]*log(frac);
+            }
+			coldat[nc] = sum;
+			area2+=PI*(2.0*(float)nc+1.0)*sum;
+		}
+        /* At r=0 (nc=0) the integral is undefined - as a solution make f(r=0)=f(r=1) */
+        coldat[0]=coldat[1];
+        area2+=PI*sum;
+        if (area2>0.0) norm=area1/area2;
+        /* Scaling done to assure that photon counts are conserved */
+        
+        for(nc=0;nc < header[NCHAN]; nc++){
+            *(datp + nt*header[NCHAN] + nc)	= coldat[nc]*norm*scale; 
+		}
+	}
+
+	have_max = 0;
+    maxx();
+    return 0;
+}
+/* ************************* */
+
+int operator_is_defined=0;
+int abel_row,abel_col;
+DATAWORD* abel_datp=0;
+
+/* ABEL
+ Calculate the abel inversion using
+ // Calculate three-point abel inversion operator Di,j
+ // The index i,j start from 0.
+ // The formula followed Dasch 1992 (Applied Optics) which contains several typos.
+ // One correction is done in function OP1 follow Martin's PhD thesis
+ */
+
+int abelinv_g(int n, char* args){
+    int index = moveOMA2toOMA(n,args);
+    int err;
+    
+    err = abelinv(n,index);
+    
+    moveOMAtoOMA2();
+    iBuffer.getmaxx();
+    update_UI();
+    return err;
+
+}
+
+int abelinv(int n,int index){
+    int row, col, size;
+    int i,j,k;
+    
+    DATAWORD *datp;
+    
+    // function prototype
+    float OP0(int i,int j);
+    float OP1(int i,int j);
+    float OP_D(int i,int j);
+    
+    row = header[NTRAK];
+    col = header[NCHAN];
+    
+    // if operator is not defined or not the right size, then calculate a new one for this image size
+    if(!(operator_is_defined && abel_row==row && abel_col==col)){
+        
+        if (abel_datp!=NULL) {
+            //printf("Operator has been defined previously. Free it\n");
+            free(abel_datp);
+        }
+        abel_datp = (DATAWORD*)malloc(row*col*sizeof(DATAWORD));
+        
+        if( abel_datp == 0) {
+            nomemory();
+            return -1;
+        }
+        abel_row=row;
+        abel_col=col;
+        //printf("abel_row is %d", row);
+        i=0;
+        for (k=0; k<row; k++) {
+            for (j=0; j<col; j++) {
+                *(abel_datp+i) = OP_D(k,j);
+                i++;
+            }
+        }
+        operator_is_defined=1;
+    }
+    
+    size = (header[NCHAN] * header[NTRAK] + MAXDOFFSET) * DATABYTES;
+    
+    size = (size+511)/512*512;    /* make a bit bigger for file reads */
+    //printf("%d\n",row);
+    
+    datp = (DATAWORD*)calloc(size,1);
+    if(datp == 0) {
+        nomemory();
+        return -1;
+    }
+    
+    datp = datp+doffset;    /* I guess this one make the pointer to skip the first 80 bytes information*/
+    
+    
+    
+    for (i=0; i<row; i++) {
+        for (k=0; k<col; k++) {
+            for (j=0; j<col; j++) {
+                *(datp+i*col+k) += *(datpt+doffset+i*col+j)* *(abel_datp+k*col+j);
+            }
+        }
+    }
+    
+    // copy the 2nd col to the 1st col.
+    for (i=0; i<row; i++) {
+        *(datp+i*col) = *(datp+i*col+1);
+    }
+    
+    free(datpt);
+    datpt = datp-doffset;    /* Needs the 80 bytes thing for buffer*/
+    
+    have_max=0;
+    maxx();
+    
+    return(0);
+}
+
+// functions for the ABEL command
+// The definition of operators
+float OP0(int i,int j)
+{
+    float I0=0;
+    // Define operator OP0
+    if (j<i || (j==i&&i==0))
+        I0 = 0;
+    else if (j==i&&i!=0)
+        I0 = log((pow(pow((2*j+1),2)-4*pow(i,2),0.5) +2*j+1)/(2*j))/(2*PI);
+    else if (j>i)
+        I0 = log((pow(pow((2*j+1),2)-4*pow(i,2),0.5)+2*j+1)/(pow((pow((2*j-1),2)-4*pow(i,2)),0.5)+2*j-1))/(2*PI);
+    return (I0);
+}
+
+float OP1(int i,int j)
+{
+    // Define operator OP1
+    float I1=0;
+    if (j<i)
+    {I1 = 0;}
+    else if (j==i)
+    {I1 = pow(pow((2*j+1),2)-4*pow(i,2),0.5)/(2*PI)-2*j*OP0(i,j);}
+    else if (j>i)
+    {I1 = (pow(pow((2*j+1),2)-4*pow(i,2),0.5)-pow(pow((2*j-1),2)-4*pow(i,2),0.5))/(2*PI)-2*j*OP0(i,j);}
+    return (I1);
+}
+
+float OP_D(int i,int j)
+{
+    // Calculate three-point abel inversion operator Di,j
+    // The index i,j start from 0.
+    // The formula followed Dasch 1992 (Applied Optics) which contains several typos.
+    // One correction is done in function OP1 follow Martin's PhD thesis
+    
+    float ID=0;
+    if (j<i-1)
+    {ID = 0.;}
+    else if (j==i-1)
+    {ID = OP0(i,j+1)-OP1(i,j+1);}
+    else if (j==i)
+    {ID = OP0(i,j+1)-OP1(i,j+1)+2*OP1(i,j);}
+    else if (j>=i+1)
+    {ID = OP0(i,j+1)-OP1(i,j+1)+2*OP1(i,j)-OP0(i,j-1)-OP1(i,j-1);}
+    else if (i==0&&j==1)
+    {ID = OP0(i,j+1)-OP1(i,j+1)+2*OP1(i,j)-2*OP1(i,j-1);}
+    return (ID);
+}
+
+/* ************************* */
+
+
+/*
+ FOLD fraction new_width
+ Fold an image in half vertically. It is assumed to be symmetric about some nearly verticle axis.
+ The center of symmetry is found separately for each row, except if there are dark regions at the top and bottom of the image.
+ For the dark regions, the average center of the middle part of the image is used as the center of symmetry.
+ Dark regions are rows (at the top and bottom) whose values are all less than fraction*image_max. x0,y0 and x1,y1 are coordinates of the top and bottom of the dark region, center is the average center. These are returned in command_return_1-5.
+ */
+
+int fold_g(int n, char* args){
+    int index = moveOMA2toOMA(n,args);
+    int err;
+    
+    err = fold(n,index);
+    
+    moveOMAtoOMA2();
+    iBuffer.getmaxx();
+    update_UI();
+    return err;
+}
+
+
+int fold(int n, int index)
+{
+    int y1,y0,sizx,sizy,new_width,center,x0,x1;
+    int nt,nc;
+    long int size;
+    
+    double xcom=0.,ave=0.,ave_xcom=0.;
+    
+    DATAWORD datval,max_fraction=0.,max_val = 0., *datp;
+    
+    extern DATAWORD max;
+    extern Variable user_variables[];
+    
+    nc = sscanf(&cmnd[index],"%f %d",&max_fraction, &new_width);
+    if (nc < 2){
+        beep();
+        printf("Command format is FOLD fraction new_width\n");
+        return -1;
+    }
+    
+    size = (new_width * header[NTRAK] + MAXDOFFSET) * DATABYTES;
+    size = (size+511)/512*512;	/* make a bit bigger for file reads */
+    
+    datp = (DATAWORD*) malloc(size);
+    if(datp == 0) {
+        nomemory();
+        return -1;
+    }
+    datp += doffset;
+    
+    max_val = max_fraction*max;
+    printf("Data cutoff is at %g\n",max_val);
+    printf("max is %g\n",max);
+    printf("max_fract is %g\n",max_fraction);
+    
+    y1 = 0;
+    y0 = 0;
+    sizx = header[NCHAN];
+    sizy = header[NTRAK];
+    
+    for(nt=0; nt< sizy; nt++){
+        for(nc=0; nc<sizx; nc++) {
+            if(idat(nt,nc) > max_val) break;
+        }
+        if(nc != sizx) break;
+    }
+    y0 = nt;
+    x0 = nc;
+    
+    for(nt=sizy-1; nt>=0; nt--){
+        for(nc=sizx-1; nc>=0; nc--) {
+            if(idat(nt,nc) > max_val) break;
+        }
+        if(nc != -1) break;
+    }
+    y1 = nt;
+    x1 = nc;
+    
+    printf("Using region between rows %d and %d\n",y0,y1);
+    sizy = y1-y0+1;
+    
+    for(nt=y0; nt<= y1; nt++){
+        ave = xcom = 0.;
+        for(nc=0; nc<sizx; nc++) {
+            datval = idat(nt,nc);
+            ave += datval;					// average
+            xcom += nc * (datval);			// x center of mass -- subtract min
+            
+        }
+        ave = ave/(float)sizx;
+        
+        xcom /= sizx;
+        xcom /= (ave);
+        ave_xcom += xcom;
+        center = xcom+.5;
+        
+        for(nc=0; nc<new_width; nc++) {
+            *(datp + nt * new_width +nc)= (idat(nt,center+nc) + idat(nt,center-nc))/2.0;
+        }
+    }
+    ave_xcom /= sizy;
+    center = ave_xcom + .5;
+    
+    for(nt=0; nt< y0; nt++){
+        for(nc=0; nc<new_width; nc++) {
+            *(datp + nt * new_width +nc)= (idat(nt,center+nc) + idat(nt,center-nc))/2.0;
+        }
+    }
+    for(nt=y1+1; nt< header[NTRAK]; nt++){
+        for(nc=0; nc<new_width; nc++) {
+            *(datp + nt * new_width +nc)= (idat(nt,center+nc) + idat(nt,center-nc))/2.0;
+        }
+    }
+    header[NDX] = header[NDY] = 1;
+    header[NX0] = header[NY0] = 0;
+    header[NCHAN] = new_width;
+    npts = header[NCHAN]*header[NTRAK];
+    free(datpt);
+    datpt = datp - doffset;
+    have_max = 0;
+    maxx();
+    user_variables[0].fvalue = user_variables[0].ivalue = x0;
+    user_variables[0].is_float=0;
+    user_variables[1].fvalue = user_variables[1].ivalue = y0;
+    user_variables[1].is_float=0;
+    user_variables[2].fvalue = user_variables[2].ivalue = x1;
+    user_variables[2].is_float=0;
+    user_variables[3].fvalue = user_variables[3].ivalue = y1;
+    user_variables[3].is_float=0;
+    user_variables[4].fvalue = user_variables[4].ivalue = center;
+    user_variables[4].is_float=0;
+
+    return 0;
+}
+
+
+/* ************************* */
+
+
+/*
+ ABELPREP clip_value [fill_value]
+ Finds the maximum pixel value along horizontal lines in the image. If that
+ maximum is < clip_value, the entire horizontal line is set to fill_value.
+ Default for fill_value is 0.
+ */
+
+int abelprep_g(int n, char* args){
+    int index = moveOMA2toOMA(n,args);
+    int err;
+    
+    err = abelprep(n,index);
+    
+    moveOMAtoOMA2();
+    iBuffer.getmaxx();
+    update_UI();
+    return err;
+}
+
+int abelprep(int n, int index){
+	float fill_value = 0.0, clip_value = 0.;
+	float hmax = 0.;
+	int nt,nc=0,i;
+	
+	for ( i = index; cmnd[i] != EOL; i++) {
+		if(cmnd[i] == ' ') {
+			nc = sscanf(&cmnd[index],"%f %f",&clip_value,&fill_value);
+			break;
+		}
+	}
+	if (nc < 1){
+		beep();
+		printf("Command format is ABELPREP clip_value [fill_value]\n");
+		return -1;
+	} else if (nc == 1) {
+		fill_value = 0.0;
+	}
+	
+	for(nt=0; nt < header[NTRAK]; nt++){
+		hmax = -1e10 ;
+		for(nc=0; nc<header[NCHAN]; nc++) {
+			if( idat(nt,nc) > hmax)
+				hmax = idat(nt,nc);
+		}
+		if ( hmax < clip_value){
+			for(nc=0; nc<header[NCHAN]; nc++)
+				*(datpt+doffset+nc+nt*header[NCHAN]) = fill_value;
+		}
+	}
+	have_max = 0;
+	maxx();
+	return 0;
+}
+
+
+
+/*
+ A different version -- sets values lower than  clip_value to fill_value
+ The discontinuities make for some funny looking things
+ 
+ int abelprep(int n, int index){
+ float fill_value = 0.0, clip_value = 0.;
+ 
+ int nt,nc=0,i;
+ 
+ for ( i = index; cmnd[i] != EOL; i++) {
+ if(cmnd[i] == ' ') {
+ nc = sscanf(&cmnd[index],"%f %f",&clip_value,&fill_value);
+ break;
+ }
+ }
+ if (nc < 1){
+ beep();
+ printf("Command format is ABELPREP clip_value [fill_value]\n");
+ return -1;
+ } else if (nc == 1) {
+ fill_value = 0.0;
+ }
+ 
+ for(nt=0; nt < header[NTRAK]; nt++){
+ for(nc=0; nc<header[NCHAN]; nc++) {
+ if( idat(nt,nc) <=  clip_value)
+ *(datpt+doffset+nc+nt*header[NCHAN]) = fill_value;
+ }
+ }
+ have_max = 0;
+ maxx();
+ return 0;
+ }
+ */
+
+/* ************************* */
+
+
+/*
+ ABELRECT rec_width [rec_y0 rec_y1]
+ Sets the rectangle (of width rec_width) according to the centroid of the image.
+ If rec_y0 and rec_y1 are omitted, they are taken to be the top and bottom of the image
+ */
+
+int abelrect_g(int n, char* args){
+    int index = moveOMA2toOMA(n,args);
+    int err;
+    
+    err = abelrect(n,index);
+    
+    moveOMAtoOMA2();
+    iBuffer.getmaxx();
+    update_UI();
+    return err;
+}
+
+int abelrect(int n, int index){
+    
+	float datval;
+	int nt,nc=0,icount=0,y0=0,y1,width = 50;
+	y1 = header[NTRAK]-1;
+	double xcom=0.,ave=0.;
+	
+	//extern Point substart,subend;
+	extern DATAWORD min;
+	
+	
+	nc = sscanf(&cmnd[index],"%d %d %d",&width,&y0,&y1);
+	//printf(" width, y0 y1 %d %d %d\n",width,y0,y1);
+	if (nc < 1){
+		beep();
+		printf("Command format is ABELRECT rec_width [rec_y0 rec_y1]\n");
+		return -1;
+	}
+	printf(" width, y0 y1 narg %d %d %d %d\n",width,y0,y1,nc);
+	for(nt=y0; nt <= y1; nt++){
+		for(nc=0; nc<header[NCHAN]; nc++) {
+			datval = idat(nt,nc);
+			ave += datval;					// average
+			xcom += nc * (datval-min);			// x center of mass -- subtract min
+			icount++;						// number of points
+		}
+	}
+	xcom /= icount;
+	ave = ave/(float)icount;
+	xcom /= (ave-min);
+	
+	substart.h = xcom+.5;
+	substart.v = y0;
+	
+	subend.h = substart.h + width;
+	subend.v = y1;
+	
+	return 0;
+}
+
+/* ************************* */
+
 

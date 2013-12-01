@@ -1,3 +1,4 @@
+
 //
 //  CommandView.m
 //  oma2
@@ -35,18 +36,19 @@ extern AppController* appController;
     // Drawing code here.
 }
 
-// this does text completions -- over riding this gets rid of cmnd . listing of words
+// this normally does text completions -- over riding this gets rid of cmnd . listing of words
+// somehow still doesn't work to stop macros
 - (void)complete:(id)sender{
-    
+    extern int stopMacroNow;
+    NSLog(@"Stop Macro");
+    stopMacroNow = 1;
 }
 
 - (void)keyDown:(NSEvent *)anEvent{
-    extern int stopMacroNow;
+    
     // we get keydown events here
     // do special processing before passing this event along the the NSTextView
-    
-
-    
+    extern int stopMacroNow;
     // move to the end of the commands
     NSUInteger text_len = [[[self textStorage] string] length];
     [self setSelectedRange:(NSRange){text_len, 0}];
@@ -57,7 +59,6 @@ extern AppController* appController;
             NSLog(@"Stop Macro");
             stopMacroNow = 1;
             //stopmacro();
-            
         }
         return;
     }
@@ -104,11 +105,9 @@ extern AppController* appController;
                     [[[self textStorage] mutableString] appendString: [[NSString alloc] initWithCString:gets_string encoding:NSASCIIStringEncoding]];
                 }
                 [self setNeedsDisplay:YES];
-                
             }
             return;
-        }
-        else if( keyChar == NSDownArrowFunctionKey){
+        } else if( keyChar == NSDownArrowFunctionKey){
             if(selected_hist_index < hist_index) {
                 
                 while(cmnd_history[selected_hist_index] !=0) {
@@ -124,11 +123,15 @@ extern AppController* appController;
                     [self.textStorage.mutableString  deleteCharactersInRange:theRange];
                     // then add the text
                     [[[self textStorage] mutableString] appendString: [[NSString alloc] initWithCString:gets_string encoding:NSASCIIStringEncoding]];
-
                     [self setNeedsDisplay:YES];
                 }
             }
             return;
+        } else if(keyChar == NSDeleteCharacter) { // don't delete beyond last prompt
+            
+            if (self.textStorage.mutableString.length <= lastReturn) {
+                return;
+            }
         }
     }
     [super keyDown:anEvent];
@@ -145,7 +148,7 @@ extern AppController* appController;
         // pass this to the command decoder
         
         char* cmd = (char*) [command cStringUsingEncoding:NSUTF8StringEncoding ];
-        if(cmd == NULL) return; // if for some reason this can't be translated, just give up
+        if(cmd == NULL || strlen(cmd) <=0) return; // if for some reason this can't be translated, just give up
         // replace the \n with an EOL
         cmd[strlen(cmd)-1] = 0;
         strlcpy(oma2Command, cmd, CHPERLN);
@@ -160,28 +163,6 @@ extern AppController* appController;
             if(returnValue < GET_MACRO_LINE) printf("OMA2>");
         });
 
-        
-        //int returnVal = comdec((char*) oma2Command);
-        /*
-        extern int exflag, macflag;
-        int didMac = 0;
-        while (exflag || macflag) {
-            returnVal = [self scheduleCommand:command];
-            //returnVal = comdec((char*) oma2Command);
-            didMac = 1;
-        }
-        if (didMac) {
-            [[appController theWindow ] makeKeyAndOrderFront:[appController theWindow]];
-        }
-        */
-        
-        //int returnVal = [self scheduleCommand:command];
-        
-        /*
-        if (returnVal < GET_MACRO_LINE ) {
-            [self appendText: @"OMA2>"];
-        }
-        */
     }
 }
 
@@ -193,9 +174,20 @@ extern AppController* appController;
 }
 
 -(void) appendCText:(char *) string{
+    extern int isErrorText;
     NSString *reply = [[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding];
+    
+    [self.textStorage.mutableString appendString:reply ];
+    if (isErrorText) {
+        [self setTextColor:[NSColor redColor] range:
+         NSMakeRange(lastReturn, self.textStorage.mutableString.length - lastReturn)];
+        isErrorText = 0;
+    }else{
+        [self setTextColor:[NSColor blackColor] range:
+         NSMakeRange(lastReturn, self.textStorage.mutableString.length - lastReturn)];
+    }
     lastReturn += [reply length];
-    [self.textStorage.mutableString appendString:reply];
+    
     [self scrollRangeToVisible: NSMakeRange(self.string.length, 0)];
     
 }

@@ -173,7 +173,15 @@ int pprintf(const char* format, ...)		/* priority printing! */
 
 
 void beep(){
+    extern int stop_on_error,macflag,exflag,isErrorText;
+    
+    isErrorText = 1;
     NSBeep();
+    
+    if(stop_on_error && (macflag || exflag))
+        //stopMacroNow = 1;
+        stopmacro();
+
 }
 
 

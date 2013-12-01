@@ -16,7 +16,10 @@ ComDef   commands[] =    {
     {{"^              "},	power_c,},
     {{"ADDFILE        "},	addfile_c},
     {{"ADDTEMPIMAGE   "},	addtmp_c},
-    {{"BLOCK          "},	block_c},
+    {{"ABELINV        "},   abelinv_g},
+    {{"ABELPREP       "},   abelprep_g},
+    {{"ABELRECT       "},   abelrect_g},
+    {{"BLOCK          "},	block_g},
     {{"BIT8           "},	bit8_c},
     {{"BIT16          "},	bit16_c},
     {{"CALCULATE      "},	calc_cmd_c},
@@ -29,6 +32,7 @@ ComDef   commands[] =    {
     {{"COMPOSITE      "},	compositefile_c},
     {{"COMTEMPIMAGE   "},	comtmp_c},
     {{"COLORFLAG      "},	colorflag_c},
+    {{"CYL2           "},	cyl2_g},
     {{"CMINMX         "},	setcminmax_c},
     {{"DISPLAY        "},	display},
     {{"DMACRO         "},	defmac},
@@ -49,6 +53,7 @@ ComDef   commands[] =    {
     {{"FOPEN          "},	fopen_c},
     {{"FTEMPIMAGE     "},	ftemp_c},
     {{"FFT            "},	dofft},
+    {{"FOLD           "},	fold_g},
     {{"GET            "},	getfile_c},
     {{"GETFILENAMES   "},	getFileNames_c},
     {{"GETSETTINGS    "},	getsettings},
@@ -60,6 +65,7 @@ ComDef   commands[] =    {
     {{"INVERT         "},	invert_c},
     {{"INTVARIABLE    "},	vint},
     {{"KILLBOX        "},	killBox_c},
+    {{"KWABEL         "},	kwabel_g},
     {{"LIST           "},	list_c},
     {{"LABELDATA      "},	labelData},
     {{"LMACRO         "},	lmacro},
@@ -69,6 +75,7 @@ ComDef   commands[] =    {
     {{"LTEMPIMAGE     "},	ltemp_c},
     {{"MACRO          "},	macro},
     {{"MAKNEW         "},	resize_c},
+    {{"MIRROR         "},	mirror_c},
     {{"MULFILE        "},	mulfile_c},
     {{"MULTEMPIMAGE   "},	multmp_c},
     {{"NEWWINDOW      "},	newWindow_c},
@@ -90,6 +97,7 @@ ComDef   commands[] =    {
     {{"SINGRID        "},	sinGrid_c},
     {{"STEMPIMAGE     "},	stemp_c},
     {{"STRMACRO       "},	stringmacro_c},
+    {{"STOPONERROR    "},	stopOnError},
     {{"SMOOTH         "},	smooth_c},
     {{"SUBFILE        "},	subfile_c},
     {{"SUBTEMPIMAGE   "},	subtmp_c},
@@ -134,6 +142,7 @@ int error_return = 0;
 int which_ex_buffer = -1;
 
 int stop_on_error = 0;
+int isErrorText = 0;
 
 // Things for command history
 #define HISTORY_BUFFER_SIZE 10000
@@ -182,7 +191,7 @@ Expression_Element exp_el[CHPERLN];
 
 int comdec(char* cmnd)
 {
-    int     c,i,cp,clst,j,k; 
+    int     c,i,cp,clst,j,k;
     int     chindx = 0;     /* index of first character after command */
     int     sign = 1;       /* sign of integer argument */
     int     ivalue = 0;     /* integer value */
@@ -206,19 +215,19 @@ int comdec(char* cmnd)
         default:
             break;
     }
-
+    
     while(true){
         chindx = 0;     /* index of first character after command */
         sign = 1;       /* sign of integer argument */
         ivalue = 0;     /* integer value */
         
-
-
+        
+        
         /* --------------------- Code Starts Here ------------------------- */
         if (exflag == 0) which_ex_buffer=-1;    // this was not reset in the stop macro command, so do it now
         
         if (exflag) {
-        
+            
             /* Get next line from the execute buffer. */
             
             exptr[which_ex_buffer] = 0;
@@ -264,7 +273,7 @@ int comdec(char* cmnd)
         } else {
             if (macflag) {
                 
-                // Get the appropriate line from the macro buffer. 
+                // Get the appropriate line from the macro buffer.
                 macptr = 0;
                 for( i=0; i<macro_line_number; i++) {
                     while ( *(macbuf + macptr) != 0 )
@@ -341,7 +350,7 @@ int comdec(char* cmnd)
                 hist_index +=  i+1;
                 selected_hist_index = hist_index;
                 stored_commands++;
-                /* 
+                /*
                  // command history diagnostics
                  printf("%s\n%d stored; %d index\n",cmnd,stored_commands,hist_index);
                  for(i=0; i<hist_index; i++){
@@ -363,7 +372,7 @@ int comdec(char* cmnd)
             }
         }
         
-        // while not end of command ... 
+        // while not end of command ...
         i = 0;
         while ( cmnd[i] != EOL  && cmnd[i] != ' ' && cmnd[i]!= ';'){
             if ( toupper(cmnd[i]) !=  clist_ptr[cp].text.name[i] ) {
@@ -382,50 +391,57 @@ int comdec(char* cmnd)
                      */
                     beep();
                     printf("No such command: %s\n",cmnd);
+                    if (macflag || exflag) {
+                        i=-1;
+                        break;
+                    }
                     return CMND_ERR;
                 }
             } else {
                 i++;
             }
         }
-        if (clst == 0 )
-            fnc =  commands[cp].fnc;
-        else
-            fnc = commands[cp].fnc;
-        
-        // next check for an integer argument
-        ivalue = 0;
-        if (cmnd[i] != EOL && cmnd[i] != ';') {
-            chindx = ++i; // save a pointer to the first 
-            //   character after command 
-            while ( cmnd[i] != EOL && cmnd[i] != ';'
-                   && cmnd[i] != ' ') {
-                c = cmnd[i++];
-                if (c == '+' )
-                    sign *= 1;
-                if (c == '-' )
-                    sign *= -1;
-                if (c >= '0' && c <= '9')
-                    ivalue = 10 * ivalue + c - '0';
-            }
-        }
-        ivalue *= sign;
-        if (chindx == 0) {  // if no arguments, pass a null string
-            *cmnd = 0;
-        }
-        
-        // Now Execute the Appropriate Command -- unless this is in an IF whose condition is not met
-        
-        if(if_condition_met ||fnc == endifcmnd || fnc == ifcmnd){
-            /*if (clst == 1 ){
-             error_return = (*fnc)(ivalue,chindx);   // this is the old style
-             }else{
-             error_return = (*fnc)(ivalue,&cmnd[chindx]);
-             }
-             */
-            command_return = error_return = (*fnc)(ivalue,&cmnd[chindx]);
-            if(exflag==0 && macflag==0) break;
+        if(i>=0){    // we have a command from the list
             
+            if (clst == 0 )
+                fnc =  commands[cp].fnc;
+            else
+                fnc = commands[cp].fnc;
+            
+            // next check for an integer argument
+            ivalue = 0;
+            if (cmnd[i] != EOL && cmnd[i] != ';') {
+                chindx = ++i; // save a pointer to the first
+                //   character after command
+                while ( cmnd[i] != EOL && cmnd[i] != ';'
+                       && cmnd[i] != ' ') {
+                    c = cmnd[i++];
+                    if (c == '+' )
+                        sign *= 1;
+                    if (c == '-' )
+                        sign *= -1;
+                    if (c >= '0' && c <= '9')
+                        ivalue = 10 * ivalue + c - '0';
+                }
+            }
+            ivalue *= sign;
+            if (chindx == 0) {  // if no arguments, pass a null string
+                *cmnd = 0;
+            }
+            
+            // Now Execute the Appropriate Command -- unless this is in an IF whose condition is not met
+            
+            if(if_condition_met ||fnc == endifcmnd || fnc == ifcmnd){
+                /*if (clst == 1 ){
+                 error_return = (*fnc)(ivalue,chindx);   // this is the old style
+                 }else{
+                 error_return = (*fnc)(ivalue,&cmnd[chindx]);
+                 }
+                 */
+                command_return = error_return = (*fnc)(ivalue,&cmnd[chindx]);
+                if(exflag==0 && macflag==0) break;
+                
+            }
         }
     }
     
@@ -1428,14 +1444,7 @@ int stopmacro()
 {
 	extern int macflag,macval,exflag;
 	extern unsigned char from_noprint;
-    
-	if(macflag){
-		printf("Macro Stopped at Value %d.\n",macval);
-	}
-	if(exflag){
-		printf("Execute aborted.\n");
-	}
-    
+        
     macflag = 0;
     macro_line_number = lvar_max = loopdepth = var_char_count = inloop = 0;
     ifdepth=0;          // not inside any if condition
@@ -2153,8 +2162,8 @@ int vint(int n, char* args)	// set flag to use integer value of a variable
  (default) execution will continue. 
  */
 
-/*
-int stoponerror(int n, char* args)	
+
+int stopOnError(int n, char* args)
 {
 	if(n == 0){
 		stop_on_error = 0;
@@ -2166,7 +2175,7 @@ int stoponerror(int n, char* args)
 	return 0;
     
 }
-
+/*
 // ********** 
 
 int prflag(int n, char* args)	// set flag to use enable/disable printing

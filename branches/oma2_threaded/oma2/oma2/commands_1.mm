@@ -267,7 +267,7 @@ int rectan_c(int n, char* args)
     int narg;
     point start,end;
     rect new_rect;
-    
+    extern Variable user_variables[];
     // For this need 4 arguments 
     narg = sscanf(args,"%d %d %d %d",&new_rect.ul.h,&new_rect.ul.v,&new_rect.lr.h,&new_rect.lr.v);
     
@@ -275,16 +275,16 @@ int rectan_c(int n, char* args)
         
         printf("Current Rectangle is %d %d %d %d.\n",
                UIData.iRect.ul.h,UIData.iRect.ul.v,UIData.iRect.lr.h,UIData.iRect.lr.v);
-        /*
-        user_variables[0].ivalue = substart.h;
+        
+        user_variables[0].ivalue = UIData.iRect.ul.h;
         user_variables[0].is_float = 0;
-        user_variables[1].ivalue = substart.v;
+        user_variables[1].ivalue = UIData.iRect.ul.v;
         user_variables[1].is_float = 0;
-        user_variables[2].ivalue = subend.h;
+        user_variables[2].ivalue = UIData.iRect.lr.h;
         user_variables[2].is_float = 0;
-        user_variables[3].ivalue = subend.v;
+        user_variables[3].ivalue = UIData.iRect.lr.v;
         user_variables[3].is_float = 0;
-        */
+        
         return NO_ERR;
     }
     
@@ -309,16 +309,16 @@ int rectan_c(int n, char* args)
 
     printf("Current Rectangle is %d %d %d %d.\n",
            UIData.iRect.ul.h,UIData.iRect.ul.v,UIData.iRect.lr.h,UIData.iRect.lr.v);
-    /*
-    user_variables[0].ivalue = substart.h;
+    
+    user_variables[0].ivalue = UIData.iRect.ul.h;
     user_variables[0].is_float = 0;
-    user_variables[1].ivalue = substart.v;
+    user_variables[1].ivalue = UIData.iRect.ul.v;
     user_variables[1].is_float = 0;
-    user_variables[2].ivalue = subend.h;
+    user_variables[2].ivalue = UIData.iRect.lr.h;
     user_variables[2].is_float = 0;
-    user_variables[3].ivalue = subend.v;
+    user_variables[3].ivalue = UIData.iRect.lr.v;
     user_variables[3].is_float = 0;
-    */
+    
     update_UI();
     return NO_ERR;
 }
@@ -382,6 +382,15 @@ int list_c(int n, char* args){
 
 int invert_c(int n,char* args){
     iBuffer.invert();
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
+
+int mirror_c(int n,char* args){
+    iBuffer.mirror();
     iBuffer.getmaxx();
     update_UI();
     return NO_ERR;
@@ -1793,5 +1802,4 @@ int bit16_c(int n, char* args)
 }
 
 /* ********** */
-
 

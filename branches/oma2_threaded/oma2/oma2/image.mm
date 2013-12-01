@@ -792,6 +792,29 @@ void Image::invert(){
     //return *this;
 }
 
+void Image::mirror(){
+	int nt,nc,size;
+	DATAWORD *datp,temp;
+	
+	datp = data;
+	size = specs[COLS]-1;
+    
+	for(nt=0; nt<specs[ROWS];nt++){
+		for(nc=0; nc<specs[COLS]/2; nc++) {
+			temp = *(datp+nc);
+			*(datp+nc) = *(datp+size-nc);
+			*(datp+size-nc) = temp;
+		}
+		datp += specs[COLS];
+	}
+	if (!specs[IS_COLOR]) {
+        specs[LMAX] = specs[COLS] - 1 - specs[LMAX];
+        specs[LMIN] = specs[COLS] - 1 - specs[LMIN];
+    } else {
+        specs[HAVE_MAX]=0;
+    }
+}
+
 void Image::rotate(float angle){
     
     int size,nt,nc,width=0,height=0,midx=0,midy=0,vrel,hrel,i=0;

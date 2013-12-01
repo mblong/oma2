@@ -95,6 +95,8 @@ public:
     void rotate(float);        // rotate the current image or return an error if there was one
     
     void invert();             // invert the current image
+    void mirror();             // mirror the current image
+    
     void rgb2color(int);       // crop an rgb image to color 0,1, or 2 (red, green, or blue)
     void composite(Image);     // composite two images. Error if images are not the same width.
     void resize(int,int);      // resize the current image

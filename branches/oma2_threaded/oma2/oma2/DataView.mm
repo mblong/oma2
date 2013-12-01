@@ -251,10 +251,10 @@ extern oma2UIData UIData;
     int x = endRect.x;
     int y = endRect.y;
     
-    float widthScale = iBitmap.getwidth()/self.frame.size.width;
-    float heightScale = iBitmap.getheight()/self.frame.size.height;
-    x *= widthScale;
-    y *= heightScale;
+    //float widthScale = iBitmap.getwidth()/self.frame.size.width;
+    //float heightScale = iBitmap.getheight()/self.frame.size.height;
+    //x *= widthScale;
+    //y *= heightScale;
     
     if(endRect.x < startRect.x){
         endRect.x = startRect.x;
