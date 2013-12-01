@@ -667,14 +667,9 @@ int readTiff(char* filename,Image* im)
 	uint32 		w, h, countbyte;
 	uint32 		*bytecounts;
     
-    
 	extern int is_big_endian;
-
 	extern Variable user_variables[];
-    char tfil[CHPERLN];
     
-	
-	
 	//****/  V A R I A B L E S - Added by PKALT 8Apr03
 	
 	DATAWORD		*datpk2,*pt_green,*pt_blue;	// Pointer to buffer
@@ -698,8 +693,6 @@ int readTiff(char* filename,Image* im)
         return FILE_ERR;
     }
 
-	
-    
 	//***
 	//***  L i b T I F F   C A L L S   T O   G E T F I E L D
 	//***
@@ -777,7 +770,6 @@ int readTiff(char* filename,Image* im)
         im->specs[IS_COLOR] = 0;
     }
     
-	
 	// Allocate memory for the new OMA image 
     im->setspecs(im->specs);
 	if(im->error){
@@ -836,7 +828,6 @@ int readTiff(char* filename,Image* im)
 		}
 	}
 	
-	
 	//  Move the Buffer to the image
 	for (count = 0; count < npts; count++) {
         if (bytespersample != 1) {
@@ -865,7 +856,6 @@ int readTiff(char* filename,Image* im)
         }
 	}
     
-	
 	//Clode the TIFF File using the LibTIFF call
 	(void) TIFFClose(image);
     

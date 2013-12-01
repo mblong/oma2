@@ -20,6 +20,15 @@ ADDFILE <filename>
 ADDTEMPIMAGE name
 	Adds the contents of the named temporary image to the data in the current image data buffer.
 
+ABEL
+	Calculate the abel inversion using three-point abel inversion operator Di,j. The index i,j start from 0. The formula followed Dasch 1992 (Applied Optics) which contains several typos. One correction is done in function OP1 following  Martin's PhD thesis.
+
+ABELRECT rec_width [rec_y0 rec_y1]
+	Sets the rectangle (of width rec_width) according to the centroid of the image. If rec_y0 and rec_y1 are omitted, they are taken to be the top and bottom of the image.
+
+ABELPREP clip_value [fill_value]
+	Finds the maximum pixel value along horizontal lines in the image. If that maximum is < clip_value, the entire horizontal line is set to fill_value. Default for fill_value is 0.
+
 BLOCK n [m]
 	Group the image data into n x m blocks (rows x cols). This command reduces the size of the data buffer. The values are summed, pending implementation of the BLKAVE command. If the image is flagged as color, the three color planes are treated separately.
 
@@ -61,6 +70,9 @@ COLORFLAG [value]
 
 CMINMX n m 
 	Specifies the minimum (n) and maximum (m) values in the data that correspond to the minimum and maximum color or gray scale values. Specifying the values causes the "Auto Scale" feature to be disabled. If the arguments are not given, the "Auto Scale" feature is enabled.
+
+CYL2
+	Treat the data in the current image as a half cross section of a cylindrically symmetric intensity distribution. The centerline is assumed to be along the LHS of the image. An integrated image is calculated by rotating the image  about the centerline. Does a parallel projection.
 
 DISPLAY [string] 
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
@@ -134,6 +146,9 @@ FFT mode scale_factor
 FLOATVARIABLE variable_name
 	Specifies that variable_name is to be used as a floating point variable.
 
+FOLD fraction new_width
+	Fold an image in half vertically. It is assumed to be symmetric about some nearly verticle axis. The center of symmetry is found separately for each row, except if there are dark regions at the top and bottom of the image. For the dark regions, the average center of the middle part of the image is used as the center of symmetry. Dark regions are rows (at the top and bottom) whose values are all less than fraction*image_max. x0,y0 and x1,y1 are coordinates of the top and bottom of the dark region, center is the average center. These are returned in command_return_1-5.
+
 FTEMPIMAGE tempImage
 	Free memory associated with temporary image tempImage. tempImage must be in the range 0-9, or correspond to a named image.
 
@@ -179,6 +194,9 @@ INTVARIABLE variable_name
 KILLBOX [value]
 	Much like FILLBOX, this command works on the region of the image that has been specified with the RECT command or mouse. The contents of this region are set to 'value'. Default for 'value' is 0.
 
+KWABEL n
+	Uses analytic evaluation of integral required for abel inversion, which involves a lot of evaluations of ln(x). n is a scale factor for the image.
+
 LIST
 	Lists the current detector parameters and log block.
 
@@ -216,6 +234,9 @@ MACRO [n m]
 
 MAKNEW n m
 	Change the resolution of the data in the current data buffer to be n rows x m columns. Bilinear interpolation is performed.
+
+MIRROR
+	Form a left-right mirror image operation on the data in the current data buffer.
 
 MULFILE <filename>
 	Multiplies the contents of the current data buffer by the contents of the specified file.
@@ -288,6 +309,9 @@ SUBFILE <filename>
 
 SHELL shell_command
 	Opens a pipe to a shell and sends along the command. Output from the command is echoed to the command window.
+
+STOPONERROR flag
+	If flag = 1, macro or execute commands will stop on error conditions. If flag = 0 (default) execution will continue.
 
 SUBTEMPIMAGE name
 	Subtracts the contents of the named temporary image from the data in the current buffer.

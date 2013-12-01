@@ -53,6 +53,7 @@ int savsettings(int,char*);
 int defmac(int,char*);
 int dmnmx(int,char*);
 int labelData(int, char*);
+int stopOnError(int, char*);
 
 int gettextline(int, char*);
 int keylimit(int n);
