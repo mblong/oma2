@@ -24,5 +24,15 @@ unsigned long fsize(char* file);
 int dcrawGlue(char* name, int thecolor,Image*);
 int read_jpeg(char* filename,int thecolor,Image*);
 
+// for reading hdr images
+typedef struct  {
+	int width, height;
+	// each pixel takes 3 float32, each component can be of any value...
+	float *cols;
+} HDRLoaderResult;
+int readHDR(char* filename,Image*);
+int loadHDR(const char*, HDRLoaderResult*);
+
+
 #endif
 
