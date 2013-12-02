@@ -102,14 +102,16 @@ public:
     void resize(int,int);      // resize the current image
     
     
-    friend class ImageBitmap;
+    
     // These friends help read in images
     friend int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im);
     friend int read_jpeg(char* filename,int thecolor, Image*);
     friend int readTiff(char* filename, Image*);
+    friend int readHDR(char* filename, Image*);
     friend void oma_write_ppm_tiff (int thecolor, Image* im);
     // Special friends that need to go fast
     friend  int dofft(int,char*);
+    friend class ImageBitmap;
 };
 
 #endif

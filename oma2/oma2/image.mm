@@ -108,6 +108,17 @@ Image::Image(char* filename, int kindOfName)
         return;
     }
 
+    if (strncmp(&filename[strlen(filename)-4],".hdr",4) == 0 ||
+        strncmp(&filename[strlen(filename)-4],".HDR",4) == 0 ) {
+        if (kindOfName == LONG_NAME) {
+            error = readHDR(filename,this);
+        } else {
+            error = readHDR(fullname(filename,RAW_DATA),this);
+        }
+        
+        return;
+    }
+
     switch (kindOfName) {
         case LONG_NAME:
             fd = open(filename,O_RDONLY);

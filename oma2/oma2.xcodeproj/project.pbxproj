@@ -299,10 +299,6 @@
 				DB021E7915211EFA001D1B05 /* image.mm */,
 				DB021E7815211EFA001D1B05 /* image_support.h */,
 				DB021E7715211EFA001D1B05 /* image_support.mm */,
-				DB52C79E17F102130048F57A /* dcrawx.h */,
-				DB87BF0117F08DA200E1BF68 /* dcrawx.mm */,
-				DB4E036F183527B200250EA4 /* dofft.h */,
-				DB4E036D1835272400250EA4 /* dofft.mm */,
 				DBB4233717F9B765005BCF33 /* jpeglib.h */,
 				DBB4233817F9B892005BCF33 /* jconfig.h */,
 				DBB4233917F9B892005BCF33 /* jmorecfg.h */,
@@ -310,6 +306,10 @@
 				DB6FF6FF18467F46002D728B /* tiff.h */,
 				DB6FF70018467F46002D728B /* tiffio.h */,
 				DB6FF70118467F46002D728B /* tiffvers.h */,
+				DB52C79E17F102130048F57A /* dcrawx.h */,
+				DB87BF0117F08DA200E1BF68 /* dcrawx.mm */,
+				DB4E036F183527B200250EA4 /* dofft.h */,
+				DB4E036D1835272400250EA4 /* dofft.mm */,
 				DB021E7615211EFA001D1B05 /* commands_1.h */,
 				DB021E7515211EFA001D1B05 /* commands_1.mm */,
 				DB4329B417EF13E900A51802 /* gluedCommands.h */,
@@ -539,7 +539,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/mblong/oma2_threaded/oma2,
+					"$(SRCROOT)/**",
 				);
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -561,7 +561,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/mblong/oma2_threaded/oma2,
+					"$(SRCROOT)/**",
 				);
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
