@@ -1803,3 +1803,83 @@ int bit16_c(int n, char* args)
 
 /* ********** */
 
+/*
+ 
+GAUSSIAN EdgeValue [x0 y0]
+    Generate a Gaussian distribution centered at x0, y0. If x0, and y0, are not specified, the distribution is centered.
+    The maximum is 1. For a centered distribution, EdgeValue specifies the value of the distribution at the center edge.
+ */
+
+int gaussian_c(int n,char* args){
+	int nc,nt;
+    float value,x,y,c2,r2,w,h;
+    int narg = sscanf(args,"%f %f %f",&value,&x,&y);
+    
+    int* theSpecs = iBuffer.getspecs();
+    w = theSpecs[COLS]/2;
+    h = theSpecs[ROWS]/2;
+    switch (narg) {
+        case 0:
+        case -1:
+            value = .5;
+            x = w;
+            y = h;
+            break;
+        case 1:
+            x = w;
+            y = h;
+            break;
+        case 2:
+            y = h;
+            break;
+            
+        default:
+            break;
+    }
+    if(w<h)
+        c2 = - h*h/log(value);
+    else
+        c2 = - w*w/log(value);
+    
+	for(nt=1; nt<=theSpecs[ROWS];nt++) {
+		for(nc=1;nc <= theSpecs[COLS]; nc++){
+			r2 = (nc-x)*(nc-x)+(nt-y)*(nt-y);
+            iBuffer.setpix(nt-1, nc-1, expf(-r2/c2));
+		}
+	}
+    free(theSpecs);
+    iBuffer.getmaxx();
+    update_UI();
+
+    return NO_ERR;
+}
+
+/*
+ 
+ GREY2RGB [scaleRed scaleGreen scaleBlue]
+ Turns a single plane image into a three plane RGB image. The optional weighting factors are applied to each color plane.
+ */
+
+int grey2rgb_c(int n,char* args){
+	
+    float sR = 1.,sG=1.,sB=1.;
+    sscanf(args,"%f %f %f",&sR,&sG,&sB);
+    Image im;
+    im << iBuffer;
+    if(sR != 1.) im * sR;
+    if(sG != 1.) iBuffer * sG;
+    im.composite(iBuffer);
+    if(sB != 1.) iBuffer * (sB/sG);
+    im.composite(iBuffer);
+    int* theSpecs = im.getspecs();
+    theSpecs[IS_COLOR] = 1;
+    im.setspecs(theSpecs);
+    free(theSpecs);
+    
+    iBuffer.free();     // release the old data
+    iBuffer = im;   // this is the new data
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+

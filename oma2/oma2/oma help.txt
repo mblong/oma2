@@ -173,7 +173,13 @@ GETSETTINGS [filename]
 GMACRO <filename>
 	Loads the contents of the specified file into the current macro buffer.
 
-GRADIENT
+GAUSSIAN EdgeValue [x0 y0]
+    Generate a Gaussian distribution centered at x0, y0. If x0, and y0, are not specified, the distribution is centered. The maximum is 1. For a centered distribution, EdgeValue specifies the value of the distribution at the center edge.
+	
+GREY2RGB [scaleRed scaleGreen scaleBlue]
+	Turns a single plane image into a three plane RGB image. The optional weighting factors are applied to each color plane.
+ 
+ GRADIENT
 	Find the magnitude of the gradient of the data in the current image buffer. Use two pixels on either side of current pixel for gradient.
 
 GTEMPIMAGE name
