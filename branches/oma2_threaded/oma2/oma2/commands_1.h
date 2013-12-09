@@ -15,12 +15,12 @@ extern "C" {
 int null_c(int,char*);
 
 int addfile_c(int,char*);
-int addtmp_c(int n, char* args);
+int addtmp_c(int,char*);
 
-int bit8_c(int n, char* args);
-int bit16_c(int n, char* args);
+int bit8_c(int,char*);
+int bit16_c(int,char*);
 
-int colorflag_c(int n, char* args);
+int colorflag_c(int,char*);
 int compositefile_c(int,char*);
 int comtmp_c(int n, char* args);
 int croprectangle_c(int,char*);
@@ -31,38 +31,40 @@ int clipfraction_c(int,char*);
 int clipbottom_c(int,char*);
 int clipfbottom_c(int,char*);
 
-int dcrawarg_c(int n, char* args);
+int dcrawarg_c(int,char*);
 int divfile_c(int,char*);
-int diffx_c(int n,char* args);
-int diffy_c(int n,char* args);
-int divtmp_c(int n, char* args);
+int diffx_c(int,char*);
+int diffy_c(int,char*);
+int divtmp_c(int,char*);
 int divide_c(int,char*);
 int delay_c(int,char*);
 
 int echo_c(int,char*);
 
-int fopen_c (int n,char* args);
-int fclose_c (int n,char* args);
-int fecho_c (int n,char* args);
+int fopen_c (int,char*);
+int fclose_c (int,char*);
+int fecho_c (int,char*);
 int ftemp_c(int, char*);
 
 int getfile_c(int,char*);
-int getFileNames_c(int n,char* args);
-int gmacro_c(int n,char* args);
-int gradient_c(int n,char* args);
+int getFileNames_c(int,char*);
+int gaussian_c(int,char*);
+int grey2rgb_c(int,char*);
+int gmacro_c(int,char*);
+int gradient_c(int,char*);
 int gtemp_c(int, char*);
 
 int invert_c(int,char*);
 
-int killBox_c(int n, char* args);
+int killBox_c(int,char*);
 
-int list_c(int n, char* args);
-int ltemp_c(int n, char* args);
+int list_c(int,char*);
+int ltemp_c(int,char*);
 
 int minus_c(int,char*);
 int mirror_c(int,char*);
 int mulfile_c(int,char*);
-int multmp_c(int n, char* args);
+int multmp_c(int,char*);
 int multiply_c(int,char*);
 
 int newWindow_c(int,char*);
@@ -89,8 +91,8 @@ int stringmacro_c(int,char*);
 int subfile_c(int,char*);
 int subtmp_c(int, char*);
 int savefile_c(int,char*);
-int satiff_c(int n, char* args);
-int satiffscaled_c(int n, char* args);
+int satiff_c(int,char*);
+int satiffscaled_c(int,char*);
 int sysCommand_c(int,char*);
 
 // Others

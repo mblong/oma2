@@ -96,7 +96,10 @@ StatusController *statusController;
     
     [MinLabel setStringValue:[NSString stringWithFormat:@"Min: %g",UIData.min]];
     [MaxLabel setStringValue:[NSString stringWithFormat:@"Max: %g",UIData.max]];
-    [RowsLabel setStringValue:[NSString stringWithFormat:@"Rows: %d",UIData.rows]];
+    if(UIData.iscolor)
+        [RowsLabel setStringValue:[NSString stringWithFormat:@"Rows: %d x 3",UIData.rows/3]];
+    else
+        [RowsLabel setStringValue:[NSString stringWithFormat:@"Rows: %d",UIData.rows]];
     [ColsLabel setStringValue:[NSString stringWithFormat:@"Cols: %d",UIData.cols]];
     [DXLabel setStringValue:[NSString stringWithFormat:@"DX: %d",UIData.dx]];
     [DYLabel setStringValue:[NSString stringWithFormat:@"DY: %d",UIData.dy]];
