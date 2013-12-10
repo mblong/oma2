@@ -33,7 +33,7 @@ extern oma2UIData UIData;
 
 
 - (void)drawRect:(NSRect)dirtyRect{
-    [super drawRect:dirtyRect];         // crash here when resizing data window that is not the current one
+    [super drawRect:dirtyRect];         // crash here when resizing data window that is not the current one [or when printing an image not the last one displayed]
     
     if (!eraseLines) {
         if (mouse_down) {

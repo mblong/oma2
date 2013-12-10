@@ -446,6 +446,30 @@ int rgb2blue_c(int n,char* args){
 
 /* ********** */
 
+int rgb2grey_c(int n,char* args){
+    Image imGreen,imBlue;
+    imGreen << iBuffer;
+    imBlue << iBuffer;
+    iBuffer.rgb2color(0);
+    imGreen.rgb2color(1);
+    imBlue.rgb2color(2);
+    iBuffer + imGreen;
+    iBuffer + imBlue;
+    if(iBuffer.err()){
+        int err = iBuffer.err();
+        beep();
+        printf("Error: %d.\n",err);
+        iBuffer.errclear();
+        return err;
+    }
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+
+/* ********** */
+
 int colorflag_c(int n, char* args){
     int flag;
     int* specs= iBuffer.getspecs();
@@ -1878,6 +1902,147 @@ int grey2rgb_c(int n,char* args){
     
     iBuffer.free();     // release the old data
     iBuffer = im;   // this is the new data
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
+/*
+ FINDBAD Counts
+ 
+ Searches the current image buffer for pixels whose value is more than "Counts" above that of it's
+ nearest eight neighbors. Those pixels are tagged as hot pixels.
+ 
+ */
+
+int hot_pix[NUMHOT];	// store info on hot pixels
+int num_hot = 0;
+int ccd_width = 0;
+int ccd_height = 0;
+
+int findbad_c(int n, char* args){
+	int i,j;
+	DATAWORD ave_val;
+	num_hot = 0;
+    int* specs = iBuffer.getspecs();
+	ccd_width = specs[COLS];
+	ccd_height = specs[ROWS];
+	if( n == 0) n = 200;		// a reasonable default value
+	for(i=0; i< specs[ROWS]; i++){
+		for(j = 0; j< specs[COLS]; j++) {
+			ave_val = ( iBuffer.getpix(i-1,j-1) + iBuffer.getpix(i-1,j) + iBuffer.getpix(i-1,j+1) +
+                       iBuffer.getpix(i,j-1)                            + iBuffer.getpix(i,j+1) +
+                       iBuffer.getpix(i+1,j-1)  + iBuffer.getpix(i+1,j) + iBuffer.getpix(i+1,j+1) ) / 8;
+			if( iBuffer.getpix(i,j) - ave_val > n ){
+				if(num_hot < NUMHOT){
+					hot_pix[num_hot++] = i*specs[COLS] + j;
+					if(num_hot <= 10) printf(" %d\t%d\n",j,i);
+				}
+			}
+		}
+	}
+	printf("%d hot pixels found\n",num_hot);
+	if(num_hot > 10) printf("First 10 printed\n");
+	if(specs[X0] != 0 || specs[Y0] != 0){
+		beep();
+		printf("Warning! FINDBAD is designed to operate on a full frame.\n");
+	}
+    free(specs);
+	return NO_ERR;
+	
+}
+/*
+ READBAD filename
+ Read in bad pixel data from a text file.
+ */
+
+int readbad_c(int n, char* args)			/* read bad pixel data */
+{
+	int	i,j,k;
+	FILE *fp;
+	
+	fp = fopen(fullname(args,GET_DATA),"r");
+	if( fp != NULL) {
+		
+		fscanf(fp,"%d",&num_hot);
+		fscanf(fp,"%d %d",&ccd_width, &ccd_height);
+		for(k = 0; k < num_hot; k++){
+			fscanf(fp,"%d %d",&j,&i);
+			hot_pix[k] = i*ccd_width + j;
+		}
+	} else {
+		beep();
+		printf("Could not open file %s\n",args);
+		return FILE_ERR;
+	}
+	fclose(fp);
+	return NO_ERR;
+}
+
+/*
+ WRITEBAD filename
+ Write bad pixel data to a text file.
+ */
+
+int writebad_c(int n, char* args)			/* read bad pixel data */
+{
+    int	k;
+    FILE *fp;
+    
+    if(num_hot == 0){
+        beep();
+        printf("No bad pixels found. Use FINDBAD Counts\n");
+        return CMND_ERR;
+    }
+	
+    fp = fopen(fullname(args,SAVE_DATA),"w");
+    if( fp != NULL) {
+        
+        fprintf(fp,"%d\n",num_hot);
+        fprintf(fp,"%d\t%d\n",ccd_width, ccd_height);
+        for(k = 0; k < num_hot; k++){
+            fprintf(fp,"%d\t%d\n",hot_pix[k]%ccd_width,hot_pix[k]/ccd_width);
+        }
+    } else {
+        beep();
+        printf("Could not open file %s\n",args);
+        return FILE_ERR;
+    }
+    fclose(fp);
+    return NO_ERR;
+}
+
+/*
+ CLEARBAD
+ 
+ Sets pixels tagged as bad to the value of their 8 nearest neighbors. This will not work well if
+ there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands.
+ 
+ readbad /volumes/in/impx-s/sbig/sbig_bad_pix
+ 
+ */
+
+int clearbad_c(int n, char* args)
+{
+	int i,j,k;
+	DATAWORD new_val;
+    
+    int* specs = iBuffer.getspecs();
+	
+	for(k=0; k<num_hot; k++){
+		i = hot_pix[k]/ccd_width;
+		j = hot_pix[k] - i*ccd_width - specs[X0];
+		i -= specs[Y0];
+		//printf(" %d %d\n",j,i);
+		if(i < specs[ROWS] && j < specs[COLS] && i >= 0 && j >= 0) {
+			new_val = ( iBuffer.getpix(i-1,j-1) + iBuffer.getpix(i-1,j) + iBuffer.getpix(i-1,j+1) +
+					    iBuffer.getpix(i,j-1)                            + iBuffer.getpix(i,j+1) +
+					    iBuffer.getpix(i+1,j-1)  + iBuffer.getpix(i+1,j) + iBuffer.getpix(i+1,j+1) ) / 8;
+			iBuffer.setpix(i,j, new_val);
+		}
+	}
+    free(specs);
     iBuffer.getmaxx();
     update_UI();
     return NO_ERR;

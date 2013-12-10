@@ -30,6 +30,7 @@ int clip_c(int,char*);
 int clipfraction_c(int,char*);
 int clipbottom_c(int,char*);
 int clipfbottom_c(int,char*);
+int clearbad_c(int,char*);
 
 int dcrawarg_c(int,char*);
 int divfile_c(int,char*);
@@ -45,6 +46,7 @@ int fopen_c (int,char*);
 int fclose_c (int,char*);
 int fecho_c (int,char*);
 int ftemp_c(int, char*);
+int findbad_c(int,char*);
 
 int getfile_c(int,char*);
 int getFileNames_c(int,char*);
@@ -77,10 +79,12 @@ int positive_c(int, char*);
 
 int rectan_c(int,char*);
 int resize_c(int,char*);
+int rgb2grey_c(int,char*);
 int rgb2red_c(int,char*);
 int rgb2green_c(int,char*);
 int rgb2blue_c(int,char*);
 int rotate_c(int,char*);
+int readbad_c(int,char*);
 
 int setcminmax_c(int,char*);
 int size_c(int,char*);
@@ -94,6 +98,8 @@ int savefile_c(int,char*);
 int satiff_c(int,char*);
 int satiffscaled_c(int,char*);
 int sysCommand_c(int,char*);
+
+int writebad_c(int,char*);
 
 // Others
 int temp_image_index (char* name,int define);

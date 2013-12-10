@@ -81,6 +81,8 @@ name of the units. Occupies trailer[5] to trailer[12] */
 
 #define PI 3.14159265358979323846
 
+#define NUMHOT 100000		// the size of the "hot pixel" arrays
+
 #define MAXMSG " Maximum %g at Row %d and Column %d.\n"
 #define MINMSG " Minimum %g at Row %d and Column %d.\n"
 #define DATAMSG " %g\n"
