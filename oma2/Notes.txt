@@ -83,10 +83,12 @@ Addressed UI Issues:
   √ Echo in macros still has challenges. If a macro is started when the command window does not have focus, nothing is echoed until the macro finishes
 
   √ on typing, always move cursor to end of command buffer
+  
+  √ GET command --  ".tif" still needed.
 _____________________________
 Needed Commands
  LOG command
- GET command --  ".tif" still needed.
+
  
 
  
@@ -101,7 +103,7 @@ UI Issues:
     
     Crash on resizing data window that isn't the current one when size is smaller than original. in DataView.mm drawRect
         
-    Crash on copy data window that isn't the current one 
+    Crash on copy data window that isn't the current one -- this only happens for data windows, not for drawing windows.
 
     
 UI Needs

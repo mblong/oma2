@@ -34,6 +34,7 @@ ComDef   commands[] =    {
     {{"COLORFLAG      "},	colorflag_c},
     {{"CYL2           "},	cyl2_g},
     {{"CMINMX         "},	setcminmax_c},
+    {{"CLEARBADPIX    "},	clearbad_c},
     {{"DISPLAY        "},	display},
     {{"DMACRO         "},	defmac},
     {{"DMNMX          "},	dmnmx},
@@ -54,6 +55,7 @@ ComDef   commands[] =    {
     {{"FTEMPIMAGE     "},	ftemp_c},
     {{"FFT            "},	dofft},
     {{"FOLD           "},	fold_g},
+    {{"FINDBADPIX    "},	findbad_c},
     {{"GET            "},	getfile_c},
     {{"GETFILENAMES   "},	getFileNames_c},
     {{"GETSETTINGS    "},	getsettings},
@@ -86,11 +88,13 @@ ComDef   commands[] =    {
     {{"POSITIVE       "},	positive_c},
     {{"POWER          "},	power_c},
     {{"RECTANGLE      "},	rectan_c},
+    {{"RGB2GREY       "},	rgb2grey_c},
     {{"RGB2RED        "},	rgb2red_c},
     {{"RGB2GREEN      "},	rgb2green_c},
     {{"RGB2BLUE       "},	rgb2blue_c},
     {{"RMACRO         "},	rmacro},
     {{"ROTATE         "},	rotate_c},
+    {{"READBADPIX     "},	readbad_c},
     {{"SAVEFILE       "},	savefile_c},
     {{"SAVSETTINGS    "},	savsettings},
     {{"SATIFF         "},	satiff_c},
@@ -105,6 +109,7 @@ ComDef   commands[] =    {
     {{"SUBTEMPIMAGE   "},	subtmp_c},
     {{"SHELL          "},	sysCommand_c},
     {{"VARIABLES      "},	variab},
+    {{"WRITEBADPIX    "},	writebad_c},
     {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},0}};
 
 
@@ -222,6 +227,7 @@ int comdec(char* cmnd)
         chindx = 0;     /* index of first character after command */
         sign = 1;       /* sign of integer argument */
         ivalue = 0;     /* integer value */
+        int assignmentDone = 0;
         
         
         
@@ -330,8 +336,7 @@ int comdec(char* cmnd)
         
         clist_ptr = commands;
         
-        // Now have the command text -- save that to history buffer
-        
+        // Now have the command text -- save that to history buffer, unless we are in a macro or execute
         if(!macflag && !exflag) { // don't buffer stuff going on inside macros and execs
             i = (int)strlen(cmnd);
             if(i>0){
@@ -370,13 +375,15 @@ int comdec(char* cmnd)
         while ( cmnd[i] != EOL  && cmnd[i]!= ';'){
             if ( cmnd[i++] == '='){
                 if(if_condition_met) do_assignment(cmnd);		// don't do assignments if an if condition is not met
-                return NO_ERR;
+                if(exflag==0 && macflag==0) return NO_ERR;
+                assignmentDone = 1;
             }
         }
         
-        // while not end of command ...
+        
         i = 0;
-        while ( cmnd[i] != EOL  && cmnd[i] != ' ' && cmnd[i]!= ';'){
+        // while not end of command ...
+        while ( cmnd[i] != EOL  && cmnd[i] != ' ' && cmnd[i]!= ';' && !assignmentDone){
             if ( toupper(cmnd[i]) !=  clist_ptr[cp].text.name[i] ) {
                 cp++;           /* next command */
                 i = 0;
@@ -394,7 +401,7 @@ int comdec(char* cmnd)
                     beep();
                     printf("No such command: %s\n",cmnd);
                     if (macflag || exflag) {
-                        i=-1;
+                        i=-1;   // in a macro with invalid command
                         break;
                     }
                     return CMND_ERR;
@@ -403,7 +410,7 @@ int comdec(char* cmnd)
                 i++;
             }
         }
-        if(i>=0){    // we have a command from the list
+        if(i>=0 && !assignmentDone){    // we have a command from the list
             
             if (clst == 0 )
                 fnc =  commands[cp].fnc;

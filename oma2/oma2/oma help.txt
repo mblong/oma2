@@ -74,6 +74,9 @@ CMINMX n m
 CYL2
 	Treat the data in the current image as a half cross section of a cylindrically symmetric intensity distribution. The centerline is assumed to be along the LHS of the image. An integrated image is calculated by rotating the image  about the centerline. Does a parallel projection.
 
+CLEARBADPIX
+ 	Sets pixels tagged as bad to the value of their 8 nearest neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands.
+
 DISPLAY [string] 
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
 
@@ -160,6 +163,9 @@ FECHO string
 
 FOPEN <filename>
 	Open a text file with the name <filename> for I/O. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.
+
+FINDBADPIX Counts
+	Searches the current image buffer for pixels whose value is more than "Counts" above that of its nearest eight neighbors. Those pixels are tagged as hot pixels.
 
 GET <filename>
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.
@@ -283,6 +289,19 @@ RMACRO [n m]
 ROTATE [value]
 	Rotates the data in the current image buffer.  If no value is specified, the image is rotated by 90 degrees. If a value is specified, the image is rotated by the specified number of degrees (this may be a real number).
 
+READBADPIX filename
+ Read in bad pixel data from a text file.
+	Format is:
+	# of bad pixels
+	detector_width	detector_height
+	bad_pix1_x
+	bad_pix1_y
+	bad_pix2_x
+	bad_pix2_y
+	.
+	.
+	.
+
 SAVEFILE <filename>
 	Saves the current data buffer to the specified file.
 
@@ -334,4 +353,19 @@ VARIABLES
 	As with loops, the end of a variable can be tagged by adding a '\' For example,
 	save datfile_@my_var\_corrected
 	See also commands FLOAT and INTVARIABLE
+
+WRITEBADPIX filename
+	save bad pixel data to a text file.
+	Format is:
+	# of bad pixels
+	detector_width	detector_height
+	bad_pix1_x
+	bad_pix1_y
+	bad_pix2_x
+	bad_pix2_y
+	.
+	.
+	.
+
+
 
