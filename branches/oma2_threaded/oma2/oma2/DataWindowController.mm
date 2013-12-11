@@ -23,6 +23,7 @@ extern AppController* appController;
 @synthesize hasRowPlot;
 @synthesize hasColPlot;
 @synthesize thePalette;
+//@synthesize bitmap;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -113,6 +114,7 @@ extern AppController* appController;
     [self setThePalette:iBitmap.getpalette()];
     
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
+    //bitmap = [[NSBitmapImageRep alloc]
                                 initWithBitmapDataPlanes: iBitmap.getpixdatap() 
                                 pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
                                 bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
@@ -122,11 +124,22 @@ extern AppController* appController;
     
     bitmap = [bitmap  bitmapImageRepByRetaggingWithColorSpace:[NSColorSpace genericRGBColorSpace]];
     
-    NSImage *im = [[NSImage alloc] init];
+    //NSImage* im = [[NSImage alloc] initByReferencingFile:@"./Contents/Resources/curve.jpg"];
+
+    
+    NSImage* im = [[NSImage alloc] initWithSize:NSMakeSize(iBitmap.getwidth(), iBitmap.getheight())];
     [im addRepresentation:bitmap];
+    
+    
+    NSData* tifdata = [im TIFFRepresentation];
+    NSImageRep* tifrep = [NSBitmapImageRep imageRepWithData:tifdata];
+    [im addRepresentation:tifrep];
+    [im removeRepresentation:bitmap];
+    
     if ( ![im isValid] ) {
         NSLog(@"Invalid Image");
     }
+    //[im setCacheMode:NSImageCacheAlways];
     
     NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
     [imageView setFrame:rect];
@@ -143,6 +156,7 @@ extern AppController* appController;
     
 }
 
+
 -(void) updateImage{
     // this is called when redisplaying the current image from events in the status window
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
@@ -157,6 +171,13 @@ extern AppController* appController;
     
     NSImage *im = [[NSImage alloc] init];
     [im addRepresentation:bitmap];
+    
+    NSData* tifdata = [im TIFFRepresentation];
+    NSImageRep* tifrep = [NSBitmapImageRep imageRepWithData:tifdata];
+    [im addRepresentation:tifrep];
+    [im removeRepresentation:bitmap];
+
+    
     if ( ![im isValid] ) {
         NSLog(@"Invalid Image");
     }
@@ -170,6 +191,11 @@ extern AppController* appController;
     
 
 }
+
+
+
+
+
 
 -(void) placeRowLine: (int) theRow{
     [imageView setRowLine:theRow];
@@ -190,25 +216,50 @@ extern AppController* appController;
     [[appController theWindow] sendEvent: anEvent];
 }
 
+
+
 - (IBAction)copy:sender {
+    
+    //this has the same problem as below
     /*
     NSImage *image = [imageView image];
     if (image != nil) {
+        //[image lockFocus];
         NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
         [pasteboard clearContents];
+        
+        //NSRect dataRect =  [imageView frame ];
+        //[imageView lockFocus];
+        //NSBitmapImageRep* imageRep=[[NSBitmapImageRep alloc] initWithFocusedViewRect: dataRect] ;
+        //[image addRepresentation:imageRep];
+        
+        NSData* tifdata = [image TIFFRepresentation];
+        //NSImageRep* tifrep = [NSBitmapImageRep imageRepWithData:tifdata];
+        //[image addRepresentation:tifrep];
         NSArray *copiedObjects = @[image];
+        //[pasteboard declareTypes:copiedObjects owner:self];
         [pasteboard writeObjects:copiedObjects];
+        //[imageView unlockFocus];
+        //[image unlockFocus];
     }
+   
     */
     // this copies the image and any other stuff written on it
-    NSView *view = [self imageView];
+    NSImageView *view = [self imageView];
     NSRect r = [view bounds];
     if (view != nil) {
+        [view lockFocus];
         NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
         [pasteboard clearContents];
-        [view writePDFInsideRect:r toPasteboard: pasteboard];
-    }
+        //NSArray *copiedObjects = @[image];
+        //[pasteboard declareTypes:[NSArray arrayWithObject:NSPasteboardTypePDF] owner:self];
 
+        [view writePDFInsideRect:r toPasteboard: pasteboard];
+        [view unlockFocus];
+    }
+ 
 }
+
+
 
 @end
