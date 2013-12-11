@@ -2094,8 +2094,8 @@ int savsettings(int n,char* args)
 	int err;
 	
 	if(*args == 0){	// no file name was specified, use the default name and put it in the oma application
-		strcpy(txt,SETTINGSFILE);
-		err = saveprefs (txt);
+		strlcpy(txt,SETTINGSFILE,CHPERLN);
+		err = saveprefs(txt);
 		return err;
 	} else { // otherwise, add the prefix and suffix and use the name specified
 		err = saveprefs((char*)fullname(args, SETTINGS_DATA));

@@ -86,7 +86,7 @@ int savefile_c(int n,char* args)
 	if(*args == 0){	// no file name was specified
 		return FILE_ERR;
 	} else { // otherwise, add the prefix and suffix and use the name specified
-		iBuffer.saveFile(args);
+		iBuffer.saveFile(args,SHORT_NAME);
 		return iBuffer.err();
 	}
 }

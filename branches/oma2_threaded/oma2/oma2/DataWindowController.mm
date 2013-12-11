@@ -114,32 +114,30 @@ extern AppController* appController;
     [self setThePalette:iBitmap.getpalette()];
     
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
-    //bitmap = [[NSBitmapImageRep alloc]
-                                initWithBitmapDataPlanes: iBitmap.getpixdatap() 
+                                //initWithBitmapDataPlanes: iBitmap.getpixdatap()
+                                initWithBitmapDataPlanes: nil
                                 pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
                                 bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
-                                colorSpaceName:NSCalibratedRGBColorSpace
+                                colorSpaceName:NSDeviceRGBColorSpace
                                 bytesPerRow: 4*iBitmap.getwidth()  
                                 bitsPerPixel: 32];
     
-    bitmap = [bitmap  bitmapImageRepByRetaggingWithColorSpace:[NSColorSpace genericRGBColorSpace]];
-    
+    memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*4);
     //NSImage* im = [[NSImage alloc] initByReferencingFile:@"./Contents/Resources/curve.jpg"];
 
-    
     NSImage* im = [[NSImage alloc] initWithSize:NSMakeSize(iBitmap.getwidth(), iBitmap.getheight())];
     [im addRepresentation:bitmap];
     
-    
+    /*
     NSData* tifdata = [im TIFFRepresentation];
     NSImageRep* tifrep = [NSBitmapImageRep imageRepWithData:tifdata];
     [im addRepresentation:tifrep];
     [im removeRepresentation:bitmap];
+    */
     
     if ( ![im isValid] ) {
         NSLog(@"Invalid Image");
     }
-    //[im setCacheMode:NSImageCacheAlways];
     
     NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
     [imageView setFrame:rect];
@@ -148,8 +146,6 @@ extern AppController* appController;
     [imageView setRowLine: -1];
     [imageView setColLine: -1];
     [imageView setRowWindowController: NULL];
-    
-    //NSBitmapImageRep* bitmap2 = [imageview bitmapData];
     
     //[imageView setNeedsDisplay:YES]; // for display in macro, this doesn't do the job
     [imageView display];
@@ -160,14 +156,15 @@ extern AppController* appController;
 -(void) updateImage{
     // this is called when redisplaying the current image from events in the status window
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
-                                initWithBitmapDataPlanes: iBitmap.getpixdatap() 
+                                initWithBitmapDataPlanes: nil
                                 pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
                                 bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
-                                colorSpaceName:NSCalibratedRGBColorSpace
+                                colorSpaceName:NSDeviceRGBColorSpace
                                 bytesPerRow: 4*iBitmap.getwidth()  
                                 bitsPerPixel: 32];
     
-    bitmap = [bitmap  bitmapImageRepByRetaggingWithColorSpace:[NSColorSpace genericRGBColorSpace]];
+    memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*4);
+    //bitmap = [bitmap  bitmapImageRepByRetaggingWithColorSpace:[NSColorSpace genericRGBColorSpace]];
     
     NSImage *im = [[NSImage alloc] init];
     [im addRepresentation:bitmap];
@@ -193,10 +190,6 @@ extern AppController* appController;
 }
 
 
-
-
-
-
 -(void) placeRowLine: (int) theRow{
     [imageView setRowLine:theRow];
     [imageView display];
@@ -220,42 +213,13 @@ extern AppController* appController;
 
 - (IBAction)copy:sender {
     
-    //this has the same problem as below
-    /*
-    NSImage *image = [imageView image];
-    if (image != nil) {
-        //[image lockFocus];
-        NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
-        [pasteboard clearContents];
-        
-        //NSRect dataRect =  [imageView frame ];
-        //[imageView lockFocus];
-        //NSBitmapImageRep* imageRep=[[NSBitmapImageRep alloc] initWithFocusedViewRect: dataRect] ;
-        //[image addRepresentation:imageRep];
-        
-        NSData* tifdata = [image TIFFRepresentation];
-        //NSImageRep* tifrep = [NSBitmapImageRep imageRepWithData:tifdata];
-        //[image addRepresentation:tifrep];
-        NSArray *copiedObjects = @[image];
-        //[pasteboard declareTypes:copiedObjects owner:self];
-        [pasteboard writeObjects:copiedObjects];
-        //[imageView unlockFocus];
-        //[image unlockFocus];
-    }
-   
-    */
     // this copies the image and any other stuff written on it
     NSImageView *view = [self imageView];
     NSRect r = [view bounds];
     if (view != nil) {
-        [view lockFocus];
         NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
         [pasteboard clearContents];
-        //NSArray *copiedObjects = @[image];
-        //[pasteboard declareTypes:[NSArray arrayWithObject:NSPasteboardTypePDF] owner:self];
-
         [view writePDFInsideRect:r toPasteboard: pasteboard];
-        [view unlockFocus];
     }
  
 }

@@ -9,6 +9,7 @@
 #import "oma2AppDelegate.h"
 #import "StatusController.h"
 #import "oma2.h"
+#import "UI.h"
 
 extern StatusController *statusController;
 extern oma2UIData UIData;
@@ -60,6 +61,12 @@ void setUpUIData();
     int savsettings(int n,char* args);
     savsettings(0,&c);
     
+}
+- (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename {
+    NSString *ext = [filename pathExtension];
+    const char* cname = [filename cStringUsingEncoding:NSASCIIStringEncoding];
+    const char* cext = [ext cStringUsingEncoding:NSASCIIStringEncoding];
+    return dropped_file((char*)cext,(char*)cname);
 }
 
 

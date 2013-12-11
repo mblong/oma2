@@ -97,6 +97,8 @@ Existing Command Issues:
 
 Drop Files onto status broken. -- fixed again
 
+Should update the TIFF framework to a newer version -- this crashes on some newer tif files.
+
 _____________________________
 UI Issues:
 
@@ -128,6 +130,8 @@ UI Needs
     Double Click: 
     
     File Typing
+    
+    New Icon
 
 _________________
 Implementation Notes

@@ -77,7 +77,7 @@ public:
     void getmaxx();             // fill in the min and max for the current Image
     void clip(DATAWORD);        // set values > specifiedValue to specifiedValue
     void floor(DATAWORD);       // set values < specifiedValue to specifiedValue
-    void saveFile(char*);       // write the Image to a file
+    void saveFile(char*, int);  // write the Image to a file; second argument tells if name is complete or not
     
     void copyABD(Image);        // copy All But Data from one image to another
     int* getspecs();            // returns a copy of the image specs array
