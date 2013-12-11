@@ -27,7 +27,6 @@
 @property int         hasRowPlot;
 @property int         hasColPlot;
 @property int thePalette;
-//@property NSBitmapImageRep* bitmap;
 
 -(void) placeImage: (NSRect) theRect;
 -(void) placeRowLine: (int) theRow;

@@ -66,6 +66,66 @@ extern oma2UIData UIData;
     [preferenceController fillInUIData];
 }
 
+- (IBAction)openDocument:(id)sender{
+    NSOpenPanel* openDlg = [NSOpenPanel openPanel];
+    // Enable the selection of files in the dialog.
+    [openDlg setCanChooseFiles:YES];
+    // Disable the selection of directories in the dialog.
+    [openDlg setCanChooseDirectories:NO];
+    [openDlg setAllowedFileTypes: [[NSArray alloc] initWithObjects:
+                                   @"dat",@"mac",@"jpg",@"tif",@"tiff",@"hdr",@"o2s", nil]];
+    
+    // Display the dialog.  If the OK button was pressed,
+    // process the files.
+    if ( [openDlg runModal] == NSOKButton )
+    {
+        // Get an array containing the full filenames of all
+        // files and directories selected.
+        NSArray* files = [openDlg URLs];
+        
+        // Loop through all the files and process them.
+        for( int i = 0; i < [files count]; i++ )
+        {
+            NSURL *fileURL = [files objectAtIndex:i];
+            NSLog(@"%@",[fileURL path]);
+            NSString *ext = [fileURL pathExtension] ;
+            NSString *name = [fileURL path] ;
+            const char* cname = [name cStringUsingEncoding:NSASCIIStringEncoding];
+            const char* cext = [ext cStringUsingEncoding:NSASCIIStringEncoding];
+            if(dropped_file((char*)cext,(char*)cname))
+                [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
+        }
+    }
+    
+}
+
+- (IBAction)saveData:(id)sender{
+    
+    NSSavePanel*    panel = [NSSavePanel savePanel];
+    [panel setNameFieldStringValue:@"OMA2 Data.dat"];
+    
+    int result	= (int)[panel runModal];
+    if (result == NSOKButton) {
+         NSString  *name = [[panel URL] path];
+        const char* cname = [name cStringUsingEncoding:NSASCIIStringEncoding];
+        iBuffer.saveFile((char*)cname,LONG_NAME);
+    }
+}
+
+- (IBAction)saveSettings:(id)sender{
+    
+    NSSavePanel*    panel = [NSSavePanel savePanel];
+    [panel setNameFieldStringValue:@"OMA2 Settings.o2s"];
+    
+    int result	= (int)[panel runModal];
+    if (result == NSOKButton) {
+        NSString  *name = [[panel URL] path];
+        const char* cname = [name cStringUsingEncoding:NSASCIIStringEncoding];
+        saveprefs((char*)cname);
+    }
+}
+
+
 - (IBAction)plotRows:(id)sender{
     NSWindow* activekey = [NSApp keyWindow];
     NSWindow* activemain = [NSApp mainWindow];
@@ -465,9 +525,12 @@ extern oma2UIData UIData;
         for (id thewindow in windowArray){
             if ([thewindow isKindOfClass:[DataWindowController class]]){
                 [thewindow setHasRowPlot:CLOSE_CLEANUP_DONE];
+                // this is for communication with [dataWindowController windowWillClose]
+                // we don't need to do any similar thing with hasColPlot, since the whole dataWindowController and imageView go away
             }
             if ([thewindow isKindOfClass:[DrawingWindowController class]]){
                 [thewindow setDrawingType:CLOSE_CLEANUP_DONE];
+                // see above
             }
             [[thewindow window ] close];
         }

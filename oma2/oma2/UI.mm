@@ -65,9 +65,9 @@ void update_UI(){
     
 }
 
-void dropped_file(char* extension, char* name){
+BOOL dropped_file(char* extension, char* name){
     
-    printf("File ext is: %s\n",extension);
+    //printf("File ext is: %s\n",extension);
     printf("File name is: %s\n",name);
     if(strcmp(extension, "dat")==0 || strcmp(extension, "nef")==0 || strcmp(extension, "jpg")==0
        || strcmp(extension, "tif")==0 || strcmp(extension, "tiff")==0 || strcmp(extension, "hdr")==0){
@@ -76,7 +76,7 @@ void dropped_file(char* extension, char* name){
             beep();
             printf("Could not load %s\n",name);
             [appController appendText: @"OMA2>"];
-            return;
+            return NO;
         }
         iBuffer.free();     // release the old data
         iBuffer = new_im;   // this is the new data
@@ -85,6 +85,7 @@ void dropped_file(char* extension, char* name){
 
         display(0,(char*)"Data");
         [appController appendText: @"OMA2>"];
+        return YES;
     }
     if(strcmp(extension, "mac")==0){
         extern char	macbuf[];
@@ -93,6 +94,7 @@ void dropped_file(char* extension, char* name){
         if(fd == -1) {
             beep();
             printf("Macro File '%s' Not Found.\n",name);
+            return NO;
         }
         for(i=0; i<MBUFLEN; i++) *(macbuf+i) = 0;	// clear the buffer
         nread = (int)read(fd,macbuf,MBUFLEN);		/* read the largest buffer  */
@@ -113,7 +115,16 @@ void dropped_file(char* extension, char* name){
         close(fd);
         clear_macro_to_end();		/* insert trailing zeros after the macro */
         [appController appendText: @"OMA2>"];
+        return YES;
     }
+    if(strcmp(extension, "o2s")==0){
+        printf("Loading Settings...\n");
+        int err = loadprefs(name);
+        [appController appendText: @"OMA2>"];
+        if (err == NO_ERR) return YES;
+    }
+    
+    return NO;
 }
 
 

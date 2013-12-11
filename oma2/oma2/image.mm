@@ -506,13 +506,18 @@ void Image::getmaxx()
     
 }
 
-void Image::saveFile(char* name){
+void Image::saveFile(char* name, int kindOfName){
     char txt[HEADLEN];
     int nspecs = NSPECS;
     int nvalues = NVALUES;
     int nrulerchar = NRULERCHAR;
+    int fd;
     
-    int fd = creat(fullname(name,SAVE_DATA),PMODE);
+    if(kindOfName == SHORT_NAME)
+        fd = creat(fullname(name,SAVE_DATA),PMODE);
+    else
+        fd = creat(name,PMODE);
+    
     if(fd == -1) {
 		beep();
 		error = FILE_ERR;

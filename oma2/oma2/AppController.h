@@ -59,6 +59,11 @@ int comdec(char*);
 - (IBAction)plotRows:(id)sender;
 - (IBAction)plotCols:(id)sender;
 
+- (IBAction)saveData:(id)sender;
+- (IBAction)saveSettings:(id)sender;
+
+//- (IBAction)openFile:(id)sender;
+
 -(void) showDataWindow:(char*) windowname;
 -(void) labelDataWindow: (char*) theLabel;
 -(void) labelMinMax;
