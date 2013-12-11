@@ -13,20 +13,21 @@
 @class DataView;
 
 @interface DataWindowController : NSWindowController
-/*{
+{
     NSString    *windowName;
     DataView    *__weak imageView;
     int         hasRowPlot;
     int         hasColPlot;
     int         thePalette;
 }
-*/
+
 @property (copy) NSString *windowName;
-@property __strong IBOutlet DataView *imageView;
+@property __weak IBOutlet DataView *imageView;      // what's the difference between weak and strong here?
 @property NSRect windowRect;
 @property int         hasRowPlot;
 @property int         hasColPlot;
 @property int thePalette;
+//@property NSBitmapImageRep* bitmap;
 
 -(void) placeImage: (NSRect) theRect;
 -(void) placeRowLine: (int) theRow;
