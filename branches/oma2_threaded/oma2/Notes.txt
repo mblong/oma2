@@ -85,6 +85,12 @@ Addressed UI Issues:
   √ on typing, always move cursor to end of command buffer
   
   √ GET command --  ".tif" still needed.
+  
+  √ Crash on copy data window that isn't the current one -- this only happens for data windows, not for drawing windows.
+  
+  √ Crash on resizing data window that isn't the current one when size is smaller than original. in DataView.mm drawRect
+  
+  √ -> Open, Save, Save Settings
 _____________________________
 Needed Commands
  LOG command
@@ -102,12 +108,8 @@ Should update the TIFF framework to a newer version -- this crashes on some newe
 _____________________________
 UI Issues:
 
-    
-    Crash on resizing data window that isn't the current one when size is smaller than original. in DataView.mm drawRect
-        
-    Crash on copy data window that isn't the current one -- this only happens for data windows, not for drawing windows.
 
-    
+
 UI Needs
 
 
@@ -125,7 +127,7 @@ UI Needs
         -> Display macro number
         
     Menu:
-        -> Open, Save, Save Settings
+
         
     Double Click: 
     

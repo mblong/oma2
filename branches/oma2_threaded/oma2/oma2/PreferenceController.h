@@ -26,6 +26,8 @@
 
 - (IBAction)newSavePrefix:(id)sender;
 
+- (IBAction)selectPalette:(id)sender;
+@property (weak) IBOutlet NSMatrix *paletteSelected;
 
 @property (weak) IBOutlet NSTextField *savePrefix;
 @property (weak) IBOutlet NSTextField *getPrefix;
