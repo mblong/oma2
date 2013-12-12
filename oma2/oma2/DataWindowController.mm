@@ -169,24 +169,12 @@ extern AppController* appController;
     NSImage *im = [[NSImage alloc] init];
     [im addRepresentation:bitmap];
     
-    NSData* tifdata = [im TIFFRepresentation];
-    NSImageRep* tifrep = [NSBitmapImageRep imageRepWithData:tifdata];
-    [im addRepresentation:tifrep];
-    [im removeRepresentation:bitmap];
-
-    
-    if ( ![im isValid] ) {
-        NSLog(@"Invalid Image");
-    }
-    
     NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
     [imageView setFrame:rect];
     [imageView setImageScaling:NSScaleToFit];
     [imageView setImage:im];
 
     [imageView display];
-    
-
 }
 
 

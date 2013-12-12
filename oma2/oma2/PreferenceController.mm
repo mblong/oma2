@@ -21,6 +21,7 @@ extern oma2UIData UIData;
 @synthesize saveSuffix;
 
 @synthesize sometext;
+@synthesize paletteSelected;
 
 
 - (id)initWithWindow:(NSWindow *)window
@@ -63,8 +64,16 @@ extern oma2UIData UIData;
     fullname((char*)text,LOAD_MACRO_SUFFIX);
     text = [[settingsSuffix stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
     fullname((char*)text,LOAD_SETTINGS_SUFFIX);
+}
 
+- (IBAction)selectPalette:(id)sender{
+    int palette = (int)[paletteSelected selectedColumn]*4 + (int)[paletteSelected selectedRow];
+    //[self setTool_selected:(int)[toolSelected selectedColumn]];
+    //appController.tool = tool_selected;
+    //UIData.thepalette = palette;
+    NSLog(@" Palette number %d\n",palette);
 
+    
 }
 
 - (void) fillInUIData{
@@ -95,5 +104,9 @@ extern oma2UIData UIData;
     
     [super keyDown:anEvent];
     
+}
+
+-(void) textDidChange:(NSNotification *) pNotify{
+    NSLog(@"type");
 }
 @end
