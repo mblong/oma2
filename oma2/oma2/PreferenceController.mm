@@ -22,10 +22,9 @@ extern oma2UIData UIData;
 
 @synthesize sometext;
 
-@synthesize theWindow;
-
 @synthesize paletteSelected;
 @synthesize transparencyValue;
+@synthesize  transparent;
 
 
 - (id)initWithWindow:(NSWindow *)window
@@ -45,13 +44,11 @@ extern oma2UIData UIData;
     
     //[[self window] display];
     [self showWindow:self];
-    theWindow = [self window];
-    
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
-- (IBAction)newSettings:(id)sender {
+- (IBAction)saveNewSettings:(id)sender {
     const char* text = [[savePrefix stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
     fullname((char*)text,LOAD_SAVE_PREFIX);
     text = [[getPrefix stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
@@ -70,44 +67,45 @@ extern oma2UIData UIData;
     text = [[settingsSuffix stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
     fullname((char*)text,LOAD_SETTINGS_SUFFIX);
     
-    // close the window here
-    [self close];
+    int number = (int)[transparencyValue integerValue];
+    if (number < 0) number = 0;
+    if (number > 100) number = 100;
     
+    UIData.alphaValue = 1. - (float)number/100.;
+    
+    // close the window here
+    //[[self window] close];  // this doesn't work -- window is nil
+    // this does work -- I don't understand this; I guess because the window was opened in the appController
+    [[[appController preferenceController] window] close];
+    
+}
+
+- (IBAction)forgetNewSettings:(id)sender {
+    [[[appController preferenceController] window] close];
 }
 
 - (IBAction)selectPalette:(id)sender{
     int palette = (int)[paletteSelected selectedColumn]*4 + (int)[paletteSelected selectedRow];
-    //[self setTool_selected:(int)[toolSelected selectedColumn]];
-    //appController.tool = tool_selected;
-    //UIData.thepalette = palette;
-    NSLog(@" Palette number %d\n",palette);
-
-    
+    UIData.thepalette = palette;
+    update_UI();
 }
 
 - (void) fillInUIData{
-    [[self savePrefix] setStringValue:[[NSString alloc]initWithCString:UIData.saveprefixbuf 
-                                                              encoding:NSASCIIStringEncoding]];
-    [[self getPrefix] setStringValue:[[NSString alloc]initWithCString:UIData.getprefixbuf 
-                                                              encoding:NSASCIIStringEncoding]];
-    [[self settingsPrefix] setStringValue:[[NSString alloc]initWithCString:UIData.graphicsprefixbuf 
-                                                                  encoding:NSASCIIStringEncoding]];
-    [[self macroPrefix] setStringValue:[[NSString alloc]initWithCString:UIData.macroprefixbuf 
-                                                              encoding:NSASCIIStringEncoding]];
-    [[self saveSuffix] setStringValue:[[NSString alloc]initWithCString:UIData.savesuffixbuf 
-                                                              encoding:NSASCIIStringEncoding]];
-    [[self getSuffix] setStringValue:[[NSString alloc]initWithCString:UIData.getsuffixbuf 
-                                                             encoding:NSASCIIStringEncoding]];
-    [[self settingsSuffix] setStringValue:[[NSString alloc]initWithCString:UIData.graphicssuffixbuf 
-                                                                  encoding:NSASCIIStringEncoding]];
-    [[self macroSuffix] setStringValue:[[NSString alloc]initWithCString:UIData.macrosuffixbuf 
-                                                               encoding:NSASCIIStringEncoding]];
+    
+    [savePrefix setStringValue:[NSString stringWithCString:UIData.saveprefixbuf encoding:NSASCIIStringEncoding]];
+    [getPrefix setStringValue:[NSString stringWithCString:UIData.getprefixbuf encoding:NSASCIIStringEncoding]];
+    [settingsPrefix setStringValue:[NSString stringWithCString:UIData.graphicsprefixbuf encoding:NSASCIIStringEncoding]];
+    [macroPrefix setStringValue:[NSString stringWithCString:UIData.macroprefixbuf encoding:NSASCIIStringEncoding]];
+    [saveSuffix setStringValue:[NSString stringWithCString:UIData.savesuffixbuf encoding:NSASCIIStringEncoding]];
+    [getSuffix setStringValue:[NSString stringWithCString:UIData.getsuffixbuf encoding:NSASCIIStringEncoding]];
+    [settingsSuffix setStringValue:[NSString stringWithCString:UIData.graphicssuffixbuf encoding:NSASCIIStringEncoding]];
+    [macroSuffix setStringValue:[NSString stringWithCString:UIData.macrosuffixbuf encoding:NSASCIIStringEncoding]];
     
     int row = UIData.thepalette%4;
     int col = UIData.thepalette/4;
     [[self paletteSelected] selectCellAtRow:row column:col];
     
-    [transparencyValue setStringValue: [NSString stringWithFormat:@"%f",100*UIData.alphaValue]];
+    [transparencyValue setStringValue:[NSString stringWithFormat:@"%.0f",100.*(1.-UIData.alphaValue)]];
     
 }
 
@@ -115,14 +113,4 @@ extern oma2UIData UIData;
     return YES;
 }
 
-
-- (void)keyDown:(NSEvent *)anEvent{
-    
-    [super keyDown:anEvent];
-    
-}
-
--(void) textDidChange:(NSNotification *) pNotify{
-    NSLog(@"type");
-}
 @end

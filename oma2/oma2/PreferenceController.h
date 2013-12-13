@@ -21,15 +21,18 @@
     NSTextField *__weak macroSuffix;
     NSTextField *__weak settingsSuffix;
     
+    NSTextField *__weak transparencyValue;
+    
     NSString *sometext;
 }
 
-- (IBAction)newSettings:(id)sender;
+- (IBAction)saveNewSettings:(id)sender;
+- (IBAction)forgetNewSettings:(id)sender;
 
 - (IBAction)selectPalette:(id)sender;
 
-@property (weak) NSWindow* theWindow;
 
+@property (weak) IBOutlet NSNumber* transparent;
 @property (weak) IBOutlet NSMatrix *paletteSelected;
 
 @property (weak) IBOutlet NSTextField *transparencyValue;
