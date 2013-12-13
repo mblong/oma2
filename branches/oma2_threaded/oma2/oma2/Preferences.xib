@@ -16,6 +16,7 @@
                 <outlet property="saveSuffix" destination="39" id="49"/>
                 <outlet property="settingsPrefix" destination="37" id="53"/>
                 <outlet property="settingsSuffix" destination="45" id="55"/>
+                <outlet property="transparencyValue" destination="hwV-ke-a4M" id="8JB-vg-yG0"/>
                 <outlet property="window" destination="1" id="18"/>
             </connections>
         </customObject>
@@ -41,30 +42,85 @@
                                 <view key="view" id="7">
                                     <rect key="frame" x="10" y="33" width="677" height="480"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="K4e-ep-xd1">
+                                            <rect key="frame" x="305" y="267" width="66" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Coming..." id="2bt-KM-3zY">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
                                 </view>
                             </tabViewItem>
                             <tabViewItem label="Contours" identifier="2" id="5">
                                 <view key="view" id="6">
                                     <rect key="frame" x="10" y="33" width="677" height="480"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="hP5-QU-TrK">
+                                            <rect key="frame" x="305" y="255" width="66" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Coming..." id="Fn3-PE-dIv">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
                                 </view>
                             </tabViewItem>
                             <tabViewItem label="Surface" identifier="" id="8">
                                 <view key="view" id="9">
                                     <rect key="frame" x="10" y="33" width="677" height="480"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="dPi-5f-ljr">
+                                            <rect key="frame" x="305" y="231" width="66" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Coming..." id="CyL-Xp-eXX">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
                                 </view>
                             </tabViewItem>
                             <tabViewItem label="Histogram" identifier="" id="10">
                                 <view key="view" id="11">
                                     <rect key="frame" x="10" y="33" width="677" height="480"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="MwB-gZ-3LK">
+                                            <rect key="frame" x="305" y="231" width="66" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Coming..." id="Slj-fe-6jH">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
                                 </view>
                             </tabViewItem>
                             <tabViewItem label="Integrated" identifier="" id="12">
                                 <view key="view" id="13">
                                     <rect key="frame" x="10" y="33" width="677" height="480"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Q3m-Aj-2YT">
+                                            <rect key="frame" x="305" y="231" width="66" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Coming..." id="u5H-E0-pdP">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
                                 </view>
                             </tabViewItem>
                             <tabViewItem label="Prefixes" identifier="" id="14">
@@ -199,18 +255,18 @@
                                             </textFieldCell>
                                         </textField>
                                         <button verticalHuggingPriority="750" id="56">
-                                            <rect key="frame" x="536" y="10" width="106" height="32"/>
+                                            <rect key="frame" x="529" y="31" width="106" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="57">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
-                                                <connections>
-                                                    <action selector="newSettings:" target="16" id="ZZn-V6-AWg"/>
-                                                </connections>
                                             </buttonCell>
+                                            <connections>
+                                                <action selector="saveNewSettings:" target="16" id="aLm-V2-eLp"/>
+                                            </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" id="qPk-e5-09I">
-                                            <rect key="frame" x="422" y="10" width="106" height="32"/>
+                                            <rect key="frame" x="396" y="31" width="106" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ERJ-V9-adI">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -220,7 +276,7 @@ Gw
 </string>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="newSavePrefix:" target="16" id="gn2-C6-GvE"/>
+                                                <action selector="forgetNewSettings:" target="16" id="eDy-Y4-L6N"/>
                                             </connections>
                                         </button>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="BVZ-My-tfs">
@@ -325,24 +381,18 @@ Gw
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="26j-DT-g8Z">
-                                            <rect key="frame" x="286" y="31" width="108" height="47"/>
+                                            <rect key="frame" x="232" y="33" width="108" height="47"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Control Click in wondow to toggle transparency." id="oWa-Wh-FYa">
+                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Control Click in window to toggle transparency." id="oWa-Wh-FYa">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField verticalHuggingPriority="750" id="05o-ne-QWW">
-                                            <rect key="frame" x="182" y="45" width="44" height="22"/>
+                                        <textField verticalHuggingPriority="750" id="hwV-ke-a4M">
+                                            <rect key="frame" x="179" y="45" width="44" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="hFc-9K-GDt">
-                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.###" negativeFormat="#,##0.###" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="0" maximumFractionDigits="3" id="hpB-fn-Tl1">
-                                                    <real key="roundingIncrement" value="0.0"/>
-                                                    <metadata>
-                                                        <bool key="localizesFormat" value="YES"/>
-                                                    </metadata>
-                                                </numberFormatter>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="4A1-K9-WF8">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -367,7 +417,7 @@ Gw
                 <outlet property="saveSuffix" destination="39" id="61"/>
                 <outlet property="settingsPrefix" destination="37" id="66"/>
                 <outlet property="settingsSuffix" destination="45" id="68"/>
-                <outlet property="transparencyValue" destination="05o-ne-QWW" id="uah-qV-fkQ"/>
+                <outlet property="transparencyValue" destination="hwV-ke-a4M" id="Am4-Va-H0D"/>
             </connections>
         </customObject>
     </objects>
