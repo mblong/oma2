@@ -24,10 +24,15 @@
     NSString *sometext;
 }
 
-- (IBAction)newSavePrefix:(id)sender;
+- (IBAction)newSettings:(id)sender;
 
 - (IBAction)selectPalette:(id)sender;
+
+@property (weak) NSWindow* theWindow;
+
 @property (weak) IBOutlet NSMatrix *paletteSelected;
+
+@property (weak) IBOutlet NSTextField *transparencyValue;
 
 @property (weak) IBOutlet NSTextField *savePrefix;
 @property (weak) IBOutlet NSTextField *getPrefix;
