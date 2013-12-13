@@ -21,7 +21,11 @@ extern oma2UIData UIData;
 @synthesize saveSuffix;
 
 @synthesize sometext;
+
+@synthesize theWindow;
+
 @synthesize paletteSelected;
+@synthesize transparencyValue;
 
 
 - (id)initWithWindow:(NSWindow *)window
@@ -41,12 +45,13 @@ extern oma2UIData UIData;
     
     //[[self window] display];
     [self showWindow:self];
-    [self fillInUIData];
+    theWindow = [self window];
+    
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
-- (IBAction)newSavePrefix:(id)sender {
+- (IBAction)newSettings:(id)sender {
     const char* text = [[savePrefix stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
     fullname((char*)text,LOAD_SAVE_PREFIX);
     text = [[getPrefix stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
@@ -64,6 +69,10 @@ extern oma2UIData UIData;
     fullname((char*)text,LOAD_MACRO_SUFFIX);
     text = [[settingsSuffix stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
     fullname((char*)text,LOAD_SETTINGS_SUFFIX);
+    
+    // close the window here
+    [self close];
+    
 }
 
 - (IBAction)selectPalette:(id)sender{
@@ -93,6 +102,13 @@ extern oma2UIData UIData;
                                                                   encoding:NSASCIIStringEncoding]];
     [[self macroSuffix] setStringValue:[[NSString alloc]initWithCString:UIData.macrosuffixbuf 
                                                                encoding:NSASCIIStringEncoding]];
+    
+    int row = UIData.thepalette%4;
+    int col = UIData.thepalette/4;
+    [[self paletteSelected] selectCellAtRow:row column:col];
+    
+    [transparencyValue setStringValue: [NSString stringWithFormat:@"%f",100*UIData.alphaValue]];
+    
 }
 
 -(BOOL) acceptsFirstResponder{

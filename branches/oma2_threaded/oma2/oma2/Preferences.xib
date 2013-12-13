@@ -22,7 +22,7 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" wantsToBeColor="NO" animationBehavior="default" id="1">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="35" y="200" width="723" height="542"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
@@ -199,25 +199,30 @@
                                             </textFieldCell>
                                         </textField>
                                         <button verticalHuggingPriority="750" id="56">
-                                            <rect key="frame" x="534" y="9" width="59" height="32"/>
+                                            <rect key="frame" x="536" y="10" width="106" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="push" title="Set" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="57">
+                                            <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="57">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
+                                                <connections>
+                                                    <action selector="newSettings:" target="16" id="ZZn-V6-AWg"/>
+                                                </connections>
+                                            </buttonCell>
+                                        </button>
+                                        <button verticalHuggingPriority="750" id="qPk-e5-09I">
+                                            <rect key="frame" x="422" y="10" width="106" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ERJ-V9-adI">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                                <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="newSavePrefix:" target="16" id="58"/>
+                                                <action selector="newSavePrefix:" target="16" id="gn2-C6-GvE"/>
                                             </connections>
                                         </button>
-                                        <textField verticalHuggingPriority="750" id="69">
-                                            <rect key="frame" x="290" y="43" width="96" height="22"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="70">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="BVZ-My-tfs">
                                             <rect key="frame" x="58" y="126" width="257" height="33"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -258,11 +263,11 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" image="pal6" id="V1T-OI-4FR"/>
                                         </imageView>
-                                        <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" autorecalculatesCellSize="YES" id="ut4-KH-YWc">
+                                        <matrix autoresizesSubviews="NO" verticalHuggingPriority="750" allowsEmptySelection="NO" autosizesCells="NO" id="ut4-KH-YWc">
                                             <rect key="frame" x="39" y="121" width="616" height="174"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="cellSize" width="22" height="18"/>
+                                            <size key="cellSize" width="306" height="42"/>
                                             <size key="intercellSpacing" width="4" height="2"/>
                                             <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="8Hs-FX-eNV">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -310,6 +315,39 @@
                                                 <action selector="selectPalette:" target="16" id="2ky-3h-ll2"/>
                                             </connections>
                                         </matrix>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="tbv-1e-n0v">
+                                            <rect key="frame" x="14" y="48" width="162" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Window Transparency [%]" id="1ro-tu-p5q">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="26j-DT-g8Z">
+                                            <rect key="frame" x="286" y="31" width="108" height="47"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Control Click in wondow to toggle transparency." id="oWa-Wh-FYa">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="05o-ne-QWW">
+                                            <rect key="frame" x="182" y="45" width="44" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="hFc-9K-GDt">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.###" negativeFormat="#,##0.###" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="0" maximumFractionDigits="3" id="hpB-fn-Tl1">
+                                                    <real key="roundingIncrement" value="0.0"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="YES"/>
+                                                    </metadata>
+                                                </numberFormatter>
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
                                     </subviews>
                                 </view>
                             </tabViewItem>
@@ -329,6 +367,7 @@
                 <outlet property="saveSuffix" destination="39" id="61"/>
                 <outlet property="settingsPrefix" destination="37" id="66"/>
                 <outlet property="settingsSuffix" destination="45" id="68"/>
+                <outlet property="transparencyValue" destination="05o-ne-QWW" id="uah-qV-fkQ"/>
             </connections>
         </customObject>
     </objects>
