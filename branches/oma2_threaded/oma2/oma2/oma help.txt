@@ -17,7 +17,7 @@
 ADDFILE <filename>
 	Adds the contents of an OMA file of a given name to the data in the current image data buffer.
 
-ADDTEMPIMAGE name
+ADDTMPIMAGE name
 	Adds the contents of the named temporary image to the data in the current image data buffer.
 
 ABEL
@@ -28,6 +28,18 @@ ABELRECT rec_width [rec_y0 rec_y1]
 
 ABELPREP clip_value [fill_value]
 	Finds the maximum pixel value along horizontal lines in the image. If that maximum is < clip_value, the entire horizontal line is set to fill_value. Default for fill_value is 0.
+
+ACADD
+	Adds the current image data buffer to the accumulator buffer.
+
+ACCUMULATE
+	Allocates and clears memory for an image accumulator buffer that can be used to sum individual images. The size of the accumulator is determined by the image size parameters when the accumulate command is first given.
+
+ACDELETE
+	Frees the memory associated with the accumulator. 
+
+ACGET
+	Moves the data from the accumulator buffer into the current image data area. The previous contents of the image data buffer are destroyed.
 
 BLOCK n [m]
 	Group the image data into n x m blocks (rows x cols). This command reduces the size of the data buffer. The values are summed, pending implementation of the BLKAVE command. If the image is flagged as color, the three color planes are treated separately.
@@ -105,7 +117,7 @@ DMACRO [n] [command]
 DIVFILE <filename>
 	Divides the data in the current buffer by the contents of the specified file.
 
-DIVTEMPIMAGE name
+DIVTMPIMAGE name
 	Divides the data in the current buffer by the contents of the named temporary image.
 
 DIFFX
@@ -174,7 +186,16 @@ GETFILENAMES NameFile
 	Open NameFile (currently uses macro prefix and suffix) which contains the names of files. The NEXTFILE command is used to open the next file. NameFile is left open until all files have been accessed.
 
 GETSETTINGS [filename]
-	Gets settings from the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings from within the oma application are loaded. 
+	Gets settings from the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings from within the oma application are loaded.
+
+GETFUNCTION n filename
+	Read in a tabulated function to be used by the LOOKUP command. n is the function number to be defined. filename is file containing y=f(x) data pairs, preceeded by number of table entries.
+	Assumptions for tabulated functions:
+	File format:
+	first number is integer with the number of pairs to follow
+	pairs are float with x followed by f(x) on the same line
+	x values are ordered smallest to largest
+	y = f(x) is single valued
 
 GMACRO <filename>
 	Loads the contents of the specified file into the current macro buffer.
@@ -185,8 +206,11 @@ GAUSSIAN EdgeValue [x0 y0]
 GREY2RGB [scaleRed scaleGreen scaleBlue]
 	Turns a single plane image into a three plane RGB image. The optional weighting factors are applied to each color plane.
  
- GRADIENT
+GRADIENT
 	Find the magnitude of the gradient of the data in the current image buffer. Use two pixels on either side of current pixel for gradient.
+
+GSMOOTH dx [dy]
+	Gaussian Smoothing of the data. dx and dy are the smoothing size parameters. If dy is omitted, it is taken as dx. dx and dy must be odd. sigma_x = (dx-1)/3.5
 
 GTEMPIMAGE name
 	Get temporary image that has been previously saved using STEMP.
@@ -238,6 +262,9 @@ LOOPBREAK
 LOOPND
 	Specifies the end of a loop initiated with the LOOP command.
 
+LOOKUP fn_number 
+	Redefine the current image using the lookup table specified by a tabulated function. Use GETFUNCT n filename before using this command.
+
 LTEMPIMAGE 
 	List defined temporary images.
 
@@ -253,7 +280,7 @@ MIRROR
 MULFILE <filename>
 	Multiplies the contents of the current data buffer by the contents of the specified file.
 
-MULTEMPIMAGE name
+MULTMPIMAGE name
 	Multiplies the contents of the current data buffer by the contents of the named temporary image.
 
 NEWWINDOW flag
@@ -270,6 +297,9 @@ POSITVE
 
 POWER y
 	Raise the data in the current image buffer to the power y (float).
+
+RAMP
+	Fill current image with a ramp from 0 to the number of number of channels.
 
 RECTANGLE ulx uly lrx lry
 	Specify a rectangle that calculations are to be done on. The arguments are upper left x coordinate; upper left y coordinate; lower right x; lower right y.
@@ -301,6 +331,12 @@ READBADPIX filename
 	.
 	.
 	.
+
+RNDOFF
+	Round the DATAWORD values Down to the nearest integer value.
+
+RNDUP
+	Round the DATAWORD values UP to the nearest integer value.
 
 SAVEFILE <filename>
 	Saves the current data buffer to the specified file.
@@ -338,8 +374,11 @@ SHELL shell_command
 STOPONERROR flag
 	If flag = 1, macro or execute commands will stop on error conditions. If flag = 0 (default) execution will continue.
 
-SUBTEMPIMAGE name
+SUBTMPIMAGE name
 	Subtracts the contents of the named temporary image from the data in the current buffer.
+
+TSMOOTH
+	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.
 
 VARIABLES
 	Lists currently defined variables and their values. Variables are defined using simple arithmetic expressions, such as

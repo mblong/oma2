@@ -91,6 +91,12 @@ Addressed UI Issues:
   √ Crash on resizing data window that isn't the current one when size is smaller than original. in DataView.mm drawRect
   
   √ -> Open, Save, Save Settings
+  
+  
+  √ Prefs:
+  √  -> select color bar
+  √  -> Improve prefix/suffix setting
+
 _____________________________
 Needed Commands
  LOG command
@@ -103,12 +109,14 @@ Existing Command Issues:
 
 Drop Files onto status broken. -- fixed again
 
-Should update the TIFF framework to a newer version -- this crashes on some newer tif files.
+Should update the TIFF framework to a newer version -- this has issues on some newer tif files.
 
 _____________________________
 UI Issues:
 
+Update/Remap color min/max doesn't work if there is a row plot displayed after displaying current data
 
+Use file names for window title
 
 UI Needs
 
@@ -119,9 +127,6 @@ UI Needs
             Bitmap returned is different than the one set due to display profile mapping
 
 
-    Prefs:
-        -> select color bar
-        -> Improve prefix/suffix setting
 
     Status:
         -> Display macro number

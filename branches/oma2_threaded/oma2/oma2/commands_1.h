@@ -16,6 +16,10 @@ int null_c(int,char*);
 
 int addfile_c(int,char*);
 int addtmp_c(int,char*);
+int accumulate_c(int,char*);
+int acdelete_c(int,char*);
+int acget_c(int,char*);
+int acadd_c(int,char*);
 
 int bit8_c(int,char*);
 int bit16_c(int,char*);
@@ -50,10 +54,12 @@ int findbad_c(int,char*);
 
 int getfile_c(int,char*);
 int getFileNames_c(int,char*);
+int getfun_c(int,char*);
 int gaussian_c(int,char*);
 int grey2rgb_c(int,char*);
 int gmacro_c(int,char*);
 int gradient_c(int,char*);
+int gsmooth_c(int, char*);
 int gtemp_c(int, char*);
 
 int invert_c(int,char*);
@@ -62,6 +68,7 @@ int killBox_c(int,char*);
 
 int list_c(int,char*);
 int ltemp_c(int,char*);
+int lookup_c(int,char*);
 
 int minus_c(int,char*);
 int mirror_c(int,char*);
@@ -85,6 +92,9 @@ int rgb2green_c(int,char*);
 int rgb2blue_c(int,char*);
 int rotate_c(int,char*);
 int readbad_c(int,char*);
+int ramp_c(int,char*);
+int roundUp_c(int,char*);
+int roundoff_c(int,char*);
 
 int setcminmax_c(int,char*);
 int size_c(int,char*);
@@ -99,6 +109,8 @@ int satiff_c(int,char*);
 int satiffscaled_c(int,char*);
 int sysCommand_c(int,char*);
 
+int tsmooth_c(int,char*);
+
 int writebad_c(int,char*);
 
 // Others
@@ -108,6 +120,8 @@ void update_UI();
 
 char* fullname(char* fnam,int  type);
 int calc(point,point);
+
+float tabfun(int,float);
 
 
 //#endif

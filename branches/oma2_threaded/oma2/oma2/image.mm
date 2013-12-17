@@ -10,6 +10,7 @@ char    reply[1024];          // buffer for sending messages to be typed out by 
 Image   iBuffer(200,200);     // the image buffer
 oma2UIData UIData;            // Put all the UI globals here
 Image  iTempImages[NUM_TEMP_IMAGES];  // temporary in-memmory images
+Image   accumulator;          // the accumulator image
 int numberNamedTempImages = 0;
 Variable namedTempImages[NUM_TEMP_IMAGES-NUMBERED_TEMP_IMAGES];
 
@@ -97,8 +98,8 @@ Image::Image(char* filename, int kindOfName)
 
     if (strncmp(&filename[strlen(filename)-4],".tif",4) == 0 ||
         strncmp(&filename[strlen(filename)-4],".TIF",4) == 0 ||
-        strncmp(&filename[strlen(filename)-4],".tiff",5) == 0||
-        strncmp(&filename[strlen(filename)-4],".TIFF",5) == 0) {
+        strncmp(&filename[strlen(filename)-5],".tiff",5) == 0||
+        strncmp(&filename[strlen(filename)-5],".TIFF",5) == 0) {
         if (kindOfName == LONG_NAME) {
             error = readTiff(filename,this);
         } else {
@@ -186,7 +187,6 @@ Image::Image(char* filename, int kindOfName)
     for(int i = 0; i<COMLEN;i++){
         comment[i] = comment_[i];
     }
-    
     
     nbyte = specs[ROWS]*specs[COLS]*DATABYTES;
     

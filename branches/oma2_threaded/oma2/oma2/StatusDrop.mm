@@ -50,14 +50,14 @@
         NSString *name = [fileURL path] ;
         const char* cname = [name cStringUsingEncoding:NSASCIIStringEncoding];
         const char* cext = [ext cStringUsingEncoding:NSASCIIStringEncoding];
-        dropped_file((char*)cext,(char*)cname);
-        //[ext release];
-        //[name release];
-        //delete []cname;
-        //delete []cext;
-        // Perform operation using the file’s URL
+        //dropped_file((char*)cext,(char*)cname);
+        if(dropped_file((char*)cext,(char*)cname))
+            [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
+        else
+            return NO;
     }
-    return YES;}
+    return YES;
+}
 
 - (void)concludeDragOperation:(id<NSDraggingInfo>)sender {
     //[self setNeedsDisplay:YES];
