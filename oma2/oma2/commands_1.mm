@@ -8,6 +8,7 @@ extern ImageBitmap iBitmap;   // the bitmap buffer
 extern oma2UIData UIData;
 
 extern Image  iTempImages[];
+extern Image   accumulator;   // the accumulator
 extern int numberNamedTempImages;
 extern Variable namedTempImages[];
 
@@ -598,6 +599,292 @@ int smooth_c(int n,char* args){
     update_UI();
     return NO_ERR;
 }
+
+/* ********** */
+
+int gsmooth_c(int n, char* args)
+//  Gaussian Smoothing of the Data
+// GSMOOT NX [NY]
+// sigma_x = (NX-1)/3.5
+{
+	
+	int dx,dy,dxs,dys,i,j,m,nt,nc;
+	float sigx,sigy,*mask,norm,sum;
+	
+	mask = 0;
+    
+	if(n <= 0) n = 3;
+	
+	dx = dy = n;	// the smoothing amounts
+
+    // get args
+    int narg = sscanf(args,"%d %d",&dx,&dy);
+    if(narg == 0){
+        dx = dy = 3;    // default 3 x 3
+    } else if (narg==1){
+        dy = dx;        // one argument, smooth same in x and y
+    }
+    
+    if (dx/2 == dx/2.0) {
+		beep();
+		printf("The X size of the region must be odd.\n");
+		
+		return CMND_ERR;
+	}
+	if (dy/2 == dy/2.0) {
+		printf("The Y size of the region must be odd.\n");
+		beep();
+		return CMND_ERR;
+	}
+    
+	norm = 0;
+	dx = (dx-1)/2;
+	dxs = -dx;
+	sigx = dx/1.75;
+    
+	dy = (dy-1)/2;
+	dys = -dy;
+	sigy = dy/1.75;
+	printf("Sigx=%5.2f, Sigy=%5.2f, ",sigx,sigy);
+	printf("pixels=%d x %d\n",dx*2+1,dy*2+1);
+	
+	if ( sigy == 0 ) sigy = 1;
+	if ( sigx == 0 ) sigx = 1;
+	
+	if(dx == 0 && dy == 0) return NO_ERR;	// The 1 x 1 smoothing case
+    
+    int* specs = iBuffer.getspecs();
+    Image smoothed(specs[ROWS],specs[COLS]);
+    
+    if(smoothed.err()){
+        return smoothed.err();
+    }
+    smoothed.copyABD(iBuffer);
+    
+	/* Set loop limit so only have to do "<", not "<=" */
+	dx=dx+1;
+	dy=dy+1;
+    
+	mask = (float*) malloc((dx-dxs) * (dy-dys) * sizeof(float));
+	norm = 0;
+	for(i=dxs; i<dx; i++) {
+		for(j=dys; j<dy; j++) {
+			m=(j - dys)*(dx - dxs) + (i - dxs);
+			mask[m]=exp(-(i*i/(sigx*sigx)+j*j/(sigy*sigy))/2);
+			norm += mask[m];
+		}
+	}
+	
+	for(nt=0; nt<specs[ROWS]; nt++) {
+		for(nc=0; nc<specs[COLS];nc++){
+			sum = 0;
+			for(i=dxs; i<dx; i++) {
+				for(j=dys; j<dy; j++) {
+					m = (j - dys)*(dx - dxs) + (i - dxs);
+					sum += iBuffer.getpix(nt+j,nc+i)*mask[m];
+				}
+			}
+			smoothed.setpix(nt,nc,sum/norm);
+		}
+	}
+	if(mask!=0) {free(mask); mask = 0;}
+    free(specs);  // release buffer copy
+    iBuffer.free();     // release the old data
+    iBuffer = smoothed;   // this is the new data
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+//***************************************************************//
+//**    TSMOOTH - Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]   *//
+//***************************************************************//
+int tsmooth_c(int n, char* args)
+{
+	Image Im_Result;
+	Image Im_dimX;
+	Image Im_dimY;
+	
+	int nc, nt;
+	int i,j,count;
+	float sum;
+	int dx, dy, dxs, dys;
+    char arg[2]="0";
+	
+	// Allocate space for the result Image
+    
+    int* specs = iBuffer.getspecs();
+    Image smoothed(specs[ROWS],specs[COLS]);
+    
+    if(smoothed.err()){
+        return smoothed.err();
+    }
+    smoothed.copyABD(iBuffer);
+    
+    if (temp_image_index(arg, 0) != 0) {
+		beep();
+		printf("Temp[0] is not defined.\n");
+        return CMND_ERR;
+    }
+    arg[0] = '1';
+    if (temp_image_index(arg, 0) != 1) {
+		beep();
+		printf("Temp[1] is not defined.\n");
+        return CMND_ERR;
+    }
+    
+	// Check everything for appropraite sizes
+	if ((iBuffer != iTempImages[0])||(iBuffer != iTempImages[1])) {
+		beep();
+		printf("Please make sure that the Temporary buffers T[0] and T[1] are the same size as the image.\n");
+		return CMND_ERR;
+	}
+	
+	// Loop through Original image and do appropriate smoothing
+	for(nt=0; nt<specs[ROWS]; nt++) {
+		for(nc=0; nc<specs[COLS];nc++){
+			// set counters to zero for new pixel
+			sum = 0;
+			count = 0;
+			
+			// Work out local smoothing size by reading from Temp buffers
+			dx = floor(iTempImages[0].getpix(nt,nc));
+			dy = floor(iTempImages[1].getpix(nt,nc));
+			dxs = -dx/2;
+			dys = -dy/2;
+			if( dx & 0x1)   dx = dx/2+1;
+			else		dx /= 2;
+			if( dy & 0x1)	dy = dy/2+1;
+			else		dy /= 2;
+			
+			// Calculate local average (unweighted rectangular smoothing)
+			for(i=dxs; i<dx; i++) {
+				for(j=dys; j<dy; j++) {
+					count++;
+					sum += iBuffer.getpix(nt+j,nc+i);
+				}
+			}
+			smoothed.setpix(nt,nc, (DATAWORD) sum/count);
+		}
+	}
+	// Free up memory and GO
+    free(specs);  // release buffer copy
+    iBuffer.free();     // release the old data
+    iBuffer = smoothed;   // this is the new data
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+
+
+
+/* ********** */
+/*
+int
+gsmooth2(int n, int index)
+//  Gaussian Smoothing of the Data
+// GSMOOT NX [NY]
+// sigma_x = (NX-1)/6.0
+{
+	DATAWORD *datp,*datp2;
+	extern int	doffset;
+	DATAWORD idat(int,int);
+	
+	int dx,dy,dxs,dys,i,j,m,size,nt,nc;
+	float sigx,sigy,*mask,norm,sum;
+	
+	mask = 0;
+    
+	if(n <= 0) n = 3;
+	
+	dx = dy = n;	// the smoothing amounts
+	
+	// Check to see if there was a second argument
+	for ( i = index; cmnd[i] != EOL; i++) {
+		if(cmnd[i] == ' ') {
+			sscanf(&cmnd[index],"%d %d",&dx,&dy);
+			break;
+		}
+	}
+	if (dx/2 == dx/2.0) {
+		beep();
+		printf("THE X SIZE OF THE REGION MUST BE ODD!\n");
+		
+		return -1;
+	}
+	if (dy/2 == dy/2.0) {
+		printf("THE Y SIZE OF THE REGION MUST BE ODD!\n");
+		beep();
+		return -1;
+	}
+    
+	size = (header[NCHAN] * header[NTRAK] + MAXDOFFSET) * DATABYTES;
+	size = (size+511)/512*512;	// make a bit bigger for file reads
+    
+	datp2 = datp = malloc(size);
+	if(datp == 0) {
+		nomemory();
+		return -1;
+	}
+	
+	norm = 0;
+    
+	dx = (dx-1)/2;
+	dxs = -dx;
+	sigx = dx/3.0;
+    
+	dy = (dy-1)/2;
+	dys = -dy;
+	sigy = dy/3.0;
+	printf("Sigx=%5.2f, Sigy=%5.2f, ",sigx,sigy);
+	printf("pixels=%d x %d\n",dx*2+1,dy*2+1);
+	
+	if ( sigy == 0 ) sigy = 1;
+	if ( sigx == 0 ) sigx = 1;
+	
+	if(dx == 0 && dy == 0) return(0);	// The 1 x 1 smoothing case
+    
+	// Set loop limit so only have to do "<", not "<="
+	dx=dx+1;
+	dy=dy+1;
+    
+	mask = (float*) malloc((dx-dxs) * (dy-dys) * sizeof(float));
+	norm = 0;
+	for(i=dxs; i<dx; i++) {
+		for(j=dys; j<dy; j++) {
+			m=(j - dys)*(dx - dxs) + (i - dxs);
+			mask[m]=exp(-(i*i/(sigx*sigx)+j*j/(sigy*sigy))/2);
+			norm += mask[m];
+		}
+	}
+	
+	
+	for(nc=0; nc<doffset; nc++)
+		*(datp++) = *(datpt+nc);	// copy the CCD header
+	for(nt=0; nt<header[NTRAK]; nt++) {
+		for(nc=0; nc<header[NCHAN];nc++){
+			sum = 0;
+			
+			for(i=dxs; i<dx; i++) {
+				for(j=dys; j<dy; j++) {
+					m = (j - dys)*(dx - dxs) + (i - dxs);
+					
+					sum += idat(nt+j,nc+i)*mask[m];
+				}
+			}
+			*(datp++) = sum/norm;
+		}
+	}
+	if(mask!=0) {free(mask); mask = 0;}
+	free(datpt);
+	datpt = datp2;
+	have_max = 0;
+	maxx();
+	setarrow();	
+	return 0;
+}
+ */
 
 /* ********** */
 
@@ -2046,5 +2333,285 @@ int clearbad_c(int n, char* args)
     iBuffer.getmaxx();
     update_UI();
     return NO_ERR;
+}
+
+/* ********** */
+/*
+ GETFUNCTION n filename
+ Read in a tabulated function to be used by tabfun routine
+ n is function number to be defined
+ filename is file containing y=f(x) data pairs, preceeded by number of table entries
+ Assumptions for tabulated functions:
+ File format:
+ first number is integer with the number of pairs to follow
+ pairs are float with x followed by f(x) on the same line
+ x values are ordered smallest to largest
+ y = f(x) is single valued
+ 
+ 
+ */
+
+
+float* xptr[10] = {0*10};		// have a maximum of 10 functions
+float* yptr[10] = {0*10};
+int funsize[10] = {0*10};		// the number of elements in each function
+
+int getfun_c(int n,char* args)
+{
+	int	i=0,j;
+	int ferror = 0;
+	FILE *fp;
+    
+	if( n<0 || n>9){
+		beep();
+		printf("Functions must be numbered 0-9.\n");
+		return CMND_ERR;
+	}
+    
+    while(args[i] != ' ' && args[i] != EOL) i++;
+	
+	fp = fopen(fullname(&args[++i],GET_DATA),"r");
+	if( fp != NULL) {
+        
+		fscanf(fp,"%d",&i);		// the number of data pairs in the function
+		
+		if(xptr[n] !=0) free(xptr[n]);
+		if(yptr[n] !=0) free(yptr[n]);
+		
+		xptr[n] = (float*) malloc(i*sizeof(float));
+		yptr[n] = (float*) malloc(i*sizeof(float));
+		funsize[n] = i;
+		if(yptr[n] == 0 || xptr[n]==0) {
+			beep();
+			printf(" Not enough memory.\n");
+			return MEM_ERR;
+		}
+		
+		printf("Will read %d x-y pairs.\n",i);
+		
+		
+        for (j=0; j < i; j++) {
+            if( fscanf(fp,"%f %f",(xptr[n]+j),(yptr[n]+j)) != 2) ferror = 1;
+		}
+		
+    	fclose(fp);
+		if(ferror == 1){
+			beep();
+			printf("Data Error.\n");
+			if(xptr[n] !=0) free(xptr[n]);
+			if(yptr[n] !=0) free(yptr[n]);
+			return FILE_ERR;
+		}
+		if(*xptr[n] >= *(xptr[n]+1) ){
+			beep();
+			printf("Incorrect Data Ordering.\n");
+			if(xptr[n] !=0) free(xptr[n]);
+			if(yptr[n] !=0) free(yptr[n]);
+			return FILE_ERR;
+		}
+		
+		printf("x range is from %g to %g.\n",*(xptr[n]),*(xptr[n]+funsize[n]-1));
+		printf("y range is from %g to %g.\n",*(yptr[n]),*(yptr[n]+funsize[n]-1));
+		
+	}
+	else {
+		beep();
+		printf("Could not open file: %s\n",args);
+		return FILE_ERR;
+	}
+	return NO_ERR;
+}
+
+float tabfun(int n, float x)	// n is the function number, x is the desired x value
+{
+	/* Assumptions for tabulated functions:
+     File format:
+     first number is integer with the number of pairs to follow
+     pairs are float with x followed by f(x) on the same line
+     x values are ordered smallest to largest
+     y = f(x) is single valued
+     */
+    
+	int i=0;
+	float x0,x1,y0,y1,y;
+	
+	if( x <= *(xptr[n]) )
+		return ( *(yptr[n]) );	// less than min x, returns f(min x)
+	if( x >= *(xptr[n]+funsize[n]-1) )
+		return ( *(yptr[n]+funsize[n]-1) ); // > max x, returns f(max x)
+    
+	while(  x >= *(xptr[n]+i) )
+		i++;
+    
+    i--;
+	x0 = *(xptr[n]+i);
+	x1 = *(xptr[n]+i+1);
+	y0 = *(yptr[n]+i);
+	y1 = *(yptr[n]+i+1);
+	y = y0 + (y1-y0)/(x1-x0)*(x-x0);
+	//y = y0;								// What?
+	return(y);
+	
+}
+
+/* ********** */
+/*
+ LOOKUP
+ 
+ Redefine the current image using the lookup table specified by a tabulated function
+ Use GETFUN n filename before using this command
+ Ignore scale factors for now
+ */
+int lookup_c(int n,char* args)
+{
+	if(xptr[n] == 0) {
+		beep();
+		printf("Function %d is not currently defined.\n",n);
+		return CMND_ERR;
+	}
+    int nc,nt;
+    int* specs = iBuffer.getspecs();
+	
+	for(nt=0; nt<specs[ROWS];nt++) {
+		for(nc=0;nc < specs[COLS]; nc++){
+            iBuffer.setpix(nt,nc,tabfun(n,iBuffer.getpix(nt,nc)));
+		}
+	}
+    free(specs);
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+
+/* ********** */
+
+
+/* --------------------------- */
+int ramp_c(int n,char* args)				/* fill current image with a ramp from 0 to the number of number of channels */
+{
+	int nc,nt;
+    int* specs = iBuffer.getspecs();
+	//printf("rsize = %f\n",rsize);
+	for(nt=0; nt<specs[ROWS];nt++) {
+		for(nc=0;nc < specs[COLS]; nc++){
+            iBuffer.setpix(nt,nc,nc);
+		}
+	}
+    free(specs);
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+//***************************************************************//
+//**    ROUNDUP - Round the DATAWORD values UP to the nearest integer value   *//
+//***************************************************************//
+int roundUp_c (int n, char* args)
+{
+	int nc,nt;
+    int* specs = iBuffer.getspecs();
+	
+	for(nt=0; nt<specs[ROWS]; nt++) {
+		for (nc =0; nc<specs[COLS]; nc++){
+			iBuffer.setpix(nt, nc, ceilf(iBuffer.getpix(nt, nc)));
+		}
+	}
+    free(specs);
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+//***************************************************************//
+//**    ROUNDOFF - Round the DATAWORD values Down to the nearest integer value   *//
+//***************************************************************//
+int roundoff_c(int n, char* args)
+{
+	int nc,nt;
+    int* specs = iBuffer.getspecs();
+	
+	for(nt=0; nt<specs[ROWS]; nt++) {
+		for (nc =0; nc<specs[COLS]; nc++){
+			iBuffer.setpix(nt, nc, floorf(iBuffer.getpix(nt, nc)));
+		}
+	}
+    free(specs);
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+/* --------------------------- */
+
+/*
+ ACCUMULATE
+Allocates and clears memory for an image accumulator buffer that can be used to sum
+ individual images. The size of the accumulator is determined by the image size parameters
+ when the accumulate command is first given.
+*/
+
+int accumulate_c(int n,char* args)
+{
+    accumulator.free();
+    int* specs = iBuffer.getspecs();
+    accumulator = Image(specs[ROWS],specs[COLS]);
+    free(specs);
+    return NO_ERR;
+}
+
+
+/*
+ ACDELETE
+ Frees the memory associated with the accumulator.
+ */
+
+int acdelete_c(int n,char* args)
+{
+    if (!accumulator.isEmpty()) {
+        accumulator.free();
+    }
+    return NO_ERR;
+}
+
+
+/*
+ ACADD
+ Adds the current image data buffer to the accumulator buffer.
+ */
+
+int acadd_c(int n,char* args)
+{
+    if (accumulator.isEmpty()) {
+        beep();
+        printf("Accumulator has not been initialized.\n");
+        return CMND_ERR;
+    }
+
+    if(accumulator != iBuffer){
+        beep();
+        printf("Accumulator is not the corret size for the current image.\n");
+        return SIZE_ERR;
+    }
+    accumulator + iBuffer;
+    return NO_ERR;
+}
+
+/*
+ ACGET
+ Moves the data from the accumulator buffer into the current image data area. The
+ previous contents of the image data buffer are destroyed.
+ */
+
+int acget_c(int n,char* args){
+    if (accumulator.isEmpty()) {
+        beep();
+        printf("Accumulator has not been initialized.\n");
+        return CMND_ERR;
+    }
+    iBuffer << accumulator;
+    iBuffer.getmaxx();
+    update_UI();
+    return iBuffer.err();
 }
 

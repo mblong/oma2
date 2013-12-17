@@ -69,8 +69,10 @@ BOOL dropped_file(char* extension, char* name){
     
     //printf("File ext is: %s\n",extension);
     printf("File name is: %s\n",name);
-    if(strcmp(extension, "dat")==0 || strcmp(extension, "nef")==0 || strcmp(extension, "jpg")==0
-       || strcmp(extension, "tif")==0 || strcmp(extension, "tiff")==0 || strcmp(extension, "hdr")==0){
+    for(int i=0; i<strlen(extension); i++)
+        extension[i] = toupper(extension[i]);
+    if(strcmp(extension, "DAT")==0 || strcmp(extension, "NEF")==0 || strcmp(extension, "JPG")==0
+       || strcmp(extension, "TIF")==0 || strcmp(extension, "TIFF")==0 || strcmp(extension, "HDR")==0){
         Image new_im(name,LONG_NAME);
         if(new_im.err()){
             beep();
@@ -87,7 +89,7 @@ BOOL dropped_file(char* extension, char* name){
         [appController appendText: @"OMA2>"];
         return YES;
     }
-    if(strcmp(extension, "mac")==0){
+    if(strcmp(extension, "MAC")==0){
         extern char	macbuf[];
         int fd,nread,i;
         fd = open(name,O_RDONLY);
@@ -117,7 +119,7 @@ BOOL dropped_file(char* extension, char* name){
         [appController appendText: @"OMA2>"];
         return YES;
     }
-    if(strcmp(extension, "o2s")==0){
+    if(strcmp(extension, "O2S")==0){
         printf("Loading Settings...\n");
         int err = loadprefs(name);
         [appController appendText: @"OMA2>"];
