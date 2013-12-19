@@ -2556,7 +2556,12 @@ int accumulate_c(int n,char* args)
     accumulator.free();
     int* specs = iBuffer.getspecs();
     accumulator = Image(specs[ROWS],specs[COLS]);
-    free(specs);
+    if(accumulator.err()){
+        return accumulator.err();
+    }
+    accumulator.copyABD(iBuffer);
+    accumulator.zero();
+
     return NO_ERR;
 }
 

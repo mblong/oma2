@@ -74,6 +74,7 @@ public:
     int err();                  // return the error code (= 0 if no error)
     void errclear();            // clear the image error code
     void free();                // release the data associated with an Image
+    void zero();                // set the data associated with an Image to 0
     void getmaxx();             // fill in the min and max for the current Image
     void clip(DATAWORD);        // set values > specifiedValue to specifiedValue
     void floor(DATAWORD);       // set values < specifiedValue to specifiedValue

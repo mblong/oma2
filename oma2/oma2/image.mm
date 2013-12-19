@@ -390,6 +390,15 @@ void Image::free(){
     }
 }
 
+void Image::zero(){
+    int npts=specs[ROWS]*specs[COLS];
+    DATAWORD* mydatpt=data;
+    while ( mydatpt < data+npts ) {
+        *mydatpt++ = 0;
+    }
+}
+
+
 void Image::clip(DATAWORD clipVal){
     int npts=specs[ROWS]*specs[COLS];
     DATAWORD* mydatpt=data;
