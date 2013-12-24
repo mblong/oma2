@@ -58,6 +58,7 @@ enum {CROSS,RECT,CALCRECT,RULER,LINEPLOT};
 
 BOOL dropped_file(char*,char*);
 void update_UI();
+void alertSound(char*);
 
 int omaprintf(const char* format, ...);
 int pprintf(const char* format, ...);

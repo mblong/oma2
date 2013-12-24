@@ -72,7 +72,8 @@ BOOL dropped_file(char* extension, char* name){
     for(int i=0; i<strlen(extension); i++)
         extension[i] = toupper(extension[i]);
     if(strcmp(extension, "DAT")==0 || strcmp(extension, "NEF")==0 || strcmp(extension, "JPG")==0
-       || strcmp(extension, "TIF")==0 || strcmp(extension, "TIFF")==0 || strcmp(extension, "HDR")==0){
+       || strcmp(extension, "TIF")==0 || strcmp(extension, "TIFF")==0 || strcmp(extension, "HDR")==0
+       || strcmp(extension, "O2D")==0){
         Image new_im(name,LONG_NAME);
         if(new_im.err()){
             beep();
@@ -197,4 +198,13 @@ void beep(){
 
 }
 
+void alertSound(char* sayString){
+
+    NSSpeechSynthesizer* talker = [[NSSpeechSynthesizer alloc] init];
+    [talker startSpeakingString: [NSString stringWithCString:sayString encoding:NSASCIIStringEncoding]];
+    
+    //NSBeep();
+    
+    
+}
 
