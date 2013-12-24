@@ -202,6 +202,7 @@ extern AppController* appController;
 - (IBAction)copy:sender {
     
     // this copies the image and any other stuff written on it
+    // it also looses the alpha channel
     NSImageView *view = [self imageView];
     NSRect r = [view bounds];
     if (view != nil) {
@@ -209,7 +210,19 @@ extern AppController* appController;
         [pasteboard clearContents];
         [view writePDFInsideRect:r toPasteboard: pasteboard];
     }
- 
+    
+    
+    /*
+    // If you wanted to include the alpha channel, you would need to add the image to the clipboard explicitly like this
+    NSImage *image = [imageView image];
+    if (image != nil) {
+        NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+        [pasteboard clearContents];
+        NSArray *copiedObjects = @[image];
+        [pasteboard writeObjects:copiedObjects];
+    }
+    */
+    
 }
 
 

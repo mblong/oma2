@@ -95,6 +95,7 @@ ComDef   commands[] =    {
     {{"NEXTFILE       "},	nextFile_c},
     {{"PALETTE        "},	palette_c},
     {{"POSITIVE       "},	positive_c},
+    {{"PAUSE          "},	imp_pause},
     {{"POWER          "},	power_c},
     {{"RECTANGLE      "},	rectan_c},
     {{"RGB2GREY       "},	rgb2grey_c},
@@ -182,6 +183,10 @@ char	variable_names[VBUFLEN] = {0};		/* variable names in macros */
 int     maccount,macflag,macptr,macval;
 int     macincrement = 1;	/* the increment for macros */
 int     exflag,exptr[EX_NEST_DEPTH],exval[EX_NEST_DEPTH];
+
+int pause_flag = 0;
+char pause_string[CHPERLN];
+
 
 
 ComDef  *clist_ptr;
@@ -464,6 +469,9 @@ int comdec(char* cmnd)
                 if(exflag==0 && macflag==0) break;
                 
             }
+        }
+        if (pause_flag) {
+            break;
         }
     }
     
@@ -1181,26 +1189,29 @@ int erase(int n, char* args){
     return 0;
 }
 
-/*
+
 // ********** 
-int pause_flag = 0;
-char pause_string[CHPERLN];
 
-int imp_pause(int n,int index)
-
+int imp_pause(int n,char* args)
 {
-    extern char cmnd[];
+    extern int macflag,exflag;
+	
+	if(*args == 0)
+        sprintf(pause_string, "PAUSED");
+    else
+        strlcpy(pause_string,args,CHPERLN);
+    // this string will be spoken during pause
+    if (macflag || exflag) {    // don't set this unless we are in a macro
+        pause_flag = 1;
+    }
     
-	strcpy(pause_string,&cmnd[index]);
-	if(index == 0)
-		sprintf(pause_string, "PAUSED");
-        // this string will be displayed during pause
-        pause_flag =1;
-        update_status();
-        return 0;
+    update_status();
+    alertSound(pause_string);
+    return NO_ERR;
     
 }
-// ********** 
+/*
+// **********
 
 int pmacro(int n)
 {

@@ -130,6 +130,14 @@ void ImageBitmap::operator=(Image im){
                     *(pixdata+n++) = color[pindx][UIData.thepalette].red;
                     *(pixdata+n++) = color[pindx][UIData.thepalette].green;
                     *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
+                    /*
+                    // Could set alpha value to 0 or FF according to a threshold; used this to make icon
+                    if (pindx < 10) {
+                        *(pixdata+n++) = 0;
+                    }else{
+                        *(pixdata+n++) = 0xFF;
+                    }
+                    */
                     *(pixdata+n++) =0xFF;
                 }
             }

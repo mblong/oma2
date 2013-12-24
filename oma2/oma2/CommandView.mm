@@ -48,7 +48,7 @@ extern AppController* appController;
     
     // we get keydown events here
     // do special processing before passing this event along the the NSTextView
-    extern int stopMacroNow;
+    extern int stopMacroNow,pause_flag;
     // move to the end of the commands
     NSUInteger text_len = [[[self textStorage] string] length];
     [self setSelectedRange:(NSRange){text_len, 0}];
@@ -60,6 +60,17 @@ extern AppController* appController;
             stopMacroNow = 1;
             //stopmacro();
         }
+        return;
+    }
+    
+    if(pause_flag == 1){
+        pause_flag = 0;
+        dispatch_queue_t queue = dispatch_queue_create("oma.oma2.CommandTask",NULL);
+        
+        dispatch_async(queue,^{
+            int returnValue = comdec((char*) oma2Command);
+            if(returnValue < GET_MACRO_LINE) printf("OMA2>");
+        });
         return;
     }
     

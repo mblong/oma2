@@ -16,7 +16,6 @@
 		DB0FC0331519183D008A9B54 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0311519183D008A9B54 /* Credits.rtf */; };
 		DB0FC0361519183D008A9B54 /* oma2AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */; };
 		DB0FC0391519183D008A9B54 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0371519183D008A9B54 /* MainMenu.xib */; };
-		DB0FC04015191886008A9B54 /* oma-icns.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC03F15191886008A9B54 /* oma-icns.icns */; };
 		DB0FC046151918F0008A9B54 /* StatusController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC041151918F0008A9B54 /* StatusController.mm */; };
 		DB0FC047151918F0008A9B54 /* Status.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC042151918F0008A9B54 /* Status.xib */; };
 		DB0FC048151918F0008A9B54 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC044151918F0008A9B54 /* AppController.mm */; };
@@ -45,12 +44,16 @@
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DB6FF6FE18467EA1002D728B /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
 		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
+		DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
 		DBA3B5F716FC781300B7FF27 /* oma help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma help.txt */; };
 		DBA96ABA1520C7090043754E /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
 		DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD5691802050F007F8801 /* DrawingView.mm */; };
 		DBABD56F180208E7007F8801 /* DrawingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD56E180208E7007F8801 /* DrawingWindowController.mm */; };
+		DBAD2EFD1868975D003F9B55 /* Oma2Macro.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */; };
 		DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */; };
+		DBB27B6B1867F1DF00CF6523 /* Oma2Settings.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */; };
+		DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
 		DBB4233617F9B6C3005BCF33 /* jpegIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB4233517F9B6C3005BCF33 /* jpegIO.mm */; };
 		DBBD397D155AD06000D5B56B /* OMA palette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMA palette.pa1 */; };
@@ -95,7 +98,6 @@
 		DB0FC0341519183D008A9B54 /* oma2AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = oma2AppDelegate.h; sourceTree = "<group>"; };
 		DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = oma2AppDelegate.mm; sourceTree = "<group>"; };
 		DB0FC0381519183D008A9B54 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		DB0FC03F15191886008A9B54 /* oma-icns.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "oma-icns.icns"; sourceTree = "<group>"; };
 		DB0FC041151918F0008A9B54 /* StatusController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatusController.mm; sourceTree = "<group>"; };
 		DB0FC042151918F0008A9B54 /* Status.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Status.xib; sourceTree = "<group>"; };
 		DB0FC043151918F0008A9B54 /* StatusController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusController.h; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 		DB6FF70018467F46002D728B /* tiffio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffio.h; sourceTree = "<group>"; };
 		DB6FF70118467F46002D728B /* tiffvers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffvers.h; sourceTree = "<group>"; };
 		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
+		DB9B2E43186731EC00EE4871 /* oma2Icons.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = oma2Icons.icns; sourceTree = "<group>"; };
 		DBA03741181704740042DF6F /* DrawingWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawingWindow.xib; sourceTree = "<group>"; };
 		DBA3B5F616FC781300B7FF27 /* oma help.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = "oma help.txt"; sourceTree = "<group>"; usesTabs = 1; };
 		DBA96AB91520C7090043754E /* comdec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = comdec.mm; sourceTree = "<group>"; };
@@ -145,7 +148,10 @@
 		DBABD5691802050F007F8801 /* DrawingView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawingView.mm; sourceTree = "<group>"; };
 		DBABD56D180208E7007F8801 /* DrawingWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawingWindowController.h; sourceTree = "<group>"; };
 		DBABD56E180208E7007F8801 /* DrawingWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawingWindowController.mm; sourceTree = "<group>"; };
+		DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Oma2Macro.icns; sourceTree = "<group>"; };
 		DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageBitmap.mm; path = ../ImageBitmap.mm; sourceTree = "<group>"; };
+		DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Oma2Settings.icns; sourceTree = "<group>"; };
+		DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Oma2Data.icns; sourceTree = "<group>"; };
 		DBB2C37217F9A187008C03BB /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		DBB4233517F9B6C3005BCF33 /* jpegIO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = jpegIO.mm; path = ../jpegIO.mm; sourceTree = "<group>"; };
 		DBB4233717F9B765005BCF33 /* jpeglib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpeglib.h; path = ../jpeglib.h; sourceTree = "<group>"; };
@@ -178,7 +184,10 @@
 		DB0FC0131519183B008A9B54 = {
 			isa = PBXGroup;
 			children = (
-				DB0FC03F15191886008A9B54 /* oma-icns.icns */,
+				DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */,
+				DB9B2E43186731EC00EE4871 /* oma2Icons.icns */,
+				DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */,
+				DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */,
 				DB0FC0281519183C008A9B54 /* oma2 */,
 				DBB4233C17F9B942005BCF33 /* Libraries */,
 				DB0FC0211519183C008A9B54 /* Frameworks */,
@@ -384,23 +393,26 @@
 				DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */,
 				DB0FC0331519183D008A9B54 /* Credits.rtf in Resources */,
 				DB0FC0391519183D008A9B54 /* MainMenu.xib in Resources */,
-				DB0FC04015191886008A9B54 /* oma-icns.icns in Resources */,
 				DB0FC047151918F0008A9B54 /* Status.xib in Resources */,
 				DB2BC300151930D7009D9AED /* Preferences.xib in Resources */,
 				DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */,
 				DB593A3B151B9766007CA0C3 /* box.jpg in Resources */,
 				DB17A3051524754A004F810A /* DataWindow.xib in Resources */,
+				DBB27B6B1867F1DF00CF6523 /* Oma2Settings.icns in Resources */,
 				DBBD397D155AD06000D5B56B /* OMA palette.pa1 in Resources */,
 				DBBD3984155ADD5100D5B56B /* OMA palette3.pa1 in Resources */,
 				DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */,
 				DBBD3985155ADD5100D5B56B /* OMA palette2.pa1 in Resources */,
 				DB268239159374AC00B40AE1 /* Notes.txt in Resources */,
 				DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */,
+				DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */,
 				DB1E9B1F15A27EA300F38CE2 /* ruler.jpg in Resources */,
 				DB1E9B2215A2804C00F38CE2 /* curve.jpg in Resources */,
 				DB238A4D15A2879900502B50 /* pal0.jpg in Resources */,
 				DB238A5015A2884F00502B50 /* pal2.jpg in Resources */,
 				DB238A5115A2884F00502B50 /* pal1.jpg in Resources */,
+				DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */,
+				DBAD2EFD1868975D003F9B55 /* Oma2Macro.icns in Resources */,
 				DB238A5715A2895B00502B50 /* pal7.jpg in Resources */,
 				DB238A5815A2895B00502B50 /* pal6.jpg in Resources */,
 				DB238A5915A2895B00502B50 /* pal5.jpg in Resources */,
