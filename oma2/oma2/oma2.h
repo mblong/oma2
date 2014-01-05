@@ -122,7 +122,7 @@ enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_
         #define PALETTEFILE3 "Contents/Resources/OMA palette3.pa1"
 
         #define HELPFILE "Contents/Resources/oma help.txt"
-        #define HELPURL "Contents/Resources/oma_help/OMA_First_Steps.html"
+        #define HELPURL "Contents/Resources/oma2_help/OMA2_First_Steps.html"
     #endif
 #else
     #define SETTINGSFILE "OMA Settings"

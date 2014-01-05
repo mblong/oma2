@@ -598,5 +598,14 @@ extern oma2UIData UIData;
 }
 
 
+- (IBAction)showHelp:sender {
+    //[[NSWorkspace sharedWorkspace] openFile:@"HELPURL"];
+    //[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://oma-x.org/"]];
+    NSURL* theURL = [NSURL fileURLWithPath:@HELPURL];
+    [[NSWorkspace sharedWorkspace] openURL:theURL];
+    
+    NSLog(@"help!");
+}
+
 
 @end

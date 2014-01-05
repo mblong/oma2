@@ -62,7 +62,6 @@ int comdec(char*);
 - (IBAction)saveData:(id)sender;
 - (IBAction)saveSettings:(id)sender;
 
-//- (IBAction)openFile:(id)sender;
 
 -(void) showDataWindow:(char*) windowname;
 -(void) labelDataWindow: (char*) theLabel;
