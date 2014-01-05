@@ -49,6 +49,7 @@ Addressed Existing Command Issues:
     √ ERASE [n] to just erase nth window
     √ CALC -- doesn't fill in command return values; doesn't use the right rectangle?
     √ redefined the way SIZE works; now SIZE rows columns
+    √ read old format 2-byte files works ok now
 
 Addressed UI Issues:
   √ Big image issues:

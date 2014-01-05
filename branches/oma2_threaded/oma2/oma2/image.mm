@@ -190,6 +190,7 @@ Image::Image(char* filename, int kindOfName)
     
     nbyte = specs[ROWS]*specs[COLS]*DATABYTES;
     
+    
     // problem of how to get rid of the old 80 data word offset and still read in old oma files
     data = new DATAWORD[specs[ROWS]*specs[COLS]];
     if(data == 0){
@@ -199,12 +200,29 @@ Image::Image(char* filename, int kindOfName)
     }
     
     // in old oma files, there is an 80 element data offset -- skip over this
-    nr = read((int)fd,data,doffset*DATABYTES);
+    // could be 2-byte or 4-byte
+    // find length
+    int dataSize = DATABYTES;
+    FILE* f=fopen(filename ,"r");
+    fseek(f, 0, SEEK_END);
+    long size = ftell(f)-HEADLEN+COMLEN+TRAILEN;
+    fclose(f);
+    if (roundf((float)nbyte/size) == 2.) {
+        dataSize = 2;
+    }
     
+    // in the unlikely event that an old oma file has fewer than doffset points
+    if (doffset > specs[ROWS]*specs[COLS]) {
+        char* junkBuf = new char[doffset*dataSize];
+        nr = read((int)fd,junkBuf,doffset*dataSize);   // this will be ignored
+        delete junkBuf;
+    } else {
+        nr = read((int)fd,data,doffset*dataSize);   // this will be ignored
+    }
     nr = read((int)fd,(char*)data, nbyte);
     printf("%d Bytes read.\n",(int)nr);
     
-    if(nbyte/nr == 2) {
+    if(dataSize == 2) {
         // this is a 2-byte data file
         // adjust to 4-byte format
         printf("2-byte input file\n");

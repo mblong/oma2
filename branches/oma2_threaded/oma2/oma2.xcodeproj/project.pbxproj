@@ -43,6 +43,7 @@
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DB6FF6FE18467EA1002D728B /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
+		DB83A4F31879D8CB00F4D989 /* oma2_help in Resources */ = {isa = PBXBuildFile; fileRef = DB83A4F21879D8CB00F4D989 /* oma2_help */; };
 		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
 		DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
@@ -137,6 +138,7 @@
 		DB6FF6FF18467F46002D728B /* tiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiff.h; sourceTree = "<group>"; };
 		DB6FF70018467F46002D728B /* tiffio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffio.h; sourceTree = "<group>"; };
 		DB6FF70118467F46002D728B /* tiffvers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffvers.h; sourceTree = "<group>"; };
+		DB83A4F21879D8CB00F4D989 /* oma2_help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = oma2_help; sourceTree = "<group>"; };
 		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
 		DB9B2E43186731EC00EE4871 /* oma2Icons.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = oma2Icons.icns; sourceTree = "<group>"; };
 		DBA03741181704740042DF6F /* DrawingWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawingWindow.xib; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 		DB0FC0291519183C008A9B54 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				DB83A4F21879D8CB00F4D989 /* oma2_help */,
 				DBA3B5F616FC781300B7FF27 /* oma help.txt */,
 				DB238A5215A2895B00502B50 /* pal7.jpg */,
 				DB238A5315A2895B00502B50 /* pal6.jpg */,
@@ -412,6 +415,7 @@
 				DB238A5015A2884F00502B50 /* pal2.jpg in Resources */,
 				DB238A5115A2884F00502B50 /* pal1.jpg in Resources */,
 				DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */,
+				DB83A4F31879D8CB00F4D989 /* oma2_help in Resources */,
 				DBAD2EFD1868975D003F9B55 /* Oma2Macro.icns in Resources */,
 				DB238A5715A2895B00502B50 /* pal7.jpg in Resources */,
 				DB238A5815A2895B00502B50 /* pal6.jpg in Resources */,
