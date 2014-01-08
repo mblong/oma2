@@ -172,6 +172,8 @@ char* fullname(char* fnam,int  type)
 	char const *suffixbuf;
 	
 	char long_name[CHPERLN];
+    
+    extern char applicationPath[];
 	
 	if( type == GET_DATA || type == SAVE_DATA ) {
 		switch(normal_prefix) {
@@ -262,6 +264,9 @@ char* fullname(char* fnam,int  type)
  	
 	
 	strlcpy(long_name,prefixbuf,NEW_PREFIX_CHPERLN);
+    if (strlen(long_name) == 0) {
+        strlcpy(long_name,applicationPath,NEW_PREFIX_CHPERLN);
+    }
 	
 	
 	//n = CHPERLN - strlen(prefixbuf)-1;
@@ -270,7 +275,7 @@ char* fullname(char* fnam,int  type)
     
 	//n = CHPERLN - strlen(long_name)-1;
 	//strncat(long_name,suffixbuf,n);	// prefix buf now has entire name 
-	strcat(long_name,suffixbuf);
+	strlcat(long_name,suffixbuf,CHPERLN);
     
 	if( (strlen(long_name) + 8) >= CHPERLN) {
 	    beep();
