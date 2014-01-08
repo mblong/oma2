@@ -37,10 +37,16 @@ void setUpUIData();
     [statusController showWindow:self];
     
     char text[NEW_PREFIX_CHPERLN];
+    extern char applicationPath[];		// this is the path to the directory that the program is running from
+    extern char contentsPath[];         // this is the path to the Contents directory
+
     
     // set the directory to oma2.app
-    strlcpy(text,[[[NSBundle mainBundle] bundlePath] cStringUsingEncoding:NSASCIIStringEncoding ],NEW_PREFIX_CHPERLN);
-    chdir(text);
+    NSString* contents = [[NSBundle mainBundle] bundlePath];
+    strlcpy(contentsPath,[contents cStringUsingEncoding:NSASCIIStringEncoding],CHPERLN);
+    chdir(contentsPath);
+    strlcpy(applicationPath,[[contents stringByDeletingLastPathComponent] cStringUsingEncoding:NSASCIIStringEncoding],CHPERLN);
+    strlcat(applicationPath,"/",CHPERLN);
     
     setUpUIData();
     

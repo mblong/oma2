@@ -22,6 +22,10 @@ int newWindowFlag = 1;      // set by NEWWINDOW
 
 FILE* nameFilePtr = NULL;   // used in the GETFILENAMES and NEXTFILE commands
 
+char applicationPath[CHPERLN];	// this is the path to the directory that the program is running from
+char contentsPath[CHPERLN];		// this is the path to the Contents directory where things like palettes are stored
+
+
 
 
 //extern "C" int get_byte_swap_value(short);

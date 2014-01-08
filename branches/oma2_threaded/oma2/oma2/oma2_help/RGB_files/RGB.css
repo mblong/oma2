@@ -20,6 +20,28 @@
     text-indent: -18px;
     text-transform: none;
 }
+.paragraph_style_1 {
+    color: rgb(88, 77, 77);
+    font-family: 'ArialMT', 'Arial', sans-serif;
+    font-size: 15px;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 20px;
+    margin-bottom: 0px;
+    margin-left: 27px;
+    margin-right: 0px;
+    margin-top: 0px;
+    opacity: 1.00;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    text-align: left;
+    text-decoration: none;
+    text-indent: -27px;
+    text-transform: none;
+}
 .style_SkipStroke {
     background: transparent;
     opacity: 1.00;
@@ -76,17 +98,17 @@
     background: transparent;
     opacity: 1.00;
 }
-.graphic_shape_layout_style_default {
-    padding: 4px;
-}
 .graphic_shape_layout_style_default_External_630_49 {
     position: relative;
 }
-.graphic_textbox_layout_style_default {
+.graphic_shape_layout_style_default {
     padding: 4px;
 }
 .graphic_textbox_layout_style_default_External_630_1368 {
     position: relative;
+}
+.graphic_textbox_layout_style_default {
+    padding: 4px;
 }
 .graphic_textbox_style_default_SkipStroke {
     background: transparent;
