@@ -224,6 +224,18 @@ IF condition
 INVERT
 	Inverts the image in the current image data buffer, causing the first data point to become the last data point.
 
+INTEGRATE direction_flag selection_flag do_average
+	Sum up the data in the horizontal ( direction_flag=0 ) or vertical (direction_flag=1)direction. The two-dimensional image becomes a single line. If selection_flag=1, the subset of the image specified by the selection rectangle is used. Possible cases are:
+	direction_flag = 1 The result is an array in x; sum in y direction
+	direction_flag = 0 The result is an array in y; sum in x direction
+	selection_box = 1 A selection box specifies what region to sum
+	selection_box = 0 Sum all channels or tracks 
+	do_average = 1 Average along the integrate direction (divide by box size in integration direction)
+	do_average = 0 Just sum, don't average
+
+INTFILL direction_flag selection_flag do_average
+	This works like the INTEGRATE command but a two-dimensional image is formed by duplicating the summed values. If selection_flag=1, the new image will be the size of the currently defined rectangle.
+
 INTVARIABLE variable_name
 	Specifies that variable_name is to be used as an integer variable.
 
@@ -267,6 +279,9 @@ LOOKUP fn_number
 
 LTEMPIMAGE 
 	List defined temporary images.
+
+LN
+	Returns the natural log of the current image.
 
 MACRO [n m]
 	Like "RMACRO [n m]" except that printing of intermediate output is automatically suppressed.

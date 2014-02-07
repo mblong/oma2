@@ -826,7 +826,7 @@ gsmooth2(int n, int index)
 		return -1;
 	}
     
-	size = (header[NCHAN] * header[NTRAK] + MAXDOFFSET) * DATABYTES;
+	size = (header[NCHAN] * specs[ROWS] + MAXDOFFSET) * DATABYTES;
 	size = (size+511)/512*512;	// make a bit bigger for file reads
     
 	datp2 = datp = malloc(size);
@@ -918,7 +918,7 @@ int diffy_c(int n,char* args )				/* differentiate the data in the y direction  
 	}
 	
 	for(nc=0;nc < bufferspecs[COLS]; nc++){
-		//*(datp2++) = idat(bufferspecs[ROWS]-2,nc) - idat(bufferspecs[ROWS]-1,nc);
+		//*(datp2++) = iBuffer.getpix(bufferspecs[ROWS]-2,nc) - idat(bufferspecs[ROWS]-1,nc);
         newIm.setpix(bufferspecs[ROWS]-1, nc,iBuffer.getpix(bufferspecs[ROWS]-2,nc) - iBuffer.getpix(bufferspecs[ROWS]-1,nc));
 	}
     free(bufferspecs);  // release buffer copy
@@ -2626,4 +2626,198 @@ int acget_c(int n,char* args){
     update_UI();
     return iBuffer.err();
 }
+
+/*
+ INTEGRATE direction_flag selection_box do_average
+ 
+ direction_flag = 1 	The result is an array in x; sum in the y direction (sum rows)
+ direction_flag = 0 	The result is an array in y; sum in the x direction (sum columns)
+ 
+ selection_box = 1	A selection box specifies how many channels or tracks to sum
+ selection_box = 0	Sum all channels or tracks -- direction specified by direction_flag
+ 
+ do_average = 1		Average along the integrate direction (divide by box size in integration direction)
+ do_average = 0		just sum, don't average
+ 
+ */
+
+
+int integrateFill(int n,char* args, int integratefill ){
+	float	sum;
+	int			pxstart,pxend,pystart,pyend;
+	int 		i,j,xdirection,sbox=0,do_average=0;
+	float *acpoint,mx=0,mn=0;
+	unsigned int  acsize = 0;
+    
+    point substart,subend;
+    int* specs = iBuffer.getspecs();
+	
+	substart = UIData.iRect.ul;
+    subend = UIData.iRect.lr;
+
+    xdirection = n;
+    
+    sscanf(args,"%d %d %d",&xdirection,&sbox,&do_average);
+    
+    if(xdirection) {
+        
+		if( sbox && ( substart.h == subend.h) ) {
+			beep();
+            printf("Rectangle has 0 width; integrate entire image\n");
+			sbox = false;
+		}
+		if(sbox) {
+			pxstart = substart.h;
+			pxend = subend.h+1;
+			pystart = substart.v;
+			pyend = subend.v+1;
+            
+			if( pxstart < 0 )
+				pxstart = 0;
+			if( pxend > specs[COLS])
+				pxend = specs[COLS];
+			if( pystart < 0 )
+				pystart = 0;
+			if( pyend > specs[ROWS])
+				pyend = specs[ROWS];
+            
+		}
+		else {
+			pxstart = 0;
+			pxend = specs[COLS];
+			pystart = 0;
+			pyend = specs[ROWS];
+		}
+		
+		acsize = specs[COLS]*sizeof(DATAWORD);
+		acpoint = (float*) malloc(acsize);
+		if(acpoint == 0) {
+			nomemory();
+			return MEM_ERR;
+		}
+		
+        
+		for(j=pxstart; j < pxend; j++) {
+			sum = 0;
+			for(i=pystart; i < pyend; i++) {
+				sum += iBuffer.getpix(i,j) ;
+			}
+			if(j==pxstart)
+				mn = mx = sum;
+			*(acpoint + j) = sum;
+			if( *(acpoint+j) > mx) mx = *(acpoint+j);
+			if( *(acpoint+j) < mn) mn = *(acpoint+j);
+		}
+        
+		specs[COLS] = abs(pxend - pxstart);
+		
+		if(!integratefill) {
+			specs[ROWS] = 1;
+		}
+        
+        iBuffer.setspecs(specs);
+
+		for (i=0; i<specs[ROWS]; i++) {
+			for(j=0; j < specs[COLS]; j++) {
+				if(do_average)
+				    iBuffer.setpix(i,j, *(acpoint+j+pxstart)/(pyend-pystart));
+				else
+				    iBuffer.setpix(i,j, *(acpoint+j+pxstart));
+			}
+		}
+	}
+	else {
+		if( sbox && (substart.v == subend.v) ) {
+			beep();
+			sbox = false;
+		}
+		if(sbox) {
+			pxstart = substart.v;
+			pxend = subend.v+1;
+			pystart = substart.h;
+			pyend = subend.h+1;
+            
+			if( pxstart < 0 )
+				pxstart = 0;
+			if( pxend > specs[ROWS])
+				pxend = specs[ROWS];
+			if( pystart < 0 )
+				pystart = 0;
+			if( pyend > specs[COLS])
+				pyend = specs[COLS];
+            
+		}
+		else {
+			pxstart = 0;
+			pxend = specs[ROWS];
+			pystart = 0;
+			pyend = specs[COLS];
+		}
+		
+		acsize = specs[ROWS]*sizeof(DATAWORD);
+		acpoint = (float*) malloc(acsize);
+		if(acpoint == 0) {
+			nomemory();
+			return -1;
+		}
+        
+		for(j=pxstart; j < pxend; j++) {
+			sum = 0;
+			for(i=pystart; i < pyend; i++) {
+				sum += iBuffer.getpix(j,i);
+			}
+			if(j==pxstart)
+				mn = mx = sum;
+			*(acpoint + j) = sum;
+			if( *(acpoint+j) > mx) mx = *(acpoint+j);
+			if( *(acpoint+j) < mn) mn = *(acpoint+j);
+		}
+		
+		specs[ROWS] = abs(pxend - pxstart);
+		
+		if(!integratefill) {
+			specs[COLS] = 1;
+		}
+		iBuffer.setspecs(specs);
+        
+		for (i=0; i<specs[ROWS]; i++) {
+			for(j=0; j < specs[COLS]; j++) {
+			    if(do_average)
+                    iBuffer.setpix(i,j, *(acpoint+i+pxstart)/(pyend-pystart));
+			    else
+                    iBuffer.setpix(i,j, *(acpoint+i+pxstart));
+			}
+		}
+        
+		
+
+	}
+    free(acpoint);
+    free(specs);
+    iBuffer.getmaxx();
+    update_UI();
+    return iBuffer.err();
+}
+
+int integrate_c(int n,char* args){
+    return integrateFill(n,args, false );
+}
+
+int intfill_c(int n,char* args){
+    return integrateFill(n,args, true );
+}
+
+int ln_c(int n,char* args){
+    for(int nt=0; nt<iBuffer.rows(); nt++) {
+		for (int nc =0; nc<iBuffer.cols(); nc++){
+			iBuffer.setpix(nt, nc, logf(iBuffer.getpix(nt, nc)));
+		}
+	}
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+
+
 

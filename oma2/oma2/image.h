@@ -81,11 +81,13 @@ public:
     void saveFile(char*, int);  ///< write the Image to a file; second argument tells if name is complete or not
     
     void copyABD(Image);        ///< copy All But Data from one image to another
-    int* getspecs();            ///< returns a copy of the image specs array; this must be released by caller
+    int* getspecs();            ///< returns a copy of the image specs array
+    int rows();                 ///< returns the number of rows in the current image (height)
+    int cols();                 ///< returns the number of columns in the current image (width)
     void setspecs(int*);        ///< sets the image specs array
-    DATAWORD* getvalues();      ///< returns a copy of the image values array; this must be released by caller
-    char* getunit_text();       ///< returns a copy of the image ruler units; this must be released by caller
-    char* getComment();        ///< returns a copy of the comment buffer; this must be released by caller
+    DATAWORD* getvalues();      ///< returns a copy of the image values array
+    char* getunit_text();       ///< returns a copy of the image ruler units
+    char* getComment();        ///< returns a copy of the comment buffer
     
     DATAWORD getpix(int,int);     ///< get a pixel value at the specified row and column
     DATAWORD getpix(float,float); ///< get an interpoated pixel value at the specified fractional row and column

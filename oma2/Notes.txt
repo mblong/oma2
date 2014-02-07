@@ -97,12 +97,17 @@ Addressed UI Issues:
   √ Prefs:
   √  -> select color bar
   √  -> Improve prefix/suffix setting
+  
+
 
 _____________________________
 Needed Commands
  LOG command
 
  
+  Need adding to online help:
+  INTEGRATE
+  INTFILL
 
  
 _____________________________
