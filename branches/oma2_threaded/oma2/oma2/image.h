@@ -31,76 +31,75 @@ enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR,ARG_ERR,CMND_ERR,GET_MACRO_LINE};
 class Image
 {
 protected:
-    int         specs[NSPECS];      // information on Image size, type, etc.
-    DATAWORD    values[NVALUES];    // important values (things like min, max, etc.)
-    char        unit_text[NRULERCHAR];
-    int         error;
-    int         is_big_endian;
-    int         commentSize;
-    int         extraSize;
-    char*       comment;
-    float*      extra;
-    DATAWORD*   data;
+    int         specs[NSPECS];      ///< Information on Image size, type, etc.
+    DATAWORD    values[NVALUES];    ///< Important values (things like min, max, etc.)
+    char        unit_text[NRULERCHAR]; ///< Label for the ruler units
+    int         error;              ///< An error flag
+    int         is_big_endian;  ///< You guessed it.
+    int         commentSize;    ///< Size of text entered with the LOG command
+    int         extraSize;      ///< Space of extra buffer to be stored with an image. Not used so far.
+    char*       comment;        ///< Text entered with the LOG command
+    float*      extra;          ///< Pointer to extra data (float)
+    DATAWORD*   data;           ///< Pointer to image data (DATAWORD=float currently)
 public:
-    Image();            // default constructor with no arguments
-    Image(int,int);     // constructor -- specify rows and columns, other values are defaults
-    Image(char*,int);   // constructor -- new Image from filename;
-                        // second argument says what to do with filling in name
+    Image();            ///< default constructor with no arguments
+    Image(int,int);     ///< constructor -- specify rows and columns, other values are defaults
+    Image(char*,int);   ///< constructor -- new Image from filename.
+                        ///< Second argument says what to do with filling in name
     
-    void operator+(DATAWORD);  // constant arithmetic, modifies the current Image
-    void operator-(DATAWORD);  //    does not calculate min/max
-    void operator*(DATAWORD);
-    void operator/(DATAWORD);
-    void power(DATAWORD);        // raise to the specified power
-    
-    
-    void operator+(Image);     // Image arithmetic, modifies the current Image
-    void operator-(Image);     //    does not calculate min/max
-    void operator*(Image);
-    void operator/(Image);
+    void operator+(DATAWORD);  ///< constant arithmetic, modifies the current Image; does not calculate min/max
+    void operator-(DATAWORD);  ///< constant arithmetic, modifies the current Image; does not calculate min/max
+    void operator*(DATAWORD);  ///< constant arithmetic, modifies the current Image; does not calculate min/max
+    void operator/(DATAWORD);  ///< constant arithmetic, modifies the current Image; does not calculate min/max
+    void power(DATAWORD);      ///< Raise to the specified power
     
     
-    Image operator<<(Image);    // make a copy of an image
+    void operator+(Image);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
+    void operator-(Image);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
+    void operator*(Image);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
+    void operator/(Image);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
     
     
-    bool operator==(Image);     // true if Images are the same size
-    bool operator!=(Image);     // true if Images are not the same size
-    bool isEmpty();             // true if Image has no data
-    bool isColor();             // true if Image is flagged as color
+    Image operator<<(Image);    ///< make a copy of an image
     
-    int width();                // image width
-    int height();               // image height -- for color images this is pixHeight/3
     
-    int err();                  // return the error code (= 0 if no error)
-    void errclear();            // clear the image error code
-    void free();                // release the data associated with an Image
-    void zero();                // set the data associated with an Image to 0
-    void getmaxx();             // fill in the min and max for the current Image
-    void clip(DATAWORD);        // set values > specifiedValue to specifiedValue
-    void floor(DATAWORD);       // set values < specifiedValue to specifiedValue
-    void saveFile(char*, int);  // write the Image to a file; second argument tells if name is complete or not
+    bool operator==(Image);     ///< true if Images are the same size
+    bool operator!=(Image);     ///< true if Images are not the same size
+    bool isEmpty();             ///< true if Image has no data
+    bool isColor();             ///< true if Image is flagged as color
     
-    void copyABD(Image);        // copy All But Data from one image to another
-    int* getspecs();            // returns a copy of the image specs array
-    void setspecs(int*);        // sets the image specs array
-    DATAWORD* getvalues();      // returns a copy of the image values array
-    char* getunit_text();       // returns a copy of the image ruler units
-    char* getComment();        // returns a copy of the comment buffer
+    int width();                ///< image width
+    int height();               ///< image height -- for color images this is pixHeight/3
     
-    DATAWORD getpix(int,int);     // get a pixel value at the specified row and column
-    DATAWORD getpix(float,float); // get an interpoated pixel value at the specified 
-                                  // fractional row and column
-    void setpix(int,int,DATAWORD);   // set a pixel value at the specified row and column
+    int err();                  ///< return the error code (= 0 if no error)
+    void errclear();            ///< clear the image error code
+    void free();                ///< release the data associated with an Image
+    void zero();                ///< set the data associated with an Image to 0
+    void getmaxx();             ///< fill in the min and max for the current Image
+    void clip(DATAWORD);        ///< set values > specifiedValue to specifiedValue
+    void floor(DATAWORD);       ///< set values < specifiedValue to specifiedValue
+    void saveFile(char*, int);  ///< write the Image to a file; second argument tells if name is complete or not
     
-    void crop(rect);           // crop the current image or return an error if there was one
-    void rotate(float);        // rotate the current image or return an error if there was one
+    void copyABD(Image);        ///< copy All But Data from one image to another
+    int* getspecs();            ///< returns a copy of the image specs array; this must be released by caller
+    void setspecs(int*);        ///< sets the image specs array
+    DATAWORD* getvalues();      ///< returns a copy of the image values array; this must be released by caller
+    char* getunit_text();       ///< returns a copy of the image ruler units; this must be released by caller
+    char* getComment();        ///< returns a copy of the comment buffer; this must be released by caller
     
-    void invert();             // invert the current image
-    void mirror();             // mirror the current image
+    DATAWORD getpix(int,int);     ///< get a pixel value at the specified row and column
+    DATAWORD getpix(float,float); ///< get an interpoated pixel value at the specified fractional row and column
+    void setpix(int,int,DATAWORD);   ///< set a pixel value at the specified row and column
     
-    void rgb2color(int);       // crop an rgb image to color 0,1, or 2 (red, green, or blue)
-    void composite(Image);     // composite two images. Error if images are not the same width.
-    void resize(int,int);      // resize the current image
+    void crop(rect);           ///< crop the current image or return an error if there was one
+    void rotate(float);        ///< rotate the current image or return an error if there was one
+    
+    void invert();             ///< invert the current image
+    void mirror();             ///< mirror the current image
+    
+    void rgb2color(int);       ///< crop an rgb image to color 0,1, or 2 (red, green, or blue)
+    void composite(Image);     ///< composite two images. Error if images are not the same width.
+    void resize(int,int);      ///< resize the current image to specified rows and columns
     
     
     
