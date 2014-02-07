@@ -410,6 +410,15 @@ void Image::free(){
         delete[] data;
         data = NULL;
     }
+    if(commentSize != 0){
+        delete[] comment;
+        commentSize = 0;
+    }
+    if(extraSize != 0){
+        delete[] extra;
+        extraSize = 0;
+    }
+    
 }
 
 void Image::zero(){
@@ -611,7 +620,10 @@ void Image::resize(int newRows, int newCols){
 
 DATAWORD Image::getpix(int r ,int c)   // get a pixel value at the specified row and column
 {
-	if (data == NULL) return 0.;
+	if (data == NULL){
+        error = MEM_ERR;
+        return 0.;
+    }
 	if(c < 0) c = 0;
 	if(r < 0) r = 0;
 	if(c > specs[COLS]-1) c = specs[COLS]-1;
@@ -662,7 +674,10 @@ DATAWORD Image::getpix(float yi, float xi)
 
 void Image::setpix(int r ,int c,DATAWORD val)   // set a pixel value at the specified row and column
 {
-	if (data == NULL) return;
+	if (data == NULL){
+        error = MEM_ERR;
+        return;
+    }
 	if(c < 0) c = 0;
 	if(r < 0) r = 0;
 	if(c > specs[COLS]-1) c = specs[COLS]-1;
@@ -732,7 +747,9 @@ void Image::setspecs(int* newspecs){
 }
 
 void Image::copyABD(Image im){    // copy All But Data from one image to another
+    
     int i;
+    
     for( i=0; i<NSPECS; i++){
         specs[i] = im.specs[i];
     }
@@ -746,6 +763,15 @@ void Image::copyABD(Image im){    // copy All But Data from one image to another
 
     error = im.error;
     is_big_endian = im.is_big_endian;
+    commentSize = im.commentSize;
+    comment = im.getComment();
+    extraSize = im.extraSize;
+    if (extraSize) {
+        extra = new float(extraSize);
+        for (i=0; i<extraSize; i++) {
+            extra[i] = im.extra[i];
+        }
+    }
 }
 
 void Image::crop(rect crop_rect){

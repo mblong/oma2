@@ -13,7 +13,8 @@ extern int numberNamedTempImages;
 extern Variable namedTempImages[];
 
 /* ********** */
-
+/// Add a constant
+///
 int plus_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
@@ -27,12 +28,15 @@ int plus_c(int n,char* args){
 
 /* ********** */
 
+/// Do nothing
+///
 int null_c(int n,char* args){
     return NO_ERR;
 }
 
 /* ********** */
-
+/// Subtract a constant.
+///
 int minus_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
@@ -44,7 +48,8 @@ int minus_c(int n,char* args){
 }
 
 /* ********** */
-
+/// Divide by a constant.
+///
 int divide_c(int n,char* args){
     DATAWORD val;
     if( sscanf(args,"%f",&val) != 1)
@@ -56,6 +61,8 @@ int divide_c(int n,char* args){
 }
 
 /* ********** */
+/// Multiply by a constant.
+///
 
 int multiply_c(int n,char* args){
     DATAWORD val;

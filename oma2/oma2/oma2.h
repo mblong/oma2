@@ -122,7 +122,7 @@ enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_
         #define PALETTEFILE3 "Contents/Resources/OMA palette3.pa1"
 
         #define HELPFILE "Contents/Resources/oma help.txt"
-        #define HELPURL "Contents/Resources/oma2_help/OMA2_First_Steps.html"
+        #define HELPURL "Contents/Resources/LightOma2Help/index.html"
     #endif
 #else
     #define SETTINGSFILE "OMA Settings"
@@ -143,17 +143,17 @@ enum  {DEFAULTMAP,BGRBOW,GRAYMAP,REDMAP,GREENMAP,BLUEMAP,FROMAFILE2,FROMAFILE3};
 
 
 typedef struct {
-	int* specs;
+	int* specs;     ///< A pointer to image specs
 } ImSpecs;
 
 typedef struct {
-	int h;
-    int v;
+	int h;          ///< horizontal
+    int v;          ///< vertical
 } point;
 
 typedef struct {
-	point ul;       // upper left
-    point lr;       // lower right
+	point ul;       ///< upper left
+    point lr;       ///< lower right
 } rect;
 
 typedef struct {
@@ -161,18 +161,18 @@ typedef struct {
     
     // Prefix/suffix buffers
     
-    char	saveprefixbuf[NEW_PREFIX_CHPERLN];		/* save data file prefix buffer */
-    char	savesuffixbuf[NEW_PREFIX_CHPERLN];		/* save data file suffix buffer */
-    char	getprefixbuf[NEW_PREFIX_CHPERLN];		/* get data file prefix buffer */
-    char	getsuffixbuf[NEW_PREFIX_CHPERLN];		/* get data file suffix buffer */
-    char	graphicsprefixbuf[NEW_PREFIX_CHPERLN];	/* graphics file prefix buffer */
-    char	graphicssuffixbuf[NEW_PREFIX_CHPERLN];	/* graphics file suffix buffer */
-    char	macroprefixbuf[NEW_PREFIX_CHPERLN];     /* macro file prefix buffer */
-    char	macrosuffixbuf[NEW_PREFIX_CHPERLN];     /* macro file suffix buffer */
+    char	saveprefixbuf[NEW_PREFIX_CHPERLN];		///< Save data file prefix buffer
+    char	savesuffixbuf[NEW_PREFIX_CHPERLN];		///< Save data file suffix buffer
+    char	getprefixbuf[NEW_PREFIX_CHPERLN];		///< Get data file prefix buffer
+    char	getsuffixbuf[NEW_PREFIX_CHPERLN];		///< Get data file suffix buffer
+    char	graphicsprefixbuf[NEW_PREFIX_CHPERLN];	///< Settings file prefix buffer
+    char	graphicssuffixbuf[NEW_PREFIX_CHPERLN];	///< Settings file suffix buffer
+    char	macroprefixbuf[NEW_PREFIX_CHPERLN];     ///< Macro file prefix buffer
+    char	macrosuffixbuf[NEW_PREFIX_CHPERLN];     ///< Macro file suffix buffer
 
     // Status Window Related 
     
-    int         pixsiz;					
+    int         pixsiz;                     ///< Zoom factor for displaying images.
     int         newwindowflag;
     int         cminmaxinc;
     int         autoscale;
@@ -186,8 +186,8 @@ typedef struct {
     int         x0;
     int         y0;
     
-    rect        iRect;              // the image sub-rectagle (for cropping for example), 
-                                    //   defined in terms of upper left pt. to lower right pt.
+    rect        iRect;              ///< The image sub-rectagle (for cropping for example).
+                                    ///<   Defined in terms of upper left pt. to lower right pt.
                                     
 
     DATAWORD    cmin;
