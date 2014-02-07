@@ -63,12 +63,16 @@ int gsmooth_c(int, char*);
 int gtemp_c(int, char*);
 
 int invert_c(int,char*);
+int integrate_c(int,char*);
+int intfill_c(int,char*);
+int integrateFill(int,char*,int);
 
 int killBox_c(int,char*);
 
 int list_c(int,char*);
 int ltemp_c(int,char*);
 int lookup_c(int,char*);
+int ln_c(int,char*);
 
 int minus_c(int,char*);
 int mirror_c(int,char*);

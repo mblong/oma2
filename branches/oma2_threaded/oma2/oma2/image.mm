@@ -694,6 +694,15 @@ int* Image::getspecs(){             // this allocates space for specs that the u
     return thespecs;
 }
 
+int Image::rows(){             // this allocates space for specs that the user must free
+    return specs[ROWS];
+}
+
+int Image::cols(){             // this allocates space for specs that the user must free
+    return specs[COLS];
+}
+
+
 DATAWORD* Image::getvalues(){       // this allocates space for values that the user must free
    DATAWORD* thevalues = new DATAWORD[NVALUES];
     for(int i=0; i<NVALUES; i++){
