@@ -16,6 +16,9 @@
 #include "ImageBitmap.h"
 #include "dofft.h"
 
+#ifdef MacOSX_UI
+#import "CommandView.h"
+#endif
 
 
 
