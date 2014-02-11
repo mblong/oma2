@@ -1,6 +1,6 @@
 
 #include "comdec.h"
-#import "CommandView.h"
+
 
 
 extern char    reply[1024];   // buffer for sending messages to be typed out by the user interface
