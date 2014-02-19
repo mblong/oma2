@@ -2,7 +2,7 @@
 //#define oma2_commands_1_h
 
 
-#include "Image.h"
+#include "image.h"
 #include "ImageBitmap.h"
 
 extern "C" {

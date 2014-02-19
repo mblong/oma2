@@ -294,6 +294,7 @@ int comdec(char* cmnd)
             }
             //if(macro_stopable) checkevents();		// if the macro is stopable, check for possible events
             if(macro_stopable){
+                checkEvents;
                 if (stopMacroNow) {
                     stopmacro();
                 }
@@ -339,6 +340,7 @@ int comdec(char* cmnd)
                 }
                 //if(macro_stopable)checkevents();		// if the macro is stopable, check for possible events
                 if(macro_stopable){
+                    checkEvents;
                     if (stopMacroNow) {
                         stopmacro();
                     }

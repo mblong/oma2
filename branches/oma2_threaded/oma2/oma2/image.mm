@@ -1,4 +1,4 @@
-#include "Image.h"
+#include "image.h"
 
 
 // The list of globals -- keep this VERY small

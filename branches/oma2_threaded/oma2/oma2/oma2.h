@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <fcntl.h>
-#include <Strings.h>
-#include <StdLib.h>
+#include <strings.h>
+#include <stdlib.h>
 #include <math.h>
 
 
@@ -112,9 +112,9 @@ enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_
        LOAD_SAVE_PREFIX,LOAD_GET_PREFIX,LOAD_SAVE_SUFFIX,LOAD_GET_SUFFIX,
        LOAD_MACRO_PREFIX,LOAD_SETTINGS_PREFIX,LOAD_MACRO_SUFFIX,LOAD_SETTINGS_SUFFIX};
 
-#define DO_MACH_O
 
-#ifdef DO_MACH_O
+
+#ifdef MacOSX_UI
     #ifndef SETTINGSFILE
         #define SETTINGSFILE "Contents/Resources/OMA Settings"
         #define PALETTEFILE	"Contents/Resources/OMA palette.pa1"
@@ -124,11 +124,18 @@ enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_
         #define HELPFILE "Contents/Resources/oma help.txt"
         #define HELPURL "Contents/Resources/LightOma2Help/index.html"
     #endif
-#else
-    #define SETTINGSFILE "OMA Settings"
-    #define PALETTEFILE	"OMA Palette"
-    #define PALETTEFILE2 "OMA Palette2"
-    #define PALETTEFILE3 "OMA Palette3"
+#endif
+
+#ifdef Qt_UI
+    #ifndef SETTINGSFILE
+        #define SETTINGSFILE "../Resources/OMA Settings"
+        #define PALETTEFILE	"../Resources/OMA palette.pa1"
+        #define PALETTEFILE2 "../Resources/OMA palette2.pa1"
+        #define PALETTEFILE3 "../Resources/OMA palette3.pa1"
+
+        #define HELPFILE "../Resources/oma help.txt"
+        #define HELPURL "../Resources/LightOma2Help/index.html"
+    #endif
 #endif
 
 // 8 defined color palettes
