@@ -10,11 +10,11 @@
 #define oma2_UI_h
 
 #include "ImageBitmap.h"
-#include "Image.h"
+#include "image.h"
 #include "commands_1.h"
 #include "comdec.h"
 
-
+// do this at compile time with -DQt_UI (for example)
 //#define MacOSX_UI
 //#define Qt_UI
 
@@ -37,6 +37,8 @@ enum {CROSS,RECT,CALCRECT,RULER,LINEPLOT};
  #define label_data [appController labelDataWindow:(char*) args];
  #define label_data_minMax [appController labelMinMax];
  */
+
+#define checkEvents ;
 
 // try this so that the command thread doesn't mess with things that need to be in the main thread
 
@@ -74,18 +76,31 @@ int pprintf(const char* format, ...);
 
 #ifdef Qt_UI
 
-#define display_data ;
-#define erase_window ;
+#include <QApplication>
+#include "qtoma2.h"
+
+#define display_data display();
+#define erase_window eraseWindow(n);
 #define label_data ;
 #define label_data_minMax ;
+#define checkEvents QCoreApplication::processEvents();
 
-#define pprintf printf
+#define pprintf omaprintf
+#define printf omaprintf
 #define nil 0
 
+#pragma clang diagnostic ignored "-Wunused-parameter"
+#pragma clang diagnostic ignored "-Wsign-compare"
+
+// dcraw needs these
+#define ABS(x) (((int)(x) ^ ((int)(x) >> 31)) - ((int)(x) >> 31))
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+
 typedef struct{
-    int red;
-    int green;
-    int blue;
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
 } RGBColor;
 
 typedef struct{
@@ -96,12 +111,15 @@ typedef struct{
 typedef char* Ptr;
 
 typedef char BOOL;
+typedef char Boolean;
 #define NO 0
 #define YES 1
 
-
+int omaprintf(const char* format, ...);
 void alertSound(char*);
 void beep();
+void display();
+void eraseWindow(int);
 
 #endif
 #endif

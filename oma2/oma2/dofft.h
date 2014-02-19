@@ -9,7 +9,7 @@
 #ifndef oma2_dofft_h
 #define oma2_dofft_h
 
-#include "Image.h"
+#include "image.h"
 #include "ImageBitmap.h"
 
 

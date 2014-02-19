@@ -1,4 +1,4 @@
-#include "Image_support.h"
+#include "image_support.h"
 
 extern char reply[1024];
 extern oma2UIData UIData;
@@ -319,9 +319,9 @@ int loadprefs(char* name)
     
 
     
-#ifdef DO_MACH_O
+
 	getcwd(oldname,CHPERLN);
-#endif
+
 	if(name == nil) {
    		/*
         // load using dialog
@@ -526,9 +526,9 @@ int loadprefs(char* name)
     close(fd);
 	//err = setvol("", oldvol);
 	//HSetVol(NULL,v_ref_num,dir_ID);
-#ifdef DO_MACH_O
+
 	chdir(oldname);
-#endif
+
 	//setfonts(oldfont,-1);		// removed
     /*
 	if(Status_window != 0){

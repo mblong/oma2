@@ -1,6 +1,6 @@
 
 
-#include "Image.h"
+#include "image.h"
 #include "ImageBitmap.h"
 
 #define MAXDOFFSET 80		/* the maximum databuffer offset */
