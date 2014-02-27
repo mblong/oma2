@@ -4,6 +4,7 @@
 
 #include "image.h"
 #include "ImageBitmap.h"
+#include "UI.h"
 
 extern "C" {
 #include "tiffio.h"

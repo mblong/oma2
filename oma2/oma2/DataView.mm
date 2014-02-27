@@ -41,14 +41,14 @@ extern oma2UIData UIData;
             // only want to do this if mouse is pressed --
             // without this condition, this gets done for every DISPLAY command
             
-            //tools are: CROSS,RECT,CALCRECT,RULER,LINEPLOT
+            //tools are: CROSS,SELRECT,CALCRECT,RULER,LINEPLOT
             NSBezierPath *path = [NSBezierPath bezierPath];
             [[NSColor grayColor] set];
             [path setLineWidth:2.0];
             
             switch  (appController.tool){
                 case CALCRECT:
-                case RECT:
+                case SELRECT:
                     //[[NSBezierPath bezierPathWithRect:NSMakeRect(startPoint.x, startPoint.y,
                     //      endPoint.x-startPoint.x, endPoint.y-startPoint.y)]stroke];
                     
@@ -163,9 +163,9 @@ extern oma2UIData UIData;
     }
     
     if (colLine >= 0){
-        int newLine = x/heightScale;
+        int newLine = x/widthScale;
         if (colLine != newLine){
-            [colWindowController updateColDrawing:x/heightScale];
+            [colWindowController updateColDrawing:x/widthScale];
             /*
              if(colLine > newLine){
              if (x<=0) x=1;
@@ -203,7 +203,7 @@ extern oma2UIData UIData;
     endRect.y = y;
     
 
-    if(appController.tool < RECT)
+    if(appController.tool < SELRECT)
         [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
     else
         [statusController labelX1:x Y1:y Z1: iBuffer.getpix(y,x)];
@@ -224,17 +224,9 @@ extern oma2UIData UIData;
         }
     }
     if (colLine >= 0){
-        int newLine = x/heightScale;
+        int newLine = x/widthScale;
         if (colLine != newLine){
-            [colWindowController updateColDrawing:x/heightScale];
-            /*
-            if(colLine > newLine){
-                if (x<=0) x=1;
-                [colWindowController updateColDrawing:x-1/heightScale];
-            }else{
-                [colWindowController updateColDrawing:x/heightScale];
-            }
-             */
+            [colWindowController updateColDrawing:x/widthScale];
             colLine = newLine;
         }
     }
@@ -277,7 +269,7 @@ extern oma2UIData UIData;
             
             //break;    // in this implementation, this does redefine the image rectangle
 
-        case RECT:
+        case SELRECT:
             
             UIData.iRect.ul.h = startRect.x;
             UIData.iRect.ul.v = startRect.y;
