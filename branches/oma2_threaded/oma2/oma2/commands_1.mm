@@ -1820,7 +1820,7 @@ int fclose_c (int n,char* args)
 
 int fecho_c (int n,char* args)
 {
-	if (index != 0) {
+	if (*args != 0) {
 		if( fptr_local != NULL) {
 			fprintf(fptr_local, "%s\n",args);
 		} else {

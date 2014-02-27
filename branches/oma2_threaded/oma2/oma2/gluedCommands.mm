@@ -467,7 +467,7 @@ int block(int n,int index)
 	extern int	doffset;
 	DATAWORD idat(int,int);
 	
-#ifdef FLOAT
+#ifdef FLOAT_
 	DATAWORD sum;
 #else
 	int sum;

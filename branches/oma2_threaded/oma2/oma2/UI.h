@@ -27,7 +27,7 @@
 extern AppController *appController;
 extern StatusController *statusController;
 
-enum {CROSS,RECT,CALCRECT,RULER,LINEPLOT};
+enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
 
 
 #define printf omaprintf
@@ -39,6 +39,17 @@ enum {CROSS,RECT,CALCRECT,RULER,LINEPLOT};
  */
 
 #define checkEvents ;
+
+#ifndef SETTINGSFILE
+#define SETTINGSFILE "Contents/Resources/OMA Settings"
+#define PALETTEFILE	"Contents/Resources/OMA palette.pa1"
+#define PALETTEFILE2 "Contents/Resources/OMA palette2.pa1"
+#define PALETTEFILE3 "Contents/Resources/OMA palette3.pa1"
+
+#define HELPFILE "Contents/Resources/oma help.txt"
+#define HELPURL "Contents/Resources/LightOma2Help/index.html"
+#endif
+
 
 // try this so that the command thread doesn't mess with things that need to be in the main thread
 
@@ -97,7 +108,16 @@ int pprintf(const char* format, ...);
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
-enum {CROSS,RECT,CALCRECT,RULER,LINEPLOT};
+#ifndef SETTINGSFILE
+#define SETTINGSFILE "../Resources/OMA Settings"
+#define PALETTEFILE	"../Resources/OMA palette.pa1"
+#define PALETTEFILE2 "../Resources/OMA palette2.pa1"
+#define PALETTEFILE3 "../Resources/OMA palette3.pa1"
+
+#define HELPFILE "../Resources/oma help.txt"
+#define HELPURL "../Resources/LightOma2Help/index.html"
+#endif
+
 
 typedef struct{
     unsigned char red;
