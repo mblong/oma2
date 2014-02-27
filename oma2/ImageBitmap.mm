@@ -37,7 +37,7 @@ int ImageBitmap::scale_pixval(DATAWORD val)
 void ImageBitmap::operator=(Image im){
 	//Ptr ptr;
 	pdptr = &pixdata;
-	int k = 0, i,j,n=0;
+	int k = 0, i,j,n=0,m=0;
 	int ntrack = im.specs[ROWS];
 	int nchan = im.specs[COLS];
 	int nth;
@@ -72,7 +72,13 @@ void ImageBitmap::operator=(Image im){
 	
 	if(allocate_new){
         if(pixdata) free(pixdata);
-		pixdata = (PIXBYTES*)calloc(width*height,4);
+		pixdata = (PIXBYTES*)calloc(width*height,3);
+        
+        if(intensity) free(intensity);
+        if(im.specs[IS_COLOR])
+            intensity = (PIXBYTES*)malloc(width*height*3);
+        else
+            intensity = (PIXBYTES*)malloc(width*height);
     }else{
 		// try and reuse the same window, but be sure the size is the same
 		/*if( oma_wind[gwnum-1].width == im.specs[COLS]/nth &&
@@ -100,13 +106,18 @@ void ImageBitmap::operator=(Image im){
         if( UIData.pixsiz > 0 ) {
             for(i=0; i < ntrack/3; i++){
                 for(j=0; j < nchan; j++){
-                    *(pixdata+n++) = scale_pixval(*(im.data+k)*UIData.r_scale);
-                    *(pixdata+n++) = scale_pixval(*(pt_green+k)*UIData.g_scale);
-                    *(pixdata+n++) = scale_pixval(*(pt_blue+k++)*UIData.b_scale);
-                    *(pixdata+n++) =0xFF;
+                    pindx = scale_pixval(*(im.data+k)*UIData.r_scale);
+                    *(pixdata+n++) = pindx;
+                    *(intensity+m++) =pindx;
+                    pindx = scale_pixval(*(pt_green+k)*UIData.g_scale);
+                    *(pixdata+n++) = pindx;
+                    *(intensity+m++) =pindx;
+                    pindx = scale_pixval(*(pt_blue+k++)*UIData.b_scale);
+                    *(pixdata+n++) = pindx;
+                    *(intensity+m++) =pindx;
                 }
             }
-        }else {     // this case isn't implemented
+        }/*else {     // this case isn't implemented
             i = 0;
             while(++i < ntrack/nth){
                 j = 0;
@@ -116,11 +127,11 @@ void ImageBitmap::operator=(Image im){
                     *(pixdata+n++) = color[pindx][UIData.thepalette].red;
                     *(pixdata+n++) = color[pindx][UIData.thepalette].green;
                     *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
-                    *(pixdata+n++) =0xFF;
+                    *(intensity+m++) =pindx;
                 }
                 k = i * nth * nchan;
             }
-        }
+        }*/
     } else {
         thePalette = UIData.thepalette;
         if( UIData.pixsiz > 0 ) {
@@ -138,10 +149,10 @@ void ImageBitmap::operator=(Image im){
                         *(pixdata+n++) = 0xFF;
                     }
                     */
-                    *(pixdata+n++) =0xFF;
+                    *(intensity+m++) =pindx;
                 }
             }
-        }else {
+        }/*else {
             i = 0;
             while(++i < ntrack/nth){
                 j = 0;
@@ -151,16 +162,20 @@ void ImageBitmap::operator=(Image im){
                     *(pixdata+n++) = color[pindx][UIData.thepalette].red;
                     *(pixdata+n++) = color[pindx][UIData.thepalette].green;
                     *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
-                    *(pixdata+n++) =0xFF;
+                    *(intensity+m++) =pindx;
                 }
                 k = i * nth * nchan;
             }
-        }
+        }*/
     }
 }
 
 PIXBYTES* ImageBitmap::getpixdata(){
     return pixdata;
+}
+
+PIXBYTES* ImageBitmap::getintensitydata(){
+    return intensity;
 }
 
 PIXBYTES** ImageBitmap::getpixdatap(){

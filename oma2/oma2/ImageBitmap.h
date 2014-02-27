@@ -30,6 +30,7 @@ private:
     int         thePalette;
     DATAWORD    cmin;
     DATAWORD    crange;
+    PIXBYTES*   intensity;
 
     
 
@@ -40,6 +41,7 @@ public:
     
     PIXBYTES* getpixdata();
     PIXBYTES** getpixdatap();
+    PIXBYTES* getintensitydata();
     int getwidth();
     int getheight();
     int getpalette();

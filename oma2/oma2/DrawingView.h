@@ -8,7 +8,18 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface DrawingView : NSView
+@interface DrawingView : NSView{
+    NSData* rowData;
+    NSData* colData;
+    int theRow;
+    int theCol;
+    int bytesPerRow;
+    int pixPerPt;
+    int isColor;
+    float heightScale;
+    float widthScale;
+ 
+}
 
 @property NSData* rowData;
 @property NSData* colData;
@@ -16,6 +27,9 @@
 @property int theCol;
 @property int bytesPerRow;
 @property int pixPerPt;
+@property int isColor;
+@property float heightScale;
+@property float widthScale;
 
 
 @end

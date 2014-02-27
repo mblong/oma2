@@ -83,7 +83,7 @@ extern AppController* appController;
 }
 
 -(void) placeRowDrawing: (NSRect) theLocation {
-    extern RGBColor color[256][8];
+    //extern RGBColor color[256][8];
     drawingType = ROW_DRAWING;
     
     [[dataWindowController imageView] setEraseLines:1];
@@ -93,52 +93,34 @@ extern AppController* appController;
     NSRect dataRect =  [[dataWindowController imageView] frame ];
     
     // change the dataRect to be a single row
-    int theRow = dataRect.size.height/2;       // start in the middle
-    dataRect.origin.y = theRow;
-    dataRect.size.height = 1;
-    
-    // get the bitmap from the data window
-    [[dataWindowController imageView] lockFocus];
-    NSBitmapImageRep* imageRep=[[NSBitmapImageRep alloc] initWithFocusedViewRect: dataRect] ;
-    
-    //imageRep = [imageRep bitmapImageRepByRetaggingWithColorSpace:[NSColorSpace sRGBColorSpace]];
-    
-    NSData* rowData = [[NSData alloc] initWithBytes:[imageRep bitmapData] length:[imageRep bytesPerRow]];
-    unsigned char* bytes = [imageRep bitmapData];
-    int bytesPerRow = (int)[imageRep bytesPerRow];
-    
-    //int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;  // for retina displays
-    [[dataWindowController imageView] unlockFocus];
-    
-    [dataWindowController setHasRowPlot:theRow];
-    [dataWindowController placeRowLine:theRow];
-    [[dataWindowController imageView] setRowWindowController:self];
+    int theWindowRow = dataRect.size.height/2;       // start in the middle
+
     int pal = [dataWindowController thePalette];
-    int j;
-    unsigned char r,g,b,rr,gg,bb;
-    if(pal >= 0){
-        
-        // we have a monochrome image, decode
-        for (int i=0; i < bytesPerRow; i+=4) {
-            
-            for( j=0; j < 256; j++){
-                r = color[j][pal].red;
-                g = color[j][pal].green;
-                b = color[j][pal].blue;
-                rr = *(bytes+i);
-                gg = *(bytes+i+1);
-                bb = *(bytes+i+2);
-                if (rr == r &&
-                    gg == g &&
-                    bb == b) {
-                    break;
-                }
-            }
-            // have the palette index
-            *(bytes+i) = *(bytes+i+1) = *(bytes+i+2) = j;
-        }
-    }
+    unsigned char* bytes = [dataWindowController intensity];    // the start of the data
+    // find the pointer to the specific row
+    int bytesPerRow;
+    //float widthScale = iBitmap.getwidth()/dataRect.size.width;
+    float theheightScale = (float)[dataWindowController dataRows]/(float)dataRect.size.height;
     
+    int theRow = theWindowRow * theheightScale;
+
+    if(pal >= 0) { // we have a monochrome image
+        bytes += theRow * [dataWindowController dataCols];
+        bytesPerRow = [dataWindowController dataCols];
+        [drawingView setIsColor:0];
+    } else {
+        bytes += theRow * [dataWindowController dataCols]*3;
+        bytesPerRow = [dataWindowController dataCols]*3;
+        [drawingView setIsColor:1];
+    }
+    NSData* rowData = [[NSData alloc] initWithBytes:bytes length: bytesPerRow ];
+    
+    // at this point, bytes points to the row of data and rowData has the data
+    
+    [dataWindowController setHasRowPlot:theWindowRow];
+    [dataWindowController placeRowLine:theWindowRow]; 
+    [[dataWindowController imageView] setRowWindowController:self];
+
     windowRect = theLocation;
     [[self window] setTitle:windowName];
     
@@ -148,25 +130,27 @@ extern AppController* appController;
     //[drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
     [drawingView setRowData: rowData];
     [drawingView setBytesPerRow: bytesPerRow];
-    [drawingView setPixPerPt: bytesPerRow/4/[[dataWindowController imageView] frame ].size.width];
-    [drawingView setTheRow: theRow ];
+    //[drawingView setPixPerPt: bytesPerRow/4/[[dataWindowController imageView] frame ].size.width];
+    [drawingView setPixPerPt: 1];
+    [drawingView setHeightScale:theheightScale];
+    [drawingView setTheRow: theWindowRow ];
     [drawingView display];
     [[dataWindowController imageView] setEraseLines:0];
     [[dataWindowController imageView] display];
 
 }
 
--(void) updateRowDrawing: (int) theRow {
+-(void) updateRowDrawing: (int) theWindowRow {
     // where the data comes from
     NSRect dataRect =  [[dataWindowController imageView] frame ];
     // change the dataRect to be a single row
-    dataRect.origin.y = dataRect.size.height - theRow-1;
-    dataRect.size.height = 1;
+    //dataRect.origin.y = dataRect.size.height - theRow-1;
+    //dataRect.size.height = 1;
     
     [[dataWindowController imageView] setEraseLines:1];
     [[dataWindowController imageView] display];
 
-
+    /*
     // get the bitmap from the data window
     [[dataWindowController imageView] lockFocus];
     NSBitmapImageRep* imageRep=[[NSBitmapImageRep alloc] initWithFocusedViewRect: dataRect] ;
@@ -178,12 +162,31 @@ extern AppController* appController;
     NSData* rowData = [[NSData alloc] initWithBytes:[imageRep bitmapData] length:[imageRep bytesPerRow]];
     //int pixPerPt = bytesPerRow/4/[[dataWindowController imageView] frame ].size.width;  // for retina displays
     [[dataWindowController imageView] unlockFocus];
-    
+    */
+    int pal = [dataWindowController thePalette];
+    unsigned char* bytes = [dataWindowController intensity];    // the start of the data
+    // find the pointer to the specific row
+    float heightScale = (float)[dataWindowController dataRows]/dataRect.size.height;
+    //x *= widthScale;
+    int theRow = theWindowRow * heightScale;
+
+    int bytesPerRow;
+    if(pal >= 0) { // we have a monochrome image
+        bytes += theRow * [dataWindowController dataCols];
+        bytesPerRow = [dataWindowController dataCols];
+        [drawingView setIsColor:0];
+    } else {
+        bytes += theRow * [dataWindowController dataCols]*3;
+        bytesPerRow = [dataWindowController dataCols]*3;
+        [drawingView setIsColor:1];
+    }
+    NSData* rowData = [[NSData alloc] initWithBytes:bytes length: bytesPerRow ];
+
     
     //[drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
     [drawingView setRowData: rowData];
     [drawingView setBytesPerRow: bytesPerRow];
-    [drawingView setTheRow: theRow ];
+    [drawingView setTheRow: theWindowRow ];
     
     [drawingView display];
     [[dataWindowController imageView] setEraseLines:0];

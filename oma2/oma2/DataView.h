@@ -22,8 +22,8 @@
     DrawingWindowController *colWindowController;
 }
 
-@property int rowLine;
-@property int colLine;
+@property int rowLine;  // this is the window row
+@property int colLine;  // this is the window column
 @property DrawingWindowController *rowWindowController;
 @property DrawingWindowController *colWindowController;
 @property int eraseLines;

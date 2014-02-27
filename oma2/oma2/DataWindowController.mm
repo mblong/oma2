@@ -23,6 +23,9 @@ extern AppController* appController;
 @synthesize hasRowPlot;
 @synthesize hasColPlot;
 @synthesize thePalette;
+@synthesize dataRows;
+@synthesize dataCols;
+@synthesize intensity;
 //@synthesize bitmap;
 
 - (id)initWithWindow:(NSWindow *)window
@@ -46,6 +49,7 @@ extern AppController* appController;
     // NSLog(@"deallocate DataWindowController");
     //[bitmap release];
     //[imageView release];          // this crashes things eventually
+    delete intensity;
     [appController dataWindowClosing];
 }
 
@@ -117,16 +121,26 @@ extern AppController* appController;
                                 //initWithBitmapDataPlanes: iBitmap.getpixdatap()
                                 initWithBitmapDataPlanes: nil
                                 pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
-                                bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
+                                bitsPerSample: 8 samplesPerPixel: 3 hasAlpha: NO isPlanar:NO
                                 colorSpaceName:NSDeviceRGBColorSpace
-                                bytesPerRow: 4*iBitmap.getwidth()  
-                                bitsPerPixel: 32];
+                                bytesPerRow: 3*iBitmap.getwidth()
+                                bitsPerPixel: 24];
     
-    memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*4);
+    memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*3);
+    
+    intensitySize = iBitmap.getheight()*iBitmap.getwidth();
+    dataCols = iBitmap.getwidth();
+    dataRows = iBitmap.getheight();
+    if (iBitmap.getpalette() == -1) intensitySize *= 3;
+    intensity = new unsigned char[intensitySize];
+    memcpy(intensity,iBitmap.getintensitydata(),intensitySize);
+    
     //NSImage* im = [[NSImage alloc] initByReferencingFile:@"./Contents/Resources/curve.jpg"];
 
     NSImage* im = [[NSImage alloc] initWithSize:NSMakeSize(iBitmap.getwidth(), iBitmap.getheight())];
     [im addRepresentation:bitmap];
+    [im compositeToPoint:NSZeroPoint
+               operation:NSCompositeDestinationOver];
     
     /*
     NSData* tifdata = [im TIFFRepresentation];
@@ -158,16 +172,32 @@ extern AppController* appController;
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
                                 initWithBitmapDataPlanes: nil
                                 pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
-                                bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
+                                bitsPerSample: 8 samplesPerPixel: 3 hasAlpha: NO isPlanar:NO
                                 colorSpaceName:NSDeviceRGBColorSpace
-                                bytesPerRow: 4*iBitmap.getwidth()  
-                                bitsPerPixel: 32];
+                                bytesPerRow: 3*iBitmap.getwidth()
+                                bitsPerPixel: 24];
     
-    memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*4);
+    memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*3);
+    
+    int newintensitySize = iBitmap.getheight()*iBitmap.getwidth();
+    dataCols = iBitmap.getwidth();
+    dataRows = iBitmap.getheight();
+
+    if (iBitmap.getpalette() == -1) newintensitySize *= 3;
+    if(intensitySize != newintensitySize){
+        intensitySize = newintensitySize;
+        delete intensity;
+        intensity = new unsigned char[intensitySize];
+    }
+    memcpy(intensity,iBitmap.getintensitydata(),intensitySize);
+
     //bitmap = [bitmap  bitmapImageRepByRetaggingWithColorSpace:[NSColorSpace genericRGBColorSpace]];
     
     NSImage *im = [[NSImage alloc] init];
     [im addRepresentation:bitmap];
+    [im compositeToPoint:NSZeroPoint
+                      operation:NSCompositeDestinationOver];
+    
     
     NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
     [imageView setFrame:rect];
