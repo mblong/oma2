@@ -107,11 +107,9 @@ extern AppController* appController;
     if(pal >= 0) { // we have a monochrome image
         bytes += theRow * [dataWindowController dataCols];
         bytesPerRow = [dataWindowController dataCols];
-        [drawingView setIsColor:0];
     } else {
         bytes += theRow * [dataWindowController dataCols]*3;
         bytesPerRow = [dataWindowController dataCols]*3;
-        [drawingView setIsColor:1];
     }
     NSData* rowData = [[NSData alloc] initWithBytes:bytes length: bytesPerRow ];
     
@@ -133,6 +131,10 @@ extern AppController* appController;
     //[drawingView setPixPerPt: bytesPerRow/4/[[dataWindowController imageView] frame ].size.width];
     [drawingView setPixPerPt: 1];
     [drawingView setHeightScale:theheightScale];
+    if (pal >= 0)
+        [drawingView setIsColor:0];
+    else
+        [drawingView setIsColor:1];
     [drawingView setTheRow: theWindowRow ];
     [drawingView display];
     [[dataWindowController imageView] setEraseLines:0];
@@ -204,13 +206,11 @@ extern AppController* appController;
         colbytes = new unsigned char[[dataWindowController dataRows]];
         //bytes += theCol * [dataWindowController dataCols];
         bytesPerRow = [dataWindowController dataCols];
-        [drawingView setIsColor:0];
         bytesPerPix = 1;
     } else {
         colbytes = new unsigned char[[dataWindowController dataRows]*3];
         //bytes += theCol * [dataWindowController dataCols]*3;
         bytesPerRow = [dataWindowController dataCols]*3;
-        [drawingView setIsColor:1];
         bytesPerPix = 3;
     }
     int n=0;
@@ -236,6 +236,10 @@ extern AppController* appController;
     [drawingView setBytesPerRow: [dataWindowController dataRows]*bytesPerPix];
     [drawingView setPixPerPt: 1];
     [drawingView setWidthScale:widthScale];
+    if (pal >= 0)
+        [drawingView setIsColor:0];
+    else
+        [drawingView setIsColor:1];
     [drawingView setTheCol: theWindowCol ];
     [drawingView display];
     delete colbytes;
