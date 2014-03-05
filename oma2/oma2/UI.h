@@ -42,11 +42,11 @@ enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
 
 #ifndef SETTINGSFILE
 #define SETTINGSFILE "Contents/Resources/OMA Settings"
-#define PALETTEFILE	"Contents/Resources/OMA palette.pa1"
-#define PALETTEFILE2 "Contents/Resources/OMA palette2.pa1"
-#define PALETTEFILE3 "Contents/Resources/OMA palette3.pa1"
+#define PALETTEFILE	"Contents/Resources/OMApalette.pa1"
+#define PALETTEFILE2 "Contents/Resources/OMApalette2.pa1"
+#define PALETTEFILE3 "Contents/Resources/OMApalette3.pa1"
 
-#define HELPFILE "Contents/Resources/oma help.txt"
+#define HELPFILE "Contents/Resources/oma2help.txt"
 #define HELPURL "Contents/Resources/LightOma2Help/index.html"
 #endif
 
