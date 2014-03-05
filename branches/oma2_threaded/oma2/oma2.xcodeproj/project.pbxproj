@@ -46,7 +46,7 @@
 		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
 		DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
-		DBA3B5F716FC781300B7FF27 /* oma help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma help.txt */; };
+		DBA3B5F716FC781300B7FF27 /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
 		DBA96ABA1520C7090043754E /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
 		DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD5691802050F007F8801 /* DrawingView.mm */; };
 		DBABD56F180208E7007F8801 /* DrawingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD56E180208E7007F8801 /* DrawingWindowController.mm */; };
@@ -57,9 +57,9 @@
 		DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
 		DBB4233617F9B6C3005BCF33 /* jpegIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB4233517F9B6C3005BCF33 /* jpegIO.mm */; };
-		DBBD397D155AD06000D5B56B /* OMA palette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMA palette.pa1 */; };
-		DBBD3984155ADD5100D5B56B /* OMA palette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */; };
-		DBBD3985155ADD5100D5B56B /* OMA palette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */; };
+		DBBD397D155AD06000D5B56B /* OMApalette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMApalette.pa1 */; };
+		DBBD3984155ADD5100D5B56B /* OMApalette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */; };
+		DBBD3985155ADD5100D5B56B /* OMApalette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */; };
 		DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
 		DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
@@ -141,7 +141,7 @@
 		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
 		DB9B2E43186731EC00EE4871 /* oma2Icons.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = oma2Icons.icns; sourceTree = "<group>"; };
 		DBA03741181704740042DF6F /* DrawingWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawingWindow.xib; sourceTree = "<group>"; };
-		DBA3B5F616FC781300B7FF27 /* oma help.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = "oma help.txt"; sourceTree = "<group>"; usesTabs = 1; };
+		DBA3B5F616FC781300B7FF27 /* oma2help.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = oma2help.txt; sourceTree = "<group>"; usesTabs = 1; };
 		DBA96AB91520C7090043754E /* comdec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = comdec.mm; sourceTree = "<group>"; };
 		DBA96ABB1520C7820043754E /* oma2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oma2.h; sourceTree = "<group>"; };
 		DBA96ABC1520CA9C0043754E /* UI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
@@ -159,9 +159,9 @@
 		DBB4233717F9B765005BCF33 /* jpeglib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpeglib.h; path = ../jpeglib.h; sourceTree = "<group>"; };
 		DBB4233817F9B892005BCF33 /* jconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jconfig.h; sourceTree = "<group>"; };
 		DBB4233917F9B892005BCF33 /* jmorecfg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jmorecfg.h; sourceTree = "<group>"; };
-		DBBD397C155AD06000D5B56B /* OMA palette.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette.pa1"; sourceTree = "<group>"; };
-		DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette3.pa1"; sourceTree = "<group>"; };
-		DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OMA palette2.pa1"; sourceTree = "<group>"; };
+		DBBD397C155AD06000D5B56B /* OMApalette.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette.pa1; sourceTree = "<group>"; };
+		DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette3.pa1; sourceTree = "<group>"; };
+		DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette2.pa1; sourceTree = "<group>"; };
 		DBC8157E153DCD54002BEFD4 /* StatusDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusDrop.h; sourceTree = "<group>"; };
 		DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatusDrop.mm; sourceTree = "<group>"; };
 		DBC81582153DFBB7002BEFD4 /* UI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UI.mm; sourceTree = "<group>"; };
@@ -240,7 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				DBAEDEDC187F16FD0019677B /* LightOma2Help */,
-				DBA3B5F616FC781300B7FF27 /* oma help.txt */,
+				DBA3B5F616FC781300B7FF27 /* oma2help.txt */,
 				DB238A5215A2895B00502B50 /* pal7.jpg */,
 				DB238A5315A2895B00502B50 /* pal6.jpg */,
 				DB238A5415A2895B00502B50 /* pal5.jpg */,
@@ -252,9 +252,9 @@
 				DB1E9B2115A2804C00F38CE2 /* curve.jpg */,
 				DB1E9B1E15A27EA300F38CE2 /* ruler.jpg */,
 				DB268238159374AC00B40AE1 /* Notes.txt */,
-				DBBD3982155ADD5100D5B56B /* OMA palette3.pa1 */,
-				DBBD3983155ADD5100D5B56B /* OMA palette2.pa1 */,
-				DBBD397C155AD06000D5B56B /* OMA palette.pa1 */,
+				DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */,
+				DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */,
+				DBBD397C155AD06000D5B56B /* OMApalette.pa1 */,
 				DB593A36151B8B19007CA0C3 /* plus.jpg */,
 				DB593A3A151B9766007CA0C3 /* box.jpg */,
 				DBF08DE2159D63980099CB4C /* c-box.jpg */,
@@ -403,10 +403,10 @@
 				DB17A3051524754A004F810A /* DataWindow.xib in Resources */,
 				DBB27B6B1867F1DF00CF6523 /* Oma2Settings.icns in Resources */,
 				DBAEDEDD187F16FD0019677B /* LightOma2Help in Resources */,
-				DBBD397D155AD06000D5B56B /* OMA palette.pa1 in Resources */,
-				DBBD3984155ADD5100D5B56B /* OMA palette3.pa1 in Resources */,
+				DBBD397D155AD06000D5B56B /* OMApalette.pa1 in Resources */,
+				DBBD3984155ADD5100D5B56B /* OMApalette3.pa1 in Resources */,
 				DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */,
-				DBBD3985155ADD5100D5B56B /* OMA palette2.pa1 in Resources */,
+				DBBD3985155ADD5100D5B56B /* OMApalette2.pa1 in Resources */,
 				DB268239159374AC00B40AE1 /* Notes.txt in Resources */,
 				DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */,
 				DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */,
@@ -422,7 +422,7 @@
 				DB238A5915A2895B00502B50 /* pal5.jpg in Resources */,
 				DB238A5A15A2895B00502B50 /* pal4.jpg in Resources */,
 				DB238A5B15A2895B00502B50 /* pal3.jpg in Resources */,
-				DBA3B5F716FC781300B7FF27 /* oma help.txt in Resources */,
+				DBA3B5F716FC781300B7FF27 /* oma2help.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
