@@ -27,6 +27,12 @@
 #ifndef _TIFFIO_
 #define	_TIFFIO_
 
+#define _TIFF_DATA_TYPEDEFS_
+typedef unsigned char uint8;
+typedef unsigned short uint16;
+typedef unsigned int uint32;
+typedef int int32;
+
 /*
  * TIFF I/O Library Definitions.
  */

@@ -90,7 +90,7 @@ int pprintf(const char* format, ...);
 #include <QApplication>
 #include "qtoma2.h"
 
-#define display_data display();
+#define display_data displayData(args);
 #define erase_window eraseWindow(n);
 #define label_data ;
 #define label_data_minMax ;
@@ -110,14 +110,16 @@ int pprintf(const char* format, ...);
 
 #ifndef SETTINGSFILE
 #define SETTINGSFILE "../Resources/OMA Settings"
-#define PALETTEFILE	"../Resources/OMA palette.pa1"
-#define PALETTEFILE2 "../Resources/OMA palette2.pa1"
-#define PALETTEFILE3 "../Resources/OMA palette3.pa1"
+#define PALETTEFILE	"../Resources/OMApalette.pa1"
+#define PALETTEFILE2 "../Resources/OMApalette2.pa1"
+#define PALETTEFILE3 "../Resources/OMApalette3.pa1"
 
-#define HELPFILE "../Resources/oma help.txt"
+#define HELPFILE "../Resources/oma2help.txt"
 #define HELPURL "../Resources/LightOma2Help/index.html"
 #endif
 
+
+enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
 
 typedef struct{
     unsigned char red;
@@ -140,8 +142,148 @@ typedef char Boolean;
 int omaprintf(const char* format, ...);
 void alertSound(char*);
 void beep();
-void display();
+void displayData(char*);
 void eraseWindow(int);
+BOOL dropped_file(char*,char*);
+
+#endif
+
+#ifdef Qt_UI_Win
+
+#include <QApplication>
+#include "qtoma2.h"
+#include <time.h>
+
+#define display_data displayData(args);
+#define erase_window eraseWindow(n);
+#define label_data ;
+#define label_data_minMax ;
+#define checkEvents QCoreApplication::processEvents();
+
+#define pprintf omaprintf
+#define printf omaprintf
+#define nil 0
+
+// dcraw needs these
+#define ABS(x) (((int)(x) ^ ((int)(x) >> 31)) - ((int)(x) >> 31))
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+#define DJGPP 1
+
+
+#ifndef SETTINGSFILE
+#define SETTINGSFILE "./OMA Settings"
+#define PALETTEFILE	"./OMApalette.pa1"
+#define PALETTEFILE2 "./OMApalette2.pa1"
+#define PALETTEFILE3 "./OMApalette3.pa1"
+
+#define HELPFILE "./oma2help.txt"
+#define HELPURL "./LightOma2Help/index.html"
+#endif
+
+
+enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
+
+typedef struct{
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
+} RGBColor;
+
+typedef struct{
+    int h;
+    int v;
+} Point;
+
+typedef char* Ptr;
+
+//typedef char BOOL;
+typedef char Boolean;
+#define NO 0
+#define YES 1
+#define strlcpy strncpy
+#define strlcat strncat
+
+int omaprintf(const char* format, ...);
+void alertSound(char*);
+void beep();
+void displayData(char*);
+void eraseWindow(int);
+BOOL dropped_file(char*,char*);
+
+#endif
+
+
+#ifdef Qt_UI_Linux
+
+#include <QApplication>
+#include "qtoma2.h"
+
+#define display_data displayData(args);
+#define erase_window eraseWindow(n);
+#define label_data ;
+#define label_data_minMax ;
+#define checkEvents QCoreApplication::processEvents();
+
+#define pprintf omaprintf
+#define printf omaprintf
+#define nil 0
+
+#define strlcpy strncpy
+#define strlcat strncat
+
+#define _H_INTTYPES
+#define _ALL_SOURCE
+
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#pragma GCC diagnostic ignored "-Wwrite-strings"
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#pragma GCC diagnostic ignored "-Wcomment"
+#pragma GCC diagnostic ignored "-Wtype-limits"
+
+
+// dcraw needs these
+#define ABS(x) (((int)(x) ^ ((int)(x) >> 31)) - ((int)(x) >> 31))
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+
+#ifndef SETTINGSFILE
+#define SETTINGSFILE "./OMA Settings"
+#define PALETTEFILE	"./OMApalette.pa1"
+#define PALETTEFILE2 "./OMApalette2.pa1"
+#define PALETTEFILE3 "./OMApalette3.pa1"
+
+#define HELPFILE "./oma2help.txt"
+#define HELPURL "./LightOma2Help/index.html"
+#endif
+
+typedef struct{
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
+} RGBColor;
+
+typedef struct{
+    int h;
+    int v;
+} Point;
+
+typedef char* Ptr;
+
+typedef char BOOL;
+typedef char Boolean;
+#define NO 0
+#define YES 1
+enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
+
+int omaprintf(const char* format, ...);
+void alertSound(char*);
+void beep();
+void displayData(char*);
+void eraseWindow(int);
+BOOL dropped_file(char*,char*);
+
 
 #endif
 #endif
