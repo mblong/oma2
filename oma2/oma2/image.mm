@@ -158,12 +158,14 @@ Image::Image(char* filename, int kindOfName)
         read(fd,&is_big_endian,sizeof(int));
         read(fd,&commentSize,sizeof(int));
         read(fd,&extraSize,sizeof(int));
-        if(commentSize)
+        if(commentSize){
             comment = new char[commentSize];
             read(fd,comment,commentSize);
-        if(extraSize)
+        }
+        if(extraSize){
             extra = new float[extraSize];
             read(fd,extra,extraSize*sizeof(float));
+        }
         // finally the data
         data = new DATAWORD[specs[ROWS]*specs[COLS]];
         if(data == 0){
