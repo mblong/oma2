@@ -40,6 +40,10 @@ enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
 
 #define checkEvents ;
 
+#define WMODE   O_CREAT|O_WRONLY,0666
+#define READMODE   O_RDONLY
+#define READBINARY   O_RDONLY
+
 #ifndef SETTINGSFILE
 #define SETTINGSFILE "Contents/Resources/OMA Settings"
 #define PALETTEFILE	"Contents/Resources/OMApalette.pa1"

@@ -340,7 +340,7 @@ int loadprefs(char* name)
     if(len > OLD_SETTINGS_LENGTH) prefixLength = NEW_PREFIX_CHPERLN;
         
     
-    fd = open(name,O_RDONLY);
+    fd = open(name,READBINARY);
     
     if(fd == -1) {
 		beep();
@@ -545,7 +545,8 @@ int loadprefs(char* name)
 
 int saveprefs(char* name)
 {
-    int fd = creat(name,PMODE);
+    //int fd = creat(name,PMODE);
+    int fd = open(name,WMODE);
     if(fd == -1) {
 		beep();
         printf("Could not open preferences: %s",name);
@@ -632,7 +633,7 @@ int getpalettefile(char* name)
     int fd;
 	unsigned char thecolors[256];
 	
-    fd = open(name,O_RDONLY);
+    fd = open(name,READBINARY);
     if(fd == -1) {
         beep();
         return -1;

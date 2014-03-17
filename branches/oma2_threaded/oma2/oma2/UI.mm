@@ -93,7 +93,7 @@ BOOL dropped_file(char* extension, char* name){
     if(strcmp(extension, "MAC")==0){
         extern char	macbuf[];
         int fd,nread,i;
-        fd = open(name,O_RDONLY);
+        fd = open(name,READMODE);
         if(fd == -1) {
             beep();
             printf("Macro File '%s' Not Found.\n",name);
