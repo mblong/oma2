@@ -126,13 +126,13 @@ Image::Image(char* filename, int kindOfName)
 
     switch (kindOfName) {
         case LONG_NAME:
-            fd = open(filename,O_RDONLY);
+            fd = open(filename,READBINARY);
             break;
         case SHORT_NAME:
-            fd = open(fullname(filename,GET_DATA),O_RDONLY);
+            fd = open(fullname(filename,GET_DATA),READBINARY);
             break;
         case HAS_SUFFIX:
-            fd = open(fullname(filename,RAW_DATA),O_RDONLY);    // means don't add the suffix
+            fd = open(fullname(filename,RAW_DATA),READBINARY);    // means don't add the suffix
             break;
         default:
             fd = -1;
@@ -556,9 +556,11 @@ void Image::saveFile(char* name, int kindOfName){
     int fd;
     
     if(kindOfName == SHORT_NAME)
-        fd = creat(fullname(name,SAVE_DATA),PMODE);
+        //fd = creat(fullname(name,SAVE_DATA),PMODE);
+        fd = open(fullname(name,SAVE_DATA),WMODE);
     else
-        fd = creat(name,PMODE);
+        //fd = creat(name,PMODE);
+        fd = open(name,WMODE);
     
     if(fd == -1) {
 		beep();

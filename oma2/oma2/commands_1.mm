@@ -1740,9 +1740,9 @@ int gmacro_c(int n,char* args)
 	int fd,nread,i;
 	
 	if(*args == 0)
-		fd = open(args,O_RDONLY);
+		fd = open(args,READMODE);
 	else
-		fd = open(fullname(args,MACROS_DATA),O_RDONLY);
+		fd = open(fullname(args,MACROS_DATA),READMODE);
 	
 	if(fd == -1) {
 		beep();

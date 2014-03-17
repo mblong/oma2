@@ -8,7 +8,7 @@
 #include    "image.h"
 #include    "dofft.h"
 
-#define PMODE 0666 // RW  for writing files that we can open
+//#define PMODE 0666 // RW  for writing files that we can open
 
 void setUpUIData();
 int two_to_four(DATAWORD*,int,TWOBYTE);
