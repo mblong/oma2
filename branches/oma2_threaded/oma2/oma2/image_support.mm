@@ -658,10 +658,11 @@ int getpalettefile(char* name)
 //***         uses LibTIFF
 //***         P. Kalt (2003) after J.Fielding
 //********************************************************
+
+#ifdef MacOSX_UI
 int readTiff(char* filename,Image* im)
 {
-    // this isn't implemented in qtoma2 yet
-#ifdef MacOSX_UI
+    
 	uint16 		photometric;
 	uint16 		compression;
 	uint16 		bitspersample;
@@ -875,10 +876,9 @@ int readTiff(char* filename,Image* im)
 		//trailer[SFACTR] = 2;
 	}
 	user_variables[0].fvalue = user_variables[0].ivalue = spp;
-	user_variables[0].is_float = 0;
-#endif
 	return NO_ERR;
 }
+#endif
 
 /***********************************************************************************
  Created:	17:9:2002

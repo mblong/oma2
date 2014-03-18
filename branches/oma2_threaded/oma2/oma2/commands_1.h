@@ -6,10 +6,11 @@
 #include "ImageBitmap.h"
 #include "UI.h"
 
+#ifdef MacOSX_UI
 extern "C" {
 #include "tiffio.h"
 }
-
+#endif
 
 // Commands
 
