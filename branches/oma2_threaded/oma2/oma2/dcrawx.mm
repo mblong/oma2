@@ -257,7 +257,8 @@ void CLASS read_shorts (ushort *pixel, int count)
 {
     if (fread (pixel, 2, count, ifp) < count) derror();
     if ((order == 0x4949) == (ntohs(0x1234) == 0x1234))
-        swab (pixel, pixel, count*2);
+        //swab (pixel, pixel, count*2);
+        swab ((char*)pixel, (char*)pixel, count*2); // -- oma Qt windows
 }
 
 void CLASS canon_black (double dark[2])
@@ -8157,7 +8158,7 @@ void CLASS write_ppm_tiff (FILE *ofp)
                 FORCC ppm [col*colors+c] = lut[image[soff][c]];
             else FORCC ppm2[col*colors+c] =     image[soff][c];
         if (output_bps == 16 && !output_tiff && htons(0x55aa) != 0x55aa)
-            swab (ppm2, ppm2, width*colors*2);
+            swab ((char*)ppm2, (char*)ppm2, width*colors*2);    // -- oma Qt windows
         fwrite (ppm, colors*output_bps/8, width, ofp);
     }
     free (ppm);

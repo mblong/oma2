@@ -1,5 +1,5 @@
 #include "oma2.h"
-#include "Image_support.h"
+#include "image_support.h"
 #include "UI.h"
 #include <math.h>
 //#include "ImageBitmap.h"
