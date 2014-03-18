@@ -660,6 +660,8 @@ int getpalettefile(char* name)
 //********************************************************
 int readTiff(char* filename,Image* im)
 {
+    // this isn't implemented in qtoma2 yet
+#ifdef MacOSX_UI
 	uint16 		photometric;
 	uint16 		compression;
 	uint16 		bitspersample;
@@ -874,7 +876,7 @@ int readTiff(char* filename,Image* im)
 	}
 	user_variables[0].fvalue = user_variables[0].ivalue = spp;
 	user_variables[0].is_float = 0;
-    
+#endif
 	return NO_ERR;
 }
 

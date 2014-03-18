@@ -1839,6 +1839,7 @@ int fecho_c (int n,char* args)
 //***************************************************
 int satiff_c(int n, char* args)
 {
+#ifdef MacOSX_UI
 	uint32 rowsperstrip = (uint32) -1;
 	double resolution = -1;
 	unsigned char *buf = NULL,*buf2;
@@ -1914,6 +1915,7 @@ int satiff_c(int n, char* args)
 	if (buf)
 		_TIFFfree(buf);
     free(specs);
+#endif
 	return NO_ERR;
 }
 
@@ -1925,6 +1927,7 @@ int satiff_c(int n, char* args)
 
 int satiffscaled_c(int n, char* args)
 {
+#ifdef MacOSX_UI
 	uint32 rowsperstrip = (uint32) -1;
 	double resolution = -1;
 	unsigned short *buf = NULL,*buf2;
@@ -2013,6 +2016,7 @@ int satiffscaled_c(int n, char* args)
 	if (buf)
 		_TIFFfree(buf);
     free(specs);
+#endif
 	return NO_ERR;
 }
 
