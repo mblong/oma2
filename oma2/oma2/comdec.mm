@@ -225,10 +225,10 @@ int comdec(char* cmnd)
     int     ivalue = 0;     /* integer value */
     static int command_return;
     
-    extern char* exbuf[];     /* the execute buffer */
+    //extern char* exbuf[];     /* the execute buffer */
     char  txtbuf[CHPERLN];		// temp text buffer
     extern int maccount,macflag,macptr,macval,macincrement;
-    extern int exflag,exptr[],exval[];
+    //extern int exflag,exptr[],exval[];
     
     int     (*fnc)(int,char*);
     
@@ -1259,7 +1259,7 @@ void clear_macro_to_end()
 
 int defmac(int n,char* args)
 {
-    extern char macbuf[];
+    //extern char macbuf[];
     int j,k,index=0;
     int nc = 1;
 	char tempbuf[MBUFLEN];
@@ -1517,8 +1517,8 @@ int execut(int n, char* args)
 
 
 {
-	extern int exflag,exptr[],exval[];
-	extern char* exbuf[];
+	//extern int exflag,exptr[],exval[];
+	//extern char* exbuf[];
 	extern char* fullname(char*,int);
 	
 	int fd,nread,i;
@@ -1924,8 +1924,8 @@ int loopbreak(int n,char* args)			// break out of the current loop
 	int i,j;	
 	char loopnd_string[7]={"LOOPND"};
 	 
-	extern char* exbuf[];    // the macro buffer
-	extern int exflag,exptr[],exval[];
+	//extern char* exbuf[];    // the macro buffer
+	//extern int exflag,exptr[],exval[];
 	extern int macptr;
 	
 	
@@ -2235,7 +2235,7 @@ int prflag(int n, char* args)	// set flag to use enable/disable printing
 
 int help(int n, char* args)
 {
-    extern  ComDef    commands[];
+    //extern  ComDef    commands[];
     int i=0,fd,status,length,j;
     //int j,status,length;
 	//int fd,gethelpfile(),gettextline();

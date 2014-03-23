@@ -127,7 +127,7 @@ extern AppController* appController;
     
     //[drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
     [drawingView setRowData: rowData];
-    [drawingView setBytesPerRow: bytesPerRow];
+    [drawingView setBytesPerPlot: bytesPerRow];
     //[drawingView setPixPerPt: bytesPerRow/4/[[dataWindowController imageView] frame ].size.width];
     [drawingView setPixPerPt: 1];
     [drawingView setHeightScale:theheightScale];
@@ -174,7 +174,7 @@ extern AppController* appController;
     
     //[drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
     [drawingView setRowData: rowData];
-    [drawingView setBytesPerRow: bytesPerRow];
+    [drawingView setBytesPerPlot: bytesPerRow];
     [drawingView setTheRow: theWindowRow ];
     
     [drawingView display];
@@ -233,7 +233,7 @@ extern AppController* appController;
     //[drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
     NSData* colData = [[NSData alloc] initWithBytes:colbytes length:[dataWindowController dataRows]*bytesPerPix];
     [drawingView setColData: colData];
-    [drawingView setBytesPerRow: [dataWindowController dataRows]*bytesPerPix];
+    [drawingView setBytesPerPlot: [dataWindowController dataRows]*bytesPerPix];
     [drawingView setPixPerPt: 1];
     [drawingView setWidthScale:widthScale];
     if (pal >= 0)
@@ -284,7 +284,7 @@ extern AppController* appController;
     }
     NSData* colData = [[NSData alloc] initWithBytes:colbytes length:[dataWindowController dataRows]*bytesPerPix];
     [drawingView setColData: colData];
-    [drawingView setBytesPerRow: [dataWindowController dataRows]*bytesPerPix];
+    [drawingView setBytesPerPlot: [dataWindowController dataRows]*bytesPerPix];
     [drawingView setTheCol: theWindowCol ];
     [dataWindowController placeColLine:theWindowCol];
     
@@ -294,6 +294,75 @@ extern AppController* appController;
     delete colbytes;
 }
 
+-(void) placeLinePlotDrawing: (NSRect) theLocation WithStart: (NSPoint)start AndEnd:(NSPoint) end{
+    drawingType = LINE_PLOT_DRAWING;
+    // where the data comes from
+    NSRect dataRect =  [[dataWindowController imageView] frame ];
+    //int theWindowCol = dataRect.size.width/2;       // start in the middle
+    
+    int pal = [dataWindowController thePalette];
+    unsigned char* bytes = [dataWindowController intensity];    // the start of the data
+    // find the pointer to the specific row
+    int bytesPerRow;
+    float widthScale = (float)[dataWindowController dataCols]/dataRect.size.width;
+    float heightScale = (float)[dataWindowController dataRows]/(float)dataRect.size.height;
+    
+    int dataWidth = sqrt(powf((start.x-end.x),2)+powf((start.y-end.y),2));
+    
+    //int theCol = theWindowCol * widthScale;
+    int bytesPerPix;
+    unsigned char* linebytes;
+    if(pal >= 0) { // we have a monochrome image
+        linebytes = new unsigned char[dataWidth];
+        //bytes += theCol * [dataWindowController dataCols];
+        bytesPerRow = [dataWindowController dataCols];
+        bytesPerPix = 1;
+    } else {
+        linebytes = new unsigned char[dataWidth*3];
+        //bytes += theCol * [dataWindowController dataCols]*3;
+        bytesPerRow = [dataWindowController dataCols]*3;
+        bytesPerPix = 3;
+    }
+    int n=0;
+    float dx = (float)(end.x - start.x)/dataWidth;
+    float dy = (float)(end.y - start.y)/dataWidth;
+    int x,y;
+    
+    for(int i=0; i < dataWidth; i++){
+        x = start.x + dx*i;
+        y = start.y + dy*i;
+        for(int j=0; j < bytesPerPix; j++){
+            linebytes[n++] = *(bytes+x*bytesPerPix+y*bytesPerRow+j);
+        }
+    }
+    
+    //[dataWindowController setHasColPlot:theWindowCol];
+    //[dataWindowController placeColLine:theWindowCol];
+    //[[dataWindowController imageView] setColWindowController:self];
+    
+    windowRect = theLocation;
+    [[self window] setTitle:windowName];
+    
+    NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
+    [drawingView setFrame:rect];
+    
+    //[drawingView setRowData: bytes + theRow*bytesPerRow*pixPerPt];
+    NSData* colData = [[NSData alloc] initWithBytes:linebytes length:dataWidth*bytesPerPix];
+    [drawingView setColData: colData];
+    [drawingView setBytesPerPlot: dataWidth*bytesPerPix];
+    [drawingView setPixPerPt: 1];
+    [drawingView setWidthScale:widthScale];
+    [drawingView setHeightScale:heightScale];
+    if (pal >= 0)
+        [drawingView setIsColor:0];
+    else
+        [drawingView setIsColor:1];
+    [drawingView setTheCol: -1 ];
+    [drawingView display];
+    delete linebytes;
+
+    
+}
 
 -(BOOL) acceptsFirstResponder{
     return NO;

@@ -236,7 +236,8 @@ extern oma2UIData UIData;
 
 - (void) mouseUp:(NSEvent *)theEvent{
     
-    
+    startPoint = startRect;
+    endPoint = endRect;
     // remove restriction on the way a rectangle is defined
     // previously, the assumption was that all rectangles were defined from the upper left to lower right
     
@@ -257,7 +258,8 @@ extern oma2UIData UIData;
         startRect.y = y;
     }
     
-    switch  (appController.tool){     
+    switch  (appController.tool){
+            
         case CALCRECT:
             // add calculation here
             point start,end;
@@ -277,7 +279,7 @@ extern oma2UIData UIData;
             UIData.iRect.lr.v = endRect.y;           
             
             break;
-        case RULER:
+        case RULER:{
             DATAWORD* buffervalues = iBuffer.getvalues();
             int* bufferspecs = iBuffer.getspecs();
             char* unit_text = iBuffer.getunit_text();
@@ -306,6 +308,12 @@ extern oma2UIData UIData;
             free( unit_text);
             
             break;
+        }
+        case LINEPLOT:
+            [appController plotLineFrom: startPoint To: endPoint];
+            
+            break;
+
             
     }   
     
