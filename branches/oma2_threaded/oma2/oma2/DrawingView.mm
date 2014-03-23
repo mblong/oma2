@@ -22,7 +22,7 @@ extern oma2UIData UIData;
 
 @synthesize rowData;
 @synthesize colData;
-@synthesize bytesPerRow;
+@synthesize bytesPerPlot;
 @synthesize pixPerPt;
 @synthesize theRow;
 @synthesize theCol;
@@ -35,12 +35,12 @@ extern oma2UIData UIData;
 - (void)drawRect:(NSRect)dirtyRect{
     
     int samplesPerPix;
-
+    
     [super drawRect:dirtyRect];
     if(rowData){
         // theRow is the data window row
         // the data window height is
-        // the data height is 
+        // the data height is
         //iBitmap.getheight()/self.frame.size.height;
         int theDataRow = theRow*heightScale;
         
@@ -49,7 +49,7 @@ extern oma2UIData UIData;
         startPoint.x = 10;
         startPoint.y = dirtyRect.size.height  - TITLEBAR_HEIGHT;
         [label drawAtPoint:startPoint withAttributes:NULL];
-
+        
         NSBezierPath *path = [NSBezierPath bezierPath];
         if (isColor) {
             [[NSColor redColor] setStroke];
@@ -62,19 +62,19 @@ extern oma2UIData UIData;
         [path setLineWidth:1.0];
         unsigned char* rowData_ = (unsigned char*)[rowData bytes];
         
-        float scalex = self.window.frame.size.width/(float)bytesPerRow/pixPerPt;
+        float scalex = self.window.frame.size.width/(float)bytesPerPlot/pixPerPt;
         float scaley = (self.window.frame.size.height-TITLEBAR_HEIGHT)/(256.);
         
         NSPoint pt;
         pt.x = 0.;
         pt.y = *rowData_*scaley;
         [path moveToPoint:pt];
-        for (int i=samplesPerPix; i< bytesPerRow;i+=samplesPerPix){
+        for (int i=samplesPerPix; i< bytesPerPlot;i+=samplesPerPix){
             pt.x = (float)i*scalex*pixPerPt;
             pt.y = *(rowData_+i)*scaley;
             [path lineToPoint:pt];
         }
-
+        
         [path stroke];
         if (isColor) {
             NSBezierPath *path2 = [NSBezierPath bezierPath];
@@ -82,7 +82,7 @@ extern oma2UIData UIData;
             pt.x = 0.;
             pt.y = (*rowData_+1)*scaley;
             [path2 moveToPoint:pt];
-            for (int i=samplesPerPix; i< bytesPerRow;i+=samplesPerPix){
+            for (int i=samplesPerPix; i< bytesPerPlot;i+=samplesPerPix){
                 pt.x = (float)i*scalex*pixPerPt;
                 pt.y = *(rowData_+i+1)*scaley;
                 [path2 lineToPoint:pt];
@@ -94,7 +94,7 @@ extern oma2UIData UIData;
             pt.x = 0.;
             pt.y = (*rowData_+2)*scaley;
             [path3 moveToPoint:pt];
-            for (int i=samplesPerPix; i< bytesPerRow;i+=samplesPerPix){
+            for (int i=samplesPerPix; i< bytesPerPlot;i+=samplesPerPix){
                 pt.x = (float)i*scalex*pixPerPt;
                 pt.y = *(rowData_+i+2)*scaley;
                 [path3 lineToPoint:pt];
@@ -104,70 +104,125 @@ extern oma2UIData UIData;
         }
     }
     if(colData){
-        int theDataCol = theCol*widthScale;
-        NSString *label =[NSString stringWithFormat:@"Column %d",theDataCol];
-        NSPoint startPoint;
-        startPoint.x = 10;
-        startPoint.y = dirtyRect.size.height  - TITLEBAR_HEIGHT;
-        [label drawAtPoint:startPoint withAttributes:NULL];
-
-        
-        NSBezierPath *path = [NSBezierPath bezierPath];
-        if (isColor) {
-            [[NSColor redColor] setStroke];
-            samplesPerPix = 3;
-        } else {
-            [[NSColor blackColor] setStroke];
-            samplesPerPix = 1;
-        }
-        [path setLineWidth:1.0];
-        unsigned char* colData_ = (unsigned char*)[colData bytes];
-        
-        float scalex = self.window.frame.size.width/(float)bytesPerRow/pixPerPt;
-        float scaley = (self.window.frame.size.height-TITLEBAR_HEIGHT)/(256.);
-
-        
-        NSPoint pt;
-        pt.x = 0.;
-        pt.y = *colData_*scaley;
-        [path moveToPoint:pt];
-        for (int i=samplesPerPix; i< bytesPerRow;i+=samplesPerPix){
-            pt.x = (float)i*scalex*pixPerPt;
-            pt.y = *(colData_+i)*scaley;
-            [path lineToPoint:pt];
-        }
-        
-        [path stroke];
-        if (isColor) {
-            NSBezierPath *path2 = [NSBezierPath bezierPath];
-            [[NSColor greenColor] setStroke];
-            pt.x = 0.;
-            pt.y = (*colData_+1)*scaley;
-            [path2 moveToPoint:pt];
-            for (int i=samplesPerPix; i< bytesPerRow;i+=samplesPerPix){
-                pt.x = (float)i*scalex*pixPerPt;
-                pt.y = *(colData_+i+1)*scaley;
-                [path2 lineToPoint:pt];
-            }
-            [path2 stroke];
+        if(theCol >=0){ // this is a column plot
+            int theDataCol = theCol*widthScale;
+            NSString *label =[NSString stringWithFormat:@"Column %d",theDataCol];
+            NSPoint startPoint;
+            startPoint.x = 10;
+            startPoint.y = dirtyRect.size.height  - TITLEBAR_HEIGHT;
+            [label drawAtPoint:startPoint withAttributes:NULL];
             
-            NSBezierPath *path3 = [NSBezierPath bezierPath];
-            [[NSColor blueColor] setStroke];
+            
+            NSBezierPath *path = [NSBezierPath bezierPath];
+            if (isColor) {
+                [[NSColor redColor] setStroke];
+                samplesPerPix = 3;
+            } else {
+                [[NSColor blackColor] setStroke];
+                samplesPerPix = 1;
+            }
+            [path setLineWidth:1.0];
+            unsigned char* colData_ = (unsigned char*)[colData bytes];
+            
+            float scalex = self.window.frame.size.width/(float)bytesPerPlot/pixPerPt;
+            float scaley = (self.window.frame.size.height-TITLEBAR_HEIGHT)/(256.);
+            
+            
+            NSPoint pt;
             pt.x = 0.;
-            pt.y = (*colData_+2)*scaley;
-            [path3 moveToPoint:pt];
-            for (int i=samplesPerPix; i< bytesPerRow;i+=samplesPerPix){
+            pt.y = *colData_*scaley;
+            [path moveToPoint:pt];
+            for (int i=samplesPerPix; i< bytesPerPlot;i+=samplesPerPix){
                 pt.x = (float)i*scalex*pixPerPt;
-                pt.y = *(colData_+i+2)*scaley;
-                [path3 lineToPoint:pt];
+                pt.y = *(colData_+i)*scaley;
+                [path lineToPoint:pt];
             }
             
-            [path3 stroke];
+            [path stroke];
+            if (isColor) {
+                NSBezierPath *path2 = [NSBezierPath bezierPath];
+                [[NSColor greenColor] setStroke];
+                pt.x = 0.;
+                pt.y = (*colData_+1)*scaley;
+                [path2 moveToPoint:pt];
+                for (int i=samplesPerPix; i< bytesPerPlot;i+=samplesPerPix){
+                    pt.x = (float)i*scalex*pixPerPt;
+                    pt.y = *(colData_+i+1)*scaley;
+                    [path2 lineToPoint:pt];
+                }
+                [path2 stroke];
+                
+                NSBezierPath *path3 = [NSBezierPath bezierPath];
+                [[NSColor blueColor] setStroke];
+                pt.x = 0.;
+                pt.y = (*colData_+2)*scaley;
+                [path3 moveToPoint:pt];
+                for (int i=samplesPerPix; i< bytesPerPlot;i+=samplesPerPix){
+                    pt.x = (float)i*scalex*pixPerPt;
+                    pt.y = *(colData_+i+2)*scaley;
+                    [path3 lineToPoint:pt];
+                }
+                
+                [path3 stroke];
+            }
+            
+        } else { // this is a line plot
+            NSBezierPath *path = [NSBezierPath bezierPath];
+            if (isColor) {
+                [[NSColor redColor] setStroke];
+                samplesPerPix = 3;
+            } else {
+                [[NSColor blackColor] setStroke];
+                samplesPerPix = 1;
+            }
+            [path setLineWidth:1.0];
+            unsigned char* colData_ = (unsigned char*)[colData bytes];
+            
+            float scalex = self.window.frame.size.width/(float)bytesPerPlot/pixPerPt;
+            float scaley = (self.window.frame.size.height-TITLEBAR_HEIGHT)/(256.);
+            
+            
+            NSPoint pt;
+            pt.x = 0.;
+            pt.y = *colData_*scaley;
+            [path moveToPoint:pt];
+            for (int i=samplesPerPix; i< bytesPerPlot;i+=samplesPerPix){
+                pt.x = (float)i*scalex*pixPerPt;
+                pt.y = *(colData_+i)*scaley;
+                [path lineToPoint:pt];
+            }
+            
+            [path stroke];
+            if (isColor) {
+                NSBezierPath *path2 = [NSBezierPath bezierPath];
+                [[NSColor greenColor] setStroke];
+                pt.x = 0.;
+                pt.y = (*colData_+1)*scaley;
+                [path2 moveToPoint:pt];
+                for (int i=samplesPerPix; i< bytesPerPlot;i+=samplesPerPix){
+                    pt.x = (float)i*scalex*pixPerPt;
+                    pt.y = *(colData_+i+1)*scaley;
+                    [path2 lineToPoint:pt];
+                }
+                [path2 stroke];
+                
+                NSBezierPath *path3 = [NSBezierPath bezierPath];
+                [[NSColor blueColor] setStroke];
+                pt.x = 0.;
+                pt.y = (*colData_+2)*scaley;
+                [path3 moveToPoint:pt];
+                for (int i=samplesPerPix; i< bytesPerPlot;i+=samplesPerPix){
+                    pt.x = (float)i*scalex*pixPerPt;
+                    pt.y = *(colData_+i+2)*scaley;
+                    [path3 lineToPoint:pt];
+                }
+                
+                [path3 stroke];
+            }
         }
+        
     }
-
 }
-
 - (void) mouseDown:(NSEvent *)theEvent{
     // toggle alpha if right click
     //int number =[theEvent buttonNumber];

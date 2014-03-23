@@ -58,6 +58,7 @@ int comdec(char*);
 
 - (IBAction)plotRows:(id)sender;
 - (IBAction)plotCols:(id)sender;
+-(void) plotLineFrom:(NSPoint) start To: (NSPoint) end;
 
 - (IBAction)saveData:(id)sender;
 - (IBAction)saveSettings:(id)sender;
@@ -70,6 +71,7 @@ int comdec(char*);
 -(void) eraseWindow:(int) n;
 -(void) dataWindowClosing;
 -(void) updateDataWindow;
+
 
 
 @end

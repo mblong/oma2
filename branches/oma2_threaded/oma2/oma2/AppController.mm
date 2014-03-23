@@ -301,6 +301,77 @@ extern oma2UIData UIData;
     
 }
 
+
+-(void) plotLineFrom:(NSPoint) start To: (NSPoint) end{
+    NSWindow* activekey = [NSApp keyWindow];
+
+    int key = -1;
+
+    int i=0;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activekey) key=i;
+        i++;
+    }
+    
+    if (key == -1) {
+        return;
+    }
+    
+    if ([windowArray[key] isKindOfClass:[DataWindowController class]]){
+        //NSLog(@"%d %d ",key,main);
+    } else {
+        return; // active window wasn't a data window
+    }
+    
+    // figure out where to place image
+    // window_placement needs to have the right position and size
+    NSSize theWindowSize = [ [ activekey contentView ] frame ].size;
+    float widthScale = (float)[windowArray[key] dataCols]/theWindowSize.width;
+    float heightScale = (float)[windowArray[key] dataRows]/(float)theWindowSize.height;
+    
+    int windowHeight = 256;
+    int windowWidth = sqrt(powf((start.x-end.x)/widthScale,2)+powf((start.y-end.y)/heightScale,2));
+    
+    // now, figure out where to place the window
+    if(window_placement.origin.x == WINDOW_OFFSET+screenRect.origin.x) {   // left column
+        window_placement.origin.y -= (windowHeight+TITLEBAR_HEIGHT);
+    }
+    
+    window_placement=NSMakeRect(window_placement.origin.x,
+                                window_placement.origin.y,
+                                windowWidth, windowHeight+TITLEBAR_HEIGHT);
+    
+    if (window_placement.origin.x+windowWidth>screenRect.size.width) {
+        window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
+        
+        if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > 0){
+            window_placement.origin.y -= (windowHeight + TITLEBAR_HEIGHT);
+        } else{
+            wraps++;
+            window_placement.origin.y = screenRect.size.height
+            -windowHeight- wraps*TITLEBAR_HEIGHT; // wrap to top
+        }
+        
+    }
+    
+    // create a new window controller object
+    DrawingWindowController* linePlotWindowController = [[DrawingWindowController alloc] initWithWindowNibName:@"DrawingWindow"];
+    
+    // add that to the array of windows
+    [windowArray addObject:linePlotWindowController];
+    
+    // name the window appropriately
+    [linePlotWindowController setWindowName:@"Line Plot"] ;
+    // tell the window who its data controller is
+    [linePlotWindowController setDataWindowController:windowArray[key]];
+    
+    // display the data
+    [linePlotWindowController placeLinePlotDrawing:window_placement WithStart: start AndEnd: end];
+    [linePlotWindowController showWindow:self];
+    
+    window_placement.origin.x += windowWidth;            // increment for next one
+}
+
 // this attempt to be notified when text changes in prefixes doesn't work
 // It gets called once only when the window opens, not when the text changes
 /*

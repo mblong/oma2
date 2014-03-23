@@ -13,7 +13,7 @@
     NSData* colData;
     int theRow;
     int theCol;
-    int bytesPerRow;
+    int bytesPerPlot;
     int pixPerPt;
     int isColor;
     float heightScale;
@@ -25,7 +25,7 @@
 @property NSData* colData;
 @property int theRow;
 @property int theCol;
-@property int bytesPerRow;
+@property int bytesPerPlot;
 @property int pixPerPt;
 @property int isColor;
 @property float heightScale;

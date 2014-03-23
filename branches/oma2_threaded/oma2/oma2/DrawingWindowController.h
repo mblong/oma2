@@ -11,7 +11,7 @@
 @class DrawingView;
 @class DataWindowController;
 
-enum {ROW_DRAWING,COL_DRAWING};
+enum {ROW_DRAWING,COL_DRAWING,LINE_PLOT_DRAWING};
 
 @interface DrawingWindowController : NSWindowController
 /*{
@@ -34,6 +34,7 @@ enum {ROW_DRAWING,COL_DRAWING};
 -(void) placeRowDrawing: (NSRect) theLocation;
 -(void) updateRowDrawing: (int) theRow;
 -(void) placeColDrawing: (NSRect) theLocation;
+-(void) placeLinePlotDrawing: (NSRect) theLocation WithStart: (NSPoint) start AndEnd: (NSPoint) end;
 -(void) updateColDrawing: (int) theCol;
 
 @end
