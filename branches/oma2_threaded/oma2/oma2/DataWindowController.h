@@ -21,8 +21,8 @@
     int         thePalette;
     unsigned char*   intensity;
     int         intensitySize;
-    int         datarows;
-    int         datacols;
+    int         dataRows;
+    int         dataCols;
 }
 
 @property (copy) NSString *windowName;
