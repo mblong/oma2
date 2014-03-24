@@ -53,6 +53,7 @@ int fclose_c (int,char*);
 int fecho_c (int,char*);
 int ftemp_c(int, char*);
 int findbad_c(int,char*);
+int fwdatm_c(int n,char* args);
 
 int getfile_c(int,char*);
 int getFileNames_c(int,char*);
