@@ -179,6 +179,9 @@ FOPEN <filename>
 FINDBADPIX Counts
 	Searches the current image buffer for pixels whose value is more than "Counts" above that of its nearest eight neighbors. Those pixels are tagged as hot pixels.
 
+FWDATMATLAB  <filename>
+	Writes the data in the current buffer as a tab-delimited text file. Format is a matrix of values that can be loaded directly into matlab.
+
 GET <filename>
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.
 
