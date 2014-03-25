@@ -43,7 +43,7 @@ protected:
     DATAWORD*   data;           ///< Pointer to image data (DATAWORD=float currently)
 public:
     Image();            ///< default constructor with no arguments
-    ~Image();           ///< destructor
+    //~Image();           ///< destructor
     Image(int,int);     ///< constructor -- specify rows and columns, other values are defaults
     Image(char*,int);   ///< constructor -- new Image from filename.
                         ///< Second argument says what to do with filling in name

@@ -49,13 +49,14 @@ Image::Image()              // create an empty Image with default values
     extra = NULL;
 }
 
+/*
 Image::~Image()
 {
     if(data)delete data;
     if(comment)delete comment;
     if(extra)delete extra;
 }
-
+*/
 
 Image::Image(int rows, int cols)
 {
@@ -67,7 +68,7 @@ Image::Image(int rows, int cols)
     } else {
         specs[ROWS]=rows;
         specs[COLS]=cols;
-        error = 0;
+        error = NO_ERR;
     }
 }
 
@@ -421,11 +422,15 @@ void Image::free(){
     if(commentSize != 0){
         delete[] comment;
         commentSize = 0;
+        comment = NULL;
     }
     if(extraSize != 0){
         delete[] extra;
         extraSize = 0;
+        extra = NULL;
     }
+    specs[ROWS] = 0;
+    specs[COLS] = 0;
     
 }
 

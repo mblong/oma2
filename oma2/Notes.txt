@@ -117,6 +117,8 @@ Drop Files onto status broken. -- fixed again
 
 Should update the TIFF framework to a newer version -- this has issues on some newer tif files.
 
+FRAME command wont do smart things with color images
+
 _____________________________
 UI Issues:
 
