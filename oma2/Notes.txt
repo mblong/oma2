@@ -124,6 +124,8 @@ Update/Remap color min/max doesn't work if there is a row plot displayed after d
 
 Use file names for window title
 
+Plot Lines tool messes up if there is an existing column plot
+
 UI Needs
 
 

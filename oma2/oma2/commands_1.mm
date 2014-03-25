@@ -305,18 +305,14 @@ int frame_c(int n, char* args)
 	switch(i) {
         case 2:
         case 3:
-            x0 = -(sizx - specs[COLS])/2;
+            x0 = -(sizx - (float)specs[COLS])/2.;
         case 4:
-            y0 = -(sizy - specs[ROWS])/2;
+            y0 = -(sizy - (float)specs[ROWS])/2.;
 	}
 	
 	Image im(sizy,sizx);
-	if(datp == 0) {
-        nomemory();
-        return(-3);
-	}
-	datp += doffset;
-	
+    // error check?
+    
 	i = x0;
 	j = y0;
 	if( x0-i != 0.0 || y0-j != 0.0)fraction=1;
@@ -331,8 +327,8 @@ int frame_c(int n, char* args)
 	
 	for(i=0; i<sizy; i++){
 		for(j=0; j<sizx; j++) {
-			if(i+y0<0 || i+y0 >=header[NTRAK] ||
-			   j+x0<0 || j+x0 >=header[NCHAN]) {
+			if(i+y0<0 || i+y0 >=specs[ROWS] ||
+			   j+x0<0 || j+x0 >=specs[COLS]) {
                 *(datp++) = value;
 			}else {
                 if(fraction)
@@ -344,16 +340,6 @@ int frame_c(int n, char* args)
 	}
     
     
-	header[NCHAN] = sizx;
-	header[NTRAK] = sizy;
-	
-	npts = header[NCHAN] * header[NTRAK];
-	have_max = 0;
-    
-	free(datpt);
-	datpt = datp2;
-	maxx();
-	update_status();
 	return 0;
     
 }
@@ -678,6 +664,8 @@ int smooth_c(int n,char* args){
     
     bufferspecs = iBuffer.getspecs();
     Image smoothed(bufferspecs[ROWS],bufferspecs[COLS]);
+    smoothed.copyABD(iBuffer);
+    
     
     if(smoothed.err()){
         return smoothed.err();
