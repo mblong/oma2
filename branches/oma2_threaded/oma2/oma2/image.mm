@@ -49,6 +49,12 @@ Image::Image()              // create an empty Image with default values
     extra = NULL;
 }
 
+Image::~Image()
+{
+    if(data)delete data;
+    if(comment)delete comment;
+    if(extra)delete extra;
+}
 
 
 Image::Image(int rows, int cols)
