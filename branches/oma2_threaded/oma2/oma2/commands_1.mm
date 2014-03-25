@@ -284,13 +284,11 @@ int croprectangle_c(int n,char* args){
  default of x0 and y0 center the old image in the frame
  
  */
-/*
+
 int frame_c(int n, char* args)
 {
-	int sizx,sizy,size,j,i,fraction=0;
+	int sizx,sizy,j,i,fraction=0;
 	float x0,y0;
-	DATAWORD *datp,*datp2;
-    
     
 	DATAWORD value = 0;
 	i = sscanf(args,"%d %d %f %f %f",&sizx,&sizy,&value,&x0,&y0);
@@ -310,8 +308,14 @@ int frame_c(int n, char* args)
             y0 = -(sizy - (float)specs[ROWS])/2.;
 	}
 	
-	Image im(sizy,sizx);
+	Image im;
     // error check?
+    im.copyABD(iBuffer);
+    int oldWidth = specs[COLS];
+    int oldHeight = specs[ROWS];
+    specs[ROWS] = sizy;
+    specs[COLS] = sizx;
+    im.setspecs(specs); // this will allocate the memory
     
 	i = x0;
 	j = y0;
@@ -327,23 +331,26 @@ int frame_c(int n, char* args)
 	
 	for(i=0; i<sizy; i++){
 		for(j=0; j<sizx; j++) {
-			if(i+y0<0 || i+y0 >=specs[ROWS] ||
-			   j+x0<0 || j+x0 >=specs[COLS]) {
-                *(datp++) = value;
+			if(i+y0<0 || i+y0 >=oldHeight ||
+			   j+x0<0 || j+x0 >=oldWidth) {
+                im.setpix(i,j,value);
 			}else {
                 if(fraction)
-                    *(datp++) = interpolate(j+x0,i+y0);
+                    im.setpix(i,j,iBuffer.getpix(j+x0,i+y0));
                 else
-                    *(datp++) = idat(i+y0,j+x0);
+                    im.setpix(i,j,iBuffer.getpix((int)j+x0,(int)i+y0));
 			}
 		}
 	}
-    
-    
+    free(specs);  // release specs copy
+    iBuffer.free();     // release the old data
+    iBuffer = im;   // this is the new data
+    iBuffer.getmaxx();
+    update_UI();
 	return 0;
     
 }
-*/
+
 /* ********** */
 
 int resize_c(int n,char* args){

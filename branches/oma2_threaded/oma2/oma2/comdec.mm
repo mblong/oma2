@@ -57,6 +57,7 @@ ComDef   commands[] =    {
     {{"FCLOSE         "},	fclose_c},
     {{"FECHO          "},	fecho_c},
     {{"FOPEN          "},	fopen_c},
+    {{"FRAME          "},	frame_c},
     {{"FTEMPIMAGE     "},	ftemp_c},
     {{"FFT            "},	dofft},
     {{"FOLD           "},	fold_g},

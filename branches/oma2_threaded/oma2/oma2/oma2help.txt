@@ -176,6 +176,9 @@ FECHO string
 FOPEN <filename>
 	Open a text file with the name <filename> for I/O. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.
 
+FRAME NewWidth NewHeight [Value] [X0] [Y0]
+	Put a "frame" around the current image. X0 and Y0 are the coordinates of the start of the new image in the current image's coordinate system. X0 and Y0 can be positive (will crop out some of the current image) or negative (The new image will have a border with the pixels containing the Value specified). If X0 or Y0 are not integers, the routine will interpolate pixel values. Default Value is 0. Default of X0 and Y0 center the old image in the frame.
+
 FINDBADPIX Counts
 	Searches the current image buffer for pixels whose value is more than "Counts" above that of its nearest eight neighbors. Those pixels are tagged as hot pixels.
 
