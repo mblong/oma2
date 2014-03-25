@@ -24,7 +24,7 @@ enum {ROWS,COLS,X0,Y0,DX,DY,LMAX,LMIN,IS_COLOR,HAVE_MAX,HAS_RULER,
 enum {MIN,MAX,RMAX,RMIN,GMAX,GMIN,BMAX,BMIN,RULER_SCALE};
 
 // Image error codes and command return codes
-enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR,ARG_ERR,CMND_ERR,GET_MACRO_LINE};
+enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR,ARG_ERR,CMND_ERR,GET_MACRO_LINE,GET_COMMENT_LINE};
 
 /******************** Class Definitions ********************/
 
@@ -89,6 +89,7 @@ public:
     DATAWORD* getvalues();      ///< returns a copy of the image values array
     char* getunit_text();       ///< returns a copy of the image ruler units
     char* getComment();        ///< returns a copy of the comment buffer
+    void setComment(char*,int);        ///< Loads the comment buffer with the specified number of characters
     
     DATAWORD getpix(int,int);     ///< get a pixel value at the specified row and column
     DATAWORD getpix(float,float); ///< get an interpoated pixel value at the specified fractional row and column

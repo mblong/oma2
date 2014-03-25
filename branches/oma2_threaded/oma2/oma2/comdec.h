@@ -31,7 +31,7 @@ int is_variable_char(char ch);
 Expression_Element evaluate_string(char* ex_string);
 Expression_Element evaluate(int start, int end);
 int vprint(int index);
-void clear_macro_to_end();
+void clear_buffer_to_end(char*);
 int stopmacro();
 
 // function prototypes for commands in comdec.cpp
@@ -54,6 +54,7 @@ int vint(int, char*);
 int getsettings(int,char*);
 int savsettings(int,char*);
 int defmac(int,char*);
+int logg(int,char*);
 int dmnmx(int,char*);
 int labelData(int, char*);
 int stopOnError(int, char*);

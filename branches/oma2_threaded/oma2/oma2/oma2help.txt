@@ -257,6 +257,9 @@ LIST
 LABEL text_string
 	Display the text_string in the upper left of the current window.
 
+LOG [n] [comment]
+	Adds a comment to the comment buffer at line n. If n is not specified, the comment is added to the beginning of the comment buffer. If "comment" is not present, the program prompts for additional comment lines until a null comment is entered (i.e. <CR> only). If the optional "comment" is included on the same line, the text of "comment" replaces any comment already existing at line n and no further comment lines are solicited.
+
 LMACRO
 	Lists the contents in the current macro buffer.
 
