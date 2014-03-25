@@ -746,6 +746,20 @@ char* Image::getComment()     // returns a copy of comment buffer (NULL if no su
     return thecomment;
 }
 
+void Image::setComment(char* buffer,int n){
+    if (comment){
+        delete[] comment;
+        comment = 0;
+    }
+    if (n<=2) {
+        commentSize = 0;
+        return;
+    }
+    comment = new char[n];
+    for(int i=0; i<n; i++) comment[i] = buffer[i];
+    commentSize = n;
+}
+
 void Image::setspecs(int* newspecs){
     // resize if necessary
     if(newspecs[ROWS]*newspecs[COLS] != specs[ROWS]*specs[COLS]){

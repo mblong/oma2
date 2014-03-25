@@ -1874,7 +1874,7 @@ int gmacro_c(int n,char* args)
 	*(macbuf+nread+1) = 0;
 	
 	close(fd);
-	clear_macro_to_end();		/* insert trailing zeros after the macro */
+	clear_buffer_to_end(macbuf);		/* insert trailing zeros after the macro */
 	return NO_ERR;
 }
 /* ********** */

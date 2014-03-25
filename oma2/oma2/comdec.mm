@@ -82,8 +82,9 @@ ComDef   commands[] =    {
     {{"INTVARIABLE    "},	vint},
     {{"KILLBOX        "},	killBox_c},
     {{"KWABEL         "},	kwabel_g},
-    {{"LMACRO         "},	lmacro},
     {{"LIST           "},	list_c},
+    {{"LOG           "},	logg},
+    {{"LMACRO         "},	lmacro},
     {{"LABELDATA      "},	labelData},
     {{"LOOP           "},	loop},
     {{"LOOPBREAK      "},	loopbreak},
@@ -180,6 +181,8 @@ int stored_commands=0;
 //char* fullname();
 int update_pause(),vprint(),get_variable_index();
 
+char    commentBuffer[MBUFLEN] = {0};    	    	/* the comment buffer */
+
 char    macbuf[MBUFLEN] = {0};    	    	/* the macro buffer */
 char*   exbuf[EX_NEST_DEPTH];    	    	// the execute buffers 
 char	macstring[COMLEN]={0};             /* strings that can be inserted in macros */
@@ -239,6 +242,10 @@ int comdec(char* cmnd)
     switch (command_return) {
         case GET_MACRO_LINE:
             command_return = error_return = defmac(1,cmnd);
+            return command_return;
+            break;
+        case GET_COMMENT_LINE:
+            command_return = error_return = logg(1,cmnd);
             return command_return;
             break;
             
@@ -1245,23 +1252,25 @@ int pmacro(int n)
 
 /* ********** */
 
-void clear_macro_to_end()
+void clear_buffer_to_end(char* buffer)
 {
 	int i=0;	
 	
-	while( *(macbuf+i++) ) {
-		while( *(macbuf+i++)){};
+	while( *(buffer+i++) ) {
+		while( *(buffer+i++)){};
 	}
 	//printf("%d\n",i);
 	while( i<MBUFLEN) 
-		*(macbuf+i++) = 0;
+		*(buffer+i++) = 0;
 	
 }
 
+/* ********** */
 
-int defmac(int n,char* args)
+//The LOG coommand
+
+int logg(int n,char* args)
 {
-    //extern char macbuf[];
     int j,k,index=0;
     int nc = 1;
 	char tempbuf[MBUFLEN];
@@ -1271,28 +1280,124 @@ int defmac(int n,char* args)
         
         if (n == 0) n = 1;
         line_num = n;
-        // to get pointer no the next character, skip past n-1 zeros in the macro buffer 	
+        // to get pointer no the next character, skip past n-1 zeros in the comment buffer
         
         j = n;
-        while (--j) { 			// find the start of the specified line 
-            for(k = i; macbuf[i];i++ ){}; 
+        while (--j) { 			// find the start of the specified line
+            for(k = i; commentBuffer[i];i++ ){};
+            i++;
+            if ( k+1 == i) {
+                beep();
+                printf("Log Is Not That Long.\n");
+                return ARG_ERR;
+            }
+            
+        }
+        //if(n > 1 && macbuf[i+1] != 0)i++;
+        
+        while ( (args[index] != EOL) && (args[index] != ';') ) {
+            if(args[index++] == ' ') { 	// if there is a macro definition on this line
+                j = (int)strlen(&args[index])+1;	// the length of what we are going to add
+                nc = i;
+                k = 0;
+                if (*(commentBuffer+nc) != EOL){ // if there are more lines, they will have to be tacked on at the end
+                    while (*(commentBuffer+nc++)){};	 // nc is now the start of the next line or EOL
+                    
+                    while(*(commentBuffer+nc) ) {
+                        while(*(commentBuffer+nc))
+                            *(tempbuf+k++) = *(commentBuffer+nc++);
+                        *(tempbuf+k++) = *(commentBuffer+nc++);		/* remember the 0 */
+                    }
+                    /* printf("%d characters to be appended\n",k); */
+                }
+                
+                if ( (i + k + j) >= MBUFLEN) {
+                    beep();
+                    printf ("Macro Buffer Overflow.\n");
+                    return MEM_ERR;
+                }
+                while((args[index] != EOL) && (args[index] != ';')) {
+                    *(commentBuffer+i++) = args[index++];
+                }
+                *(commentBuffer+i++) = EOL;
+                
+                for(j=0; j<k; j++) {
+                    *(commentBuffer+i++) = *(tempbuf+j);
+                }
+                *(commentBuffer+i) = EOL;
+                iBuffer.setComment(commentBuffer,i+1);
+                i = 0;
+                return NO_ERR;
+            }
+        }
+        
+        // at this point we are looking for new lines of text
+        printf("Line #%d: ",line_num++);
+        get_next_line = 1;
+        return GET_COMMENT_LINE;
+    }
+    nc = (int)strlen(args);
+    if (nc) {
+        if ( (i+nc) >= MBUFLEN ) {
+			beep();
+            printf ("Macro Buffer Overflow.\n");
+            *(commentBuffer+i) = EOL;
+            clear_buffer_to_end(commentBuffer);
+            get_next_line=i=0;
+            return MEM_ERR;
+        }
+        
+        for (j = 0;args[j];j++) {
+            *(commentBuffer + i++) = args[j];
+        }
+        *(commentBuffer + i++) = EOL;
+        printf("Line #%d: ",line_num++);
+        return GET_COMMENT_LINE;
+    }
+    *(commentBuffer+i) = EOL;
+	clear_buffer_to_end(commentBuffer);		/* insert trailing zeros after the comment */
+    iBuffer.setComment(commentBuffer,i+1);
+    get_next_line=i=0;
+    
+	return NO_ERR;
+}
+
+// **********
+
+
+int defmac(int n,char* args)
+{
+    int j,k,index=0;
+    int nc = 1;
+	char tempbuf[MBUFLEN];
+	static int get_next_line = 0,i=0, line_num;
+    
+    if (!get_next_line) {
+        
+        if (n == 0) n = 1;
+        line_num = n;
+        // to get pointer no the next character, skip past n-1 zeros in the macro buffer
+        
+        j = n;
+        while (--j) { 			// find the start of the specified line
+            for(k = i; macbuf[i];i++ ){};
             i++;
             if ( k+1 == i) {
                 beep();
                 printf("Macro Is Not That Long.\n");
                 return ARG_ERR;
             }
-
+            
         }
         //if(n > 1 && macbuf[i+1] != 0)i++;
         
         while ( (args[index] != EOL) && (args[index] != ';') ) {
-            if(args[index++] == ' ') { 	// if there is a macro definition on this line 
+            if(args[index++] == ' ') { 	// if there is a macro definition on this line
                 j = (int)strlen(&args[index])+1;	// the length of what we are going to add
                 nc = i;
                 k = 0;
-                if (*(macbuf+nc) != EOL){ // if there are more lines, they will have to be tacked on at the end 
-                    while (*(macbuf+nc++)){};	 // nc is now the start of the next line or EOL 
+                if (*(macbuf+nc) != EOL){ // if there are more lines, they will have to be tacked on at the end
+                    while (*(macbuf+nc++)){};	 // nc is now the start of the next line or EOL
                     
                     while(*(macbuf+nc) ) {
                         while(*(macbuf+nc))
@@ -1307,13 +1412,13 @@ int defmac(int n,char* args)
                     printf ("Macro Buffer Overflow.\n");
                     return MEM_ERR;
                 }
-                while((args[index] != EOL) && (args[index] != ';')) { 
-                    *(macbuf+i++) = args[index++]; 
+                while((args[index] != EOL) && (args[index] != ';')) {
+                    *(macbuf+i++) = args[index++];
                 }
-                *(macbuf+i++) = EOL;			
+                *(macbuf+i++) = EOL;
                 
                 for(j=0; j<k; j++) {
-                    *(macbuf+i++) = *(tempbuf+j);	
+                    *(macbuf+i++) = *(tempbuf+j);
                 }
                 *(macbuf+i++) = EOL;
                 i = 0;
@@ -1332,7 +1437,7 @@ int defmac(int n,char* args)
 			beep();
             printf ("Macro Buffer Overflow.\n");
             *(macbuf+i) = EOL;
-            clear_macro_to_end();
+            clear_buffer_to_end(macbuf);
             get_next_line=i=0;
             return MEM_ERR;
         }
@@ -1345,7 +1450,7 @@ int defmac(int n,char* args)
         return GET_MACRO_LINE;
     }
     *(macbuf+i) = EOL;
-	clear_macro_to_end();		/* insert trailing zeros after the macro */
+	clear_buffer_to_end(macbuf);		/* insert trailing zeros after the macro */
     get_next_line=i=0;
 	return NO_ERR;
 }
