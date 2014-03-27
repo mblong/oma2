@@ -44,6 +44,62 @@
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DB6FF6FE18467EA1002D728B /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
 		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
+		DB8A884418E3297E007C79AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
+		DB8A884518E3297E007C79AF /* oma2AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */; };
+		DB8A884618E3297E007C79AF /* CommandView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB16CA391826960F002588F4 /* CommandView.mm */; };
+		DB8A884718E3297E007C79AF /* DrawingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD56E180208E7007F8801 /* DrawingWindowController.mm */; };
+		DB8A884818E3297E007C79AF /* StatusController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC041151918F0008A9B54 /* StatusController.mm */; };
+		DB8A884918E3297E007C79AF /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC044151918F0008A9B54 /* AppController.mm */; };
+		DB8A884A18E3297E007C79AF /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
+		DB8A884B18E3297E007C79AF /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
+		DB8A884C18E3297E007C79AF /* commands_1.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7515211EFA001D1B05 /* commands_1.mm */; };
+		DB8A884D18E3297E007C79AF /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
+		DB8A884E18E3297E007C79AF /* image_support.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7715211EFA001D1B05 /* image_support.mm */; };
+		DB8A884F18E3297E007C79AF /* image.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7915211EFA001D1B05 /* image.mm */; };
+		DB8A885018E3297E007C79AF /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
+		DB8A885118E3297E007C79AF /* DrawingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD5691802050F007F8801 /* DrawingView.mm */; };
+		DB8A885218E3297E007C79AF /* DataWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB17A30B15247965004F810A /* DataWindowController.mm */; };
+		DB8A885318E3297E007C79AF /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
+		DB8A885418E3297E007C79AF /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */; };
+		DB8A885518E3297E007C79AF /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
+		DB8A885618E3297E007C79AF /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
+		DB8A885718E3297E007C79AF /* DataView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2113581540219200B23364 /* DataView.mm */; };
+		DB8A885818E3297E007C79AF /* jpegIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB4233517F9B6C3005BCF33 /* jpegIO.mm */; };
+		DB8A885A18E3297E007C79AF /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
+		DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
+		DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
+		DB8A885D18E3297E007C79AF /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB53F51717FA1D6500A12259 /* libjpeg.a */; };
+		DB8A885F18E3297E007C79AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
+		DB8A886018E3297E007C79AF /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0311519183D008A9B54 /* Credits.rtf */; };
+		DB8A886118E3297E007C79AF /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0371519183D008A9B54 /* MainMenu.xib */; };
+		DB8A886218E3297E007C79AF /* Status.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC042151918F0008A9B54 /* Status.xib */; };
+		DB8A886318E3297E007C79AF /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
+		DB8A886418E3297E007C79AF /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
+		DB8A886518E3297E007C79AF /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
+		DB8A886618E3297E007C79AF /* DataWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB17A3041524754A004F810A /* DataWindow.xib */; };
+		DB8A886718E3297E007C79AF /* Oma2Settings.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */; };
+		DB8A886818E3297E007C79AF /* LightOma2Help in Resources */ = {isa = PBXBuildFile; fileRef = DBAEDEDC187F16FD0019677B /* LightOma2Help */; };
+		DB8A886918E3297E007C79AF /* OMApalette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMApalette.pa1 */; };
+		DB8A886A18E3297E007C79AF /* OMApalette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */; };
+		DB8A886B18E3297E007C79AF /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
+		DB8A886C18E3297E007C79AF /* OMApalette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */; };
+		DB8A886D18E3297E007C79AF /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = DB268238159374AC00B40AE1 /* Notes.txt */; };
+		DB8A886E18E3297E007C79AF /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
+		DB8A886F18E3297E007C79AF /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
+		DB8A887018E3297E007C79AF /* ruler.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB1E9B1E15A27EA300F38CE2 /* ruler.jpg */; };
+		DB8A887118E3297E007C79AF /* curve.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB1E9B2115A2804C00F38CE2 /* curve.jpg */; };
+		DB8A887218E3297E007C79AF /* pal0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A4C15A2879900502B50 /* pal0.jpg */; };
+		DB8A887318E3297E007C79AF /* pal2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A4E15A2884F00502B50 /* pal2.jpg */; };
+		DB8A887418E3297E007C79AF /* pal1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A4F15A2884F00502B50 /* pal1.jpg */; };
+		DB8A887518E3297E007C79AF /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
+		DB8A887618E3297E007C79AF /* Oma2Macro.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */; };
+		DB8A887718E3297E007C79AF /* pal7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5215A2895B00502B50 /* pal7.jpg */; };
+		DB8A887818E3297E007C79AF /* pal6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5315A2895B00502B50 /* pal6.jpg */; };
+		DB8A887918E3297E007C79AF /* pal5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5415A2895B00502B50 /* pal5.jpg */; };
+		DB8A887A18E3297E007C79AF /* pal4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5515A2895B00502B50 /* pal4.jpg */; };
+		DB8A887B18E3297E007C79AF /* pal3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5615A2895B00502B50 /* pal3.jpg */; };
+		DB8A887C18E3297E007C79AF /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
+		DB8A887E18E3297E007C79AF /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
 		DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
 		DBA3B5F716FC781300B7FF27 /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
@@ -57,6 +113,9 @@
 		DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
 		DBB4233617F9B6C3005BCF33 /* jpegIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB4233517F9B6C3005BCF33 /* jpegIO.mm */; };
+		DBBCFA3218E37FE100FEE3F6 /* libImagelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBCFA3018E37FE100FEE3F6 /* libImagelib.a */; };
+		DBBCFA3318E37FE100FEE3F6 /* libPvAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBCFA3118E37FE100FEE3F6 /* libPvAPI.a */; };
+		DBBCFA3418E380B000FEE3F6 /* gige.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBBCFA2518E33D8600FEE3F6 /* gige.mm */; };
 		DBBD397D155AD06000D5B56B /* OMApalette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMApalette.pa1 */; };
 		DBBD3984155ADD5100D5B56B /* OMApalette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */; };
 		DBBD3985155ADD5100D5B56B /* OMApalette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */; };
@@ -76,6 +135,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DB8A887D18E3297E007C79AF /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DB8A887E18E3297E007C79AF /* LibTiff_F.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +155,8 @@
 		DB021E7915211EFA001D1B05 /* image.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = image.mm; sourceTree = "<group>"; };
 		DB021E7A15211EFA001D1B05 /* image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image.h; sourceTree = "<group>"; };
 		DB021E7F15214040001D1B05 /* comdec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comdec.h; sourceTree = "<group>"; };
+		DB02914918E46C1F00F497FB /* cameraSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cameraSelector.h; sourceTree = "<group>"; };
+		DB02914A18E46EAF00F497FB /* oma2cam-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "oma2cam-Prefix.pch"; sourceTree = "<group>"; };
 		DB0FC01E1519183C008A9B54 /* oma2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0FC0221519183C008A9B54 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		DB0FC0251519183C008A9B54 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -139,6 +210,8 @@
 		DB6FF70018467F46002D728B /* tiffio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffio.h; sourceTree = "<group>"; };
 		DB6FF70118467F46002D728B /* tiffvers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffvers.h; sourceTree = "<group>"; };
 		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
+		DB8A888218E3297E007C79AF /* oma2cam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2cam.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB8A888318E3297F007C79AF /* oma2cam-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "oma2cam-Info.plist"; path = "/Users/mblong/oma2_trunk/oma2/oma2cam-Info.plist"; sourceTree = "<absolute>"; };
 		DB9B2E43186731EC00EE4871 /* oma2Icons.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = oma2Icons.icns; sourceTree = "<group>"; };
 		DBA03741181704740042DF6F /* DrawingWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawingWindow.xib; sourceTree = "<group>"; };
 		DBA3B5F616FC781300B7FF27 /* oma2help.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = oma2help.txt; sourceTree = "<group>"; usesTabs = 1; };
@@ -159,6 +232,11 @@
 		DBB4233717F9B765005BCF33 /* jpeglib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpeglib.h; path = ../jpeglib.h; sourceTree = "<group>"; };
 		DBB4233817F9B892005BCF33 /* jconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jconfig.h; sourceTree = "<group>"; };
 		DBB4233917F9B892005BCF33 /* jmorecfg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jmorecfg.h; sourceTree = "<group>"; };
+		DBBCFA2518E33D8600FEE3F6 /* gige.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gige.mm; sourceTree = "<group>"; };
+		DBBCFA2718E33E5400FEE3F6 /* ImageLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLib.h; sourceTree = "<group>"; };
+		DBBCFA2818E33E5400FEE3F6 /* PvApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvApi.h; sourceTree = "<group>"; };
+		DBBCFA3018E37FE100FEE3F6 /* libImagelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libImagelib.a; sourceTree = "<group>"; };
+		DBBCFA3118E37FE100FEE3F6 /* libPvAPI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPvAPI.a; sourceTree = "<group>"; };
 		DBBD397C155AD06000D5B56B /* OMApalette.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette.pa1; sourceTree = "<group>"; };
 		DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette3.pa1; sourceTree = "<group>"; };
 		DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette2.pa1; sourceTree = "<group>"; };
@@ -180,6 +258,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DB8A885918E3297E007C79AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBBCFA3318E37FE100FEE3F6 /* libPvAPI.a in Frameworks */,
+				DB8A885A18E3297E007C79AF /* LibTiff_F.framework in Frameworks */,
+				DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */,
+				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
+				DB8A885D18E3297E007C79AF /* libjpeg.a in Frameworks */,
+				DBBCFA3218E37FE100FEE3F6 /* libImagelib.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -196,11 +287,13 @@
 				DB0FC01F1519183C008A9B54 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		DB0FC01F1519183C008A9B54 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				DB0FC01E1519183C008A9B54 /* oma2.app */,
+				DB8A888218E3297E007C79AF /* oma2cam.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -229,6 +322,7 @@
 		DB0FC0281519183C008A9B54 /* oma2 */ = {
 			isa = PBXGroup;
 			children = (
+				DB42231218E3273900FA48D6 /* Hardware Related */,
 				DBA96AB81520C6AC0043754E /* UI Independent */,
 				DBA96AB21520C34F0043754E /* UI */,
 				DB0FC0291519183C008A9B54 /* Supporting Files */,
@@ -259,12 +353,25 @@
 				DB593A3A151B9766007CA0C3 /* box.jpg */,
 				DBF08DE2159D63980099CB4C /* c-box.jpg */,
 				DB0FC02A1519183C008A9B54 /* oma2-Info.plist */,
+				DB8A888318E3297F007C79AF /* oma2cam-Info.plist */,
 				DB0FC02B1519183C008A9B54 /* InfoPlist.strings */,
 				DB0FC02E1519183C008A9B54 /* main.m */,
 				DB0FC0301519183D008A9B54 /* oma2-Prefix.pch */,
+				DB02914A18E46EAF00F497FB /* oma2cam-Prefix.pch */,
 				DB0FC0311519183D008A9B54 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DB42231218E3273900FA48D6 /* Hardware Related */ = {
+			isa = PBXGroup;
+			children = (
+				DBBCFA2518E33D8600FEE3F6 /* gige.mm */,
+				DBBCFA2718E33E5400FEE3F6 /* ImageLib.h */,
+				DBBCFA2818E33E5400FEE3F6 /* PvApi.h */,
+				DB02914918E46C1F00F497FB /* cameraSelector.h */,
+			);
+			name = "Hardware Related";
 			sourceTree = "<group>";
 		};
 		DBA96AB21520C34F0043754E /* UI */ = {
@@ -335,6 +442,8 @@
 		DBB4233C17F9B942005BCF33 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				DBBCFA3018E37FE100FEE3F6 /* libImagelib.a */,
+				DBBCFA3118E37FE100FEE3F6 /* libPvAPI.a */,
 				DB53F51717FA1D6500A12259 /* libjpeg.a */,
 			);
 			name = Libraries;
@@ -362,6 +471,24 @@
 			productReference = DB0FC01E1519183C008A9B54 /* oma2.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DB8A884218E3297E007C79AF /* oma2cam */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB8A887F18E3297E007C79AF /* Build configuration list for PBXNativeTarget "oma2cam" */;
+			buildPhases = (
+				DB8A884318E3297E007C79AF /* Sources */,
+				DB8A885918E3297E007C79AF /* Frameworks */,
+				DB8A885E18E3297E007C79AF /* Resources */,
+				DB8A887D18E3297E007C79AF /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = oma2cam;
+			productName = oma2;
+			productReference = DB8A888218E3297E007C79AF /* oma2cam.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -384,6 +511,7 @@
 			projectRoot = "";
 			targets = (
 				DB0FC01D1519183C008A9B54 /* oma2 */,
+				DB8A884218E3297E007C79AF /* oma2cam */,
 			);
 		};
 /* End PBXProject section */
@@ -426,6 +554,43 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DB8A885E18E3297E007C79AF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB8A885F18E3297E007C79AF /* InfoPlist.strings in Resources */,
+				DB8A886018E3297E007C79AF /* Credits.rtf in Resources */,
+				DB8A886118E3297E007C79AF /* MainMenu.xib in Resources */,
+				DB8A886218E3297E007C79AF /* Status.xib in Resources */,
+				DB8A886318E3297E007C79AF /* Preferences.xib in Resources */,
+				DB8A886418E3297E007C79AF /* plus.jpg in Resources */,
+				DB8A886518E3297E007C79AF /* box.jpg in Resources */,
+				DB8A886618E3297E007C79AF /* DataWindow.xib in Resources */,
+				DB8A886718E3297E007C79AF /* Oma2Settings.icns in Resources */,
+				DB8A886818E3297E007C79AF /* LightOma2Help in Resources */,
+				DB8A886918E3297E007C79AF /* OMApalette.pa1 in Resources */,
+				DB8A886A18E3297E007C79AF /* OMApalette3.pa1 in Resources */,
+				DB8A886B18E3297E007C79AF /* DrawingWindow.xib in Resources */,
+				DB8A886C18E3297E007C79AF /* OMApalette2.pa1 in Resources */,
+				DB8A886D18E3297E007C79AF /* Notes.txt in Resources */,
+				DB8A886E18E3297E007C79AF /* c-box.jpg in Resources */,
+				DB8A886F18E3297E007C79AF /* oma2Icons.icns in Resources */,
+				DB8A887018E3297E007C79AF /* ruler.jpg in Resources */,
+				DB8A887118E3297E007C79AF /* curve.jpg in Resources */,
+				DB8A887218E3297E007C79AF /* pal0.jpg in Resources */,
+				DB8A887318E3297E007C79AF /* pal2.jpg in Resources */,
+				DB8A887418E3297E007C79AF /* pal1.jpg in Resources */,
+				DB8A887518E3297E007C79AF /* Oma2Data.icns in Resources */,
+				DB8A887618E3297E007C79AF /* Oma2Macro.icns in Resources */,
+				DB8A887718E3297E007C79AF /* pal7.jpg in Resources */,
+				DB8A887818E3297E007C79AF /* pal6.jpg in Resources */,
+				DB8A887918E3297E007C79AF /* pal5.jpg in Resources */,
+				DB8A887A18E3297E007C79AF /* pal4.jpg in Resources */,
+				DB8A887B18E3297E007C79AF /* pal3.jpg in Resources */,
+				DB8A887C18E3297E007C79AF /* oma2help.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -454,6 +619,35 @@
 				DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */,
 				DB2113591540219200B23364 /* DataView.mm in Sources */,
 				DBB4233617F9B6C3005BCF33 /* jpegIO.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB8A884318E3297E007C79AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB8A884418E3297E007C79AF /* main.m in Sources */,
+				DB8A884518E3297E007C79AF /* oma2AppDelegate.mm in Sources */,
+				DB8A884618E3297E007C79AF /* CommandView.mm in Sources */,
+				DB8A884718E3297E007C79AF /* DrawingWindowController.mm in Sources */,
+				DB8A884818E3297E007C79AF /* StatusController.mm in Sources */,
+				DB8A884918E3297E007C79AF /* AppController.mm in Sources */,
+				DB8A884A18E3297E007C79AF /* PreferenceController.mm in Sources */,
+				DB8A884B18E3297E007C79AF /* comdec.mm in Sources */,
+				DB8A884C18E3297E007C79AF /* commands_1.mm in Sources */,
+				DB8A884D18E3297E007C79AF /* gluedCommands.mm in Sources */,
+				DB8A884E18E3297E007C79AF /* image_support.mm in Sources */,
+				DB8A884F18E3297E007C79AF /* image.mm in Sources */,
+				DB8A885018E3297E007C79AF /* dcrawx.mm in Sources */,
+				DBBCFA3418E380B000FEE3F6 /* gige.mm in Sources */,
+				DB8A885118E3297E007C79AF /* DrawingView.mm in Sources */,
+				DB8A885218E3297E007C79AF /* DataWindowController.mm in Sources */,
+				DB8A885318E3297E007C79AF /* dofft.mm in Sources */,
+				DB8A885418E3297E007C79AF /* ImageBitmap.mm in Sources */,
+				DB8A885518E3297E007C79AF /* StatusDrop.mm in Sources */,
+				DB8A885618E3297E007C79AF /* UI.mm in Sources */,
+				DB8A885718E3297E007C79AF /* DataView.mm in Sources */,
+				DB8A885818E3297E007C79AF /* jpegIO.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -600,6 +794,52 @@
 			};
 			name = Release;
 		};
+		DB8A888018E3297E007C79AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/**",
+				);
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "oma2/oma2cam-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/oma2cam-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/**",
+					"$(inherited)",
+					/Users/mblong/oma2_trunk/oma2/oma2,
+				);
+				PRODUCT_NAME = oma2cam;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		DB8A888118E3297E007C79AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/**",
+				);
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "oma2/oma2cam-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/oma2cam-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/**",
+					"$(inherited)",
+					/Users/mblong/oma2_trunk/oma2/oma2,
+				);
+				PRODUCT_NAME = oma2cam;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -617,6 +857,15 @@
 			buildConfigurations = (
 				DB0FC03D1519183D008A9B54 /* Debug */,
 				DB0FC03E1519183D008A9B54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB8A887F18E3297E007C79AF /* Build configuration list for PBXNativeTarget "oma2cam" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB8A888018E3297E007C79AF /* Debug */,
+				DB8A888118E3297E007C79AF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
