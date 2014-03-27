@@ -503,9 +503,9 @@ extern oma2UIData UIData;
 
 -(void) showDataWindow: (char*) windowname{
     // come here from the DISPLAY command
-    extern int newWindowFlag;
+    //extern int newWindowFlag;
     
-    if (!newWindowFlag && [windowArray count]) {    // put the current bitmap in the last window if there is one
+    if (!UIData.newwindowflag && [windowArray count]) {    // put the current bitmap in the last window if there is one
         [[windowArray lastObject] updateImage];
         [[windowArray lastObject] showWindow:self];
         return;
