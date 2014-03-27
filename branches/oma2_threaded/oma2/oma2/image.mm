@@ -18,7 +18,7 @@ int argc = 0;               // these three fro dcraw
 char *argv[200];
 char dcraw_arg[CHPERLN];
 
-int newWindowFlag = 1;      // set by NEWWINDOW
+//int newWindowFlag = 1;      // set by NEWWINDOW
 
 FILE* nameFilePtr = NULL;   // used in the GETFILENAMES and NEXTFILE commands
 

@@ -42,13 +42,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
+#include <ctime>
 #endif
 
 #include "PvApi.h"
 #include "ImageLib.h"
 
 //#include "oma2.h"
-//#include "UI.h"
+#include "UI.h"
 
 
 // camera's data
@@ -753,7 +754,7 @@ void CameraSnap(tCamera* Camera, int* time, int *fcount, int* frate, int* label,
     int i,j;
     short *ptr;
     
-    DateTimeRec datetime;
+    //DateTimeRec datetime;
     
     
     
@@ -761,10 +762,10 @@ void CameraSnap(tCamera* Camera, int* time, int *fcount, int* frate, int* label,
     unsigned long T_hi;
     unsigned long T_lo;
     double tempo;
-    int nt,nc;
-    FILE *fp;
-   
-    //GetTime(&datetime);
+    //int nt,nc;
+    //FILE *fp;
+   /*
+    GetTime(&datetime);
     int month = datetime.month;
     int day = datetime.day;
     int year = datetime.year%100;
@@ -772,9 +773,11 @@ void CameraSnap(tCamera* Camera, int* time, int *fcount, int* frate, int* label,
     int minute = datetime.minute;
     float second = datetime.second;
     int secondo = second;
+    */
     double tempo_pr = 0;
-    char strin[256];
-    char ora[256];
+    
+    //char strin[256];
+    //char ora[256];
     
     PvCommandRun(Camera->Handle,"TimeStampReset");
     PvAttrUint32Get(Camera->Handle,"TimeStampFrequency",&Tfreq);
@@ -804,7 +807,7 @@ void CameraSnap(tCamera* Camera, int* time, int *fcount, int* frate, int* label,
                 PvAttrUint32Get(Camera->Handle,"TimeStampValueLo",&T_lo);
                 
                 tempo = (T_hi*4294967296. + T_lo) / Tfreq;  
-                float fratec = 1./(tempo - tempo_pr);
+                //float fratec = 1./(tempo - tempo_pr);
                 tempo_pr = tempo;
                 
                 if(*label == 1){
@@ -837,8 +840,9 @@ void CameraSnap(tCamera* Camera, int* time, int *fcount, int* frate, int* label,
                     CGContextShowTextAtPoint(myContext,10,10,txt,strlen(txt));
                     CGContextFlush(myContext);
                     QDEndCGContext (GetWindowPort(theActiveWindow), &myContext);
-                    */
+                    
                     second = second + 1./ *frate;
+                     */
                 }
                 
                 /*
@@ -953,7 +957,8 @@ void CameraUnsetup(tCamera* Camera, int *fcount)
 int gige(int n, char* args)
 {
     char txt[CHPERLN];
-    extern short newwindowflag;
+    
+    extern oma2UIData UIData;
     int save_new_status;
     
     
@@ -1130,7 +1135,7 @@ int gige(int n, char* args)
         if (trigger == 0)   printf("\tTrigger: internal\n\n");
     }
     
-    save_new_status = newwindowflag;
+    save_new_status = UIData.newwindowflag;
     
     if ( strncmp(args,"acq",3) == 0){
         
@@ -1141,10 +1146,10 @@ int gige(int n, char* args)
                 for(int i=0; i< numPreviews; i++){
                     // snap now
                     CameraSnap_preview(&Camera);
-                    
-                    //dquartz(0,0);
+                    if(i==0) iBuffer.getmaxx();
+                    display(0,(char*)"GigE");
                     //checkevents();
-                    newwindowflag = 0;  // if 0 opens the new image in the old window, if 1 it opens it in a new window
+                    UIData.newwindowflag = 0;  // if 0 opens the new image in the old window, if 1 it opens it in a new window
                 }
                 // stop the streaming
                 PvCommandRun(Camera.Handle,"AcquisitionStop");
@@ -1153,7 +1158,7 @@ int gige(int n, char* args)
                 
                 //have_max = 0;
                 //maxx();
-                newwindowflag = save_new_status;
+                UIData.newwindowflag = save_new_status;
                 
                 preview = 0;
                 return 0;
@@ -1171,21 +1176,23 @@ int gige(int n, char* args)
             
             
             //newwindowflag = 1;    // let the user set this -- don't force it -mbl
-            
+            UIData.newwindowflag = 1;
             // set the camera attributes
             if(CameraStart(&Camera,&time,&numFrames,&frameRate,&gain,&trigger,&triggerDelay,&bx,&by)){
                 
                 // snap now
                 CameraSnap(&Camera,&time,&numFrames,&frameRate,&label,&trigger,&bx,&by,&sav,savestr);
                 //checkevents();
+                iBuffer.getmaxx();
+                display(0,(char*)"GigE");
                 
                 // stop the streaming
                 CameraStop(&Camera);
                 CameraUnsetup(&Camera, &numFrames);
                 
-                iBuffer.getmaxx();
                 
-                newwindowflag = save_new_status;
+                
+                UIData.newwindowflag = save_new_status;
                 
                 // reset the binning settings
                 //header[NCHAN] = header[NCHAN] * bx;
@@ -1273,7 +1280,7 @@ int gige(int n, char* args)
             
             //have_max = 0;
             //maxx();
-            newwindowflag = save_new_status;
+            UIData.newwindowflag = save_new_status;
             
             //closefile();
             fclose(timeFile);
