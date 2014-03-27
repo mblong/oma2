@@ -74,6 +74,9 @@ ComDef   commands[] =    {
     {{"GRADIENT       "},	gradient_c},
     {{"GREY2RGB       "},	grey2rgb_c},
     {{"GSMOOTH        "},	gsmooth_c},
+#ifdef GIGE_
+    {{"GIGE           "},	gige},
+#endif
     {{"HELP           "},	help},
     {{"IF             "},	ifcmnd},
     {{"INVERT         "},	invert_c},
