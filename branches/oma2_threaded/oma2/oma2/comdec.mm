@@ -23,6 +23,9 @@ ComDef   commands[] =    {
     {{"ACDELETE       "},   acdelete_c},
     {{"ACADD          "},   acadd_c},
     {{"ACGET          "},   acget_c},
+#ifdef ANDOR_
+    {{"ANDOR          "},   andor},
+#endif
     {{"BLOCK          "},	block_g},
     {{"BIT8           "},	bit8_c},
     {{"BIT16          "},	bit16_c},
@@ -121,6 +124,10 @@ ComDef   commands[] =    {
     {{"SAVSETTINGS    "},	savsettings},
     {{"SATIFF         "},	satiff_c},
     {{"SATIFFSCALED   "},	satiffscaled_c},
+#ifdef SERIAL_PORT
+    {{"SERIAL         "},	serial},
+    {{"SERCLOSE       "},	serclo},
+#endif
     {{"SIZE           "},	size_c},
     {{"SINGRID        "},	sinGrid_c},
     {{"STEMPIMAGE     "},	stemp_c},

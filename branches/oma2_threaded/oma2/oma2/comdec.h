@@ -20,7 +20,9 @@
 #import "CommandView.h"
 #endif
 
-
+#ifdef ANDOR_
+int andor(int, char*);
+#endif
 
 
 // function prototypes for routines in comdec.cpp
