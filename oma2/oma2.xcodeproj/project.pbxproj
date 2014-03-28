@@ -37,6 +37,7 @@
 		DB2BC300151930D7009D9AED /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
 		DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
 		DB371F7918469FE400265D79 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
+		DB3E355D18E6030300381607 /* serial.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB3E355C18E6030300381607 /* serial.mm */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
 		DB53F51817FA1D6500A12259 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB53F51717FA1D6500A12259 /* libjpeg.a */; };
@@ -197,6 +198,7 @@
 		DB2BC302151933C9009D9AED /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
 		DB2BC303151933C9009D9AED /* PreferenceController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PreferenceController.mm; sourceTree = "<group>"; };
 		DB2E76B8152611BD004B6502 /* ImageBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBitmap.h; sourceTree = "<group>"; };
+		DB3E355C18E6030300381607 /* serial.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = serial.mm; sourceTree = "<group>"; };
 		DB4329B417EF13E900A51802 /* gluedCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gluedCommands.h; sourceTree = "<group>"; };
 		DB4329B517EF13E900A51802 /* gluedCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gluedCommands.mm; sourceTree = "<group>"; };
 		DB4E036D1835272400250EA4 /* dofft.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dofft.mm; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 				DBBCFA2718E33E5400FEE3F6 /* ImageLib.h */,
 				DBBCFA2818E33E5400FEE3F6 /* PvApi.h */,
 				DB02914918E46C1F00F497FB /* cameraSelector.h */,
+				DB3E355C18E6030300381607 /* serial.mm */,
 			);
 			name = "Hardware Related";
 			sourceTree = "<group>";
@@ -632,6 +635,7 @@
 				DB8A884718E3297E007C79AF /* DrawingWindowController.mm in Sources */,
 				DB8A884818E3297E007C79AF /* StatusController.mm in Sources */,
 				DB8A884918E3297E007C79AF /* AppController.mm in Sources */,
+				DB3E355D18E6030300381607 /* serial.mm in Sources */,
 				DB8A884A18E3297E007C79AF /* PreferenceController.mm in Sources */,
 				DB8A884B18E3297E007C79AF /* comdec.mm in Sources */,
 				DB8A884C18E3297E007C79AF /* commands_1.mm in Sources */,

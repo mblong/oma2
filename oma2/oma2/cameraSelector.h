@@ -12,6 +12,7 @@
 // select cameras here
 
 #define GIGE_
+#define SERIAL_PORT
 
 // end of camera selection section
 
@@ -21,5 +22,12 @@
 int gige(int, char*);
 // end of GigE definitions
 #endif
+
+#ifdef SERIAL_PORT
+int serial(int, char*);
+int serclo(int, char*);
+int open_serial_port(char* dev_name);
+#endif
+
 
 #endif
