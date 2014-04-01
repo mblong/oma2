@@ -26,6 +26,7 @@ ComDef   commands[] =    {
 #ifdef ANDOR_
     {{"ANDOR          "},   andor},
 #endif
+    
     {{"BLOCK          "},	block_g},
     {{"BIT8           "},	bit8_c},
     {{"BIT16          "},	bit16_c},
@@ -43,6 +44,10 @@ ComDef   commands[] =    {
     {{"CYL2           "},	cyl2_g},
     {{"CMINMX         "},	setcminmax_c},
     {{"CLEARBADPIX    "},	clearbad_c},
+    {{"CREATEFILE     "},	createfile_c},
+    {{"CONCATFILE     "},	concatfile_c},
+    {{"CLOSEFILE      "},	closefile_c},
+
     {{"DISPLAY        "},	display},
     {{"DMACRO         "},	defmac},
     {{"DMNMX          "},	dmnmx},
@@ -52,10 +57,12 @@ ComDef   commands[] =    {
     {{"DIFFY          "},	diffy_c},
     {{"DCRAWARGS      "},	dcrawarg_c},
     {{"DELAY          "},	delay_c},
+        
     {{"ERASE          "},	erase},
     {{"ENDIF          "},	endifcmnd},
     {{"ECHO           "},	echo_c},
     {{"EXECUTE        "},	execut},
+        
     {{"FLOATVARIABLE  "},	vfloat},
     {{"FCLOSE         "},	fclose_c},
     {{"FECHO          "},	fecho_c},
@@ -66,6 +73,7 @@ ComDef   commands[] =    {
     {{"FOLD           "},	fold_g},
     {{"FINDBADPIX     "},	findbad_c},
     {{"FWDATMATLAB    "},	fwdatm_c},
+        
     {{"GET            "},	getfile_c},
     {{"GETRGB         "},	getfile_c},
     {{"GETFILENAMES   "},	getFileNames_c},
@@ -77,17 +85,22 @@ ComDef   commands[] =    {
     {{"GRADIENT       "},	gradient_c},
     {{"GREY2RGB       "},	grey2rgb_c},
     {{"GSMOOTH        "},	gsmooth_c},
+    {{"GETNEXT        "},	getNext_c},
 #ifdef GIGE_
     {{"GIGE           "},	gige},
 #endif
+        
     {{"HELP           "},	help},
+        
     {{"IF             "},	ifcmnd},
     {{"INVERT         "},	invert_c},
     {{"INTEGRATE      "},	integrate_c},
     {{"INTFILL        "},	intfill_c},
     {{"INTVARIABLE    "},	vint},
+        
     {{"KILLBOX        "},	killBox_c},
     {{"KWABEL         "},	kwabel_g},
+        
     {{"LIST           "},	list_c},
     {{"LOG           "},	logg},
     {{"LMACRO         "},	lmacro},
@@ -98,13 +111,18 @@ ComDef   commands[] =    {
     {{"LTEMPIMAGE     "},	ltemp_c},
     {{"LOOKUP         "},	lookup_c},
     {{"LN             "},	ln_c},
+        
     {{"MACRO          "},	macro},
     {{"MAKNEW         "},	resize_c},
     {{"MIRROR         "},	mirror_c},
     {{"MULFILE        "},	mulfile_c},
     {{"MULTMPIMAGE    "},	multmp_c},
+        
     {{"NEWWINDOW      "},	newWindow_c},
     {{"NEXTFILE       "},	nextFile_c},
+        
+    {{"OPENFILE       "},	openfile_c},
+        
     {{"PALETTE        "},	palette_c},
     {{"POSITIVE       "},	positive_c},
     {{"PAUSE          "},	imp_pause},
