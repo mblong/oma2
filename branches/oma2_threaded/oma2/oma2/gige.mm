@@ -32,7 +32,7 @@
 #define _OSX
 #define _x86
 
-#include "gluedCommands.h"
+//#include "gluedCommands.h"
 
 //#define tPvUint32 unsigned int
 
@@ -126,19 +126,14 @@ bool CameraGet(tCamera* Camera)
 bool CameraSetup(tCamera* Camera)
 {
     bool result;
-    
     result = PvCameraOpen(Camera->UID,ePvAccessMaster,&(Camera->Handle));
-    
     return !result; 
 }
 
 // setup and start streaming continuous mode
 bool CameraStart_preview(tCamera* Camera, int* time)
-
 {
-    //extern TWOBYTE 	header[];
     unsigned long FrameSize = 0;
-    extern char txt[],cmnd[];
     char pixelformat[256];
     
     // Auto adjust the packet size to max supported by the network, up to a max of 8228.
@@ -261,11 +256,8 @@ bool CameraStart_preview(tCamera* Camera, int* time)
 
 // setup and start streaming continuous mode
 bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate, int* gain, int* trigger, int *triggerDelay, int *binx, int* biny)
-
 {
-    //extern TWOBYTE 	header[];
     unsigned long FrameSize = 0;
-    extern char txt[],cmnd[];
     char pixelformat[256];
     
     // Auto adjust the packet size to max supported by the network, up to a max of 8228.
@@ -383,8 +375,6 @@ bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate,
     }
      */
     
-    
-    
 	// allocate the buffer for the frames we need
     Camera->Frame->Context[0]  = Camera;
     Camera->Frame->ImageBuffer = malloc(FrameSize);
@@ -468,13 +458,10 @@ bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate,
 
 // setup and start streaming MULTIFRAME MODE
 bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain, int* trigger, int *triggerDelay, int *binx, int* biny)
-
 {
-    //extern TWOBYTE 	header[];
     unsigned long FrameSize = 0;
     unsigned long strcap = 0;
     unsigned long strbyte = 0;
-    extern char txt[],cmnd[];
     char pixelformat[256];
     
     // Auto adjust the packet size to max supported by the network, up to a max of 8228.
@@ -749,21 +736,17 @@ bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain,
 }
 
 // snap and save a frame from the camera
-void CameraSnap(tCamera* Camera, int* time, int *fcount, int* frate, int* label, int* trigger, int *binx, int *biny, int* sav, char* savestr)
+void CameraSnap(tCamera* Camera, int* time_, int *fcount, int* frate, int* label, int* trigger, int *binx, int *biny, int* sav, char* savestr)
 {
     int i,j;
     short *ptr;
-    
-    //DateTimeRec datetime;
-    
-    
     
     unsigned long Tfreq;
     unsigned long T_hi;
     unsigned long T_lo;
     double tempo;
-    //int nt,nc;
-    //FILE *fp;
+    int nt,nc;
+    FILE *fp;
    /*
     GetTime(&datetime);
     int month = datetime.month;
@@ -774,10 +757,16 @@ void CameraSnap(tCamera* Camera, int* time, int *fcount, int* frate, int* label,
     float second = datetime.second;
     int secondo = second;
     */
+    time_t rawtime;
+    struct tm * timeinfo;
+    time (&rawtime);
+    timeinfo = localtime (&rawtime);
+    //printf ("Current local time and date: %s", asctime(timeinfo));
+
     double tempo_pr = 0;
     
-    //char strin[256];
-    //char ora[256];
+    char strin[256];
+    char ora[256];
     
     PvCommandRun(Camera->Handle,"TimeStampReset");
     PvAttrUint32Get(Camera->Handle,"TimeStampFrequency",&Tfreq);
@@ -798,7 +787,7 @@ void CameraSnap(tCamera* Camera, int* time, int *fcount, int* frate, int* label,
                     for(int k=0;k<specs[COLS]; k++)
                         iBuffer.setpix(i,k,*(ptr++));
                 }
-                //dquartz(0,0);
+                display(0,(char*)"GigE");
                 
                 //If the camera crashes, try to remove the timestamp calculation.
                 
@@ -807,68 +796,41 @@ void CameraSnap(tCamera* Camera, int* time, int *fcount, int* frate, int* label,
                 PvAttrUint32Get(Camera->Handle,"TimeStampValueLo",&T_lo);
                 
                 tempo = (T_hi*4294967296. + T_lo) / Tfreq;  
-                //float fratec = 1./(tempo - tempo_pr);
+                float fratec = 1./(tempo - tempo_pr);
                 tempo_pr = tempo;
                 
                 if(*label == 1){
-                    /*
+                    
                     char buffer[100];
                     if (*trigger == 0){
-                        sprintf(buffer,"%2d/%2d/%2d  %2d:%2d:%.4f  (Frame %d/%d - %d fps - exp. %d µs) ",
-                            month, day, year, hour, minute, (secondo + tempo), j+1, *fcount, *frate, *time);
+                        sprintf(buffer,"%s  (Frame %d/%d - %d fps - exp. %d µs) ",
+                            asctime(timeinfo), j+1, *fcount, *frate, *time_);
                     } else if (*trigger == 1){
-                        sprintf(buffer,"%2d/%2d/%2d  %2d:%2d:%.4f  (Frame %d/%d - %.1f fps - exp. %d µs) ",
-                                month, day, year, hour, minute, (secondo + tempo), j+1, *fcount, fratec, *time);
+                        sprintf(buffer,"%s  (Frame %d/%d - %.1f fps - exp. %d µs) ",
+                                asctime(timeinfo), j+1, *fcount, fratec, *time_);
                     }
-                    WindowPtr theActiveWindow;
-                    CGContextRef	myContext;
-                    OSErr err;
-                    char txt[100];
-                    //theActiveWindow = FrontWindow();
-                    extern int gwind_no;
-                    //extern OMA_Window oma_wind[];
-                    
-                    //gwind_no = activegwnum(theActiveWindow);
-                    
-                    err = QDBeginCGContext(GetWindowPort(theActiveWindow), &myContext);
-                    CGContextBeginPath (myContext);
-                    CGContextSelectFont (myContext,"Helvetica",15,kCGEncodingMacRoman);
-                    CGContextSetTextDrawingMode (myContext,kCGTextFillStroke);
-                    CGContextSetRGBFillColor (myContext, 1, 1, 1, 1);
-                    CGContextSetLineWidth (myContext, .3);
-                    sprintf(txt,"%s",buffer);
-                    CGContextShowTextAtPoint(myContext,10,10,txt,strlen(txt));
-                    CGContextFlush(myContext);
-                    QDEndCGContext (GetWindowPort(theActiveWindow), &myContext);
-                    
-                    second = second + 1./ *frate;
-                     */
-                }
+                    labelData(0,buffer);
+                 }
                 
-                /*
                 if(*sav == 1){
                     
                     strcpy(strin,savestr);
-                    sprintf(ora,"_%d_%d_%.4f",hour, minute, (secondo + tempo));
+                    sprintf(ora,"%s",asctime(timeinfo));
                     strcat(strin,ora);
                     
                     fp = fopen(fullname(strin,SAVE_DATA),"w");
                     if( fp != NULL) {
                         i=0;
-                        for(nt=0; nt<header[NTRAK]; nt++){
-                            for(nc=0; nc<header[NCHAN]; nc++){
-#ifdef FLOAT
-                                fprintf(fp,"%gain\t",(*(datpt+i++)));
-#else
-                                fprintf(fp,"%d\t",(*(datpt+i++)));
-#endif
+                        for(nt=0; nt<iBuffer.height(); nt++){
+                            for(nc=0; nc<iBuffer.width(); nc++){
+
+                                fprintf(fp,"%g\t",iBuffer.getpix(nt,nc));
                             }
                             fprintf(fp,"\n");
                         }
                         fclose(fp);
                     }
                 }
-                 */
             }
 			//pattern on the GC1380CH is Red Green Green Blue
             else{
@@ -962,7 +924,7 @@ int gige(int n, char* args)
     int save_new_status;
     
     
-    static int time = 10000;    // default exposure time in us
+    static int exptime = 10000;    // default exposure time in us
     static int numFrames = 1;         // default number of frame 
     static int frameRate = 1;           // default framerate in fps
     static int gain = 0;           // default gain in db
@@ -1025,10 +987,10 @@ int gige(int n, char* args)
 	}
     
     if( strncmp(args,"exposure",3) == 0){
-		sscanf(args,"%s %d",txt, &time);
-		if( time <= 10) time = 10;
-        if( time > 60000000) time = 60000000;
-        printf(" Exposure set to %d us\n",time);
+		sscanf(args,"%s %d",txt, &exptime);
+		if( exptime <= 10) exptime = 10;
+        if( exptime > 60000000) exptime = 60000000;
+        printf(" Exposure set to %d us\n",exptime);
     }
     else if ( strncmp(args,"gain",3) == 0){
         sscanf(args,"%s %d",txt, &gain);
@@ -1116,7 +1078,7 @@ int gige(int n, char* args)
         PvAttrUint32Get(Camera.Handle,"SensorWidth",&pixwidth);
         PvAttrUint32Get(Camera.Handle,"SensorHeight",&pixheight);
         printf("\tSensor dimension: %d x %d pixels \n",pixwidth,pixheight);
-        printf("\tExposure time: %d us\n",time);
+        printf("\tExposure time: %d us\n",exptime);
         printf("\tGain value: %d\n",gain);
         printf("\tFrame number: %d\n",numFrames);
         if (trigger == 0)   printf("\tFrame rate: %d fps.\n",frameRate);
@@ -1142,7 +1104,7 @@ int gige(int n, char* args)
         // continuous acquisition mode
         if(preview){
             
-            if(CameraStart_preview(&Camera,&time)){
+            if(CameraStart_preview(&Camera,&exptime)){
                 for(int i=0; i< numPreviews; i++){
                     // snap now
                     CameraSnap_preview(&Camera);
@@ -1174,14 +1136,11 @@ int gige(int n, char* args)
             // multiframe acquisition mode
         } else {
             
-            
-            //newwindowflag = 1;    // let the user set this -- don't force it -mbl
-            UIData.newwindowflag = 1;
             // set the camera attributes
-            if(CameraStart(&Camera,&time,&numFrames,&frameRate,&gain,&trigger,&triggerDelay,&bx,&by)){
+            if(CameraStart(&Camera,&exptime,&numFrames,&frameRate,&gain,&trigger,&triggerDelay,&bx,&by)){
                 
                 // snap now
-                CameraSnap(&Camera,&time,&numFrames,&frameRate,&label,&trigger,&bx,&by,&sav,savestr);
+                CameraSnap(&Camera,&exptime,&numFrames,&frameRate,&label,&trigger,&bx,&by,&sav,savestr);
                 //checkevents();
                 iBuffer.getmaxx();
                 display(0,(char*)"GigE");
@@ -1189,8 +1148,6 @@ int gige(int n, char* args)
                 // stop the streaming
                 CameraStop(&Camera);
                 CameraUnsetup(&Camera, &numFrames);
-                
-                
                 
                 UIData.newwindowflag = save_new_status;
                 
@@ -1207,27 +1164,23 @@ int gige(int n, char* args)
             CameraUnsetup(&Camera, &numFrames);
             
             return -1;
-            
         } 
     }
 
     if ( strncmp(args,"sframes",3) == 0){
 
-        DateTimeRec datetime;
-        //GetTime(&datetime);
-        int month = datetime.month;
-        int day = datetime.day;
-        int year = datetime.year%100;
-        int hour = datetime.hour;
-        int minute = datetime.minute;
-        float second = datetime.second;
-        int secondo = second;
         double tempo_pr = 0;
         unsigned long Tfreq;
         unsigned long T_hi;
         unsigned long T_lo;
         double tempo;
         FILE* timeFile = NULL;
+        time_t rawtime;
+        struct tm * timeinfo;
+        
+        time (&rawtime);
+        timeinfo = localtime (&rawtime);
+
         
         char timeFileName[256];
         int sFrames = 1;
@@ -1239,18 +1192,19 @@ int gige(int n, char* args)
         strcpy(args, savestr);
         strcpy(timeFileName, savestr);
         strcat(timeFileName, "_times.txt");
-        //createfile(0,0);
+        createfile_c(0,0);
         timeFile = fopen(fullname(timeFileName,RAW_DATA),"w");
 
         // continuous acquisition mode
-        if(CameraStart_continuous(&Camera,&time,&numFrames,&frameRate,&gain,&trigger,&triggerDelay,&bx,&by)){
+        if(CameraStart_continuous(&Camera,&exptime,&numFrames,&frameRate,&gain,&trigger,&triggerDelay,&bx,&by)){
             PvAttrUint32Get(Camera.Handle,"TimeStampFrequency",&Tfreq);
             for(int i=0; i< sFrames; i++){
                 // snap now
                 CameraSnap_preview(&Camera);
                 
+                display(0,(char*)"GigE");
                 //dquartz(0,0);
-                //concatfile();
+                concatfile_c(0,0);
                 
                 PvCommandRun(Camera.Handle,"TimeStampValueLatch");
                 PvAttrUint32Get(Camera.Handle,"TimeStampValueHi",&T_hi);
@@ -1262,11 +1216,11 @@ int gige(int n, char* args)
                 tempo_pr = tempo;
                 
                 if (trigger == 0){
-                    fprintf(timeFile,"%2d/%2d/%2d\t%2d\t%2d\t%.4f\tFrame %d/%d\t%d\tfps\texp.\t%d\tus\n ",
-                            month, day, year, hour, minute, (secondo + tempo), i+1, sFrames, frameRate, time);
+                    fprintf(timeFile,"%s\tFrame %d/%d\t%d\tfps\texp.\t%d\tus\n ",
+                            asctime(timeinfo), i+1, sFrames, frameRate, exptime);
                 } else if (trigger == 1){
-                    fprintf(timeFile,"%2d/%2d/%2d\t%2d\t%2d\t%.4f\tFrame %d/%d\t%f\tfps\texp.\t%d\tus\n ",
-                            month, day, year, hour, minute, (secondo + tempo), i+1, sFrames, fratec, time);
+                    fprintf(timeFile,"%s\tFrame %d/%d\t%f\tfps\texp.\t%d\tus\n ",
+                            asctime(timeinfo), i+1, sFrames, fratec, exptime);
                 }
 
                 
@@ -1278,11 +1232,10 @@ int gige(int n, char* args)
             PvCaptureEnd(Camera.Handle);
             CameraUnsetup(&Camera, &continuousFrames);
             
-            //have_max = 0;
-            //maxx();
+            iBuffer.getmaxx();
             UIData.newwindowflag = save_new_status;
             
-            //closefile();
+            closefile_c(0,0);
             fclose(timeFile);
             return 0;
             

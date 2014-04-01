@@ -102,7 +102,7 @@ name of the units. Occupies trailer[5] to trailer[12] */
 #define OMA_OK 0
 #define OMA_FILE -1
 
-enum  {SHORT_NAME,LONG_NAME,HAS_SUFFIX};
+enum  {SHORT_NAME,LONG_NAME,HAS_SUFFIX,LEAVE_OPEN,IS_OPEN};
 
 #define DCRAW_ARG "dcraw -v -4 -o 0 -h -r 1 1 1 1"
 

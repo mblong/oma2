@@ -368,10 +368,10 @@
 		DB42231218E3273900FA48D6 /* Hardware Related */ = {
 			isa = PBXGroup;
 			children = (
+				DB02914918E46C1F00F497FB /* cameraSelector.h */,
 				DBBCFA2518E33D8600FEE3F6 /* gige.mm */,
 				DBBCFA2718E33E5400FEE3F6 /* ImageLib.h */,
 				DBBCFA2818E33E5400FEE3F6 /* PvApi.h */,
-				DB02914918E46C1F00F497FB /* cameraSelector.h */,
 				DB3E355C18E6030300381607 /* serial.mm */,
 			);
 			name = "Hardware Related";

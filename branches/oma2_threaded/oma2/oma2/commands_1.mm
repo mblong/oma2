@@ -891,116 +891,6 @@ int tsmooth_c(int n, char* args)
     return NO_ERR;
 }
 
-
-
-
-/* ********** */
-/*
-int
-gsmooth2(int n, int index)
-//  Gaussian Smoothing of the Data
-// GSMOOT NX [NY]
-// sigma_x = (NX-1)/6.0
-{
-	DATAWORD *datp,*datp2;
-	extern int	doffset;
-	DATAWORD idat(int,int);
-	
-	int dx,dy,dxs,dys,i,j,m,size,nt,nc;
-	float sigx,sigy,*mask,norm,sum;
-	
-	mask = 0;
-    
-	if(n <= 0) n = 3;
-	
-	dx = dy = n;	// the smoothing amounts
-	
-	// Check to see if there was a second argument
-	for ( i = index; cmnd[i] != EOL; i++) {
-		if(cmnd[i] == ' ') {
-			sscanf(&cmnd[index],"%d %d",&dx,&dy);
-			break;
-		}
-	}
-	if (dx/2 == dx/2.0) {
-		beep();
-		printf("THE X SIZE OF THE REGION MUST BE ODD!\n");
-		
-		return -1;
-	}
-	if (dy/2 == dy/2.0) {
-		printf("THE Y SIZE OF THE REGION MUST BE ODD!\n");
-		beep();
-		return -1;
-	}
-    
-	size = (header[NCHAN] * specs[ROWS] + MAXDOFFSET) * DATABYTES;
-	size = (size+511)/512*512;	// make a bit bigger for file reads
-    
-	datp2 = datp = malloc(size);
-	if(datp == 0) {
-		nomemory();
-		return -1;
-	}
-	
-	norm = 0;
-    
-	dx = (dx-1)/2;
-	dxs = -dx;
-	sigx = dx/3.0;
-    
-	dy = (dy-1)/2;
-	dys = -dy;
-	sigy = dy/3.0;
-	printf("Sigx=%5.2f, Sigy=%5.2f, ",sigx,sigy);
-	printf("pixels=%d x %d\n",dx*2+1,dy*2+1);
-	
-	if ( sigy == 0 ) sigy = 1;
-	if ( sigx == 0 ) sigx = 1;
-	
-	if(dx == 0 && dy == 0) return(0);	// The 1 x 1 smoothing case
-    
-	// Set loop limit so only have to do "<", not "<="
-	dx=dx+1;
-	dy=dy+1;
-    
-	mask = (float*) malloc((dx-dxs) * (dy-dys) * sizeof(float));
-	norm = 0;
-	for(i=dxs; i<dx; i++) {
-		for(j=dys; j<dy; j++) {
-			m=(j - dys)*(dx - dxs) + (i - dxs);
-			mask[m]=exp(-(i*i/(sigx*sigx)+j*j/(sigy*sigy))/2);
-			norm += mask[m];
-		}
-	}
-	
-	
-	for(nc=0; nc<doffset; nc++)
-		*(datp++) = *(datpt+nc);	// copy the CCD header
-	for(nt=0; nt<header[NTRAK]; nt++) {
-		for(nc=0; nc<header[NCHAN];nc++){
-			sum = 0;
-			
-			for(i=dxs; i<dx; i++) {
-				for(j=dys; j<dy; j++) {
-					m = (j - dys)*(dx - dxs) + (i - dxs);
-					
-					sum += idat(nt+j,nc+i)*mask[m];
-				}
-			}
-			*(datp++) = sum/norm;
-		}
-	}
-	if(mask!=0) {free(mask); mask = 0;}
-	free(datpt);
-	datpt = datp2;
-	have_max = 0;
-	maxx();
-	setarrow();	
-	return 0;
-}
- */
-
 /* ********** */
 
 int diffy_c(int n,char* args )				/* differentiate the data in the y direction  -- central difference */
@@ -2426,7 +2316,7 @@ int writebad_c(int n, char* args)			/* read bad pixel data */
  there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands.
  
  readbad /volumes/in/impx-s/sbig/sbig_bad_pix
- 
+
  */
 
 int clearbad_c(int n, char* args)
@@ -2466,10 +2356,7 @@ int clearbad_c(int n, char* args)
  pairs are float with x followed by f(x) on the same line
  x values are ordered smallest to largest
  y = f(x) is single valued
- 
- 
  */
-
 
 float* xptr[10] = {0*10};		// have a maximum of 10 functions
 float* yptr[10] = {0*10};
@@ -2739,6 +2626,8 @@ int acget_c(int n,char* args){
     return iBuffer.err();
 }
 
+/* ********** */
+
 /*
  INTEGRATE direction_flag selection_box do_average
  
@@ -2752,7 +2641,6 @@ int acget_c(int n,char* args){
  do_average = 0		just sum, don't average
  
  */
-
 
 int integrateFill(int n,char* args, int integratefill ){
 	float	sum;
@@ -2911,13 +2799,19 @@ int integrateFill(int n,char* args, int integratefill ){
     return iBuffer.err();
 }
 
+/* ********** */
+
 int integrate_c(int n,char* args){
     return integrateFill(n,args, false );
 }
 
+/* ********** */
+
 int intfill_c(int n,char* args){
     return integrateFill(n,args, true );
 }
+
+/* ********** */
 
 int ln_c(int n,char* args){
     for(int nt=0; nt<iBuffer.rows(); nt++) {
@@ -2930,6 +2824,93 @@ int ln_c(int n,char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
+int 	bigfile_fd;
+int 	bigfile_open = 0;
+char 	bigfile_name[CHPERLN] = {0};
+
+int createfile_c(int n,char* args)
+{
+	//strcpy(lastname,args);		// save a copy of the short name for labeling graphics windows 
+	//bigfile_fd = creat(fullname(args,SAVE_DATA),PMODE);
+    bigfile_fd = open(fullname(args,SAVE_DATA),WMODE);
+	strcpy(bigfile_name,args);
+    iBuffer.saveFile((char*)&bigfile_fd,LEAVE_OPEN);
+	bigfile_open = 1;
+	return iBuffer.err();
+}
+/* ********** */
+
+int concatfile_c(int n,char* args)
+{
+	if( bigfile_open == 0) {
+		beep();
+		printf("Use CREATE to Specify a File First.\n");
+		return FILE_ERR;
+	}
+    iBuffer.saveFile((char*)&bigfile_fd,IS_OPEN);
+    return iBuffer.err();
+}
+
+/* ********** */
+
+int closefile_c(int n,char* args)
+{
+    close(bigfile_fd);
+	bigfile_open = 0;
+	//setdata(bigfile_name);
+	//fileflush(bigfile_name);	/* for updating directory */
+	printf("File %s Closed.\n",bigfile_name);
+	return NO_ERR;
+    
+}
+
+/* ********** */
+
+int	fileIsOpen = 0;
+int openFileFd = -1;
 
 
+int openfile_c(int n,char* args){
+    Image new_im(args,LEAVE_OPEN);
+    if(new_im.err()){
+        beep();
+        printf("Could not load %s\n",args);
+        return new_im.err();
+    }
+    fileIsOpen = 1;
+    iBuffer.free();     // release the old data
+    iBuffer = new_im;   // this is the new data
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
+int getNext_c(int n,char* args)
+{
+    if (!fileIsOpen) {
+        beep();
+        printf("No file has been opend. Use the OPENFILE command.\n");
+        return FILE_ERR;
+
+    }
+    Image new_im((char*)&openFileFd,IS_OPEN);
+    if(new_im.err()){
+        beep();
+        printf("Could not load another image.\n");
+        fileIsOpen = 0;
+        close(openFileFd);
+        openFileFd= -1;
+        return new_im.err();
+    }
+    iBuffer.free();     // release the old data
+    iBuffer = new_im;   // this is the new data
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+	return 0;
+}
+
+/* ********** */
 
