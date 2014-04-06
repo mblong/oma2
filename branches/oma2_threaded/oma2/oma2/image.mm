@@ -251,6 +251,7 @@ Image::Image(char* filename, int kindOfName)
         fclose(f);
         if (roundf((float)nbyte/size) == 2.) {
             dataSize = 2;
+            nbyte = specs[ROWS]*specs[COLS]*dataSize;
         }
     }
     // in the unlikely event that an old oma file has fewer than doffset points
@@ -503,7 +504,10 @@ void Image::getmaxx()
     
     //if( specs[HAVE_MAX] == 1)return;      // Disable for now. May want to add an argument to this to look at the
                                             // flag or not.
-    
+    if(data == NULL){
+        error = MEM_ERR;
+        return;
+    }
     mydatpt = data;
     locmin = locmax = mydatpt;
     locrmin = locrmax = locgmin = locgmax = locbmin = locbmax = mydatpt;
