@@ -47,6 +47,18 @@ extern oma2UIData UIData;
     
     theCommands.automaticQuoteSubstitutionEnabled = NO;
     theCommands.enabledTextCheckingTypes = 0;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidBecomeKey:) name:NSWindowDidBecomeKeyNotification object:[self theWindow]];
+
+    
+}
+-(void) windowDidBecomeKey:(NSNotification *)note
+
+{
+    
+    // come here when command window becomes key
+    //NSLog(@"became key");
+    
 }
 
 - (IBAction)showPrefs:(id)sender{
@@ -676,6 +688,10 @@ extern oma2UIData UIData;
     [[NSWorkspace sharedWorkspace] openURL:theURL];
     
     NSLog(@"help!");
+}
+
+- (void) NSWindowDidBecomeKeyNotification :(NSEvent *)anEvent{
+    [[appController theWindow] sendEvent: anEvent];
 }
 
 

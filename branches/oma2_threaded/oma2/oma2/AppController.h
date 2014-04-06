@@ -72,7 +72,7 @@ int comdec(char*);
 -(void) dataWindowClosing;
 -(void) updateDataWindow;
 
-
+-(void) windowDidBecomeKey:(NSNotification *)note;
 
 @end
 
