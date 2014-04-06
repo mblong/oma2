@@ -24,8 +24,8 @@ int readJpeg(char* filename,Image* im)
     int bytesPerRow = (int)[imageRep bytesPerRow];
     unsigned char* bytes = [imageRep bitmapData];
     
-    int cols = im->specs[COLS] = nsim.size.width;
-    int rows = im->specs[ROWS] = nsim.size.height;
+    int cols = im->specs[COLS] = (int)imageRep.pixelsWide;
+    int rows = im->specs[ROWS] = (int)imageRep.pixelsHigh;
 
     if(bytesPerPixel == 3){
         im->specs[IS_COLOR] = 1;
@@ -53,7 +53,6 @@ int readJpeg(char* filename,Image* im)
         }
     }
     return NO_ERR;
-
 }
 /*
  from the web

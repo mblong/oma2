@@ -43,6 +43,7 @@ extern AppController* appController;
     //windowRect.size.width,windowRect.size.height);
 }
 
+
 - (void)dealloc
 {
     // more needed here
