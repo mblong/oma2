@@ -99,9 +99,11 @@ Image::Image(char* filename, int kindOfName)
     if (strncmp(&filename[strlen(filename)-4],".jpg",4) == 0 ||
         strncmp(&filename[strlen(filename)-4],".JPG",4) == 0) {
         if (kindOfName == LONG_NAME) {
-            error = read_jpeg(filename,-1,this);
+            //error = read_jpeg(filename,-1,this);
+            error = readJpeg(filename,this);
         } else {
-            error = read_jpeg(fullname(filename,RAW_DATA),-1,this);
+            //error = read_jpeg(fullname(filename,RAW_DATA),-1,this);
+            error = readJpeg(fullname(filename,RAW_DATA),this);
         }
         
         return;
