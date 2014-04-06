@@ -950,6 +950,25 @@ int gige(int n, char* args)
     //int createfile(int n,int index);
     //int closefile();
     //int concatfile();
+    if ( strncmp(args,"help",3) == 0){
+        printf("Available Commands:\n");
+        printf("  ACQuire \n");
+        printf("  EXPosure <exposureTime> (in microseconds)\n");
+        printf("  GAIn <gain> (0 or 33)\n");
+        printf("  NUMber <numberOfFrames> (to be acquired; default is 1)\n");
+        printf("  RATe <frameRate> \n");
+        printf("  LABON (label frames) \n");
+        printf("  LABOFf (don't label frames) \n");
+        printf("  PREview <numberFrames> (show preview for specified number of frames) \n");
+        printf("  EXTernal (set external triggering) \n");
+        printf("  INTernal (set internal triggering) \n");
+        printf("  DELay <triggerDelay> (set the trigger delay [microseconds]\n");
+        printf("  SAVe <filename> (enable save mode; filename will store all frames\n");
+        printf("  ENDSave (disable save mode\n");
+        printf("  STAtus (print camera settings\n");
+        return NO_ERR;
+        
+    }
     
     if(!GigEinitialized){
 		
@@ -1192,7 +1211,7 @@ int gige(int n, char* args)
         strcpy(args, savestr);
         strcpy(timeFileName, savestr);
         strcat(timeFileName, "_times.txt");
-        createfile_c(0,0);
+        createfile_c(0,args);
         timeFile = fopen(fullname(timeFileName,RAW_DATA),"w");
 
         // continuous acquisition mode
