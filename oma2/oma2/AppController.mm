@@ -518,6 +518,7 @@ extern oma2UIData UIData;
 -(void) showDataWindow: (char*) windowname{
     // come here from the DISPLAY command
     //extern int newWindowFlag;
+    extern float windowScaleFactor;
     
     if (!UIData.newwindowflag && [windowArray count]) {    // put the current bitmap in the last window if there is one
         [[windowArray lastObject] updateImage];
@@ -534,8 +535,8 @@ extern oma2UIData UIData;
     // window_placement needs to have the right position and size
     
     // this is for possibly scaling down images that won't fit on screen
-    int windowHeight = iBitmap.getheight();
-    int windowWidth = iBitmap.getwidth();
+    int windowHeight = iBitmap.getheight()*windowScaleFactor;
+    int windowWidth = iBitmap.getwidth()*windowScaleFactor;
     float scaleWidth = (float)windowWidth/(float)screenRect.size.width;
     // leave a little space at the bottom of the sreen
     float scaleHeight = (float)windowHeight/(float)(screenRect.size.height-2*TITLEBAR_HEIGHT);

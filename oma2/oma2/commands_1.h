@@ -96,6 +96,7 @@ int nextFile_c(int,char*);
 
 int openfile_c(int,char*);
 
+int pixSize_c(int,char*);
 int palette_c(int,char*);
 int plus_c(int,char*);
 int power_c(int,char*);
