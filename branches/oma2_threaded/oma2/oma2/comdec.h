@@ -24,6 +24,10 @@
 int andor(int, char*);
 #endif
 
+#ifdef SBIG
+int sbig(int,char*);
+#endif
+
 
 // function prototypes for routines in comdec.cpp
 
