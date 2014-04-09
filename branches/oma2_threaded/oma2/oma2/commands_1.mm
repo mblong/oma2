@@ -2887,6 +2887,8 @@ int openfile_c(int n,char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
 int getNext_c(int n,char* args)
 {
     if (!fileIsOpen) {
@@ -2909,7 +2911,57 @@ int getNext_c(int n,char* args)
     iBuffer.getmaxx();
     update_UI();
     return NO_ERR;
-	return 0;
+}
+
+/* ********** */
+
+int dx_c(int n,char* args)
+{
+    if(n < 1) n = 1;
+    int* specs = iBuffer.getspecs();
+    specs[DX] = n;
+    iBuffer.setspecs(specs);
+    free(specs);
+    update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
+
+int dy_c(int n,char* args)
+{
+    if(n < 1) n = 1;
+    int* specs = iBuffer.getspecs();
+    specs[DY] = n;
+    iBuffer.setspecs(specs);
+    free(specs);
+    update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
+
+int x0_c(int n,char* args)
+{
+    if(n < 0) n = 0;
+    int* specs = iBuffer.getspecs();
+    specs[X0] = n;
+    iBuffer.setspecs(specs);
+    free(specs);
+    update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
+int y0_c(int n,char* args)
+{
+    if(n < 0) n = 0;
+    int* specs = iBuffer.getspecs();
+    specs[Y0] = n;
+    iBuffer.setspecs(specs);
+    free(specs);
+    update_UI();
+    return NO_ERR;
 }
 
 /* ********** */

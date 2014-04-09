@@ -48,6 +48,8 @@ extern oma2UIData UIData;
     theCommands.automaticQuoteSubstitutionEnabled = NO;
     theCommands.enabledTextCheckingTypes = 0;
     
+    [theWindow setLevel: kCGMainMenuWindowLevelKey];    // data windows won't cover this'
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidBecomeKey:) name:NSWindowDidBecomeKeyNotification object:[self theWindow]];
 
     

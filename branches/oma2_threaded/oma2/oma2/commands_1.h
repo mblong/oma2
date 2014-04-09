@@ -49,6 +49,8 @@ int diffy_c(int,char*);
 int divtmp_c(int,char*);
 int divide_c(int,char*);
 int delay_c(int,char*);
+int dx_c(int n,char* args);
+int dy_c(int n,char* args);
 
 int echo_c(int,char*);
 
@@ -127,6 +129,9 @@ int sysCommand_c(int,char*);
 int tsmooth_c(int,char*);
 
 int writebad_c(int,char*);
+
+int x0_c(int n,char* args);
+int y0_c(int n,char* args);
 
 // Others
 int temp_image_index (char* name,int define);
