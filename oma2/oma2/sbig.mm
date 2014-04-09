@@ -300,8 +300,7 @@ int sbig(int n, char* args)
     int ncol, nrow;
     
     
-//	for( i=0; cmnd[i+index] != 0; i++)
-//		cmnd[i+index] = toupper(cmnd[i+index]);
+	for( i=0; args[i] != 0; i++) args[i] = toupper(args[i]);
     
 	if(*args == 0 && linked != 0) {
 		// after initialized, let sbig command be used to acquire
@@ -606,8 +605,8 @@ int sbig(int n, char* args)
 		//sep.abgState = m_eABGState;		N/A for all but a few cameras (see documentation)
 		sep.openShutter = SC_OPEN_SHUTTER;
         sep.readoutMode = SetBin;
-        sep.left = specs[NX0];
-		sep.top = specs[NY0];
+        sep.left = specs[X0];
+		sep.top = specs[Y0];
 		sep.height = nHeight;
 		sep.width = nWidth;
 		err = SBIGUnivDrvCommand(CC_START_EXPOSURE2, &sep, NULL);

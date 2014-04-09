@@ -57,6 +57,8 @@ ComDef   commands[] =    {
     {{"DIFFY          "},	diffy_c},
     {{"DCRAWARGS      "},	dcrawarg_c},
     {{"DELAY          "},	delay_c},
+    {{"DX             "},	dx_c},
+    {{"DY             "},	dy_c},
         
     {{"ERASE          "},	erase},
     {{"ENDIF          "},	endifcmnd},
@@ -161,6 +163,11 @@ ComDef   commands[] =    {
     {{"TSMOOTH        "},	tsmooth_c},
     {{"VARIABLES      "},	variab},
     {{"WRITEBADPIX    "},	writebad_c},
+    
+    {{"X0             "},	x0_c},
+    
+    {{"Y0             "},	y0_c},
+    
     {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},0}};
 
 

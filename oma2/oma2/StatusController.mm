@@ -67,6 +67,7 @@ StatusController *statusController;
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     //[PaletteBox setImage:[NSImage imageNamed:@"pal4.jpg"]];
     [self updatePaletteBox];
+    [self.window setLevel: kCGMainMenuWindowLevelKey];
 }
 
 - (void) awakeFromNib{
@@ -162,6 +163,8 @@ StatusController *statusController;
         UIData.autoscale = 0;
         [appController updateDataWindow];
         UIData.autoscale = saveAuatoscale;
+        
+        //[self.window makeKeyAndOrderFront:self];
     }
     //NSLog(@"minmaxinc: %d",MinMaxInc);
 }

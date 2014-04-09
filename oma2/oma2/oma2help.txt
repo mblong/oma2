@@ -135,7 +135,13 @@ DELAY nticks
 DMNMX
 	Displays the color min and max in the window.
 
-ERASE [n] 
+DX n
+	Specifies the number of detector pixels (not display screen pixels) to be grouped (or binned) in the X direction.
+
+DY n
+	Specifies the number of detector pixels (not display screen pixels) to be grouped (or binned) in the Y direction.
+
+ERASE [n]
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.
 
 ECHO string
@@ -435,6 +441,13 @@ WRITEBADPIX filename
 	.
 	.
 	.
+
+X0 n
+	Specifies that the detector is to be read out starting at column n.
+
+Y0 n
+	Specifies that the detector is to be read out starting at row n.
+
 
 
 
