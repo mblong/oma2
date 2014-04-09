@@ -125,6 +125,7 @@ ComDef   commands[] =    {
         
     {{"OPENFILE       "},	openfile_c},
         
+    {{"PIXSIZE        "},	pixSize_c},
     {{"PALETTE        "},	palette_c},
     {{"POSITIVE       "},	positive_c},
     {{"PAUSE          "},	imp_pause},

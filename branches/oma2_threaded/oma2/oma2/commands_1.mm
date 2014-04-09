@@ -2966,3 +2966,21 @@ int y0_c(int n,char* args)
 
 /* ********** */
 
+int pixSize_c(int n,char* args){
+    extern float windowScaleFactor;
+    if(*args == 0){
+        printf("Pixel scaling is %.2f\n",windowScaleFactor);
+        return NO_ERR;
+    }
+    int narg = (sscanf(args,"%f",&windowScaleFactor));
+    if(narg != 1 )windowScaleFactor = 1.;
+    if (windowScaleFactor == 0.) {
+        windowScaleFactor = 1.;
+    }
+    if (windowScaleFactor < 0.) {
+        windowScaleFactor = -1./windowScaleFactor;
+    }
+    return NO_ERR;
+}
+
+

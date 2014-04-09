@@ -319,8 +319,8 @@ NEWWINDOW flag
 NEXTFILE [prefix]
 	Open the next file specified in the FileNames file that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. command_return_1 is the the filename without any prefix and without the extension (last 4 characters).
 
-PALETTE n
-	Specifies that the nth predefined color palette should be used. Palette 0 is a color palette; 1 is a gray-scale palette.
+PIXSIZE [WindowScaleFactor]
+	Specifies a scale factor used to determine the size of a window displayed. PIXSIZE 1 associates one screen point with one data point. If WindowScaleFactor is negative, a scale factor of -1/WindowScaleFactor is used. If no argument is given, the current WindowScaleFactor is printed.
 
 POSITVE
 	Sets all negative values in the image buffer to 0.  Positive values are unaffected.
