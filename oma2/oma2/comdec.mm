@@ -146,6 +146,9 @@ ComDef   commands[] =    {
     {{"SERIAL         "},	serial},
     {{"SERCLOSE       "},	serclo},
 #endif
+#ifdef SBIG
+    {{"SBIG           "},	sbig},
+#endif
     {{"SIZE           "},	size_c},
     {{"SINGRID        "},	sinGrid_c},
     {{"STEMPIMAGE     "},	stemp_c},

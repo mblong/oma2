@@ -42,6 +42,8 @@
 		DB3E355D18E6030300381607 /* serial.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB3E355C18E6030300381607 /* serial.mm */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
+		DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB57E31818F58D7900FA4D29 /* sbig.mm */; };
+		DB57E31D18F5901D00FA4D29 /* SBIGUDrv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DB6FF6FE18467EA1002D728B /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
@@ -205,6 +207,8 @@
 		DB4E036F183527B200250EA4 /* dofft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dofft.h; sourceTree = "<group>"; };
 		DB52C79E17F102130048F57A /* dcrawx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dcrawx.h; sourceTree = "<group>"; };
 		DB53F51717FA1D6500A12259 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
+		DB57E31818F58D7900FA4D29 /* sbig.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = sbig.mm; sourceTree = "<group>"; };
+		DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SBIGUDrv.framework; sourceTree = "<group>"; };
 		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
 		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
 		DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LibTiff_F.framework; sourceTree = "<group>"; };
@@ -263,6 +267,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB57E31D18F5901D00FA4D29 /* SBIGUDrv.framework in Frameworks */,
 				DBBCFA3318E37FE100FEE3F6 /* libPvAPI.a in Frameworks */,
 				DB8A885A18E3297E007C79AF /* LibTiff_F.framework in Frameworks */,
 				DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */,
@@ -311,6 +316,7 @@
 		DB0FC0241519183C008A9B54 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */,
 				DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */,
 				DB0FC0251519183C008A9B54 /* AppKit.framework */,
 				DB0FC0261519183C008A9B54 /* CoreData.framework */,
@@ -371,6 +377,7 @@
 				DBBCFA2718E33E5400FEE3F6 /* ImageLib.h */,
 				DBBCFA2818E33E5400FEE3F6 /* PvApi.h */,
 				DB3E355C18E6030300381607 /* serial.mm */,
+				DB57E31818F58D7900FA4D29 /* sbig.mm */,
 			);
 			name = "Hardware Related";
 			sourceTree = "<group>";
@@ -649,6 +656,7 @@
 				DB8A885218E3297E007C79AF /* DataWindowController.mm in Sources */,
 				DB8A885318E3297E007C79AF /* dofft.mm in Sources */,
 				DB8A885418E3297E007C79AF /* ImageBitmap.mm in Sources */,
+				DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */,
 				DB8A885518E3297E007C79AF /* StatusDrop.mm in Sources */,
 				DB8A885618E3297E007C79AF /* UI.mm in Sources */,
 				DB8A885718E3297E007C79AF /* DataView.mm in Sources */,
@@ -806,6 +814,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/**",
+					"$(PROJECT_DIR)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
@@ -833,6 +842,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/**",
+					"$(PROJECT_DIR)",
 				);
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

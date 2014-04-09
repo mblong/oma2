@@ -13,6 +13,7 @@
 
 #define GIGE_
 #define SERIAL_PORT
+#define SBIG
 
 // end of camera selection section
 
