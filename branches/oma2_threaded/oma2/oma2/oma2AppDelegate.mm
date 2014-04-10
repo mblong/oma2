@@ -53,6 +53,7 @@ void setUpUIData();
     // Load preferences
     strlcpy(text,SETTINGSFILE,NEW_PREFIX_CHPERLN);
     loadprefs(text);
+    UIData.newwindowflag = 1;   // this default is set initially
     
     strlcpy(text,DCRAW_ARG,NEW_PREFIX_CHPERLN);
     dcrawarg_c(0,text);
