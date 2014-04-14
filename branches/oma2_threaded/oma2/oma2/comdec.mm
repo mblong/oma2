@@ -26,7 +26,10 @@ ComDef   commands[] =    {
 #ifdef ANDOR_
     {{"ANDOR          "},   andor},
 #endif
-    
+#ifdef LJU3 
+    {{"AIN            "},   ain},
+    {{"AOUT           "},   aout},
+#endif
     {{"BLOCK          "},	block_g},
     {{"BIT8           "},	bit8_c},
     {{"BIT16          "},	bit16_c},
@@ -59,7 +62,10 @@ ComDef   commands[] =    {
     {{"DELAY          "},	delay_c},
     {{"DX             "},	dx_c},
     {{"DY             "},	dy_c},
-        
+#ifdef LJU3
+    {{"DOUT           "},   dout},
+#endif
+    
     {{"ERASE          "},	erase},
     {{"ENDIF          "},	endifcmnd},
     {{"ECHO           "},	echo_c},
@@ -164,6 +170,10 @@ ComDef   commands[] =    {
     {{"TSMOOTH        "},	tsmooth_c},
     {{"VARIABLES      "},	variab},
     {{"WRITEBADPIX    "},	writebad_c},
+#ifdef LJU3
+    {{"WAITHI         "},   waithi},
+#endif
+
     
     {{"X0             "},	x0_c},
     
