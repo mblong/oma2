@@ -28,6 +28,14 @@ int andor(int, char*);
 int sbig(int,char*);
 #endif
 
+#ifdef LJU3
+int ain(int,char*);
+int waithi(int,char*);
+int dout(int,char*);
+int aout(int,char*);
+#endif
+
+
 
 // function prototypes for routines in comdec.cpp
 

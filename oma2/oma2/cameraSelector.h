@@ -17,6 +17,11 @@
 
 // end of camera selection section
 
+// select other hardware here
+
+#define LJU3
+
+// end of select other hardware section
 
 #ifdef GIGE_
 // GigE definitions
