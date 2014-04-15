@@ -27,8 +27,8 @@ ComDef   commands[] =    {
     {{"ANDOR          "},   andor},
 #endif
 #ifdef LJU3 
-    {{"AIN            "},   ain},
-    {{"AOUT           "},   aout},
+    {{"AINPUT         "},   ain},
+    {{"AOUTPUT        "},   aout},
 #endif
     {{"BLOCK          "},	block_g},
     {{"BIT8           "},	bit8_c},
@@ -63,7 +63,7 @@ ComDef   commands[] =    {
     {{"DX             "},	dx_c},
     {{"DY             "},	dy_c},
 #ifdef LJU3
-    {{"DOUT           "},   dout},
+    {{"DOUTPUT        "},   dout},
 #endif
     
     {{"ERASE          "},	erase},
@@ -110,7 +110,7 @@ ComDef   commands[] =    {
     {{"KWABEL         "},	kwabel_g},
         
     {{"LIST           "},	list_c},
-    {{"LOG           "},	logg},
+    {{"LOG            "},	logg},
     {{"LMACRO         "},	lmacro},
     {{"LABELDATA      "},	labelData},
     {{"LOOP           "},	loop},

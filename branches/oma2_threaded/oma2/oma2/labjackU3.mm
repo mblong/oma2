@@ -24,86 +24,111 @@ int no_u3=1;
 
 
 /* ********** */
-// WAITHI bit_number
-//	Waits until the specified digital I/O bit is aserted high on a LabJack U12. Don't use bit_number = 2, as that is reserved for outbut using the DOUT command
+// WAITHI Channel
+//	Waits until the specified digital I/O bit is aserted high on a LabJack U3. Channel must be in the range 4-7
 
 
 int waithi(int n, char* args)
 {
-    
-	long	idnum = -1;
 	long	errorCode;
 	long 	channel;
-	//char	errorString[255];
     long    ConfigIO = 1;
-    
 	long	state;
     
 	channel = n;
-    
+    if( channel < 4 || channel > 7){
+        beep();
+        printf("Channel must be in the range 4-7\n");
+        return CMND_ERR;
+    }
+    if(connectU3())
+	{
+        errorCode = eDI(hDevice,ConfigIO,channel,&state);
+        if(errorCode) {	//errorCode>0 for low-level errors
+            beep();
+            printf("eDI error %ld\n", errorCode);
+            closeUSBConnection(hDevice);
+            u3_connected=0;
+            return HARD_ERR;
+        }
+        while(state == 0 ){
+            errorCode = eDI(hDevice,ConfigIO,channel,&state);
+            if (errorCode != 0) {
+                printf("eDI error %ld\n", errorCode);
+                closeUSBConnection(hDevice);
+                u3_connected=0;
+                return HARD_ERR;
+            }
+        }
+        return NO_ERR;
+	}
+    else {
+        beep();
+        printf("No Labjack U3 recognized\n");
+        return HARD_ERR;
+    }
 
-    errorCode = eDI(hDevice,ConfigIO,channel,&state);
-	if (errorCode != 0) {
-		//GetErrorString	(errorCode, (char *)&errorString);
-		//printf("Error: %s\n", (char *)&errorString);
-        printf("Error: %ld\n", errorCode);
-	}
-	while(state == 0 ){
-		errorCode = eDI(hDevice,ConfigIO,channel,&state);
-		if (errorCode != 0) {
-			//GetErrorString	(errorCode, (char *)&errorString);
-			//printf("Error: %s\n", (char *)&errorString);
-            printf("Error: %ld\n", errorCode);
-			return -1;
-		}
-	}
-	printf("%d %d \n",idnum,state);
-	return 0;
 }
 /* ********** */
 
-// DOUT state
-//	Sets digital I/O bit 2 to low (state = 0) or high (state = 1) on a LabJack U12
+// DOUTPUT channel state
+//    Sets the specified digital output channel on a Labjack U3 to the specified state (0 or 1). Channel must be in the range 4-7.
+//
 
 int dout(int n, char* args)
 {
-	long	idnum = -1;
 	long	errorCode;
 	long 	channel;
-	//char	errorString[255];
-    
 	long	state;
-    
     long    ConfigIO = 1;
     
-	channel = 4;	//
-	state = n;
-    
-
-    errorCode = eDO(hDevice,ConfigIO,channel,state);
-	if (errorCode != 0) {
-		//GetErrorString	(errorCode, (char *)&errorString);
-		//printf("Error: %s\n", (char *)&errorString);
-        printf("Error: %ld\n", errorCode);
+    int narg = sscanf(args,"%ld %ld",&channel,&state);
+    if( narg !=2 || channel < 4 || channel > 7){
+        beep();
+        printf("Arguments are: Channel State\nChannel must be in the range 4-7\n");
+        return CMND_ERR;
+    }
+    if (state) state = 1;
+    //Open first found U3 over USB
+    if(connectU3())
+	{
+        errorCode = eDO(hDevice,ConfigIO,channel,state);
+        if(errorCode) {	//errorCode>0 for low-level errors
+            beep();
+            printf("eDO error %ld\n", errorCode);
+            closeUSBConnection(hDevice);
+            u3_connected=0;
+            return HARD_ERR;
+        }
+        return NO_ERR;
 	}
-	printf("%d %d \n",idnum,state);
-	return 0;
+    else {
+        beep();
+        printf("No Labjack U3 recognized\n");
+        return HARD_ERR;
+    }
+    
 }
+
 
 /* ********** */
 
-// AIN channel
-//	Read Analog input on a LabJack U3
+// AINPUT channel
+//	Read Analog input from the specified channel on a LabJack U3. Channel must be in the range 0-3; The voltage is returned in command_return_1.
 
 int ain(int n, char* args)
 {
 	extern Variable user_variables[];
-
     static long DAC1Enable;
     long errorCode=0;
-    
     double dblVoltage=0.;
     
+    if( n < 0 || n > 3){
+        beep();
+        printf("Channel must be in the range 0-3\n");
+        return CMND_ERR;
+    }
+
 	//Open first found U3 over USB
     if(connectU3())
 	{
@@ -129,12 +154,10 @@ close:
 }
 
 
-/*  // only U3 implemented so far
- AOUTPUT v1 v2 [v3 v4]
- Sends voltages to D/A converters 0 and 1 on a Labjack USB analog/digital I/O device.
- If a Labjack U3 is present, v1 and v2 are sent to it.
- If there is no U3 but there is a Labjack U12, v1 and v2 are sent to the U12.
- If both U3 and U12 Labjacks are present and all 4 voltages are given, v1 and v2 are sent to the U3 and v3 and v4 are sent to the U12.
+/*
+ AOUTPUT v1 v2
+ Sends voltages to D/A converters 0 and 1 on a Labjack USB U3 analog/digital I/O device.
+
  */
 
 int aout(int n, char* args)
