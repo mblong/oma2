@@ -128,8 +128,8 @@ HANDLE openUSBConnection( int localID);
 
 void closeUSBConnection( HANDLE hDevice);
 //Closes a HANDLE to a U3 device.
-
-long getTickCount();
+    
+long getTickCount(void);
 //Returns the number of milliseconds that has elasped since the system was
 //started.
 
@@ -606,7 +606,7 @@ long ehFeedback( HANDLE hDevice,
 //or errorcode (>1 value) on error, 0 on success.
     
 void GetErrorString	(long errorcode,char *errorString);
-    
+
     
 #ifdef __cplusplus
 }

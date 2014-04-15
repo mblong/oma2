@@ -102,7 +102,6 @@
 		DB8A887B18E3297E007C79AF /* pal3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5615A2895B00502B50 /* pal3.jpg */; };
 		DB8A887C18E3297E007C79AF /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
 		DB8A887E18E3297E007C79AF /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
-		DB8C23F618FC2B5000969763 /* liblabjackusb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */; };
 		DB8C23F918FC2FC100969763 /* labjackU3.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB8C23F718FC2BA500969763 /* labjackU3.mm */; };
 		DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
@@ -116,6 +115,7 @@
 		DBB27B6B1867F1DF00CF6523 /* Oma2Settings.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */; };
 		DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
+		DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */; settings = {ATTRIBUTES = (Required, ); }; };
 		DBBCFA3218E37FE100FEE3F6 /* libImagelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBCFA3018E37FE100FEE3F6 /* libImagelib.a */; };
 		DBBCFA3318E37FE100FEE3F6 /* libPvAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBCFA3118E37FE100FEE3F6 /* libPvAPI.a */; };
 		DBBCFA3418E380B000FEE3F6 /* gige.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBBCFA2518E33D8600FEE3F6 /* gige.mm */; };
@@ -276,7 +276,7 @@
 				DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
 				DBBCFA3218E37FE100FEE3F6 /* libImagelib.a in Frameworks */,
-				DB8C23F618FC2B5000969763 /* liblabjackusb.dylib in Frameworks */,
+				DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -833,7 +833,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
-					/Users/mblong/oma2_trunk/oma2/oma2,
 					"$(PROJECT_DIR)/oma2",
 					/usr/local/lib,
 					/opt/local/lib,
@@ -860,7 +859,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
-					/Users/mblong/oma2_trunk/oma2/oma2,
 					"$(PROJECT_DIR)/oma2",
 					/usr/local/lib,
 					/opt/local/lib,

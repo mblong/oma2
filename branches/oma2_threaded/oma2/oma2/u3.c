@@ -4,6 +4,7 @@
 
 #include "u3.h"
 #include <stdlib.h>
+#include <string.h>
 
 
 u3CalibrationInfo U3_CALIBRATION_INFO_DEFAULT = {
@@ -232,7 +233,7 @@ long getCalibrationInfo(HANDLE hDevice, u3CalibrationInfo *caliInfo)
 {
     uint8 sendBuffer[8], recBuffer[40];
     uint8 cU3SendBuffer[26], cU3RecBuffer[38];
-    int sentRec = 0, offset = 0, i = 0;
+    long sentRec = 0, offset = 0, i = 0;
 
     /* Sending ConfigU3 command to get hardware version and see if HV */
     cU3SendBuffer[1] = (uint8)(0xF8);  //Command byte
@@ -339,7 +340,7 @@ commandByteError:
 
 long getTdacCalibrationInfo( HANDLE hDevice, u3TdacCalibrationInfo *caliInfo, uint8 DIOAPinNum)
 {
-    int err;
+    long err;
     uint8 options, speedAdjust, sdaPinNum, sclPinNum;
     uint8 address, numByteToSend, numBytesToRec, errorcode;
     uint8 bytesComm[1], bytesResp[32];
@@ -578,8 +579,8 @@ long getTdacBinVoltCalibrated(u3TdacCalibrationInfo *caliInfo, int dacNumber, do
     tBytesVolt = analogVolt*caliInfo->ccConstants[dacNumber*2] + caliInfo->ccConstants[dacNumber*2 + 1];
 
     //Checking to make sure bytesVolt will be a value between 0 and 65535.
-    if( tBytesVolt < 0 )
-        tBytesVolt = 0;
+    //if( tBytesVolt < 0 )
+    //    tBytesVolt = 0;
     if( tBytesVolt > 65535 )
         tBytesVolt = 65535;
 
@@ -651,7 +652,7 @@ long I2C(HANDLE hDevice, uint8 I2COptions, uint8 SpeedAdjust, uint8 SDAPinNum, u
     uint8 *sendBuff, *recBuff;
     uint16 checksumTotal = 0;
     uint32 ackArrayTotal, expectedAckArray;
-    int sendChars, recChars, sendSize, recSize;
+    unsigned long sendChars, recChars, sendSize, recSize;
     int i, ret;
 
     *Errorcode = 0;
@@ -681,7 +682,7 @@ long I2C(HANDLE hDevice, uint8 I2COptions, uint8 SpeedAdjust, uint8 SDAPinNum, u
     for( i = 0; i < NumI2CBytesToSend; i++ )
         sendBuff[14 + i] = I2CBytesCommand[i];  //I2CByte
 
-    extendedChecksum(sendBuff, sendSize);
+    extendedChecksum(sendBuff, (int)sendSize);
 
     //Sending command to U3
     sendChars = LJUSB_Write(hDevice, sendBuff, sendSize);
@@ -745,7 +746,7 @@ long I2C(HANDLE hDevice, uint8 I2COptions, uint8 SpeedAdjust, uint8 SDAPinNum, u
         ret = -1;
     }
 
-    checksumTotal = extendedChecksum16(recBuff, recSize);
+    checksumTotal = extendedChecksum16(recBuff, (int)recSize);
     if( (uint8)((checksumTotal / 256) & 0xff) != recBuff[5] || (uint8)(checksumTotal & 255) != recBuff[4])
     {
         printf("I2C error : read buffer has bad checksum16 (%d)\n", checksumTotal);
@@ -1262,7 +1263,7 @@ long ehConfigIO(HANDLE hDevice, uint8 inWriteMask, uint8 inTimerCounterConfig, u
     extendedChecksum(sendBuff, 12);
 
     //Sending command to U3
-    if( (sendChars = LJUSB_Write(hDevice, sendBuff, 12)) < 12 )
+    if( (sendChars = (int)LJUSB_Write(hDevice, sendBuff, 12)) < 12 )
     {
         if( sendChars == 0 )
             printf("ehConfigIO error : write failed\n");
@@ -1272,7 +1273,7 @@ long ehConfigIO(HANDLE hDevice, uint8 inWriteMask, uint8 inTimerCounterConfig, u
     }
 
     //Reading response from U3
-    if( (recChars = LJUSB_Read(hDevice, recBuff, 12)) < 12 )
+    if( (recChars = (int)LJUSB_Read(hDevice, recBuff, 12)) < 12 )
     {
         if( recChars == 0 )
             printf("ehConfigIO error : read failed\n");
@@ -1329,7 +1330,7 @@ long ehConfigTimerClock(HANDLE hDevice, uint8 inTimerClockConfig, uint8 inTimerC
 {
     uint8 sendBuff[10], recBuff[10];
     uint16 checksumTotal;
-    int sendChars, recChars;
+    unsigned long sendChars, recChars;
 
     sendBuff[1] = (uint8)(0xF8);  //Command byte
     sendBuff[2] = (uint8)(0x02);  //Number of data words
@@ -1407,8 +1408,8 @@ long ehFeedback(HANDLE hDevice, uint8 *inIOTypesDataBuff, long inIOTypesDataSize
 {
     uint8 *sendBuff, *recBuff;
     uint16 checksumTotal;
-    int sendChars, recChars, sendDWSize, recDWSize;
-    int commandBytes, ret, i;
+    long sendChars, recChars, sendDWSize, recDWSize;
+    long commandBytes, ret, i;
 
     ret = 0;
     commandBytes = 6;
@@ -1439,7 +1440,7 @@ long ehFeedback(HANDLE hDevice, uint8 *inIOTypesDataBuff, long inIOTypesDataSize
     for( i = 0; i < inIOTypesDataSize; i++ )
         sendBuff[i+commandBytes+1] = inIOTypesDataBuff[i];
 
-    extendedChecksum(sendBuff, (sendDWSize+commandBytes));
+    extendedChecksum(sendBuff, (int)(sendDWSize+commandBytes));
 
     //Sending command to U3
     if( (sendChars = LJUSB_Write(hDevice, sendBuff, (sendDWSize+commandBytes))) < sendDWSize+commandBytes )
@@ -1468,10 +1469,10 @@ long ehFeedback(HANDLE hDevice, uint8 *inIOTypesDataBuff, long inIOTypesDataSize
             goto cleanmem;
         }
         else
-            printf("ehFeedback error : did not read all of the expected buffer (received %d, expected %d )\n", recChars, commandBytes+recDWSize);
+            printf("ehFeedback error : did not read all of the expected buffer (received %ld, expected %ld )\n", recChars, commandBytes+recDWSize);
     }
 
-    checksumTotal = extendedChecksum16(recBuff, recChars);
+    checksumTotal = extendedChecksum16(recBuff, (int)recChars);
     if( (uint8)((checksumTotal / 256 ) & 0xff) != recBuff[5] )
     {
         printf("ehFeedback error : read buffer has bad checksum16(MSB)\n");
