@@ -1517,7 +1517,8 @@ cleanmem:
 }
 
 
-
+// this is for U12 -- for U3, the codes are different
+// see the web documentation
 
 //======================================================================
 //GetErrorString
@@ -1550,163 +1551,11 @@ void GetErrorString	(long errorcode,
             break;
 		case 2:		errorString = strcpy(errorString,"No LabJacks found");
             break;
-		case 3:		errorString = strcpy(errorString,"LabJack n not found");
-            break;
-		case 4:		errorString = strcpy(errorString,"Set USB buffer error");
-            break;
-		case 5:		errorString = strcpy(errorString,"Open handle error");
-            break;
-		case 6:		errorString = strcpy(errorString,"Close handle error");
-            break;
-		case 7:		errorString = strcpy(errorString,"Invalid ID");
-            break;
-		case 8:		errorString = strcpy(errorString,"Invalid array size or value");
-            break;
-		case 9:		errorString = strcpy(errorString,"Invalid power index");
-            break;
-		case 10:	errorString = strcpy(errorString,"FCDD size too big");
-            break;
-		case 11:	errorString = strcpy(errorString,"HVC size too big");
-            break;
-		case 12:	errorString = strcpy(errorString,"Read error");
-            break;
-		case 13:	errorString = strcpy(errorString,"Read timeout error");
-            break;
-		case 14:	errorString = strcpy(errorString,"Write error");
-            break;
-		case 15:	errorString = strcpy(errorString,"Turbo error");
-            break;
-		case 16:	errorString = strcpy(errorString,"Illegal channel index");
-            break;
-		case 17:	errorString = strcpy(errorString,"Illegal gain index");
-            break;
-		case 18:	errorString = strcpy(errorString,"Illegal AI command");
-            break;
-		case 19:	errorString = strcpy(errorString,"Illegal AO command");
-            break;
-		case 20:	errorString = strcpy(errorString,"Bits out of range");
-            break;
-		case 21:	errorString = strcpy(errorString,"Illegal number of channels");
-            break;
-		case 22:	errorString = strcpy(errorString,"Illegal scan rate");
-            break;
-		case 23:	errorString = strcpy(errorString,"Illegal number of samples");
-            break;
-		case 24:	errorString = strcpy(errorString,"AI response error");
-            break;
-		case 25:	errorString = strcpy(errorString,"LabJack RAM checksum error");
-            break;
-		case 26:	errorString = strcpy(errorString,"AI sequence error");
-            break;
-		case 27:	errorString = strcpy(errorString,"Maximum number of streams reached");
-            break;
-		case 28:	errorString = strcpy(errorString,"AI stream start error");
-            break;
-		case 29:	errorString = strcpy(errorString,"PC buffer overflow");
-            break;
-		case 30:	errorString = strcpy(errorString,"LabJack buffer overflow");
-            break;
-		case 31:	errorString = strcpy(errorString,"Stream read timeout");
-            break;
-		case 32:	errorString = strcpy(errorString,"Illegal number of scans");
-            break;
-		case 33:	errorString = strcpy(errorString,"No stream was found");
-            break;
-		case 40:	errorString = strcpy(errorString,"Illegal input");
-            break;
-		case 41:	errorString = strcpy(errorString,"Echo error");
-            break;
-		case 42:	errorString = strcpy(errorString,"Data echo error");
-            break;
-		case 43:	errorString = strcpy(errorString,"Response error");
-            break;
-		case 44:	errorString = strcpy(errorString,"Asynch timeout error");
-            break;
-		case 45:	errorString = strcpy(errorString,"Asynch start bit error");
-            break;
-		case 46:	errorString = strcpy(errorString,"Asynch framing error");
-            break;
-		case 47:	errorString = strcpy(errorString,"Asynch digital I/O state or tris error");
-            break;
-		case 48:	errorString = strcpy(errorString,"Caps error");
-            break;
-		case 49:	errorString = strcpy(errorString,"Caps error");
-            break;
-		case 50:	errorString = strcpy(errorString,"Caps error");
-            break;
-		case 51:	errorString = strcpy(errorString,"HID number caps error");
-            break;
-		case 52:	errorString = strcpy(errorString,"HID get attributes warning");
-            break;
-		case 57:	errorString = strcpy(errorString,"Wrong firmware version error");
-            break;
-		case 58:	errorString = strcpy(errorString,"Digital I/O state or tris error");
-            break;
-		case 64:	errorString = strcpy(errorString,"Could not claim all LabJacks");
-            break;
-		case 65:	errorString = strcpy(errorString,"Error releasing all LabJacks");
-            break;
-		case 66:	errorString = strcpy(errorString,"Could not claim LabJack");
-            break;
-		case 67:	errorString = strcpy(errorString,"Error releasing LabJack");
-            break;
-		case 68:	errorString = strcpy(errorString,"Claimed abandoned LabJack");
-            break;
-		case 69:	errorString = strcpy(errorString,"Local ID -1 thread stopped");
-            break;
-		case 70:	errorString = strcpy(errorString,"Stop thread timeout");
-            break;
-		case 71:	errorString = strcpy(errorString,"Thread termination failed");
-            break;
-		case 72:	errorString = strcpy(errorString,"Feature handle creation failed");
-            break;
-		case 73:	errorString = strcpy(errorString,"Mutex creation failed");
-            break;
-		case 80:	errorString = strcpy(errorString,"Synch CS state or tris error");
-            break;
-		case 81:	errorString = strcpy(errorString,"Synch SCK tris error");
-            break;
-		case 82:	errorString = strcpy(errorString,"Synch MISO tris error");
-            break;
-		case 83:	errorString = strcpy(errorString,"Synch MOSI tris error");
-            break;
-		case 89:	errorString = strcpy(errorString,"SHT1X communication error - CRC");
-            break;
-		case 90:	errorString = strcpy(errorString,"SHT1X communication error - MeasReady");
-            break;
-		case 91:	errorString = strcpy(errorString,"SHT1X communication error - ACK");
-            break;
-		case 92:	errorString = strcpy(errorString,"SHT1X serial reset error");
-            break;
-            
-            // errors I added for convenience
-		case ILLEGAL_PIN_DESCRIPTOR:
-			errorString = strcpy(errorString,"Pin name not recognized.");
-            break;
-            
-		case NO_GAIN_ON_SINGLE_ENDED:
-			errorString = strcpy(errorString,"Gain values not allowed on single ended inputs.");
-            break;
-            
-		case OUTPUT_PIN_OVERLOAD:
-			errorString = strcpy(errorString,"A Dx output pin is overloaded!");
-            break;
-            
-		case START_BEFORE_SAMPLE:
-			errorString = strcpy(errorString,"Call start sample before read sample.");
-            break;
-            
-		case START_BEFORE_STOP:
-			errorString = strcpy(errorString,"Call start sample before stop sample.");
-            break;
-            
-		case ALREADY_STREAMING:
-			errorString = strcpy(errorString,"Already streaming. Call stop then start.");
-            
+     
 		default:	errorString=strcpy(errorString,"Unknown error code");
 	}
      */
-    
+    printf("Error %ld\n",errorcode);
     errorString = strcpy(errorString,"Unknown error");
 	return;
 }

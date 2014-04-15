@@ -35,5 +35,8 @@ int serclo(int, char*);
 int open_serial_port(char* dev_name);
 #endif
 
+#ifdef LJU3
+int connectU3(void);
+#endif
 
 #endif
