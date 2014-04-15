@@ -8,7 +8,14 @@
 
 #ifdef LJU3
 
-
+/* Note: For the labjack U3 to work properly in this version, liblabjackusb.dylib must be copied to /usr/local/lib
+ 
+ For example:
+ 
+ sudo cp liblabjackusb.dylib /usr/local/lib
+ 
+ */
+ 
 #include "oma2.h"
 #include "UI.h"
 

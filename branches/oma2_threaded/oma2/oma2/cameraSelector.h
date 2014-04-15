@@ -12,7 +12,6 @@
 // select cameras here
 
 #define GIGE_
-#define SERIAL_PORT
 #define SBIG
 
 // end of camera selection section
@@ -20,8 +19,11 @@
 // select other hardware here
 
 #define LJU3
+#define SERIAL_PORT
 
 // end of select other hardware section
+
+//------------------------------------------------------------
 
 #ifdef GIGE_
 // GigE definitions
