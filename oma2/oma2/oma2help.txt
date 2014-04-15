@@ -41,6 +41,12 @@ ACDELETE
 ACGET
 	Moves the data from the accumulator buffer into the current image data area. The previous contents of the image data buffer are destroyed.
 
+AINPUT channel
+	Read analog input from the specified channel on a LabJack U3. Channel must be in the range 0-3; The voltage is returned in command_return_1. [oma2cam only]
+
+AOUTPUT v1 v2
+	Sends voltages to D/A converters 0 and 1 on a Labjack USB U3 analog/digital I/O device. [oma2cam only]
+
 BLOCK n [m]
 	Group the image data into n x m blocks (rows x cols). This command reduces the size of the data buffer. The values are summed, pending implementation of the BLKAVE command. If the image is flagged as color, the three color planes are treated separately.
 
@@ -140,6 +146,9 @@ DX n
 
 DY n
 	Specifies the number of detector pixels (not display screen pixels) to be grouped (or binned) in the Y direction.
+
+DOUTPUT channel state
+	Sets the specified digital output channel on a Labjack U3 to the specified state (0 or 1). Channel must be in the range 4-7. [oma2cam only]
 
 ERASE [n]
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.
@@ -410,6 +419,32 @@ SHELL shell_command
 STOPONERROR flag
 	If flag = 1, macro or execute commands will stop on error conditions. If flag = 0 (default) execution will continue.
 
+SBIG command_string [parameters]
+	[This command is only available in oma2cam. The SBIG drivers must be installed.]
+	command_string specifies the SBIG command (listed below).
+ 	Only the first 3 characters of SBIG commands matter.
+ 	The values for parameters depend on the particular command.
+	.
+ 	SBIG command_strings:
+ 	.
+ 	EXPosure exposure_time
+		Specify exposure_time in seconds. Does not take an image.
+	.
+	 FILter
+		 Specify which fillter to use.
+	.
+	 TEMperature
+		 Specify set temperature of the CCD in degrees C.
+	.
+	 DISconnect
+		 Close the device and driver.
+	.
+ 	STAtus 
+		 Print out CCD info, temperature, exposure, etc.
+	.
+	 ACQuire 
+		Get an image using the current settings.
+
 SUBTMPIMAGE name
 	Subtracts the contents of the named temporary image from the data in the current buffer.
 
@@ -441,6 +476,9 @@ WRITEBADPIX filename
 	.
 	.
 	.
+
+WAITHI Channel
+	Waits until the specified digital I/O channel is aserted high on a LabJack U3. Channel must be in the range 4-7. [oma2cam only]
 
 X0 n
 	Specifies that the detector is to be read out starting at column n.
