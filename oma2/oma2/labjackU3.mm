@@ -10,18 +10,17 @@
 
 
 #include "oma2.h"
+#include "UI.h"
 
 
 #include "u3.h"
 #include <unistd.h>
 
-static int u3_connected = 0;	// Global flag. No matter ain or aout is called first, u3 is set to connected mode.
+int u3_connected = 0;	// Global flag. No matter ain or aout is called first, u3 is set to connected mode.
 // This elimates a possible error when switching from ain to aout or vice versa.
-static HANDLE hDevice;
-static u3CalibrationInfo caliInfo;
+HANDLE hDevice;
+u3CalibrationInfo caliInfo;
 
-
-//#include "ljackmacx.h"
 
 /* ********** */
 // WAITHI bit_number
@@ -95,14 +94,7 @@ int dout(int n, char* args)
 int ain(int n, char* args)
 {
     
-	long idnum = -1;
-	long demo=0;
 	long channel;
-	long gain=0;
-	long overVoltage;
-	float voltage;
-	long	errorCode;
-	char	errorString[255];
     static int no_u3 = 1;
 	static int no_u12 = 1;
 	extern Variable user_variables[];
@@ -112,11 +104,11 @@ int ain(int n, char* args)
 
 	int localID;
     static long DAC1Enable;
-    long error;
+    long error=0;
     //	static u3CalibrationInfo caliInfo;
     //	static HANDLE hDevice;
     //  static int u3_connected = 0;
-    double dblVoltage;
+    double dblVoltage=0.;
     
 	//Open first found U3 over USB
     if(u3_connected == 0)
@@ -189,8 +181,8 @@ close:
      or ConfigIO low-level call, change the DAC1Enable parameter accordingly
      or make another eAIN call with the ConfigIO parameter set to 1. */
     
-    if(!no_u3) return error;
-    
+    if(!no_u3) return (int)error;
+    return -1;
     
 }
 
@@ -204,18 +196,15 @@ close:
 
 int aout(int n, char* args)
 {
-    
-	long idnum = -1;
-	long demo=0;
 	float v1=0.,v2=0.,v3=0.,v4=0.;
 	long	errorCode=0;
-	char	errorString[255];
+	
 	static int no_u3=1;
-	static int no_u12=1;
+	
 	extern Variable user_variables[];
 	extern char cmnd[];
     
-	int i, j=0;
+	int j=0;
 	
 
     j = sscanf(args,"%f %f %f %f",&v1,&v2,&v3,&v4);
@@ -275,9 +264,11 @@ close:
          printf("Received an error code of %ld\n", errorCode);
          closeUSBConnection(hDevice);
          u3_connected=0;
+         
      }
 	
-	if(!no_u3) return errorCode;
+	if(!no_u3) return (int)errorCode;
+    return -1;
 }
 
 

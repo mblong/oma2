@@ -11,6 +11,10 @@
 #import "oma2.h"
 #import "UI.h"
 
+#ifdef LJU3
+#include "u3.h"
+#endif
+
 extern StatusController *statusController;
 extern oma2UIData UIData;
 
@@ -67,6 +71,14 @@ void setUpUIData();
     char c=0;
     int savsettings(int n,char* args);
     savsettings(0,&c);
+    // hardware dependent close operations
+#ifdef LJU3
+    extern HANDLE hDevice;
+    extern int u3_connected;
+    if(u3_connected)closeUSBConnection(hDevice);
+#endif
+    
+    
     
 }
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename {
