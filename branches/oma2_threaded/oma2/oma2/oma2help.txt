@@ -77,7 +77,10 @@ CLIPFRACTION fraction
 CROP
 	Use the current rectangle to crop the image in the buffer.
 
-COMPOSITE  <filename> 
+COLUMNS n
+	Resets the number of columns in the current image to n.
+
+COMPOSITE  <filename>
 	Create a composite image by appending the data in the specified file to that which exists in the current image buffer. The width of the specified file must be the same as that of the current image. 
 
 COMTEMPIMAGE name 
@@ -354,6 +357,9 @@ RGB2BLUE
 
 RMACRO [n m] 
 	Starts executing commands in the macro buffer with %d being replaced first by value n. Subsequently, n is incremented by the amount specified in the INCMACRO command (default is 1). If the new numeric value is equal to m, the macro will be executed again. Menu items can be selected and the appropriate commands executed during macros. Commands typed during the execution of a macro will be echoed to the terminal but not performed. To stop a macro during execution type "cmd ." (hold down the apple key and type ".")
+
+ROW n
+	Resets the number of rows in the current image to n.
 
 ROTATE [value]
 	Rotates the data in the current image buffer.  If no value is specified, the image is rotated by 90 degrees. If a value is specified, the image is rotated by the specified number of degrees (this may be a real number).
