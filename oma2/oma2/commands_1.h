@@ -40,6 +40,7 @@ int clearbad_c(int,char*);
 int createfile_c(int n,char* args);
 int concatfile_c(int n,char* args);
 int closefile_c(int n,char* args);
+int columns_c(int n,char* args);
 
 
 int dcrawarg_c(int,char*);
@@ -113,6 +114,7 @@ int readbad_c(int,char*);
 int ramp_c(int,char*);
 int roundUp_c(int,char*);
 int roundoff_c(int,char*);
+int rows_c(int,char*);
 
 int setcminmax_c(int,char*);
 int size_c(int,char*);

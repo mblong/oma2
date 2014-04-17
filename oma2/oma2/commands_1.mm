@@ -1010,7 +1010,7 @@ int size_c(int n,char* args){
             Image new_im(height,width);
             if(new_im.err()){
                 beep();
-                printf("Could not load %s\n",args);
+                printf("Could not create image.\n",args);
                 return new_im.err();
             }
             iBuffer.free();     // release the old data
@@ -1028,6 +1028,53 @@ int size_c(int n,char* args){
 }
 
 /* ********** */
+
+int rows_c(int n,char* args){
+    int* specs = iBuffer.getspecs();
+    if(n > 0){
+        Image new_im(n,specs[COLS]);
+        if(new_im.err()){
+            beep();
+            printf("Could not create image.\n");
+            return new_im.err();
+        }
+        iBuffer.free();     // release the old data
+        iBuffer = new_im;   // this is the new data
+        iBuffer.getmaxx();
+        update_UI();
+        free(specs);
+        return NO_ERR;
+    }
+    printf("Current Image is %d by %d\n",specs[COLS],specs[ROWS]);
+    free(specs);
+    return NO_ERR;
+}
+
+/* ********** */
+
+int columns_c(int n,char* args){
+    int* specs = iBuffer.getspecs();
+    if(n > 0){
+        Image new_im(specs[ROWS],n);
+        if(new_im.err()){
+            beep();
+            printf("Could not create image.\n");
+            return new_im.err();
+        }
+        iBuffer.free();     // release the old data
+        iBuffer = new_im;   // this is the new data
+        iBuffer.getmaxx();
+        update_UI();
+        free(specs);
+        return NO_ERR;
+    }
+    printf("Current Image is %d by %d\n",specs[COLS],specs[ROWS]);
+    free(specs);
+    return NO_ERR;
+}
+
+/* ********** */
+
 
 int setcminmax_c(int n,char* args)		/* get color min and max */
 {
