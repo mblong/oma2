@@ -6,6 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define beep cbeep
+#define printf cprintf
+
+void beep();
+int printf(const char* format, ...);
+
+
 
 u3CalibrationInfo U3_CALIBRATION_INFO_DEFAULT = {
     3,

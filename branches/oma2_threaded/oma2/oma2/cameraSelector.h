@@ -32,9 +32,16 @@ int gige(int, char*);
 #endif
 
 #ifdef SERIAL_PORT
+#ifdef __cplusplus
+extern "C"{
+#endif
 int serial(int, char*);
 int serclo(int, char*);
 int open_serial_port(char* dev_name);
+#ifdef __cplusplus
+}
+#endif
+
 #endif
 
 #ifdef LJU3

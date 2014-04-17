@@ -39,7 +39,7 @@
 		DB35126018F0B8AE00202FFC /* macImageSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB35125F18F0B8AE00202FFC /* macImageSupport.mm */; };
 		DB35126118F0B8AE00202FFC /* macImageSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB35125F18F0B8AE00202FFC /* macImageSupport.mm */; };
 		DB371F7918469FE400265D79 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
-		DB3E355D18E6030300381607 /* serial.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB3E355C18E6030300381607 /* serial.mm */; };
+		DB3E355D18E6030300381607 /* serial.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3E355C18E6030300381607 /* serial.c */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
 		DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB57E31818F58D7900FA4D29 /* sbig.mm */; };
@@ -203,7 +203,7 @@
 		DB2E76B8152611BD004B6502 /* ImageBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBitmap.h; sourceTree = "<group>"; };
 		DB35125F18F0B8AE00202FFC /* macImageSupport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = macImageSupport.mm; sourceTree = "<group>"; };
 		DB35126218F0BACF00202FFC /* macImageSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macImageSupport.h; sourceTree = "<group>"; };
-		DB3E355C18E6030300381607 /* serial.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = serial.mm; sourceTree = "<group>"; };
+		DB3E355C18E6030300381607 /* serial.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = serial.c; sourceTree = "<group>"; };
 		DB4329B417EF13E900A51802 /* gluedCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gluedCommands.h; sourceTree = "<group>"; };
 		DB4329B517EF13E900A51802 /* gluedCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gluedCommands.mm; sourceTree = "<group>"; };
 		DB4E036D1835272400250EA4 /* dofft.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dofft.mm; sourceTree = "<group>"; };
@@ -380,7 +380,7 @@
 				DBBCFA2518E33D8600FEE3F6 /* gige.mm */,
 				DBBCFA2718E33E5400FEE3F6 /* ImageLib.h */,
 				DBBCFA2818E33E5400FEE3F6 /* PvApi.h */,
-				DB3E355C18E6030300381607 /* serial.mm */,
+				DB3E355C18E6030300381607 /* serial.c */,
 				DB57E31818F58D7900FA4D29 /* sbig.mm */,
 				DB8C23F718FC2BA500969763 /* labjackU3.mm */,
 				DB8C23FF18FC32D500969763 /* u3.c */,
@@ -647,7 +647,7 @@
 				DB8A884718E3297E007C79AF /* DrawingWindowController.mm in Sources */,
 				DB8A884818E3297E007C79AF /* StatusController.mm in Sources */,
 				DB8A884918E3297E007C79AF /* AppController.mm in Sources */,
-				DB3E355D18E6030300381607 /* serial.mm in Sources */,
+				DB3E355D18E6030300381607 /* serial.c in Sources */,
 				DB8A884A18E3297E007C79AF /* PreferenceController.mm in Sources */,
 				DB8C23F918FC2FC100969763 /* labjackU3.mm in Sources */,
 				DB8A884B18E3297E007C79AF /* comdec.mm in Sources */,

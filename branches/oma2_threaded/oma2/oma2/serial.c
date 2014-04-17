@@ -10,7 +10,15 @@
 #ifdef SERIAL_PORT
 
 #include "oma2.h"
-#include "UI.h"
+#include <unistd.h>
+
+#define beep cbeep
+#define printf cprintf
+
+void beep();
+int printf(const char* format, ...);
+
+//#include "UI.h"
 
 
 // use unix terminal control routies
@@ -73,7 +81,8 @@ int serclo(int n, char* args)
 
 int serial(int n, char* args)
 {
-	unsigned long length,i;
+	long length,i;
+    
     //extern char cmnd[];
 	char buffer[ESTRING_LENGTH];
 	extern Variable user_variables[];
@@ -103,8 +112,8 @@ int serial(int n, char* args)
 	for(i=0;i<length;i++)buffer[i] &= 127;
 	while (length > 0){
 		buffer[length] = 0;
-		printf("%d characters returned",length);
-		pprintf("%s\n",buffer);
+		printf("%ld characters returned",length);
+		printf("%s\n",buffer);
 		strcpy(&user_variables[0].estring[0],buffer);
 		user_variables[0].is_float = -1;
 		length = read(serial_fd, buffer, ESTRING_LENGTH-1);
