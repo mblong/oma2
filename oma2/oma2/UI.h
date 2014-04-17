@@ -23,6 +23,12 @@
 #include "StatusController.h"
 #include "AppController.h"
 
+// these definitions allow C++ functions to be called from C
+
+extern "C" void cbeep();
+extern "C" int cprintf(const char* format, ...);
+extern "C" int cpprintf(const char* format, ...);
+
 // In this exceptional case, define external variable in this header file
 extern AppController *appController;
 extern StatusController *statusController;
