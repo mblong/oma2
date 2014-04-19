@@ -9,6 +9,7 @@
 #import "StatusController.h"
 #import "ImageBitmap.h"
 
+
 extern ImageBitmap iBitmap;
 extern oma2UIData  UIData;
 extern AppController *appController;
@@ -170,7 +171,7 @@ StatusController *statusController;
         [appController updateDataWindow];
         UIData.autoscale = saveAuatoscale;
         
-        //[self.window makeKeyAndOrderFront:self];
+        //[self.window makeKeyAndOrderFront:NULL];
     }
     //NSLog(@"minmaxinc: %d",MinMaxInc);
 }

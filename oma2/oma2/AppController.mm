@@ -604,7 +604,8 @@ extern oma2UIData UIData;
     // call this as needed when redisplaying the current image from events in the status window
     iBitmap = iBuffer;
     [[windowArray lastObject] updateImage];
-    [[windowArray lastObject] showWindow:self];
+    // this next is not needed?
+    //[[windowArray lastObject] showWindow:self];
 }
 
 -(void) eraseWindow:(int) n{
