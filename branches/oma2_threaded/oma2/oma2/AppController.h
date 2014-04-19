@@ -14,6 +14,9 @@
 
 #define WINDOW_OFFSET 20
 
+// width of the command window
+#define COMMANDWIDTH 600
+
 
 // function prototypes for UI independent routines that we need
 int comdec(char*);
