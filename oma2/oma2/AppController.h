@@ -16,6 +16,7 @@
 
 // width of the command window
 #define COMMANDWIDTH 600
+#define COMMANDHEIGHT 354
 
 
 // function prototypes for UI independent routines that we need

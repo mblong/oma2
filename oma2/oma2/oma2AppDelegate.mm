@@ -39,6 +39,15 @@ void setUpUIData();
         statusController = [[StatusController alloc] initWithWindowNibName: @"Status"];
     }
     [statusController showWindow:self];
+   
+    NSRect frame = [[NSScreen mainScreen] visibleFrame];
+    frame.origin.x += WINDOW_OFFSET;
+    frame.size.width = COMMANDWIDTH;
+    frame.size.height = COMMANDHEIGHT+TITLEBAR_HEIGHT;
+    
+    [[appController theWindow] setFrame:frame display:YES];
+
+    
     
     char text[NEW_PREFIX_CHPERLN];
     extern char applicationPath[];		// this is the path to the directory that the program is running from

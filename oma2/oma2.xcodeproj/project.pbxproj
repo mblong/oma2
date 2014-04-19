@@ -116,8 +116,8 @@
 		DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
 		DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DBBCFA3218E37FE100FEE3F6 /* libImagelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBCFA3018E37FE100FEE3F6 /* libImagelib.a */; };
-		DBBCFA3318E37FE100FEE3F6 /* libPvAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBCFA3118E37FE100FEE3F6 /* libPvAPI.a */; };
+		DBBCFA3218E37FE100FEE3F6 /* libImagelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBCFA3018E37FE100FEE3F6 /* libImagelib.a */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DBBCFA3318E37FE100FEE3F6 /* libPvAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBCFA3118E37FE100FEE3F6 /* libPvAPI.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DBBCFA3418E380B000FEE3F6 /* gige.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBBCFA2518E33D8600FEE3F6 /* gige.mm */; };
 		DBBD397D155AD06000D5B56B /* OMApalette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMApalette.pa1 */; };
 		DBBD3984155ADD5100D5B56B /* OMApalette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */; };
