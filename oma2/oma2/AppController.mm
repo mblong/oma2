@@ -41,6 +41,11 @@ extern oma2UIData UIData;
     screenRect = [mainScreen visibleFrame];
     window_placement.origin.x = screenRect.origin.x+WINDOW_OFFSET;
     window_placement.origin.y = screenRect.size.height;
+    NSPoint origin;
+    origin.x = window_placement.origin.x;
+    origin.y = 0;
+    [theWindow setFrameOrigin:origin];
+    
     wraps = 1;
     
     windowArray = [[NSMutableArray alloc] initWithCapacity:10];
@@ -48,7 +53,7 @@ extern oma2UIData UIData;
     theCommands.automaticQuoteSubstitutionEnabled = NO;
     theCommands.enabledTextCheckingTypes = 0;
     
-    [theWindow setLevel: kCGMainMenuWindowLevelKey];    // data windows won't cover this'
+    //[theWindow setLevel: kCGMainMenuWindowLevelKey];    // data windows won't cover this'
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidBecomeKey:) name:NSWindowDidBecomeKeyNotification object:[self theWindow]];
 

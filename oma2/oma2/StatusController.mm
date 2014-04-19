@@ -67,7 +67,7 @@ StatusController *statusController;
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     //[PaletteBox setImage:[NSImage imageNamed:@"pal4.jpg"]];
     [self updatePaletteBox];
-    [self.window setLevel: kCGMainMenuWindowLevelKey];
+    //[self.window setLevel: kCGMainMenuWindowLevelKey];
 }
 
 - (void) awakeFromNib{
@@ -75,6 +75,12 @@ StatusController *statusController;
    
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",1000.]];
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",0.]];
+    NSRect screenRect = [[NSScreen mainScreen] visibleFrame];
+    NSPoint origin;
+    origin.x = screenRect.origin.x+2*WINDOW_OFFSET+COMMANDWIDTH;
+    origin.y = 0;
+    [self.window setFrameOrigin:origin];
+
 }
 
 - (void) updatePaletteBox{
