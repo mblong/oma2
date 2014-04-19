@@ -35,7 +35,7 @@ extern oma2UIData UIData;
     // this global lets the UI independent code get in touch with us
     // see definitions in UI.h -- these defines are used in the UI independent part of the code
     appController = self;
-    [self appendText: @"OMA2>"];
+    //[self appendText: @"OMA2>"];
     
     NSScreen *mainScreen = [NSScreen mainScreen];
     screenRect = [mainScreen visibleFrame];

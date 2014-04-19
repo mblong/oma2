@@ -47,6 +47,8 @@ void setUpUIData();
     
     [[appController theWindow] setFrame:frame display:YES];
     [[appController theWindow] makeKeyAndOrderFront:NULL];
+    [[appController theWindow] makeFirstResponder:[appController theCommands]];
+    [appController appendText: @"OMA2>"];
     
     
     char text[NEW_PREFIX_CHPERLN];
