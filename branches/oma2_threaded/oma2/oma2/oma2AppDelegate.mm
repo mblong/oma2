@@ -46,7 +46,7 @@ void setUpUIData();
     frame.size.height = COMMANDHEIGHT+TITLEBAR_HEIGHT;
     
     [[appController theWindow] setFrame:frame display:YES];
-
+    [[appController theWindow] makeKeyAndOrderFront:NULL];
     
     
     char text[NEW_PREFIX_CHPERLN];
