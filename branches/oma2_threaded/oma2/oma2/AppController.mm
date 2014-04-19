@@ -41,10 +41,6 @@ extern oma2UIData UIData;
     screenRect = [mainScreen visibleFrame];
     window_placement.origin.x = screenRect.origin.x+WINDOW_OFFSET;
     window_placement.origin.y = screenRect.size.height;
-    NSPoint origin;
-    origin.x = window_placement.origin.x;
-    origin.y = 0;
-    [theWindow setFrameOrigin:origin];
     
     wraps = 1;
     
