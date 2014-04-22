@@ -787,7 +787,7 @@ void CameraSnap(tCamera* Camera, int* time_, int *fcount, int* frate, int* label
                     for(int k=0;k<specs[COLS]; k++)
                         iBuffer.setpix(i,k,*(ptr++));
                 }
-                display(0,(char*)"GigE");
+                //display(0,(char*)"GigE");
                 
                 //If the camera crashes, try to remove the timestamp calculation.
                 
