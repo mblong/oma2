@@ -125,6 +125,8 @@
 		DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
 		DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
+		DBF879C21906C13F006C5872 /* gphotoCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF879C11906C13F006C5872 /* gphotoCommands.mm */; };
+		DBF879C41906C18D006C5872 /* gphotoFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = DBF879C31906C18D006C5872 /* gphotoFunctions.c */; };
 		DBFCF5EB18FC3EEF00956047 /* u3.c in Sources */ = {isa = PBXBuildFile; fileRef = DB8C23FF18FC32D500969763 /* u3.c */; };
 /* End PBXBuildFile section */
 
@@ -253,6 +255,9 @@
 		DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatusDrop.mm; sourceTree = "<group>"; };
 		DBC81582153DFBB7002BEFD4 /* UI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UI.mm; sourceTree = "<group>"; };
 		DBF08DE2159D63980099CB4C /* c-box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "c-box.jpg"; sourceTree = "<group>"; };
+		DBF879C11906C13F006C5872 /* gphotoCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gphotoCommands.mm; sourceTree = "<group>"; };
+		DBF879C31906C18D006C5872 /* gphotoFunctions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gphotoFunctions.c; sourceTree = "<group>"; };
+		DBF879C51906C6FC006C5872 /* gphotoFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gphotoFunctions.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -381,6 +386,9 @@
 				DBBCFA2718E33E5400FEE3F6 /* ImageLib.h */,
 				DBBCFA2818E33E5400FEE3F6 /* PvApi.h */,
 				DB3E355C18E6030300381607 /* serial.c */,
+				DBF879C11906C13F006C5872 /* gphotoCommands.mm */,
+				DBF879C31906C18D006C5872 /* gphotoFunctions.c */,
+				DBF879C51906C6FC006C5872 /* gphotoFunctions.h */,
 				DB57E31818F58D7900FA4D29 /* sbig.mm */,
 				DB8C23F718FC2BA500969763 /* labjackU3.mm */,
 				DB8C23FF18FC32D500969763 /* u3.c */,
@@ -665,6 +673,8 @@
 				DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */,
 				DB8A885518E3297E007C79AF /* StatusDrop.mm in Sources */,
 				DB8A885618E3297E007C79AF /* UI.mm in Sources */,
+				DBF879C41906C18D006C5872 /* gphotoFunctions.c in Sources */,
+				DBF879C21906C13F006C5872 /* gphotoCommands.mm in Sources */,
 				DB8A885718E3297E007C79AF /* DataView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -822,21 +832,23 @@
 					"$(SRCROOT)/**",
 					"$(PROJECT_DIR)",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"$(SRCROOT)/**",
-				);
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2cam-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/opt/local/include,
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/oma2cam-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
 					"$(PROJECT_DIR)/oma2",
-					/usr/local/lib,
-					/opt/local/lib,
+					"/usr/local/lib/**",
+					"/opt/local/lib/**",
 				);
+				OTHER_LDFLAGS = "-lgphoto2";
 				PRODUCT_NAME = oma2cam;
 				WRAPPER_EXTENSION = app;
 			};
@@ -855,14 +867,20 @@
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2cam-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/opt/local/include,
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/oma2cam-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
 					"$(PROJECT_DIR)/oma2",
-					/usr/local/lib,
-					/opt/local/lib,
+					"/usr/local/lib/**",
+					"/opt/local/lib/**",
 				);
+				OTHER_LDFLAGS = "-lgphoto2";
 				PRODUCT_NAME = oma2cam;
 				WRAPPER_EXTENSION = app;
 			};

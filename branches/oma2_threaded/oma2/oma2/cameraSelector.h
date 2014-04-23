@@ -13,6 +13,7 @@
 
 #define GIGE_
 #define SBIG
+#define GPHOTO
 
 // end of camera selection section
 
