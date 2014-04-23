@@ -51,7 +51,14 @@ ComDef   commands[] =    {
     {{"CREATEFILE     "},	createfile_c},
     {{"CONCATFILE     "},	concatfile_c},
     {{"CLOSEFILE      "},	closefile_c},
-
+#ifdef GPHOTO
+    {{"CAPTURE        "},	capture},
+    {{"CAMLISTSETTINGS"},	camlistsettings},
+    {{"CAMEXPOSE      "},	camexpose},
+    {{"CAMGETSETTING  "},	camgetsetting},
+    {{"CAMSETSETTING  "},	camsetsetting},
+#endif
+    
     {{"DISPLAY        "},	display},
     {{"DMACRO         "},	defmac},
     {{"DMNMX          "},	dmnmx},
