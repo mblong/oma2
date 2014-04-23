@@ -35,6 +35,13 @@ int dout(int,char*);
 int aout(int,char*);
 #endif
 
+#ifdef GPHOTO
+int capture(int n, char* args);
+int camlistsettings(int n, char* args);
+int camexpose(int n, char* args);
+int camgetsetting(int n, char* args);
+int camsetsetting(int n, char* args);
+#endif
 
 
 // function prototypes for routines in comdec.cpp

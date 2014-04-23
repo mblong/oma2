@@ -25,6 +25,13 @@
 
 #include <gphoto2/gphoto2.h>
 
+#define beep cbeep
+#define printf cprintf
+
+void beep();
+int printf(const char* format, ...);
+
+
 //#include "impdefs.h"
 
 //#include "gp-params.h"
