@@ -19,6 +19,6 @@
 -(void) appendText:(NSString *) string;
 -(void) appendCText:(char *) string;
 -(void) textDidChange:(NSNotification *) pNotify;
-
+-(void) initTabs;
 
 @end

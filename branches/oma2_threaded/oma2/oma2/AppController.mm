@@ -48,6 +48,7 @@ extern oma2UIData UIData;
     
     theCommands.automaticQuoteSubstitutionEnabled = NO;
     theCommands.enabledTextCheckingTypes = 0;
+    [theCommands    initTabs];
     
     //[theWindow setLevel: kCGMainMenuWindowLevelKey];    // data windows won't cover this'
     

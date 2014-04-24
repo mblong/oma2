@@ -20,13 +20,71 @@ extern AppController* appController;
 
 @synthesize lastReturn;
 
-- (id)initWithFrame:(NSRect)frame
+- (id)initWithFrame:(NSRect)frame       // this never gets called
 {
     self = [super initWithFrame:frame];
     if (self) {
+        // three ways found on the internet to set tabs -- maybe all work; I just implemented the last one
+        //first one
+        /*
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        [style setDefaultTabInterval:36.];
+        [style setTabStops:[NSArray array]];
+        [self setDefaultParagraphStyle:style];
+        [self setTypingAttributes:[NSDictionary dictionaryWithObject:style forKey:style]];
+        */
+        // second one
+        /*
+        int cnt;
+        int numStops = 20;
+        int tabInterval = 40;
+        NSTextTab *tabStop;
+        
+        NSMutableDictionary *attrs = [[NSMutableDictionary alloc] init];
+        //attributes for attributed String of TextView
+        
+        NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
+        
+        // This first clears all tab stops, then adds tab stops, at desired intervals...
+        [paraStyle setTabStops:[NSArray array]];
+        for (cnt = 1; cnt <= numStops; cnt++) {
+            tabStop = [[NSTextTab alloc] initWithType:NSLeftTabStopType location: tabInterval * (cnt)];
+            [paraStyle addTabStop:tabStop];
+        }
+        
+        [attrs setObject:paraStyle forKey:NSParagraphStyleAttributeName];
+        
+        [[self textStorage] addAttributes:attrs range:NSMakeRange(0, [[[self textStorage] string] length])];
+         */
         // Initialization code here.
     }
     return self;
+}
+
+-(void) initTabs {
+        [[self textStorage] setAttributedString:[self textViewTabFormatter:@" "]];
+}
+
+-(NSMutableAttributedString *) textViewTabFormatter:(NSString *)aString
+{
+    float columnWidthInInches = .4f;
+    float pointsPerInch = 72.0f;
+    
+    NSMutableArray * tabArray = [NSMutableArray arrayWithCapacity:25];
+    
+    for(NSInteger tabCounter = 0; tabCounter < 25; tabCounter++)
+    {
+        NSTextTab * aTab = [[NSTextTab alloc] initWithType:NSLeftTabStopType location:(tabCounter * columnWidthInInches * pointsPerInch)];
+        [tabArray addObject:aTab];
+    }
+    
+    NSMutableParagraphStyle * aMutableParagraphStyle = [[NSParagraphStyle defaultParagraphStyle]mutableCopy];
+    [aMutableParagraphStyle setTabStops:tabArray];
+    
+    NSMutableAttributedString * attributedString = [[NSMutableAttributedString alloc] initWithString:aString];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:aMutableParagraphStyle range:NSMakeRange(0,[aString length])];
+    
+    return attributedString;
 }
 
 - (void)drawRect:(NSRect)dirtyRect
