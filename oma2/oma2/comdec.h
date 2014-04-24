@@ -63,6 +63,7 @@ int endifcmnd(int, char*);
 int execut(int, char*);
 int help(int n, char* args);
 int ifcmnd(int, char*);
+int ifnotcmnd(int, char*);
 int lmacro(int, char*);
 int loop(int, char*);
 int loopend(int, char*);

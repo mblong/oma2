@@ -530,6 +530,7 @@ extern oma2UIData UIData;
     
     if ([windowArray count] == MAX_WINDOW_COUNT) {
         [self eraseWindow:0];
+        wraps = 1;
     }
     
     // figure out where to place image

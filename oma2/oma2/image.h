@@ -90,6 +90,7 @@ public:
     char* getunit_text();       ///< returns a copy of the image ruler units
     char* getComment();        ///< returns a copy of the comment buffer
     void setComment(char*,int);        ///< Loads the comment buffer with the specified number of characters
+    void setRuler(float rulerScale, char* unit_text); ///< Set scale factor and units of a ruler for the current image
     
     DATAWORD getpix(int,int);     ///< get a pixel value at the specified row and column
     DATAWORD getpix(float,float); ///< get an interpoated pixel value at the specified fractional row and column
