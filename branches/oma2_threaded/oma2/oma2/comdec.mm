@@ -109,6 +109,7 @@ ComDef   commands[] =    {
     {{"HELP           "},	help},
         
     {{"IF             "},	ifcmnd},
+    {{"IFNOT          "},	ifnotcmnd},
     {{"INVERT         "},	invert_c},
     {{"INTEGRATE      "},	integrate_c},
     {{"INTFILL        "},	intfill_c},
@@ -156,6 +157,9 @@ ComDef   commands[] =    {
     {{"RAMP           "},	ramp_c},
     {{"RNDOFF         "},	roundoff_c},
     {{"RNDUP          "},	roundUp_c},
+    {{"RULER         "},	ruler_c},
+    
+    
     {{"SAVEFILE       "},	savefile_c},
     {{"SAVSETTINGS    "},	savsettings},
     {{"SATIFF         "},	satiff_c},
@@ -1959,6 +1963,56 @@ int ifcmnd(int n, char* args)
 		if(if_condition[ifdepth-1]){
 			if_condition_met = this_test;
 		}	
+	}
+    
+	if_condition[ifdepth] = this_test;
+	ifdepth++;
+    if(ifdepth >= NESTDEPTH){
+        beep();
+        printf("IF buffer overflow.\n");
+        return -1;
+    }
+	//printf("if condition: %d; depth %d\n",if_condition_met,ifdepth);
+	return 0;
+    
+}
+
+int ifnotcmnd(int n, char* args)
+{
+	extern int macflag,exflag;
+	Expression_Element ex_result;
+	int this_test,i,j;
+	
+	if( (macflag == 0) && (exflag == 0)) {
+		beep();
+		printf("IF must be within a Macro.\n");
+		return -1;
+	}
+	
+	// get rid of spaces in the expression -- we just don't need them
+	for(i=0; i< strlen(args); i++){
+		if(args[i] == ' '){
+			j= i;
+			while(args[j] != 0){
+				args[j] = args[j+1];
+				j++;
+			}
+			i--;	// maybe we have multiple spaces
+		}
+	}
+	
+	ex_result = evaluate_string(args);
+	
+	if( ex_result.ivalue == 0){	// IF condition is NOT met
+		this_test = 1;
+	} else {
+		this_test = 0;
+	}
+	if(ifdepth == 0) if_condition_met = this_test;
+	else{	// we're nested -- check to make sure that one above is true
+		if(if_condition[ifdepth-1]){
+			if_condition_met = this_test;
+		}
 	}
     
 	if_condition[ifdepth] = this_test;

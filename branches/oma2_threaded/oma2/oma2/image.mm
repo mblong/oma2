@@ -832,9 +832,20 @@ void Image::setspecs(int* newspecs){
             return;
         }
     }
+    if (specs[HAS_RULER] == 1 && newspecs[HAS_RULER] == 0) {
+        // delete an existing ruler
+        values[RULER_SCALE] = 1.0;
+        unit_text[0] = 0;
+    }
     for(int i=0; i<NSPECS; i++){
         specs[i] = newspecs[i];
     }
+}
+
+void Image::setRuler(float rulerScale, char* new_unit_text){
+    specs[HAS_RULER] = 1;
+    values[RULER_SCALE] = rulerScale;
+    strcpy(unit_text, new_unit_text);
 }
 
 void Image::copyABD(Image im){    // copy All But Data from one image to another
