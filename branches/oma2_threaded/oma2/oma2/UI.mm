@@ -66,6 +66,8 @@ void update_UI(){
 }
 
 BOOL dropped_file(char* extension, char* name){
+    extern int windowNameMemory;
+    extern char windowName[];
     
     //printf("File ext is: %s\n",extension);
     printf("File name is: %s\n",name);
@@ -86,11 +88,11 @@ BOOL dropped_file(char* extension, char* name){
         iBuffer.getmaxx();
         update_UI();
 
-        display(0,(char*)"Data");
+        display(0,(char*)"");
         [appController appendText: @"OMA2>"];
         return YES;
     }
-    if(strcmp(extension, "MAC")==0){
+    if(strcmp(extension, "MAC")==0 || strcmp(extension, "O2M")==0){
         extern char	macbuf[];
         int fd,nread,i;
         fd = open(name,READMODE);

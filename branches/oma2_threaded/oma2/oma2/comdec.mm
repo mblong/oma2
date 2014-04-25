@@ -295,6 +295,7 @@ int comdec(char* cmnd)
     //extern char* exbuf[];     /* the execute buffer */
     char  txtbuf[CHPERLN];		// temp text buffer
     extern int maccount,macflag,macptr,macval,macincrement;
+    extern int windowNameMemory;
     //extern int exflag,exptr[],exval[];
     
     int     (*fnc)(int,char*);
@@ -550,7 +551,7 @@ int comdec(char* cmnd)
             break;
         }
     }
-    
+    windowNameMemory--;
     return command_return;
 }
 

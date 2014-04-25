@@ -161,6 +161,21 @@ void swap_bytes_routine(char* co, int num,int nb)
 
 /*____________________________________________________________________________*/
 
+void trimName(char* lastname)
+{
+	long length,i,j;
+	length = strlen(lastname);
+	for(i=length-1; i>0; i--){
+		if(lastname[i] == '/')
+			break;
+	}
+	if(i <= 2) return;	// nothing to be done here -- the name is short anyway
+	strcpy(lastname, "...");
+	for(j=0; j<length-i;j++){
+		lastname[j+3] = lastname[j+i+1];
+	}
+}
+
 
 
 char* fullname(char* fnam,int  type)

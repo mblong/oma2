@@ -98,7 +98,22 @@ CYL2
 CLEARBADPIX
  	Sets pixels tagged as bad to the value of their 8 nearest neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands.
 
-DISPLAY [string] 
+CAPTURE file_name
+	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses libgphoto2 calls to capture and download an image from a digital camera that is recognized by libgphoto2 (and supports capture).
+
+CAMLISTSETTINGS
+	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to list the settings of the camera that can be set, along with their current values.
+
+CAMGETSETTING  name
+	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to list the current value of the specified setting, along with the allowed values for resetting it.
+
+CAMSETSETTING  name  new_setting_value
+	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to reset the value of the specified setting to the new value. For a listing of valid setting values, use the GETCAMSETTING command.
+
+CAMCLOSE
+	[This command is only available in oma2cam. libgphoto2 must be installed.] Disconnects from the digital camera accessed through gphoto2.
+
+DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
 
 DMACRO [n] [command]
