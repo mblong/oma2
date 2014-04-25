@@ -26,6 +26,9 @@ char applicationPath[CHPERLN];	// this is the path to the directory that the pro
 char contentsPath[CHPERLN];		// this is the path to the Contents directory where things like palettes are stored
 float windowScaleFactor = 1.;
 
+char windowName[CHPERLN];
+int windowNameMemory = 0;
+
 
 
 //extern "C" int get_byte_swap_value(short);
@@ -83,6 +86,10 @@ Image::Image(char* filename, int kindOfName)
     int fd,color;
     
     *this = Image();
+    
+    strncpy(windowName, filename, CHPERLN);
+    trimName(windowName);
+    windowNameMemory = 2;
     
     // default specs set -- now decide what kind of file we are opening
     if (strncmp(&filename[strlen(filename)-4],".nef",4) == 0 ||

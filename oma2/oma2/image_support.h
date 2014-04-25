@@ -15,6 +15,7 @@ int two_to_four(DATAWORD*,int,TWOBYTE);
 int get_byte_swap_value(short);
 void swap_bytes_routine(char* co, int num, int nb);
 char* fullname(char*,int);
+void trimName(char*);
 int loadprefs(char*);
 int saveprefs(char*);
 int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* );

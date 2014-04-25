@@ -521,6 +521,8 @@ extern oma2UIData UIData;
     // come here from the DISPLAY command
     //extern int newWindowFlag;
     extern float windowScaleFactor;
+    extern int windowNameMemory;
+    extern char windowName[];
     
     if (!UIData.newwindowflag && [windowArray count]) {    // put the current bitmap in the last window if there is one
         [[windowArray lastObject] updateImage];
@@ -588,9 +590,14 @@ extern oma2UIData UIData;
     // name the window appropriately
     if(*windowname){
         NSString *text  = [[NSString alloc] initWithCString:windowname encoding:NSASCIIStringEncoding];
-        [dataWindowController setWindowName:text] ; 
+        [dataWindowController setWindowName:text] ;
     } else{
-         [dataWindowController setWindowName:@"Data"] ; 
+        if (windowNameMemory > 0) {
+            NSString *text  = [[NSString alloc] initWithCString:windowName encoding:NSASCIIStringEncoding];
+            [dataWindowController setWindowName:text] ;
+        } else {
+            [dataWindowController setWindowName:@"Data"] ;
+        }
     }
     
     // display the data
