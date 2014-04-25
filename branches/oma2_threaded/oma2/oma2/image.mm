@@ -100,6 +100,7 @@ Image::Image(char* filename, int kindOfName)
             color = dcrawGlue(fullname(filename,RAW_DATA),-1,this);
         }
         if(color < 0) error = FILE_ERR;
+        if (error) windowNameMemory = 0;
         return;
     }
 
@@ -112,7 +113,7 @@ Image::Image(char* filename, int kindOfName)
             //error = read_jpeg(fullname(filename,RAW_DATA),-1,this);
             error = readJpeg(fullname(filename,RAW_DATA),this);
         }
-        
+        if (error) windowNameMemory = 0;
         return;
     }
 
@@ -125,7 +126,7 @@ Image::Image(char* filename, int kindOfName)
         } else {
             error = readTiff(fullname(filename,RAW_DATA),this);
         }
-        
+        if (error) windowNameMemory = 0;
         return;
     }
 
@@ -136,7 +137,7 @@ Image::Image(char* filename, int kindOfName)
         } else {
             error = readHDR(fullname(filename,RAW_DATA),this);
         }
-        
+        if (error) windowNameMemory = 0;
         return;
     }
 
@@ -165,6 +166,7 @@ Image::Image(char* filename, int kindOfName)
     
     if(fd == -1) {
         error = FILE_ERR;
+        windowNameMemory = 0;
         return;
     }
     static int newFormat = 0;
@@ -203,6 +205,7 @@ Image::Image(char* filename, int kindOfName)
                 specs[ROWS]=specs[COLS]=0;
                 error = MEM_ERR;
                 close(fd);
+                windowNameMemory = 0;
                 return;
             }
         } else {
@@ -234,6 +237,7 @@ Image::Image(char* filename, int kindOfName)
             error = FILE_ERR;
         }
         if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN) close(fd);
+        if (error) windowNameMemory = 0;
         return;
     }
     
@@ -245,6 +249,7 @@ Image::Image(char* filename, int kindOfName)
     if(data == 0){
         specs[ROWS]=specs[COLS]=0;
         error = MEM_ERR;
+        windowNameMemory = 0;
         return;
     }
     // in old oma files, there is an 80 element data offset -- skip over this
@@ -286,6 +291,7 @@ Image::Image(char* filename, int kindOfName)
     }
     
     if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN) close(fd);
+    if (error) windowNameMemory = 0;
     return;
 }
 
@@ -608,6 +614,12 @@ void Image::saveFile(char* name, int kindOfName){
     int nvalues = NVALUES;
     int nrulerchar = NRULERCHAR;
     int fd;
+    
+    strncpy(windowName, name, CHPERLN);
+    trimName(windowName);
+    windowNameMemory = 2;
+
+    
     switch (kindOfName) {
         case LONG_NAME:
             fd = open(name,WMODE);
@@ -632,6 +644,7 @@ void Image::saveFile(char* name, int kindOfName){
     if(fd == -1) {
 		beep();
 		error = FILE_ERR;
+        windowNameMemory = 0;
         return;
 	}
     if (kindOfName != IS_OPEN) {
