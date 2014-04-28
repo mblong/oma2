@@ -62,7 +62,8 @@ extern AppController* appController;
 }
 
 -(void) initTabs {
-        [[self textStorage] setAttributedString:[self textViewTabFormatter:@" "]];
+    [[self textStorage] setAttributedString:[self textViewTabFormatter:@"O"]];
+    lastReturn = 1;
 }
 
 -(NSMutableAttributedString *) textViewTabFormatter:(NSString *)aString
