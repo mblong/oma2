@@ -165,6 +165,13 @@ DX n
 DY n
 	Specifies the number of detector pixels (not display screen pixels) to be grouped (or binned) in the Y direction.
 
+DOC2RGB c1 c2 c3 c4
+	Treat the image in the current image buffer as a raw document (output from the dcraw routine with options -d or -D selected) and convert it to an RGB image. This is assumed to have a 2 x 2 color matrix of R G B values in a Bayer pattern. c1 - c4 have values 0, 1 or 2, corresponding to red, green, and blue. For example, if Bayer Matrix is:
+	G B
+	R G
+	c1 - c4 should be 1 2 0 1
+	Appropriate values depend on the specific camera. (See the output from the GET command when reading raw files.)
+
 DOUTPUT channel state
 	Sets the specified digital output channel on a Labjack U3 to the specified state (0 or 1). Channel must be in the range 4-7. [oma2cam only]
 

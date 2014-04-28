@@ -3101,3 +3101,73 @@ int ruler_c(int n, char* args)
 }
 
 /* ********** */
+
+/*
+ DOC2RGB c1 c2 c3 c4
+ Treat the image in the current image buffer as a raw document
+ (output from the dcraw routine with options -d or -D selected)
+ and convert it to an RGB image. This is assumed to have a 2 x 2 color matrix
+ of R G B values in a Bayer pattern.
+ c1 - c4 have values 0, 1 or 2, corresponding to red, green, and blue. For example if Bayer Matrix is
+ G B
+ R G
+ c1 - c4 should be 1 2 0 1
+ Appropriate values depend on the specific camera. (See the output from the GETRGB command.)
+ */
+
+int doc2rgb_c(int n, char* args){
+    
+	int bayer[2][2] = {{ 0 }};
+    
+	int narg = sscanf(args,"%d %d %d %d",&bayer[0][0],&bayer[0][1],&bayer[1][0],&bayer[1][1]);
+	if(narg != 4){
+		beep();
+		printf("4 arguments needed. E.g., 1 2 0 1 for GBRG\n");
+		return CMND_ERR;
+	}
+    int* specs = iBuffer.getspecs();
+    
+    int newrow = specs[ROWS]/2;
+	int newcol = specs[COLS]/2;
+	int row,col;
+	   
+    Image red(newrow,newcol),green(newrow,newcol),blue(newrow,newcol);
+    
+	for (row=0; row < newrow*2; row++) {
+		//if( row&1)
+			//pt_green -= nchan;
+		for (col=0; col < newcol*2; col++){
+			switch (bayer[row&1][col&1]){
+				case 0:		// red
+					red.setpix(row/2,col/2,iBuffer.getpix(row,col));   //*datp++;
+					break;
+				case 1:		// green
+					if(row&1){
+						green.setpix(row/2,col/2,(green.getpix(row/2,col/2)+iBuffer.getpix(row,col))/2.);
+					} else {
+						green.setpix(row/2,col/2,iBuffer.getpix(row,col));// =  *datp++;
+					}
+					break;
+				case 2:		// blue
+					blue.setpix(row/2,col/2,iBuffer.getpix(row,col));// *pt_blue++ =  *datp++;
+					break;
+			}
+		}
+	    //if(header[NCHAN]&1) datp++;	// there may be an odd number of columns
+	}
+    
+    red.composite(green);
+    red.composite(blue);
+    
+    iBuffer.free();     // release the old data
+    iBuffer = red;   // this is the new data
+    specs[IS_COLOR] = 1;
+    specs[ROWS] = newrow*3;
+    specs[COLS] = newcol;
+    iBuffer.setspecs(specs);
+    free(specs);
+    iBuffer.getmaxx();
+    update_UI();
+    return NO_ERR;
+}
+
