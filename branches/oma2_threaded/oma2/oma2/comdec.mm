@@ -70,6 +70,7 @@ ComDef   commands[] =    {
     {{"DELAY          "},	delay_c},
     {{"DX             "},	dx_c},
     {{"DY             "},	dy_c},
+    {{"DOC2RGB        "},	doc2rgb_c},
 #ifdef LJU3
     {{"DOUTPUT        "},   dout},
 #endif
