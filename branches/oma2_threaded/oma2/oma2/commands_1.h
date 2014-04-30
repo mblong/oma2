@@ -133,6 +133,8 @@ int sysCommand_c(int,char*);
 
 int tsmooth_c(int,char*);
 
+int uprefix_c(int n,char* args);
+
 int writebad_c(int,char*);
 
 int x0_c(int n,char* args);

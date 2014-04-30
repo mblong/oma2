@@ -181,8 +181,13 @@ ComDef   commands[] =    {
     {{"SUBFILE        "},	subfile_c},
     {{"SUBTMPIMAGE    "},	subtmp_c},
     {{"SHELL          "},	sysCommand_c},
+    
     {{"TSMOOTH        "},	tsmooth_c},
+    
+    {{"UPREFIX       "},	uprefix_c},
+    
     {{"VARIABLES      "},	variab},
+    
     {{"WRITEBADPIX    "},	writebad_c},
 #ifdef LJU3
     {{"WAITHI         "},   waithi},

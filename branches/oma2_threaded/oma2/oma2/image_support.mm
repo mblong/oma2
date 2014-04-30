@@ -181,7 +181,7 @@ void trimName(char* lastname)
 char* fullname(char* fnam,int  type)
 {
 
-    static int normal_prefix = 1;                   // this used for UPREFIX command
+    extern int normal_prefix;                   // this used for UPREFIX command
     
 	char const *prefixbuf;		
 	char const *suffixbuf;
