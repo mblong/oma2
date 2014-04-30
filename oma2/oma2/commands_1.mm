@@ -3171,3 +3171,30 @@ int doc2rgb_c(int n, char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
+int	normal_prefix = 1;
+
+int uprefix_c(int n,char* args)		/* force the use of a particular prefix andsuffix */
+{
+    
+	switch( *args ) {
+		case 'G':
+		case 'g':
+			printf("Using 'Get File' Prefixes.\n");
+			normal_prefix = 0;
+			break;
+		case 'S':
+		case 's':
+			printf("Using 'Save File' Prefixes.\n");
+			normal_prefix = -1;
+			break;
+		default:
+			printf("Using Default Prefixes.\n");
+			normal_prefix = 1;
+			break;
+	}
+	return 0;
+    
+}
+

@@ -485,6 +485,12 @@ SUBTMPIMAGE name
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.
 
+UPREFX type 
+	Force use of prefix/suffix specified by 'type.' Possible cases for 'type' include the following:
+	s   Use Save File prefix and suffix for both saving and getting files
+	g   Use Get File prefix and suffix for both saving and getting files
+	d   Use Default prefix and suffix
+
 VARIABLES
 	Lists currently defined variables and their values. Variables are defined using simple arithmetic expressions, such as
 	my_var = 10
