@@ -43,7 +43,7 @@ static ViEventType etype;
 
 //-----------------------------------------------------------------------------------
 
-extern char	   syncflag;
+char	   syncflag;
 int io_err = 0;
 
 
@@ -201,7 +201,7 @@ int star_send(char* string){
 
 	
 	status = viSetAttribute (instr, VI_ATTR_TMO_VALUE, 3000);		// 3 second timeout
-	status = viWrite (instr, (ViBuf)string, strlen(string), &writeCount);
+	status = viWrite (instr, (ViBuf)string, (ViUInt32)strlen(string), &writeCount);
 	if (status < VI_SUCCESS) {
 		printf("    Error writing to the device\n");
 		status = viClose(instr);
@@ -224,7 +224,7 @@ int set_star_param(char* cmd, int value)
 
 	sprintf(txt,"%s%d",cmd,value);
 	//printf("%s%d",cmd,value);
-	status = viWrite (instr, (ViBuf)txt, strlen(txt), &writeCount);
+	status = viWrite (instr, (ViBuf)txt, (ViUInt32)strlen(txt), &writeCount);
 	if (status < VI_SUCCESS) {
 		printf("    Error writing to the device\n");
 		status = viClose(instr);
@@ -269,17 +269,17 @@ int omaio(int code,int index, char* string)
 
 	static int bsize = 18000; /* Block size for data transfer */ 
 							  /* changed from 32000 (6-2) */
-	static char trq = 192;	  /* Device request to talk    */
-	static char ccdok = 32;	  	/* CC200 successful command code*/
-	static int recimageno;		/* incremented each time a new image is received */
+	//static char trq = 192;	  /* Device request to talk    */
+	//static char ccdok = 32;	  	/* CC200 successful command code*/
+	//static int recimageno;		/* incremented each time a new image is received */
 
 	
 	unsigned char wfm[1028];            /* for waveform received from scope   */
 	int checksum;						/* for checking whether data read from scope is garbage */
 	
 	
-	int i,j,k,l;
-	unsigned char spr;
+	int i,j,l;
+	//unsigned char spr;
 	char *pointer,ch;
 	short ccdheader[HEADERLENGTH] = {0};		/* the 80 word header from the ccd */
 	char name[8];						/* for various names */
@@ -287,7 +287,7 @@ int omaio(int code,int index, char* string)
 	int two_to_four(DATAWORD* dpt, int num, TWOBYTE scale);
 		
 	if(code != INIT && code != FORCE_INIT) {
-		if( (numdev == 0) ){
+		if( numdev == 0 ){
 			beep();
 			printf("Use CONECT First.\n");
 			return -1; 
@@ -348,7 +348,7 @@ int omaio(int code,int index, char* string)
 			*/
 			
 			// find GPIB resources
-		   status = viFindRsrc (defaultRM,"GPIB[0-9]*::?*INSTR", &findList, &numInstrs, instrDescriptor);
+		   status = viFindRsrc (defaultRM,(char*)"GPIB[0-9]*::?*INSTR", &findList, &numInstrs, instrDescriptor);
 		   if (status < VI_SUCCESS)
 		   {
 			  printf ("An error occurred while finding resources.\n");
@@ -382,7 +382,7 @@ int omaio(int code,int index, char* string)
 					strcpy(&instrDescriptorList[i][0],instrDescriptor);
 					status = viSetAttribute (instr, VI_ATTR_TMO_VALUE, 1000);		// 1 second timeout
 					strcpy(name,"ID?");
-					status = viWrite (instr, (ViBuf)name, strlen(name), &writeCount);
+					status = viWrite (instr, (ViBuf)name, (ViUInt32)strlen(name), &writeCount);
 					if (status < VI_SUCCESS) {
 						printf("    Error writing to the device\n");
 						status = viClose(instr);
@@ -392,8 +392,8 @@ int omaio(int code,int index, char* string)
 					if (status < VI_SUCCESS) {
 						// no response from the ID querry, look for specific cameras that we have
 						// first, the STAR 1
-						star_send("!A2");	// try to set and read the exposure time
-						star_send("@A");
+						star_send((char*)"!A2");	// try to set and read the exposure time
+						star_send((char*)"@A");
 						status = viRead (instr, wfm, 100, &retCount);
 						if (status < VI_SUCCESS) { // it's not a STAR 1
 								printf("    Error reading a response from the device\n");
@@ -438,11 +438,11 @@ int omaio(int code,int index, char* string)
 		case STAR_1:
 		
 			//omaio(RUN,0,0);				// first, reset the parameters
-			set_star_param("!D",header[NX0]);
-			set_star_param("!E",header[NY0]);
-			set_star_param("!F",header[NDX]*header[NCHAN]);
-			set_star_param("!G",header[NDY]*header[NTRAK]);
-			star_send(":S");
+			set_star_param((char*)"!D",header[NX0]);
+			set_star_param((char*)"!E",header[NY0]);
+			set_star_param((char*)"!F",header[NDX]*header[NCHAN]);
+			set_star_param((char*)"!G",header[NDY]*header[NTRAK]);
+			star_send((char*)":S");
 
 			for(j=0; j< HEADERLENGTH; j++)
 				*(datpt+j) = ccdheader[j];
@@ -451,7 +451,7 @@ int omaio(int code,int index, char* string)
 			pointer = (char*)(datpt+HEADERLENGTH/2);
 
 			strcpy(name,":J");
-			status = viWrite (instr, (ViBuf)name, strlen(name), &writeCount);
+			status = viWrite (instr, (ViBuf)name, (ViUInt32)strlen(name), &writeCount);
 			if (status < VI_SUCCESS) {
 				printf("    Error writing to the device\n");
 				status = viClose(instr);
@@ -530,7 +530,7 @@ int omaio(int code,int index, char* string)
 				//from 0-255      */
 			
 			//ibwrt(cam,"curve?",6L);		  /* tells scope that you want to read waveform */
-			star_send("curve?");
+			star_send((char*)"curve?");
 			status = viRead (instr, wfm, bsize, &retCount);
 			if (status < VI_SUCCESS) {
 				printf("    Error writing to the device\n");
@@ -592,11 +592,11 @@ int omaio(int code,int index, char* string)
 		
 		switch(detlist[dev]) {
 		case STAR_1:
-			set_star_param("!D",header[NX0]);
-			set_star_param("!E",header[NY0]);
-			set_star_param("!F",header[NDX]*header[NCHAN]);
-			set_star_param("!G",header[NDY]*header[NTRAK]);
-			star_send(":S");
+			set_star_param((char*)"!D",header[NX0]);
+			set_star_param((char*)"!E",header[NY0]);
+			set_star_param((char*)"!F",header[NDX]*header[NCHAN]);
+			set_star_param((char*)"!G",header[NDY]*header[NTRAK]);
+			star_send((char*)":S");
 			status = viClose(instr);
 			break;
 		

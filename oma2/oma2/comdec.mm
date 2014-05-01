@@ -180,6 +180,10 @@ ComDef   hardwareCommands[] =    {
     {{"AINPUT         "},   ain},
     {{"AOUTPUT        "},   aout},
 #endif
+    
+#ifdef VISA
+    {{"ASK            "},	ask},			/*  @gpib.c */
+#endif
 
 #ifdef GPHOTO
     {{"CAPTURE        "},	capture},
@@ -187,6 +191,10 @@ ComDef   hardwareCommands[] =    {
     {{"CAMEXPOSE      "},	camexpose},
     {{"CAMGETSETTING  "},	camgetsetting},
     {{"CAMSETSETTING  "},	camsetsetting},
+#endif
+
+#ifdef VISA
+    {{"CONECT         "},	conect},			/* @gpib.c */
 #endif
 
 #ifdef LJU3
@@ -197,10 +205,24 @@ ComDef   hardwareCommands[] =    {
     {{"GIGE           "},	gige},
 #endif
 
+#ifdef VISA
+    {{"GPIBDV         "},	gpibdv},			/* @gpib.c */
+#endif
+
+#ifdef VISA
+    {{"RECEIVE        "},	receiv},			/*  @gpib.c */
+    {{"RUN            "},	run},               /*  @gpib.c */
+#endif
+
 #ifdef SERIAL_PORT
     {{"SERIAL         "},	serial},
     {{"SERCLOSE       "},	serclo},
 #endif
+
+#ifdef VISA
+    {{"SEND           "},	send},			/*  @gpib.c */
+#endif
+
     
 #ifdef SBIG
     {{"SBIG           "},	sbig},

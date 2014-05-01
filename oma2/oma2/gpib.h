@@ -30,5 +30,7 @@
 
 int omaio(int code,int index, char* string);
 void waitreply(void);
+int star_send(char* string);
+int set_star_param(char* cmd, int value);
 
 #endif
