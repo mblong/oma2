@@ -106,6 +106,7 @@
 		DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
 		DBA3B5F716FC781300B7FF27 /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
+		DBA3CB871911985800AD10BC /* gpib.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA3CB851911985800AD10BC /* gpib.mm */; };
 		DBA96ABA1520C7090043754E /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
 		DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD5691802050F007F8801 /* DrawingView.mm */; };
 		DBABD56F180208E7007F8801 /* DrawingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD56E180208E7007F8801 /* DrawingWindowController.mm */; };
@@ -122,6 +123,7 @@
 		DBBD397D155AD06000D5B56B /* OMApalette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMApalette.pa1 */; };
 		DBBD3984155ADD5100D5B56B /* OMApalette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */; };
 		DBBD3985155ADD5100D5B56B /* OMApalette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */; };
+		DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC3F1FC19129FEF00AD7850 /* VISA.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
 		DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
@@ -215,6 +217,7 @@
 		DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SBIGUDrv.framework; sourceTree = "<group>"; };
 		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
 		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
+		DB6EDB2E1912A3C00032934F /* gpib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gpib.h; sourceTree = "<group>"; };
 		DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LibTiff_F.framework; sourceTree = "<group>"; };
 		DB6FF6FF18467F46002D728B /* tiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiff.h; sourceTree = "<group>"; };
 		DB6FF70018467F46002D728B /* tiffio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffio.h; sourceTree = "<group>"; };
@@ -230,6 +233,7 @@
 		DB9B2E43186731EC00EE4871 /* oma2Icons.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = oma2Icons.icns; sourceTree = "<group>"; };
 		DBA03741181704740042DF6F /* DrawingWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawingWindow.xib; sourceTree = "<group>"; };
 		DBA3B5F616FC781300B7FF27 /* oma2help.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = oma2help.txt; sourceTree = "<group>"; usesTabs = 1; };
+		DBA3CB851911985800AD10BC /* gpib.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gpib.mm; sourceTree = "<group>"; };
 		DBA96AB91520C7090043754E /* comdec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = comdec.mm; sourceTree = "<group>"; };
 		DBA96ABB1520C7820043754E /* oma2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oma2.h; sourceTree = "<group>"; };
 		DBA96ABC1520CA9C0043754E /* UI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
@@ -251,6 +255,7 @@
 		DBBD397C155AD06000D5B56B /* OMApalette.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette.pa1; sourceTree = "<group>"; };
 		DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette3.pa1; sourceTree = "<group>"; };
 		DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette2.pa1; sourceTree = "<group>"; };
+		DBC3F1FC19129FEF00AD7850 /* VISA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VISA.framework; sourceTree = "<group>"; };
 		DBC8157E153DCD54002BEFD4 /* StatusDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusDrop.h; sourceTree = "<group>"; };
 		DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatusDrop.mm; sourceTree = "<group>"; };
 		DBC81582153DFBB7002BEFD4 /* UI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UI.mm; sourceTree = "<group>"; };
@@ -280,6 +285,7 @@
 				DB8A885A18E3297E007C79AF /* LibTiff_F.framework in Frameworks */,
 				DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
+				DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */,
 				DBBCFA3218E37FE100FEE3F6 /* libImagelib.a in Frameworks */,
 				DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */,
 			);
@@ -325,6 +331,7 @@
 		DB0FC0241519183C008A9B54 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBC3F1FC19129FEF00AD7850 /* VISA.framework */,
 				DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */,
 				DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */,
 				DB0FC0251519183C008A9B54 /* AppKit.framework */,
@@ -382,6 +389,8 @@
 			isa = PBXGroup;
 			children = (
 				DB02914918E46C1F00F497FB /* cameraSelector.h */,
+				DBA3CB851911985800AD10BC /* gpib.mm */,
+				DB6EDB2E1912A3C00032934F /* gpib.h */,
 				DBBCFA2518E33D8600FEE3F6 /* gige.mm */,
 				DBBCFA2718E33E5400FEE3F6 /* ImageLib.h */,
 				DBBCFA2818E33E5400FEE3F6 /* PvApi.h */,
@@ -653,6 +662,7 @@
 				DB8A884618E3297E007C79AF /* CommandView.mm in Sources */,
 				DB35126118F0B8AE00202FFC /* macImageSupport.mm in Sources */,
 				DB8A884718E3297E007C79AF /* DrawingWindowController.mm in Sources */,
+				DBA3CB871911985800AD10BC /* gpib.mm in Sources */,
 				DB8A884818E3297E007C79AF /* StatusController.mm in Sources */,
 				DB8A884918E3297E007C79AF /* AppController.mm in Sources */,
 				DB3E355D18E6030300381607 /* serial.c in Sources */,
