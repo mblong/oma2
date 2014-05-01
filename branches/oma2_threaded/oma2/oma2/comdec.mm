@@ -23,13 +23,7 @@ ComDef   commands[] =    {
     {{"ACDELETE       "},   acdelete_c},
     {{"ACADD          "},   acadd_c},
     {{"ACGET          "},   acget_c},
-#ifdef ANDOR_
-    {{"ANDOR          "},   andor},
-#endif
-#ifdef LJU3 
-    {{"AINPUT         "},   ain},
-    {{"AOUTPUT        "},   aout},
-#endif
+
     {{"BLOCK          "},	block_g},
     {{"BIT8           "},	bit8_c},
     {{"BIT16          "},	bit16_c},
@@ -51,13 +45,6 @@ ComDef   commands[] =    {
     {{"CREATEFILE     "},	createfile_c},
     {{"CONCATFILE     "},	concatfile_c},
     {{"CLOSEFILE      "},	closefile_c},
-#ifdef GPHOTO
-    {{"CAPTURE        "},	capture},
-    {{"CAMLISTSETTINGS"},	camlistsettings},
-    {{"CAMEXPOSE      "},	camexpose},
-    {{"CAMGETSETTING  "},	camgetsetting},
-    {{"CAMSETSETTING  "},	camsetsetting},
-#endif
     
     {{"DISPLAY        "},	display},
     {{"DMACRO         "},	defmac},
@@ -71,9 +58,6 @@ ComDef   commands[] =    {
     {{"DX             "},	dx_c},
     {{"DY             "},	dy_c},
     {{"DOC2RGB        "},	doc2rgb_c},
-#ifdef LJU3
-    {{"DOUTPUT        "},   dout},
-#endif
     
     {{"ERASE          "},	erase},
     {{"ENDIF          "},	endifcmnd},
@@ -103,10 +87,7 @@ ComDef   commands[] =    {
     {{"GREY2RGB       "},	grey2rgb_c},
     {{"GSMOOTH        "},	gsmooth_c},
     {{"GETNEXT        "},	getNext_c},
-#ifdef GIGE_
-    {{"GIGE           "},	gige},
-#endif
-        
+    
     {{"HELP           "},	help},
         
     {{"IF             "},	ifcmnd},
@@ -165,13 +146,6 @@ ComDef   commands[] =    {
     {{"SAVSETTINGS    "},	savsettings},
     {{"SATIFF         "},	satiff_c},
     {{"SATIFFSCALED   "},	satiffscaled_c},
-#ifdef SERIAL_PORT
-    {{"SERIAL         "},	serial},
-    {{"SERCLOSE       "},	serclo},
-#endif
-#ifdef SBIG
-    {{"SBIG           "},	sbig},
-#endif
     {{"SIZE           "},	size_c},
     {{"SINGRID        "},	sinGrid_c},
     {{"STEMPIMAGE     "},	stemp_c},
@@ -189,10 +163,6 @@ ComDef   commands[] =    {
     {{"VARIABLES      "},	variab},
     
     {{"WRITEBADPIX    "},	writebad_c},
-#ifdef LJU3
-    {{"WAITHI         "},   waithi},
-#endif
-
     
     {{"X0             "},	x0_c},
     
@@ -200,6 +170,46 @@ ComDef   commands[] =    {
     
     {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},0}};
 
+
+ComDef   hardwareCommands[] =    {
+#ifdef ANDOR_
+    {{"ANDOR          "},   andor},
+#endif
+    
+#ifdef LJU3
+    {{"AINPUT         "},   ain},
+    {{"AOUTPUT        "},   aout},
+#endif
+
+#ifdef GPHOTO
+    {{"CAPTURE        "},	capture},
+    {{"CAMLISTSETTINGS"},	camlistsettings},
+    {{"CAMEXPOSE      "},	camexpose},
+    {{"CAMGETSETTING  "},	camgetsetting},
+    {{"CAMSETSETTING  "},	camsetsetting},
+#endif
+
+#ifdef LJU3
+    {{"DOUTPUT        "},   dout},
+#endif
+
+#ifdef GIGE_
+    {{"GIGE           "},	gige},
+#endif
+
+#ifdef SERIAL_PORT
+    {{"SERIAL         "},	serial},
+    {{"SERCLOSE       "},	serclo},
+#endif
+    
+#ifdef SBIG
+    {{"SBIG           "},	sbig},
+#endif
+
+#ifdef LJU3
+    {{"WAITHI         "},   waithi},
+#endif
+    {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},0}};
 
 
 // if this is set, don't print anything
@@ -489,23 +499,19 @@ int comdec(char* cmnd)
                 cp++;           /* next command */
                 i = 0;
                 if ( clist_ptr[cp].text.name[i] == EOL ){
-                    /* disable looking in second command list for now
-                     if( clst == 0 ) {
-                     clst = 1;
-                     clist_ptr = commands;
-                     cp = 0;
-                     } else {
-                     printf("No such command: %s\n",cmnd);
-                     return -1;
-                     }
-                     */
-                    beep();
-                    printf("No such command: %s\n",cmnd);
-                    if (macflag || exflag) {
-                        i=-1;   // in a macro with invalid command
-                        break;
+                    if( clst == 0 ) {
+                        clst = 1;
+                        clist_ptr = hardwareCommands;
+                        cp = 0;
+                    } else {
+                        beep();
+                        printf("No such command: %s\n",cmnd);
+                        if (macflag || exflag) {
+                            i=-1;   // in a macro with invalid command
+                            break;
+                        }
+                        return CMND_ERR;
                     }
-                    return CMND_ERR;
                 }
             } else {
                 i++;
@@ -516,7 +522,7 @@ int comdec(char* cmnd)
             if (clst == 0 )
                 fnc =  commands[cp].fnc;
             else
-                fnc = commands[cp].fnc;
+                fnc = hardwareCommands[cp].fnc;
             
             // next check for an integer argument
             ivalue = 0;
@@ -542,15 +548,8 @@ int comdec(char* cmnd)
             // Now Execute the Appropriate Command -- unless this is in an IF whose condition is not met
             
             if(if_condition_met ||fnc == endifcmnd || fnc == ifcmnd){
-                /*if (clst == 1 ){
-                 error_return = (*fnc)(ivalue,chindx);   // this is the old style
-                 }else{
-                 error_return = (*fnc)(ivalue,&cmnd[chindx]);
-                 }
-                 */
                 command_return = error_return = (*fnc)(ivalue,&cmnd[chindx]);
                 if(exflag==0 && macflag==0) break;
-                
             }
         }
         if (pause_flag) {
@@ -2474,6 +2473,14 @@ int help(int n, char* args)
         for (i = 0; commands[i].text.name[0] != EOL; i++ ) {
             printf( "%s\n", commands[i].text.name);
         }
+        
+        if (hardwareCommands[0].text.name[0] != EOL) {
+            printf( "Available Hardware-Related Commands Are:\n" );
+        }
+        for (i = 0; hardwareCommands[i].text.name[0] != EOL; i++ ) {
+            printf( "%s\n", hardwareCommands[i].text.name);
+        }
+
     }
     else {
         fd = open(HELPFILE,READMODE);
@@ -2508,7 +2515,7 @@ int help(int n, char* args)
         }
         close(fd);
     }
-    return 0;
+    return NO_ERR;
 }
 
 /* get a line of text from a file specified by fd */
