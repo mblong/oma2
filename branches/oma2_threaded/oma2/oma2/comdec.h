@@ -43,6 +43,22 @@ int camgetsetting(int n, char* args);
 int camsetsetting(int n, char* args);
 #endif
 
+#ifdef VISA
+int synch(int n,char* args);
+int conect(int n,char* args);
+int run(int n,char* args);
+int discon(int n,char* args);
+int inform(int n,char* args);
+int flush(int n,char* args);
+int send(int n,char* args);
+int ask(int n,char* args);
+int transfer(int n,char* args);
+int receiv(int n,char* args);
+int gpibdv(int n,char* args);
+
+#endif
+
+
 
 // function prototypes for routines in comdec.cpp
 
