@@ -102,13 +102,17 @@ int pprintf(const char* format, ...);
 
 #define display_data displayData(args);
 #define erase_window eraseWindow(n);
-#define label_data ;
-#define label_data_minMax ;
+#define label_data labelData(args);
+#define label_data_minMax labelDataMinMax();
 #define checkEvents QCoreApplication::processEvents();
 
 #define pprintf omaprintf
 #define printf omaprintf
 #define nil 0
+
+#define WMODE   O_CREAT|O_WRONLY,0666
+#define READMODE   O_RDONLY
+#define READBINARY   O_RDONLY
 
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #pragma clang diagnostic ignored "-Wsign-compare"
@@ -129,7 +133,7 @@ int pprintf(const char* format, ...);
 #endif
 
 
-enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
+enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT,NEWROW,NEWCOL};
 
 typedef struct{
     unsigned char red;
@@ -154,6 +158,8 @@ void alertSound(char*);
 void beep();
 void displayData(char*);
 void eraseWindow(int);
+void labelDataMinMax();
+void labelData(char*);
 BOOL dropped_file(char*,char*);
 
 #endif
@@ -162,12 +168,16 @@ BOOL dropped_file(char*,char*);
 
 #include <QApplication>
 #include "qtoma2.h"
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <time.h>
+#include <io.h>
+#include <fcntl.h>
 
 #define display_data displayData(args);
 #define erase_window eraseWindow(n);
-#define label_data ;
-#define label_data_minMax ;
+#define label_data labelData(args);
+#define label_data_minMax labelDataMinMax();
 #define checkEvents QCoreApplication::processEvents();
 
 #define pprintf omaprintf
@@ -180,6 +190,10 @@ BOOL dropped_file(char*,char*);
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 #define DJGPP 1
 
+#define WMODE   _O_CREAT|_O_WRONLY|_O_BINARY|_O_TRUNC,S_IWUSR|S_IRUSR
+#define READMODE   O_RDONLY
+#define READBINARY   O_RDONLY|O_BINARY
+
 
 #ifndef SETTINGSFILE
 #define SETTINGSFILE "./OMA Settings"
@@ -190,9 +204,17 @@ BOOL dropped_file(char*,char*);
 #define HELPFILE "./oma2help.txt"
 #define HELPURL "./LightOma2Help/index.html"
 #endif
+/*
+ #pragma gcc diagnostic ignored "-Wsign-compare"
+ #pragma gcc diagnostic ignored "-Wwrite-strings"
+ #pragma gcc diagnostic ignored "-Wunused-variable"
+ #pragma gcc diagnostic ignored "-Wunused-but-set-variable"
+ #pragma gcc diagnostic ignored "-Wcomment"
+ #pragma gcc diagnostic ignored "-Wtype-limits"
+ */
 
 
-enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
+enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT,NEWROW,NEWCOL};
 
 typedef struct{
     unsigned char red;
@@ -207,7 +229,7 @@ typedef struct{
 
 typedef char* Ptr;
 
-//typedef char BOOL;
+typedef int BOOL;
 typedef char Boolean;
 #define NO 0
 #define YES 1
@@ -219,6 +241,8 @@ void alertSound(char*);
 void beep();
 void displayData(char*);
 void eraseWindow(int);
+void labelDataMinMax();
+void labelData(char*);
 BOOL dropped_file(char*,char*);
 
 #endif
@@ -228,11 +252,12 @@ BOOL dropped_file(char*,char*);
 
 #include <QApplication>
 #include "qtoma2.h"
+#include "Hardware/cameraSelector.h"
 
 #define display_data displayData(args);
 #define erase_window eraseWindow(n);
-#define label_data ;
-#define label_data_minMax ;
+#define label_data labelData(args);
+#define label_data_minMax labelDataMinMax();
 #define checkEvents QCoreApplication::processEvents();
 
 #define pprintf omaprintf
@@ -244,6 +269,11 @@ BOOL dropped_file(char*,char*);
 
 #define _H_INTTYPES
 #define _ALL_SOURCE
+
+#define WMODE   O_CREAT|O_WRONLY,0666
+#define READMODE   O_RDONLY
+#define READBINARY   O_RDONLY
+
 
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #pragma GCC diagnostic ignored "-Wwrite-strings"
@@ -285,15 +315,18 @@ typedef char BOOL;
 typedef char Boolean;
 #define NO 0
 #define YES 1
-enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
+enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT,NEWROW,NEWCOL};
 
 int omaprintf(const char* format, ...);
 void alertSound(char*);
 void beep();
 void displayData(char*);
 void eraseWindow(int);
+void labelDataMinMax();
+void labelData(char*);
 BOOL dropped_file(char*,char*);
 
 
 #endif
+
 #endif
