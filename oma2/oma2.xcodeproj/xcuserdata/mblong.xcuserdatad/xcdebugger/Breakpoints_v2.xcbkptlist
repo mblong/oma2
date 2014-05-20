@@ -32,7 +32,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "153"
-            endingLineNumber = "153">
+            endingLineNumber = "153"
+            landmarkName = "addfile_c(int n,char* args)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -468,7 +470,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "484"
-            endingLineNumber = "484">
+            endingLineNumber = "484"
+            landmarkName = "list_c(int n, char* args)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -482,7 +486,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "645"
-            endingLineNumber = "645">
+            endingLineNumber = "645"
+            landmarkName = "rotate_c(int n,char* args)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -657,7 +663,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "74"
             endingLineNumber = "74"
-            landmarkName = "-newSettings:"
+            landmarkName = "-saveNewSettings:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -752,7 +758,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "290"
-            endingLineNumber = "290">
+            endingLineNumber = "290"
+            landmarkName = "frame_c(int n, char* args)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -810,11 +818,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
-            timestampString = "420391533.09933"
+            timestampString = "422309552.061511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3132"
-            endingLineNumber = "3132">
+            startingLineNumber = "3274"
+            endingLineNumber = "3274"
+            landmarkName = "doc2rgb_c(int n, char* args)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -824,11 +834,29 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
-            timestampString = "420391739.00547"
+            timestampString = "422309552.061511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3162"
-            endingLineNumber = "3162">
+            startingLineNumber = "3304"
+            endingLineNumber = "3304"
+            landmarkName = "doc2rgb_c(int n, char* args)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/commands_1.mm"
+            timestampString = "422309552.061511"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2472"
+            endingLineNumber = "2472"
+            landmarkName = "clearbad_c(int n, char* args)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

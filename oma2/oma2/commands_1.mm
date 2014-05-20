@@ -2252,48 +2252,110 @@ int grey2rgb_c(int n,char* args){
 
 /* ********** */
 /*
- FINDBAD Counts
+ FINDBAD Counts [TargetValue] [Passes]
  
  Searches the current image buffer for pixels whose value is more than "Counts" above that of it's
- nearest eight neighbors. Those pixels are tagged as hot pixels.
+ nearest eight neighbors. Those pixels are tagged as hot pixels. If the optional TargetValue is specified,
+ a different algorithm is used that will get values from 1 to 8 neighboring pixels that are within the specified
+ number of counts of the target value.
  
  */
 
 int hot_pix[NUMHOT];	// store info on hot pixels
+int neighbors[NUMHOT][8] = {0};
 int num_hot = 0;
 int ccd_width = 0;
 int ccd_height = 0;
 
 int findbad_c(int n, char* args){
-	int i,j;
+	int i,j,target=0,passes = 1;
 	DATAWORD ave_val;
 	num_hot = 0;
     int* specs = iBuffer.getspecs();
 	ccd_width = specs[COLS];
 	ccd_height = specs[ROWS];
-	if( n == 0) n = 200;		// a reasonable default value
-	for(i=0; i< specs[ROWS]; i++){
-		for(j = 0; j< specs[COLS]; j++) {
-			ave_val = ( iBuffer.getpix(i-1,j-1) + iBuffer.getpix(i-1,j) + iBuffer.getpix(i-1,j+1) +
-                       iBuffer.getpix(i,j-1)                            + iBuffer.getpix(i,j+1) +
-                       iBuffer.getpix(i+1,j-1)  + iBuffer.getpix(i+1,j) + iBuffer.getpix(i+1,j+1) ) / 8;
-			if( iBuffer.getpix(i,j) - ave_val > n ){
-				if(num_hot < NUMHOT){
-					hot_pix[num_hot++] = i*specs[COLS] + j;
-					if(num_hot <= 10) printf(" %d\t%d\n",j,i);
-				}
-			}
-		}
-	}
-	printf("%d hot pixels found\n",num_hot);
-	if(num_hot > 10) printf("First 10 printed\n");
-	if(specs[X0] != 0 || specs[Y0] != 0){
-		beep();
-		printf("Warning! FINDBAD is designed to operate on a full frame.\n");
-	}
+    int narg = sscanf(args,"%d %d %d",&n,&target,&passes);
+    if( n == 0) n = 200;		// a reasonable default value
+    if(narg == 1){
+        for(i=0; i< specs[ROWS]; i++){
+            for(j = 0; j< specs[COLS]; j++) {
+                ave_val = ( iBuffer.getpix(i-1,j-1) + iBuffer.getpix(i-1,j) + iBuffer.getpix(i-1,j+1) +
+                           iBuffer.getpix(i,j-1)                            + iBuffer.getpix(i,j+1) +
+                           iBuffer.getpix(i+1,j-1)  + iBuffer.getpix(i+1,j) + iBuffer.getpix(i+1,j+1) ) / 8;
+                if( iBuffer.getpix(i,j) - ave_val > n ){
+                    if(num_hot < NUMHOT){
+                        hot_pix[num_hot++] = i*specs[COLS] + j;
+                        if(num_hot <= 10) printf(" %d\t%d\n",j,i);
+                    }
+                }
+            }
+        }
+        printf("%d hot pixels found\n",num_hot);
+        if(num_hot > 10) printf("First 10 printed\n");
+        if(specs[X0] != 0 || specs[Y0] != 0){
+            beep();
+            printf("Warning! FINDBAD is designed to operate on a full frame.\n");
+        }
+        free(specs);
+        return NO_ERR;
+    }
+    for (int p=0; p<passes;p++) {
+        for(i=0; i< specs[ROWS]; i++){
+            for(j = 0; j< specs[COLS]; j++) {
+                int usefulNeighbors = 0;
+                if( abs(iBuffer.getpix(i,j) - target) >= n ){ // we have a hot one
+                    hot_pix[num_hot] = i*specs[COLS] + j;
+                    if (abs(iBuffer.getpix(i-1,j-1) - target) < n) {
+                        neighbors[num_hot][usefulNeighbors] = 1;
+                        usefulNeighbors++;
+                    }
+                    if (abs(iBuffer.getpix(i-1,j) - target) < n) {
+                        neighbors[num_hot][usefulNeighbors] = 2;
+                        usefulNeighbors++;
+                    }
+                    if (abs(iBuffer.getpix(i-1,j+1) - target) < n) {
+                        neighbors[num_hot][usefulNeighbors] = 3;
+                        usefulNeighbors++;
+                    }
+                    if (abs(iBuffer.getpix(i,j-1) - target) < n) {
+                        neighbors[num_hot][usefulNeighbors] = 4;
+                        usefulNeighbors++;
+                    }
+                    if (abs(iBuffer.getpix(i,j+1) - target) < n) {
+                        neighbors[num_hot][usefulNeighbors] = 5;
+                        usefulNeighbors++;
+                    }
+                    if (abs(iBuffer.getpix(i+1,j-1) - target) < n) {
+                        neighbors[num_hot][usefulNeighbors] = 6;
+                        usefulNeighbors++;
+                    }
+                    if (abs(iBuffer.getpix(i+1,j) - target) < n) {
+                        neighbors[num_hot][usefulNeighbors] = 7;
+                        usefulNeighbors++;
+                    }
+                    if (abs(iBuffer.getpix(i+1,j+1) - target) < n) {
+                        neighbors[num_hot][usefulNeighbors] = 8;
+                        usefulNeighbors++;
+                    }
+                    if(num_hot <= 10) printf(" %d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t\n",j,i,neighbors[num_hot][0],neighbors[num_hot][1],neighbors[num_hot][2],neighbors[num_hot][3],neighbors[num_hot][4],neighbors[num_hot][5],neighbors[num_hot][6],neighbors[num_hot][7]);
+                    num_hot++;
+                    if (usefulNeighbors == 0) {
+                        neighbors[num_hot][usefulNeighbors] = 0;  // nothing to be done for this one
+                    }
+                }
+            }
+            
+        }
+        if(ccd_height > 0) ccd_height = -ccd_height;
+        
+        printf("%d hot pixels found on pass %d\n",num_hot,p+1);
+        clearbad_c(0,(char*)"");
+    }
+    
     free(specs);
-	return NO_ERR;
-	
+    return NO_ERR;
+    
+    
 }
 /*
  READBAD filename
@@ -2310,10 +2372,18 @@ int readbad_c(int n, char* args)			/* read bad pixel data */
 		
 		fscanf(fp,"%d",&num_hot);
 		fscanf(fp,"%d %d",&ccd_width, &ccd_height);
-		for(k = 0; k < num_hot; k++){
-			fscanf(fp,"%d %d",&j,&i);
-			hot_pix[k] = i*ccd_width + j;
-		}
+        if (ccd_height > 0) {
+            for(k = 0; k < num_hot; k++){
+                fscanf(fp,"%d %d",&j,&i);
+                hot_pix[k] = i*ccd_width + j;
+            }
+        } else {
+            for(k = 0; k < num_hot; k++){
+                fscanf(fp,"%d %d",&j,&i);
+                hot_pix[k] = i*ccd_width + j;
+                for (int l = 0; l < 8; l++) fscanf(fp,"%d",&neighbors[k][l]);
+            }
+        }
 	} else {
 		beep();
 		printf("Could not open file %s\n",args);
@@ -2344,8 +2414,16 @@ int writebad_c(int n, char* args)			/* read bad pixel data */
         
         fprintf(fp,"%d\n",num_hot);
         fprintf(fp,"%d\t%d\n",ccd_width, ccd_height);
-        for(k = 0; k < num_hot; k++){
-            fprintf(fp,"%d\t%d\n",hot_pix[k]%ccd_width,hot_pix[k]/ccd_width);
+        if (ccd_height > 0) {   // take 8 neighbors
+            for(k = 0; k < num_hot; k++){
+                fprintf(fp,"%d\t%d\n",hot_pix[k]%ccd_width,hot_pix[k]/ccd_width);
+            }
+        } else { // height < 0 means this has the more complete set of pixels to average for bad pixels
+            for(k = 0; k < num_hot; k++){
+                fprintf(fp,"%d\t%d",hot_pix[k]%ccd_width,hot_pix[k]/ccd_width);
+                for (int l = 0; l < 8; l++) fprintf(fp,"\t%d",neighbors[k][l]);
+                fprintf(fp,"\n");
+            }
         }
     } else {
         beep();
@@ -2373,18 +2451,82 @@ int clearbad_c(int n, char* args)
     
     int* specs = iBuffer.getspecs();
 	
-	for(k=0; k<num_hot; k++){
-		i = hot_pix[k]/ccd_width;
-		j = hot_pix[k] - i*ccd_width - specs[X0];
-		i -= specs[Y0];
-		//printf(" %d %d\n",j,i);
-		if(i < specs[ROWS] && j < specs[COLS] && i >= 0 && j >= 0) {
-			new_val = ( iBuffer.getpix(i-1,j-1) + iBuffer.getpix(i-1,j) + iBuffer.getpix(i-1,j+1) +
-					    iBuffer.getpix(i,j-1)                            + iBuffer.getpix(i,j+1) +
-					    iBuffer.getpix(i+1,j-1)  + iBuffer.getpix(i+1,j) + iBuffer.getpix(i+1,j+1) ) / 8;
-			iBuffer.setpix(i,j, new_val);
-		}
-	}
+    if(ccd_height > 0){
+        for(k=0; k<num_hot; k++){
+            i = hot_pix[k]/ccd_width;
+            j = hot_pix[k] - i*ccd_width - specs[X0];
+            i -= specs[Y0];
+            //printf(" %d %d\n",j,i);
+            if(i < specs[ROWS] && j < specs[COLS] && i >= 0 && j >= 0) {
+                new_val = ( iBuffer.getpix(i-1,j-1) + iBuffer.getpix(i-1,j) + iBuffer.getpix(i-1,j+1) +
+                           iBuffer.getpix(i,j-1)                            + iBuffer.getpix(i,j+1) +
+                           iBuffer.getpix(i+1,j-1)  + iBuffer.getpix(i+1,j) + iBuffer.getpix(i+1,j+1) ) / 8;
+                iBuffer.setpix(i,j, new_val);
+            }
+        }
+        free(specs);
+        iBuffer.getmaxx();
+        update_UI();
+        return NO_ERR;
+    }
+    for(k=0; k<num_hot; k++){
+        i = hot_pix[k]/ccd_width;
+        j = hot_pix[k] - i*ccd_width - specs[X0];
+        i -= specs[Y0];
+        //printf(" %d %d\n",j,i);
+        if(i < specs[ROWS] && j < specs[COLS] && i >= 0 && j >= 0) {
+            int usefulNeighbors = 0;
+            new_val = 0.;
+            while (neighbors[k][usefulNeighbors] != 0 && usefulNeighbors < 8) {
+                
+                switch (neighbors[k][usefulNeighbors]) {
+                    case 1:
+                        new_val += iBuffer.getpix(i-1,j-1);
+                        usefulNeighbors++;
+                        break;
+                    case 2:
+                        new_val += iBuffer.getpix(i-1,j);
+                        usefulNeighbors++;
+                        break;
+                    case 3:
+                        new_val += iBuffer.getpix(i-1,j+1);
+                        usefulNeighbors++;
+                        break;
+                    case 4:
+                        new_val += iBuffer.getpix(i,j-1);
+                        usefulNeighbors++;
+                        break;
+                    case 5:
+                        new_val += iBuffer.getpix(i,j+1);
+                        usefulNeighbors++;
+                        break;
+                    case 6:
+                        new_val += iBuffer.getpix(i+1,j-1);
+                        usefulNeighbors++;
+                        break;
+                    case 7:
+                        new_val += iBuffer.getpix(i+1,j);
+                        usefulNeighbors++;
+                        break;
+                    case 8:
+                        new_val += iBuffer.getpix(i+1,j+1);
+                        usefulNeighbors++;
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+            
+            if(usefulNeighbors){
+                new_val /= usefulNeighbors;
+                iBuffer.setpix(i,j, new_val);
+            }
+            
+        }
+
+        
+    }
     free(specs);
     iBuffer.getmaxx();
     update_UI();
