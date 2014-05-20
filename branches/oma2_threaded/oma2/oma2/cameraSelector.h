@@ -21,7 +21,7 @@
 
 #define LJU3
 #define SERIAL_PORT
-#define VISA
+//#define VISA
 
 // end of select other hardware section
 
