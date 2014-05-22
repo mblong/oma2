@@ -936,6 +936,7 @@ int gige(int n, char* args)
     static int trigger = 0;
     static int triggerDelay = 0;
     static int sav = 0;
+    static int fixBad = 0;
     unsigned long fsize,scap;
     unsigned long sbyte=0;
     char pixelformat[256];
@@ -966,10 +967,23 @@ int gige(int n, char* args)
         printf("  SAVe <filename> (enable save mode; filename will store all frames\n");
         printf("  ENDSave (disable save mode\n");
         printf("  STAtus (print camera settings\n");
+        printf("  FIXbad (clear bad pixels before display --> must use FINDBAD first\n");
         return NO_ERR;
         
     }
-    
+
+    if ( strncmp(args,"fixbad",3) == 0){
+        extern int num_hot;
+        if(num_hot == 0){
+            beep();
+            printf("No bad pixels have been specified. Use FINDBAD first.\n");
+            return CMND_ERR;
+        }
+        sscanf(args,"%s %d",txt, &n);
+        fixBad = n;
+        return NO_ERR;
+    }
+
     if(!GigEinitialized){
 		
 		// initialise the Prosilica API
@@ -1128,6 +1142,8 @@ int gige(int n, char* args)
                     // snap now
                     CameraSnap_preview(&Camera);
                     if(i==0) iBuffer.getmaxx();
+                    if (fixBad) clearbad_c(0,(char*)"");
+                    
                     display(0,(char*)"GigE");
                     //checkevents();
                     UIData.newwindowflag = 0;  // if 0 opens the new image in the old window, if 1 it opens it in a new window
@@ -1161,13 +1177,18 @@ int gige(int n, char* args)
                 // snap now
                 CameraSnap(&Camera,&exptime,&numFrames,&frameRate,&label,&trigger,&bx,&by,&sav,savestr);
                 //checkevents();
-                iBuffer.getmaxx();
-                display(0,(char*)"GigE");
                 
                 // stop the streaming
                 CameraStop(&Camera);
                 CameraUnsetup(&Camera, &numFrames);
                 
+                if (fixBad) {
+                    clearbad_c(0,(char*)"");
+                } else {
+                    iBuffer.getmaxx();
+                }
+                display(0,(char*)"GigE");
+               
                 UIData.newwindowflag = save_new_status;
                 
                 // reset the binning settings
@@ -1270,7 +1291,10 @@ int gige(int n, char* args)
         // multiframe acquisition mode
 
     }
-    return -1;
+    beep();
+    gige(0,(char*) "help");
+
+    return CMND_ERR;
 }
 
 #endif
