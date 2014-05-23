@@ -88,7 +88,7 @@ void Sleep(unsigned int time)
 
 int GigEinitialized = 0;
 extern Image iBuffer;
-
+char labelBuffer[100];
 tCamera Camera;
 
 // wait for a camera to be plugged
@@ -787,6 +787,7 @@ void CameraSnap(tCamera* Camera, int* time_, int *fcount, int* frate, int* label
                     for(int k=0;k<specs[COLS]; k++)
                         iBuffer.setpix(i,k,*(ptr++));
                 }
+                free(specs);
                 //display(0,(char*)"GigE");
                 
                 //If the camera crashes, try to remove the timestamp calculation.
@@ -800,16 +801,14 @@ void CameraSnap(tCamera* Camera, int* time_, int *fcount, int* frate, int* label
                 tempo_pr = tempo;
                 
                 if(*label == 1){
-                    
-                    char buffer[100];
                     if (*trigger == 0){
-                        sprintf(buffer,"%s  (Frame %d/%d - %d fps - exp. %d µs) ",
-                            asctime(timeinfo), j+1, *fcount, *frate, *time_);
+                        sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %d fps - exp. %d us) ",
+                            timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, j+1, *fcount, *frate, *time_);
                     } else if (*trigger == 1){
-                        sprintf(buffer,"%s  (Frame %d/%d - %.1f fps - exp. %d µs) ",
-                                asctime(timeinfo), j+1, *fcount, fratec, *time_);
+                        sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %.1f fps - exp. %d us) ",
+                                timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, j+1, *fcount, fratec, *time_);
                     }
-                    labelData(0,buffer);
+                    
                  }
                 
                 if(*sav == 1){
@@ -1024,36 +1023,44 @@ int gige(int n, char* args)
 		if( exptime <= 10) exptime = 10;
         if( exptime > 60000000) exptime = 60000000;
         printf(" Exposure set to %d us\n",exptime);
+        return NO_ERR;
     }
     else if ( strncmp(args,"gain",3) == 0){
         sscanf(args,"%s %d",txt, &gain);
         if( gain <= 0) gain = 0;
         if( gain > 33) gain = 33;
         printf(" Gain value set to %d\n",gain);
+        return NO_ERR;
     }
     else if ( strncmp(args,"number",3) == 0){
         sscanf(args,"%s %d",txt, &numFrames);
         if( numFrames <= 1) numFrames = 1;
         printf(" Frame number set to %d\n",numFrames);
+        return NO_ERR;
     }
     else if ( strncmp(args,"rate",3) == 0){
         sscanf(args,"%s %d",txt, &frameRate);
         if( frameRate <= 1) frameRate = 1;
         printf(" Frame rate set to %d fps\n",frameRate);
+        return NO_ERR;
     }
     // enable/disable the printing of the label over the image
     else if ( strncmp(args,"labon",5) == 0){
-        label = 1; 
+        label = 1;
+        return NO_ERR;
     }
     else if ( strncmp(args,"laboff",5) == 0){
-        label = 0; 
+        label = 0;
+        return NO_ERR;
     }
     // set the preview mode
     else if ( strncmp(args,"preview",3) == 0){
         sscanf(args,"%s %d",txt, &numPreviews);
         printf(" Number of frame preview set to %d \n",numPreviews);
         if (trigger == 1){
+            beep();
             printf("Preview not possible in external trigger mode.\n");
+            return CMND_ERR;
         } else { 
             strncpy(args,"acq",3);
             printf(" Wait... \n");
@@ -1079,26 +1086,31 @@ int gige(int n, char* args)
     else if ( strncmp(args,"external",3) == 0){
         printf("* External trigger enabled * \n");
         trigger = 1;
+        return NO_ERR;
     }
     else if ( strncmp(args,"internal",3) == 0){
         printf("* Internal trigger enabled * \n");
         trigger = 0;
+        return NO_ERR;
     }
     // set the trigger delay [microseconds]
     else if ( strncmp(args,"delay",3) == 0){
         sscanf(args,"%s %d",txt, &triggerDelay);
         if (triggerDelay < 0) triggerDelay = 0;
         printf(" Trigger delay set to %d us. \n",triggerDelay);
+        return NO_ERR;
     }
     // enable image saving 
     else if ( strncmp(args,"save",3) == 0){
         sscanf(args,"%s %s",txt, savestr);
         printf("* Image saving enabled * \n -> Set the prefix! \n");
         sav = 1;
+        return NO_ERR;
     }
     else if ( strncmp(args,"endsave",4) == 0){
         printf("* Image saving disabled * \n");
         sav = 0;
+        return NO_ERR;
     }
     // statistics
     else if ( strncmp(args,"stat",3) == 0){
@@ -1128,6 +1140,7 @@ int gige(int n, char* args)
         if (trigger == 1)   printf("\tTrigger: external\n");
         if (trigger == 1)   printf("\tTrigger delay: %d us\n\n",triggerDelay);
         if (trigger == 0)   printf("\tTrigger: internal\n\n");
+        return NO_ERR;
     }
     
     save_new_status = UIData.newwindowflag;
@@ -1141,10 +1154,10 @@ int gige(int n, char* args)
                 for(int i=0; i< numPreviews; i++){
                     // snap now
                     CameraSnap_preview(&Camera);
-                    if(i==0) iBuffer.getmaxx(PRINT_RESULT);
                     if (fixBad) clearbad_c(0,(char*)"NoPrint");
-                    
+                    if(i==0) iBuffer.getmaxx(PRINT_RESULT);
                     display(0,(char*)"GigE");
+                    if(label == 1) labelData(0,labelBuffer);
                     //checkevents();
                     UIData.newwindowflag = 0;  // if 0 opens the new image in the old window, if 1 it opens it in a new window
                 }
@@ -1188,6 +1201,11 @@ int gige(int n, char* args)
                     iBuffer.getmaxx(PRINT_RESULT);
                 }
                 display(0,(char*)"GigE");
+                
+                if(label == 1){
+                    labelData(0,labelBuffer);
+                }
+
                
                 UIData.newwindowflag = save_new_status;
                 
@@ -1195,7 +1213,7 @@ int gige(int n, char* args)
                 //header[NCHAN] = header[NCHAN] * bx;
                 //header[NTRAK] = header[NTRAK] * by;
                 
-                return 0;
+                return NO_ERR;
                 
             } else
                 printf("Failed to start multiframe streaming\n");
