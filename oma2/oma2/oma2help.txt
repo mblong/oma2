@@ -101,6 +101,15 @@ CLEARBADPIX
 CAPTURE file_name
 	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses libgphoto2 calls to capture and download an image from a digital camera that is recognized by libgphoto2 (and supports capture).
 
+CREATEFILE <filename>
+	Opens a file with the specified name, saves the current data and format information, and leaves the file open. Subsequently, the CONCATFILE command can be used to add more data to the open file. use CLOSEFILE to close the file. See also OPENFILE and GETNEXTFILE.
+
+CONCATFILE
+	Saves the current data buffer to the file opened with the CREATEFILE command. See also OPENFILE and GETNEXTFILE.
+
+CLOSEFILE
+	Closes the file opened with the CREATEFILE command. See also OPENFILE and GETNEXTFILE.
+
 CAMLISTSETTINGS
 	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to list the settings of the camera that can be set, along with their current values.
 
@@ -261,6 +270,9 @@ GSMOOTH dx [dy]
 GTEMPIMAGE name
 	Get temporary image that has been previously saved using STEMP.
 
+GETNEXT
+	Get the next image from the file opened with the OPENFILE command. If no additional image data is available, the open file is closed.
+
 HELP [command name or fragment]
 	If a command name is given, a brief explanation of the command is printed in the command window. If only part of the command is given, a description of all commands that match the command fragment is printed. All help information is from the file "OMA HELP." If no argument is given, all command names are printed with no explanation.
 
@@ -355,6 +367,9 @@ NEWWINDOW flag
 
 NEXTFILE [prefix]
 	Open the next file specified in the FileNames file that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. command_return_1 is the the filename without any prefix and without the extension (last 4 characters).
+
+OPENFILE <filename>
+	Reads data from the specified filename but does not close it. If there is more than one image in the file, the GETNEXT command will read the next image. This type of multi-image data file can be created with the CREATEFILE, CONCATFILE, CLOSEFILE commands, or may be produced by some cameras.
 
 PIXSIZE [WindowScaleFactor]
 	Specifies a scale factor used to determine the size of a window displayed. PIXSIZE 1 associates one screen point with one data point. If WindowScaleFactor is negative, a scale factor of -1/WindowScaleFactor is used. If no argument is given, the current WindowScaleFactor is printed.
