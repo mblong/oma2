@@ -660,7 +660,7 @@ int sbig(int n, char* args)
         
         SetBin = 0;
         
-		iBuffer.getmaxx();
+		iBuffer.getmaxx(PRINT_RESULT);
 		display(0,(char*)"GigE");
         //dquartz(0,0);
 		SET_RETURN_VALUES

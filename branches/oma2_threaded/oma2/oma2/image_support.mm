@@ -380,7 +380,7 @@ int loadprefs(char* name)
         thespecs[IS_COLOR] = UIData.iscolor;
         thespecs[Y0] = UIData.y0;
         iBuffer.setspecs(thespecs);
-        //iBuffer.getmaxx();
+        //iBuffer.getmaxx(PRINT_RESULT);
 
         free(thespecs);
         return NO_ERR;

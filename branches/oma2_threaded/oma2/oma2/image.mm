@@ -508,7 +508,7 @@ void Image::floor(DATAWORD floorVal){
 }
 
 
-void Image::getmaxx()
+void Image::getmaxx(char printFlag)
 {
     DATAWORD *locmin,*locmax,*locrmin,*locrmax,*locgmin,*locgmax,*locbmin,*locbmax;
     DATAWORD *mydatpt;
@@ -590,20 +590,21 @@ void Image::getmaxx()
      header[LMIN] = lmn/n;	      		// This is the row of the min 
      header[NMIN] = lmn - lmn/n*n;   	// Column of min 
      */
-    
-    if(specs[IS_COLOR]){
-        printf("Red Maximum %g at Row %d and Column %d\n", values[RMAX], specs[LRMAX]/specs[COLS], specs[LRMAX]%specs[COLS]);
-        printf("Red Minimum %g at Row %d and Column %d\n\n", values[RMIN], specs[LRMIN]/specs[COLS], specs[LRMIN]%specs[COLS]);
-
-        printf("Green Maximum %g at Row %d and Column %d\n", values[GMAX], specs[LGMAX]/specs[COLS], specs[LGMAX]%specs[COLS]);
-        printf("Green Minimum %g at Row %d and Column %d\n\n", values[GMIN], specs[LGMIN]/specs[COLS], specs[LGMIN]%specs[COLS]);
-
-        printf("Blue Maximum %g at Row %d and Column %d\n", values[BMAX], specs[LBMAX]/specs[COLS], specs[LBMAX]%specs[COLS]);
-        printf("Blue Minimum %g at Row %d and Column %d\n", values[BMIN], specs[LBMIN]/specs[COLS], specs[LBMIN]%specs[COLS]);
-
-    } else {
-        printf("Maximum %g at Row %d and Column %d\n", values[MAX], specs[LMAX]/specs[COLS], specs[LMAX]%specs[COLS]);
-        printf("Minimum %g at Row %d and Column %d\n", values[MIN], specs[LMIN]/specs[COLS], specs[LMIN]%specs[COLS]);
+    if (printFlag) {
+        if(specs[IS_COLOR]){
+            printf("Red Maximum %g at Row %d and Column %d\n", values[RMAX], specs[LRMAX]/specs[COLS], specs[LRMAX]%specs[COLS]);
+            printf("Red Minimum %g at Row %d and Column %d\n\n", values[RMIN], specs[LRMIN]/specs[COLS], specs[LRMIN]%specs[COLS]);
+            
+            printf("Green Maximum %g at Row %d and Column %d\n", values[GMAX], specs[LGMAX]/specs[COLS], specs[LGMAX]%specs[COLS]);
+            printf("Green Minimum %g at Row %d and Column %d\n\n", values[GMIN], specs[LGMIN]/specs[COLS], specs[LGMIN]%specs[COLS]);
+            
+            printf("Blue Maximum %g at Row %d and Column %d\n", values[BMAX], specs[LBMAX]/specs[COLS], specs[LBMAX]%specs[COLS]);
+            printf("Blue Minimum %g at Row %d and Column %d\n", values[BMIN], specs[LBMIN]/specs[COLS], specs[LBMIN]%specs[COLS]);
+            
+        } else {
+            printf("Maximum %g at Row %d and Column %d\n", values[MAX], specs[LMAX]/specs[COLS], specs[LMAX]%specs[COLS]);
+            printf("Minimum %g at Row %d and Column %d\n", values[MIN], specs[LMIN]/specs[COLS], specs[LMIN]%specs[COLS]);
+        }
     }
     
 }
