@@ -20,7 +20,7 @@ int plus_c(int n,char* args){
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
     (iBuffer+val);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     //cout << "test message\n";
     return NO_ERR;
@@ -42,7 +42,7 @@ int minus_c(int n,char* args){
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
     (iBuffer-val);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -55,7 +55,7 @@ int divide_c(int n,char* args){
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
     (iBuffer/val);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -69,7 +69,7 @@ int multiply_c(int n,char* args){
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
     (iBuffer*val);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -82,7 +82,7 @@ int power_c(int n,char* args)				// raise the data to a power
     if( sscanf(args,"%f",&val) != 1)
 		val = n;
     iBuffer.power(val);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -139,7 +139,7 @@ int getfile_c(int n,char* args){
     }
     iBuffer.free();     // release the old data
     iBuffer = new_im;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -155,7 +155,7 @@ int addfile_c(int n,char* args){
     }
     if(iBuffer == new_im){
         (iBuffer+new_im);
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         new_im.free();
         update_UI();
         return NO_ERR;
@@ -177,7 +177,7 @@ int mulfile_c(int n,char* args){
     }
     if(iBuffer == new_im){
         (iBuffer*new_im);
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         new_im.free();
         update_UI();
         return NO_ERR;
@@ -200,7 +200,7 @@ int subfile_c(int n,char* args){
     }
     if(iBuffer == new_im){
         (iBuffer-new_im);
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         new_im.free();
         update_UI();
         return NO_ERR;
@@ -223,7 +223,7 @@ int divfile_c(int n,char* args){
     }
     if(iBuffer == new_im){
         (iBuffer/new_im);
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         new_im.free();
         update_UI();
         return NO_ERR;
@@ -253,7 +253,7 @@ int compositefile_c(int n,char* args){
         iBuffer.errclear();
         return err;
     }
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     new_im.free();
     update_UI();
     return NO_ERR;
@@ -269,7 +269,7 @@ int croprectangle_c(int n,char* args){
         iBuffer.errclear();
         return err;
     }
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -345,7 +345,7 @@ int frame_c(int n, char* args)
     free(specs);  // release specs copy
     iBuffer.free();     // release the old data
     iBuffer = im;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
 	return 0;
     
@@ -369,7 +369,7 @@ int resize_c(int n,char* args){
         iBuffer.errclear();
         return iBuffer.err();
     }
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -496,7 +496,7 @@ int list_c(int n, char* args){
 
 int invert_c(int n,char* args){
     iBuffer.invert();
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -505,7 +505,7 @@ int invert_c(int n,char* args){
 
 int mirror_c(int n,char* args){
     iBuffer.mirror();
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -521,7 +521,7 @@ int rgb2red_c(int n,char* args){
         iBuffer.errclear();
         return err;
     }
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -537,7 +537,7 @@ int rgb2green_c(int n,char* args){
         iBuffer.errclear();
         return err;
     }
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -553,7 +553,7 @@ int rgb2blue_c(int n,char* args){
         iBuffer.errclear();
         return err;
     }
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -576,7 +576,7 @@ int rgb2grey_c(int n,char* args){
         iBuffer.errclear();
         return err;
     }
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -619,7 +619,7 @@ int rotate_c(int n,char* args){
             return err;
         }
         free(specs);
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
     } else{
@@ -648,7 +648,7 @@ int rotate_c(int n,char* args){
             iBuffer.errclear();
             return err;
         }
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
     }
@@ -710,7 +710,7 @@ int smooth_c(int n,char* args){
     free(bufferspecs);  // release buffer copy
     iBuffer.free();     // release the old data
     iBuffer = smoothed;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -806,7 +806,7 @@ int gsmooth_c(int n, char* args)
     free(specs);  // release buffer copy
     iBuffer.free();     // release the old data
     iBuffer = smoothed;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -886,7 +886,7 @@ int tsmooth_c(int n, char* args)
     free(specs);  // release buffer copy
     iBuffer.free();     // release the old data
     iBuffer = smoothed;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -922,7 +922,7 @@ int diffy_c(int n,char* args )				/* differentiate the data in the y direction  
     free(bufferspecs);  // release buffer copy
     iBuffer.free();     // release the old data
     iBuffer = newIm;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -951,7 +951,7 @@ int diffx_c(int n,char* args)				/* differentiate the data in the x direction  -
     free(bufferspecs);  // release buffer copy
     iBuffer.free();     // release the old data
     iBuffer = newIm;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -995,7 +995,7 @@ int gradient_c(int n,char* args)				/* get the 2D (x & y) gradient magnitude */
     free(specs);  // release buffer copy
     iBuffer.free();     // release the old data
     iBuffer = newIm;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -1015,7 +1015,7 @@ int size_c(int n,char* args){
             }
             iBuffer.free();     // release the old data
             iBuffer = new_im;   // this is the new data
-            iBuffer.getmaxx();
+            iBuffer.getmaxx(PRINT_RESULT);
             update_UI();
             return NO_ERR;
         }
@@ -1040,7 +1040,7 @@ int rows_c(int n,char* args){
         }
         iBuffer.free();     // release the old data
         iBuffer = new_im;   // this is the new data
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         free(specs);
         return NO_ERR;
@@ -1063,7 +1063,7 @@ int columns_c(int n,char* args){
         }
         iBuffer.free();     // release the old data
         iBuffer = new_im;   // this is the new data
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         free(specs);
         return NO_ERR;
@@ -1135,7 +1135,7 @@ int killBox_c(int n, char* args)
 	}
     free(bufferspecs);
     
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
 	update_UI();
 	return NO_ERR;
 }
@@ -1145,7 +1145,7 @@ int killBox_c(int n, char* args)
 int positive_c(int n, char* args)
 {
     iBuffer.floor(0.);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
 	update_UI();
 	return NO_ERR;
 }
@@ -1158,7 +1158,7 @@ int clip_c(int n, char* args)
     sscanf(args,"%f",&clipval);
     
     iBuffer.clip(clipval);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
 	update_UI();
 	return NO_ERR;
 
@@ -1172,7 +1172,7 @@ int clipbottom_c(int n, char* args)
     sscanf(args,"%f",&clipval);
     
     iBuffer.floor(clipval);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
 	update_UI();
 	return NO_ERR;
     
@@ -1189,7 +1189,7 @@ int clipfraction_c(int n, char* args)
     iBuffer.clip(clipval*values[MAX]);
     
     free(values);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
 	update_UI();
 	return NO_ERR;
     
@@ -1206,7 +1206,7 @@ int clipfbottom_c(int n, char* args)
     iBuffer.floor(clipval*values[MAX]);
     
     free(values);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
 	update_UI();
 	return NO_ERR;
     
@@ -1397,7 +1397,7 @@ int gtemp_c(int n, char* args)
             return MEM_ERR;
         }
         iBuffer << iTempImages[n];
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
     } else
@@ -1470,7 +1470,7 @@ int addtmp_c(int n, char* args)
             return SIZE_ERR;
         }
         iBuffer + iTempImages[n];
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
     } else
@@ -1488,7 +1488,7 @@ int subtmp_c(int n, char* args)
             return SIZE_ERR;
         }
         iBuffer - iTempImages[n];
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
     } else
@@ -1507,7 +1507,7 @@ int multmp_c(int n, char* args)
             return SIZE_ERR;
         }
         iBuffer * iTempImages[n];
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
     } else
@@ -1526,7 +1526,7 @@ int divtmp_c(int n, char* args)
             return SIZE_ERR;
         }
         iBuffer / iTempImages[n];
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
     } else
@@ -1546,7 +1546,7 @@ int comtmp_c(int n, char* args)
             return SIZE_ERR;
         }
         iBuffer.composite(iTempImages[n]);
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
     } else
@@ -1579,7 +1579,7 @@ int sinGrid_c(int n, char* args)				/* draw grid from sin function */
 		}
 	}
     free(theSpecs);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
 
     return NO_ERR;
@@ -1720,7 +1720,7 @@ int nextFile_c(int n,char* args){
     }
     iBuffer.free();     // release the old data
     iBuffer = new_im;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
     
@@ -2095,7 +2095,7 @@ int bit8_c(int n, char* args)
         }
         free(values);
         free(specs);
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
     } else {
@@ -2110,7 +2110,7 @@ int bit8_c(int n, char* args)
             }
         }
         free(specs);
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
         
@@ -2148,7 +2148,7 @@ int bit16_c(int n, char* args)
         }
         free(values);
         free(specs);
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
 	} else {
@@ -2162,7 +2162,7 @@ int bit16_c(int n, char* args)
             }
         }
         free(specs);
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
 	}
@@ -2215,7 +2215,7 @@ int gaussian_c(int n,char* args){
 		}
 	}
     free(theSpecs);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
 
     return NO_ERR;
@@ -2245,7 +2245,7 @@ int grey2rgb_c(int n,char* args){
     
     iBuffer.free();     // release the old data
     iBuffer = im;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -2465,7 +2465,7 @@ int clearbad_c(int n, char* args)
             }
         }
         free(specs);
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
         return NO_ERR;
     }
@@ -2528,7 +2528,12 @@ int clearbad_c(int n, char* args)
         
     }
     free(specs);
-    iBuffer.getmaxx();
+    if (strncmp(args, "NoPrint", 7)== 0) {
+        iBuffer.getmaxx(NO_PRINT);
+    } else {
+        iBuffer.getmaxx(PRINT_RESULT);
+    }
+    
     update_UI();
     return NO_ERR;
 }
@@ -2673,7 +2678,7 @@ int lookup_c(int n,char* args)
 		}
 	}
     free(specs);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -2694,7 +2699,7 @@ int ramp_c(int n,char* args)				/* fill current image with a ramp from 0 to the 
 		}
 	}
     free(specs);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -2713,7 +2718,7 @@ int roundUp_c (int n, char* args)
 		}
 	}
     free(specs);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -2732,7 +2737,7 @@ int roundoff_c(int n, char* args)
 		}
 	}
     free(specs);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -2810,7 +2815,7 @@ int acget_c(int n,char* args){
         return CMND_ERR;
     }
     iBuffer << accumulator;
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return iBuffer.err();
 }
@@ -2983,7 +2988,7 @@ int integrateFill(int n,char* args, int integratefill ){
 	}
     free(acpoint);
     free(specs);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return iBuffer.err();
 }
@@ -3008,7 +3013,7 @@ int ln_c(int n,char* args){
 			iBuffer.setpix(nt, nc, logf(iBuffer.getpix(nt, nc)));
 		}
 	}
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -3071,7 +3076,7 @@ int openfile_c(int n,char* args){
     fileIsOpen = 1;
     iBuffer.free();     // release the old data
     iBuffer = new_im;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -3097,7 +3102,7 @@ int getNext_c(int n,char* args)
     }
     iBuffer.free();     // release the old data
     iBuffer = new_im;   // this is the new data
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }
@@ -3308,7 +3313,7 @@ int doc2rgb_c(int n, char* args){
     specs[COLS] = newcol;
     iBuffer.setspecs(specs);
     free(specs);
-    iBuffer.getmaxx();
+    iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
 }

@@ -1141,8 +1141,8 @@ int gige(int n, char* args)
                 for(int i=0; i< numPreviews; i++){
                     // snap now
                     CameraSnap_preview(&Camera);
-                    if(i==0) iBuffer.getmaxx();
-                    if (fixBad) clearbad_c(0,(char*)"");
+                    if(i==0) iBuffer.getmaxx(PRINT_RESULT);
+                    if (fixBad) clearbad_c(0,(char*)"NoPrint");
                     
                     display(0,(char*)"GigE");
                     //checkevents();
@@ -1158,7 +1158,7 @@ int gige(int n, char* args)
                 UIData.newwindowflag = save_new_status;
                 
                 preview = 0;
-                return 0;
+                return NO_ERR;
                 
             } else
                 printf("Failed to start continuous streaming\n");
@@ -1185,7 +1185,7 @@ int gige(int n, char* args)
                 if (fixBad) {
                     clearbad_c(0,(char*)"");
                 } else {
-                    iBuffer.getmaxx();
+                    iBuffer.getmaxx(PRINT_RESULT);
                 }
                 display(0,(char*)"GigE");
                
@@ -1272,7 +1272,7 @@ int gige(int n, char* args)
             PvCaptureEnd(Camera.Handle);
             CameraUnsetup(&Camera, &continuousFrames);
             
-            iBuffer.getmaxx();
+            iBuffer.getmaxx(PRINT_RESULT);
             UIData.newwindowflag = save_new_status;
             
             closefile_c(0,0);

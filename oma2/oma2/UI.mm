@@ -85,7 +85,7 @@ BOOL dropped_file(char* extension, char* name){
         }
         iBuffer.free();     // release the old data
         iBuffer = new_im;   // this is the new data
-        iBuffer.getmaxx();
+        iBuffer.getmaxx(PRINT_RESULT);
         update_UI();
 
         display(0,(char*)"");

@@ -26,6 +26,9 @@ enum {MIN,MAX,RMAX,RMIN,GMAX,GMIN,BMAX,BMIN,RULER_SCALE};
 // Image error codes and command return codes
 enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR,ARG_ERR,CMND_ERR,HARD_ERR,GET_MACRO_LINE,GET_COMMENT_LINE};
 
+// arguments for getmaxx
+enum {NO_PRINT,PRINT_RESULT};
+
 /******************** Class Definitions ********************/
 
 class Image
@@ -76,7 +79,7 @@ public:
     void errclear();            ///< clear the image error code
     void free();                ///< release the data associated with an Image
     void zero();                ///< set the data associated with an Image to 0
-    void getmaxx();             ///< fill in the min and max for the current Image
+    void getmaxx(char);         ///< fill in the min and max for the current Image; argument is print flag
     void clip(DATAWORD);        ///< set values > specifiedValue to specifiedValue
     void floor(DATAWORD);       ///< set values < specifiedValue to specifiedValue
     void saveFile(char*, int);  ///< write the Image to a file; second argument tells if name is complete or not
