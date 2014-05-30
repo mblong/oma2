@@ -90,6 +90,8 @@ BOOL dropped_file(char* extension, char* name){
 
         display(0,(char*)"");
         [appController appendText: @"OMA2>"];
+        //[[appController theWindow] makeKeyAndOrderFront:NULL];
+        [[NSApplication sharedApplication] activateIgnoringOtherApps : YES];    // make oma active
         return YES;
     }
     if(strcmp(extension, "MAC")==0 || strcmp(extension, "O2M")==0){
@@ -120,12 +122,14 @@ BOOL dropped_file(char* extension, char* name){
         close(fd);
         clear_buffer_to_end(macbuf);		/* insert trailing zeros after the macro */
         [appController appendText: @"OMA2>"];
+        [[NSApplication sharedApplication] activateIgnoringOtherApps : YES];    // make oma active
         return YES;
     }
     if(strcmp(extension, "O2S")==0){
         printf("Loading Settings...\n");
         int err = loadprefs(name);
         [appController appendText: @"OMA2>"];
+        [[NSApplication sharedApplication] activateIgnoringOtherApps : YES];    // make oma active
         if (err == NO_ERR) return YES;
     }
     
