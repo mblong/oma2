@@ -65,13 +65,15 @@ void Sleep(unsigned int time);
 void WaitForCamera();
 bool CameraGet(tCamera* Camera);
 bool CameraSetup(tCamera* Camera);
-bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate, int* gain, int* trigger, int *triggerDelay, int *binx, int* biny);
+bool CameraStartContinuous(tCamera* Camera, int exptime, int frate, int gain, int trigger, int triggerDelay, int binx, int biny);
 bool CameraStart_preview(tCamera* Camera, int* time);
 bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain, int* trigger, int *triggerDelay, int *binx, int* biny);
-void CameraSnap(tCamera* Camera, int* time, int *fcount, int* frate, int* label, int* trigger, int *binx, int *biny, int* sav, char* savestr);
-void CameraSnap_preview(tCamera* Camera);
+void CameraSnap(tCamera* Camera, int time, int fcount, int frate, int label, int trigger, int sav, char* savestr);
+void CameraSnapOneFrame(tCamera* Camera);
 void CameraStop(tCamera* Camera);
-void CameraUnsetup(tCamera* Camera, int *fcount);
+void CameraUnsetup(tCamera* Camera, int fcount);
+
+enum {FREERUN,FIXED,SYNCIN};
 
 #if defined(_LINUX) || defined(_QNX) || defined(_OSX)
 void Sleep(unsigned int time)
@@ -90,6 +92,7 @@ int GigEinitialized = 0;
 extern Image iBuffer;
 char labelBuffer[100];
 tCamera Camera;
+unsigned long sbyte=0;
 
 // wait for a camera to be plugged
 void WaitForCamera()
@@ -131,6 +134,7 @@ bool CameraSetup(tCamera* Camera)
 }
 
 // setup and start streaming continuous mode
+// use FREERUN for trigger
 bool CameraStart_preview(tCamera* Camera, int* time)
 {
     unsigned long FrameSize = 0;
@@ -209,13 +213,13 @@ bool CameraStart_preview(tCamera* Camera, int* time)
 	}
     
     // set the streambyte/second value
-    if(PvAttrUint32Set(Camera->Handle,"StreamBytesPerSecond",115000000)){
-        printf("Couldn't set streamhold capacity.\n");
+    if(PvAttrUint32Set(Camera->Handle,"StreamBytesPerSecond",sbyte)){
+        printf("Couldn't set stream rate.\n");
         free(specs);
         return false;
     }
     
-    // set the camera in multiframe acquisition mode
+    // set the camera in continuous acquisition mode
 	if(PvAttrEnumSet(Camera->Handle,"AcquisitionMode","Continuous")){
 		printf("Couldn't set continuous acquisition mode.\n");
         free(specs);
@@ -229,7 +233,7 @@ bool CameraStart_preview(tCamera* Camera, int* time)
         return false;
     }
     
-	// allocate the buffer for the frames we need
+	// allocate the buffer for one frame
     Camera->Frame->Context[0]  = Camera;
     Camera->Frame->ImageBuffer = malloc(FrameSize);
     if(Camera->Frame->ImageBuffer){
@@ -254,8 +258,9 @@ bool CameraStart_preview(tCamera* Camera, int* time)
 }
 
 
-// setup and start streaming continuous mode
-bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate, int* gain, int* trigger, int *triggerDelay, int *binx, int* biny)
+// setup and start streaming CONTINUOUS mode
+// uses fixed rate or triggered framing
+bool CameraStartContinuous(tCamera* Camera, int exptime, int frate, int gain, int trigger, int triggerDelay, int binx, int biny)
 {
     unsigned long FrameSize = 0;
     char pixelformat[256];
@@ -299,17 +304,17 @@ bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate,
 	}
     
     // set the camera gain value (decibel)
-    if(PvAttrUint32Set(Camera->Handle, "GainValue", *gain)){
+    if(PvAttrUint32Set(Camera->Handle, "GainValue", gain)){
         printf("Couldn't set gain.\n");
         return false;
     }
     
     // set the binning factor
-    if(PvAttrUint32Set(Camera->Handle, "BinningX", *binx)){
+    if(PvAttrUint32Set(Camera->Handle, "BinningX", binx)){
         printf("Couldn't set horizontal binning.\n");
         return false;
     }
-    if(PvAttrUint32Set(Camera->Handle, "BinningY", *biny)){
+    if(PvAttrUint32Set(Camera->Handle, "BinningY", biny)){
         printf("Couldn't set vertical binning.\n");
         return false;
     }
@@ -341,7 +346,7 @@ bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate,
 	}
     
     
-    if(PvAttrUint32Set(Camera->Handle, "ExposureValue", *time)){
+    if(PvAttrUint32Set(Camera->Handle, "ExposureValue", exptime)){
         printf("Couldn't set exposure.\n");
         free(specs);
         return false;
@@ -355,7 +360,7 @@ bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate,
 	}
     
     // set the streambyte/second value
-    if(PvAttrUint32Set(Camera->Handle,"StreamBytesPerSecond",115000000)){
+    if(PvAttrUint32Set(Camera->Handle,"StreamBytesPerSecond",sbyte)){
         printf("Couldn't set streamhold capacity.\n");
         free(specs);
         return false;
@@ -368,14 +373,10 @@ bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate,
 		return false;
 	}
     /*
-    // set the trigger mode
-    if(PvAttrEnumSet(Camera->Handle,"FrameStartTriggerMode","Freerun")){
-        printf("Couldn't set free run mode.\n");
-        return false;
-    }
+     // set the trigger mode
      */
     
-	// allocate the buffer for the frames we need
+	// allocate the buffer for one frame
     Camera->Frame->Context[0]  = Camera;
     Camera->Frame->ImageBuffer = malloc(FrameSize);
     if(Camera->Frame->ImageBuffer){
@@ -385,13 +386,13 @@ bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate,
         free(specs);
         return false;
     }
-
+    
     
     // **** INTERNAL TRIGGER **** //
-    if (*trigger == 0) {
+    if (trigger == FIXED) {
         
         // set the frame rate value
-        if(PvAttrFloat32Set(Camera->Handle, "FrameRate",*frate)){
+        if(PvAttrFloat32Set(Camera->Handle, "FrameRate",frate)){
             printf("Couldn't set frame rate.\n");
             free(specs);
             return false;
@@ -412,9 +413,9 @@ bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate,
             free(specs);
             return false;
         }
-
         
-    } else if (*trigger == 1){
+        
+    } else if (trigger == SYNCIN){
         
         // FrameStartTriggerMode,"SyncIn2"
         if(PvAttrEnumSet(Camera->Handle,"FrameStartTriggerMode","SyncIn2")){
@@ -430,7 +431,7 @@ bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate,
             return false;
         }
         // FrameStartTriggerDelay
-        if(PvAttrUint32Set(Camera->Handle,"FrameStartTriggerDelay",*triggerDelay)){
+        if(PvAttrUint32Set(Camera->Handle,"FrameStartTriggerDelay",triggerDelay)){
             printf("Couldn't set trigger delay.\n");
             free(specs);
             return false;
@@ -449,7 +450,19 @@ bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate,
             free(specs);
             return false;
         }
-
+        
+    } else if( trigger == FREERUN){
+        if(PvAttrEnumSet(Camera->Handle,"FrameStartTriggerMode","Freerun")){
+            printf("Couldn't set free run mode.\n");
+            return false;
+        }
+        if(PvCommandRun(Camera->Handle,"AcquisitionStart")){
+            // if that fails, we reset the camera to non capture mode
+            PvCaptureEnd(Camera->Handle) ;
+            printf("Couldn't start acqusition.\n");
+            free(specs);
+            return false;
+        }
     }
     free(specs);
 	return true;
@@ -457,6 +470,7 @@ bool CameraStart_continuous(tCamera* Camera, int* time, int* fcount, int* frate,
 
 
 // setup and start streaming MULTIFRAME MODE
+// frames are stored in the camera and then made available to the computer
 bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain, int* trigger, int *triggerDelay, int *binx, int* biny)
 {
     unsigned long FrameSize = 0;
@@ -601,8 +615,8 @@ bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain,
     }
     
     // set the streambyte/second value
-    if(PvAttrUint32Set(Camera->Handle,"StreamBytesPerSecond",115000000)){
-        printf("Couldn't set streamhold capacity.\n");
+    if(PvAttrUint32Set(Camera->Handle,"StreamBytesPerSecond",sbyte)){
+        printf("Couldn't set stream rate.\n");
         free(specs);
         return false;
     }
@@ -736,7 +750,7 @@ bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain,
 }
 
 // snap and save a frame from the camera
-void CameraSnap(tCamera* Camera, int* time_, int *fcount, int* frate, int* label, int* trigger, int *binx, int *biny, int* sav, char* savestr)
+void CameraSnap(tCamera* Camera, int exptime, int fcount, int frate, int label, int trigger, int sav, char* savestr)
 {
     int i,j;
     short *ptr;
@@ -771,7 +785,7 @@ void CameraSnap(tCamera* Camera, int* time_, int *fcount, int* frate, int* label
     PvCommandRun(Camera->Handle,"TimeStampReset");
     PvAttrUint32Get(Camera->Handle,"TimeStampFrequency",&Tfreq);
     
-    for(j=0; j< *fcount; j++){
+    for(j=0; j< fcount; j++){
         
         if(PvCaptureQueueFrame(Camera->Handle,&(Camera->Frame[j]),NULL)){
             
@@ -800,18 +814,18 @@ void CameraSnap(tCamera* Camera, int* time_, int *fcount, int* frate, int* label
                 float fratec = 1./(tempo - tempo_pr);
                 tempo_pr = tempo;
                 
-                if(*label == 1){
-                    if (*trigger == 0){
+                if(label == 1){
+                    if (trigger == 0){
                         sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %d fps - exp. %d us) ",
-                            timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, j+1, *fcount, *frate, *time_);
-                    } else if (*trigger == 1){
+                            timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, j+1, fcount, frate, exptime);
+                    } else if (trigger == 1){
                         sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %.1f fps - exp. %d us) ",
-                                timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, j+1, *fcount, fratec, *time_);
+                                timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, j+1, fcount, fratec, exptime);
                     }
                     
                  }
                 
-                if(*sav == 1){
+                if(sav == 1){
                     
                     strcpy(strin,savestr);
                     sprintf(ora,"%s",asctime(timeinfo));
@@ -842,8 +856,9 @@ void CameraSnap(tCamera* Camera, int* time_, int *fcount, int* frate, int* label
     } 
 }
 
-
-void CameraSnap_preview(tCamera* Camera)
+// use when the camera has been started in continuous mode
+// return one frame
+void CameraSnapOneFrame(tCamera* Camera)
 {
     int i;
     short *ptr;
@@ -863,6 +878,8 @@ void CameraSnap_preview(tCamera* Camera)
                 for(int k=0;k<specs[COLS]; k++)
                     iBuffer.setpix(i,k,*(ptr++));
             }
+            
+
 			//pattern on the GC1380CH is Red Green Green Blue
         } else {
             printf("the frame failed to be captured. Status: %d\n",Camera->Frame[0].Status);			
@@ -898,11 +915,11 @@ void CameraStop(tCamera* Camera)
 
 // unsetup the camera
 
-void CameraUnsetup(tCamera* Camera, int *fcount)
+void CameraUnsetup(tCamera* Camera, int fcount)
 {
     //PvCameraClose(Camera->Handle);
     // and free the image buffer of the frame
-    for(int i=0;i< *fcount;i++){
+    for(int i=0;i< fcount;i++){
         if (Camera->Frame[i].ImageBuffer)
             free( (char*)Camera->Frame[i].ImageBuffer);     // occasional errors: pointer being freed was not allocated
         Camera->Frame[i].ImageBuffer = 0;
@@ -932,19 +949,28 @@ int gige(int n, char* args)
     static int label = 0;
     static int numPreviews = 0;
     static int preview = 0;
-    static int trigger = 0;
+    static int trigger = FIXED;
     static int triggerDelay = 0;
     static int sav = 0;
     static int fixBad = 0;
     unsigned long fsize,scap;
-    unsigned long sbyte=0;
+    
     char pixelformat[256];
     char buffer[256];
     static char savestr[256];
     unsigned long pixwidth = 0;
     unsigned long pixheight = 0;
     
-    int continuousFrames = 1;
+    double tempo_pr = 0;
+    unsigned long Tfreq;
+    unsigned long T_hi;
+    unsigned long T_lo;
+    double tempo;
+    
+    time_t rawtime;
+    struct tm * timeinfo;
+    
+
     
     
     //int createfile(int n,int index);
@@ -979,7 +1005,14 @@ int gige(int n, char* args)
             return CMND_ERR;
         }
         sscanf(args,"%s %d",txt, &n);
-        fixBad = n;
+        if (n) {
+            fixBad = 1;
+            printf("Will fix bad pixels before display.\n");
+        } else{
+            fixBad = 0;
+            printf("No bad pixel fix before display.\n");
+        }
+        
         return NO_ERR;
     }
 
@@ -1009,7 +1042,8 @@ int gige(int n, char* args)
 			return -1;
 		}
 		GigEinitialized = 1;
-        //return 0;
+        gige(0, (char*)"stat");
+        return NO_ERR;
 		
     }
     
@@ -1057,16 +1091,16 @@ int gige(int n, char* args)
     else if ( strncmp(args,"preview",3) == 0){
         sscanf(args,"%s %d",txt, &numPreviews);
         printf(" Number of frame preview set to %d \n",numPreviews);
-        if (trigger == 1){
-            beep();
-            printf("Preview not possible in external trigger mode.\n");
-            return CMND_ERR;
-        } else { 
+        //if (trigger == 1){
+        //    beep();
+        //    printf("Preview not possible in external trigger mode.\n");
+        //    return CMND_ERR;
+        //} else {
             strncpy(args,"acq",3);
             printf(" Wait... \n");
             preview = 1;
             sav = 0;
-        }
+        //}
     }
     // set the binning factor
     else if ( strncmp(args,"binx",4) == 0){
@@ -1085,12 +1119,12 @@ int gige(int n, char* args)
     // set the trigger mode
     else if ( strncmp(args,"external",3) == 0){
         printf("* External trigger enabled * \n");
-        trigger = 1;
+        trigger = SYNCIN;
         return NO_ERR;
     }
     else if ( strncmp(args,"internal",3) == 0){
         printf("* Internal trigger enabled * \n");
-        trigger = 0;
+        trigger = FIXED;
         return NO_ERR;
     }
     // set the trigger delay [microseconds]
@@ -1126,8 +1160,8 @@ int gige(int n, char* args)
         printf("\tExposure time: %d us\n",exptime);
         printf("\tGain value: %d\n",gain);
         printf("\tFrame number: %d\n",numFrames);
-        if (trigger == 0)   printf("\tFrame rate: %d fps.\n",frameRate);
-        if (trigger == 1)   printf("\tFrame rate: see external source value.\n");
+        if (trigger == FIXED)   printf("\tFrame rate: %d fps.\n",frameRate);
+        if (trigger == SYNCIN)   printf("\tFrame rate: see external source value.\n");
         printf("\tFrame dimension: %d x %d pixels\n",specs[ROWS],specs[COLS]);
         printf("\tHorizontal binning: %d\n",bx);
         printf("\tVertical binning: %d\n",by);
@@ -1137,9 +1171,9 @@ int gige(int n, char* args)
         printf("\tFramesize: %d\n",fsize);
         PvAttrUint32Get(Camera.Handle,"StreamBytesPerSecond",&sbyte);
         printf("\tStream bytes per second: %d\n",sbyte);
-        if (trigger == 1)   printf("\tTrigger: external\n");
-        if (trigger == 1)   printf("\tTrigger delay: %d us\n\n",triggerDelay);
-        if (trigger == 0)   printf("\tTrigger: internal\n\n");
+        if (trigger == SYNCIN)   printf("\tTrigger: external\n");
+        if (trigger == SYNCIN)   printf("\tTrigger delay: %d us\n\n",triggerDelay);
+        if (trigger == FIXED)   printf("\tTrigger: internal\n\n");
         return NO_ERR;
     }
     
@@ -1150,21 +1184,47 @@ int gige(int n, char* args)
         // continuous acquisition mode
         if(preview){
             
-            if(CameraStart_preview(&Camera,&exptime)){
+            time (&rawtime);
+            timeinfo = localtime (&rawtime);
+            
+            if(CameraStartContinuous(&Camera,exptime,frameRate,gain,FREERUN,triggerDelay,bx,by)){
+            //if(CameraStart_preview(&Camera,&exptime)){
+                PvAttrUint32Get(Camera.Handle,"TimeStampFrequency",&Tfreq);
                 for(int i=0; i< numPreviews; i++){
                     // snap now
-                    CameraSnap_preview(&Camera);
+                    CameraSnapOneFrame(&Camera);
+                    
+                    
+                    PvCommandRun(Camera.Handle,"TimeStampValueLatch");
+                    PvAttrUint32Get(Camera.Handle,"TimeStampValueHi",&T_hi);
+                    PvAttrUint32Get(Camera.Handle,"TimeStampValueLo",&T_lo);
+                    
+                    tempo = (T_hi*4294967296. + T_lo) / Tfreq;
+                    float fratec = 1./(tempo - tempo_pr);
+                    tempo_pr = tempo;
+                    
+                    if(label == 1){
+                        if (trigger == FIXED){
+                            sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %d fps - exp. %d us) ",
+                                    timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, i+1, numPreviews, frameRate, exptime);
+                        } else if (trigger == SYNCIN){
+                            sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %.1f fps - exp. %d us) ",
+                                    timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, i+1, numPreviews, fratec, exptime);
+                        }
+                        
+                    }
+
                     if (fixBad) clearbad_c(0,(char*)"NoPrint");
                     if(i==0) iBuffer.getmaxx(PRINT_RESULT);
                     display(0,(char*)"GigE");
                     if(label == 1) labelData(0,labelBuffer);
-                    //checkevents();
+                    checkEvents;
                     UIData.newwindowflag = 0;  // if 0 opens the new image in the old window, if 1 it opens it in a new window
                 }
                 // stop the streaming
                 PvCommandRun(Camera.Handle,"AcquisitionStop");
                 PvCaptureEnd(Camera.Handle);            
-                CameraUnsetup(&Camera, &numFrames);
+                CameraUnsetup(&Camera, 1);
                 
                 //have_max = 0;
                 //maxx();
@@ -1177,7 +1237,7 @@ int gige(int n, char* args)
                 printf("Failed to start continuous streaming\n");
             
             // unsetup the camera
-            CameraUnsetup(&Camera, &numFrames);
+            CameraUnsetup(&Camera, 1);
             
             return -1;
             
@@ -1188,12 +1248,12 @@ int gige(int n, char* args)
             if(CameraStart(&Camera,&exptime,&numFrames,&frameRate,&gain,&trigger,&triggerDelay,&bx,&by)){
                 
                 // snap now
-                CameraSnap(&Camera,&exptime,&numFrames,&frameRate,&label,&trigger,&bx,&by,&sav,savestr);
+                CameraSnap(&Camera,exptime,numFrames,frameRate,label,trigger,sav,savestr);
                 //checkevents();
                 
                 // stop the streaming
                 CameraStop(&Camera);
-                CameraUnsetup(&Camera, &numFrames);
+                CameraUnsetup(&Camera, numFrames);
                 
                 if (fixBad) {
                     clearbad_c(0,(char*)"");
@@ -1219,7 +1279,7 @@ int gige(int n, char* args)
                 printf("Failed to start multiframe streaming\n");
             
             // unsetup the camera
-            CameraUnsetup(&Camera, &numFrames);
+            CameraUnsetup(&Camera, numFrames);
             
             return -1;
         } 
@@ -1227,14 +1287,7 @@ int gige(int n, char* args)
 
     if ( strncmp(args,"sframes",3) == 0){
 
-        double tempo_pr = 0;
-        unsigned long Tfreq;
-        unsigned long T_hi;
-        unsigned long T_lo;
-        double tempo;
         FILE* timeFile = NULL;
-        time_t rawtime;
-        struct tm * timeinfo;
         
         time (&rawtime);
         timeinfo = localtime (&rawtime);
@@ -1254,11 +1307,12 @@ int gige(int n, char* args)
         timeFile = fopen(fullname(timeFileName,RAW_DATA),"w");
 
         // continuous acquisition mode
-        if(CameraStart_continuous(&Camera,&exptime,&numFrames,&frameRate,&gain,&trigger,&triggerDelay,&bx,&by)){
+        if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
             PvAttrUint32Get(Camera.Handle,"TimeStampFrequency",&Tfreq);
             for(int i=0; i< sFrames; i++){
                 // snap now
-                CameraSnap_preview(&Camera);
+                CameraSnapOneFrame(&Camera);
+                
                 
                 display(0,(char*)"GigE");
                 //dquartz(0,0);
@@ -1288,7 +1342,7 @@ int gige(int n, char* args)
             // stop the streaming
             PvCommandRun(Camera.Handle,"AcquisitionStop");
             PvCaptureEnd(Camera.Handle);
-            CameraUnsetup(&Camera, &continuousFrames);
+            CameraUnsetup(&Camera, 1);
             
             iBuffer.getmaxx(PRINT_RESULT);
             UIData.newwindowflag = save_new_status;
@@ -1300,9 +1354,11 @@ int gige(int n, char* args)
         } else
             printf("Failed to start continuous streaming\n");
         
-        
+        closefile_c(0,0);
+        fclose(timeFile);
+
         // unsetup the camera
-        CameraUnsetup(&Camera, &numFrames);
+        CameraUnsetup(&Camera, 1);
         
         return -1;
         
