@@ -650,7 +650,7 @@ bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain,
     }
     
     // **** INTERNAL TRIGGER **** //
-    if (*trigger == 0) {
+    if (*trigger == FIXED) {
         
         // set the frame rate value
         if(PvAttrFloat32Set(Camera->Handle, "FrameRate",*frate)){
@@ -698,7 +698,7 @@ bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain,
         }
         
     // **** EXTERNAL TRIGGER **** //
-    } else if (*trigger == 1){
+    } else if (*trigger == SYNCIN){
         
         // FrameStartTriggerMode,"SyncIn2"
         if(PvAttrEnumSet(Camera->Handle,"FrameStartTriggerMode","SyncIn2")){
@@ -815,10 +815,10 @@ void CameraSnap(tCamera* Camera, int exptime, int fcount, int frate, int label, 
                 tempo_pr = tempo;
                 
                 if(label == 1){
-                    if (trigger == 0){
+                    if (trigger == FIXED){
                         sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %d fps - exp. %d us) ",
                             timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, j+1, fcount, frate, exptime);
-                    } else if (trigger == 1){
+                    } else if (trigger == SYNCIN){
                         sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %.1f fps - exp. %d us) ",
                                 timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, j+1, fcount, fratec, exptime);
                     }
@@ -1204,21 +1204,15 @@ int gige(int n, char* args)
                     tempo_pr = tempo;
                     
                     if(label == 1){
-                        if (trigger == FIXED){
-                            sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %d fps - exp. %d us) ",
-                                    timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, i+1, numPreviews, frameRate, exptime);
-                        } else if (trigger == SYNCIN){
-                            sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %.1f fps - exp. %d us) ",
-                                    timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, i+1, numPreviews, fratec, exptime);
-                        }
-                        
+                        sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %.1f fps - exp. %d us) ",
+                                timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, i+1, numPreviews, fratec, exptime);
                     }
 
                     if (fixBad) clearbad_c(0,(char*)"NoPrint");
                     if(i==0) iBuffer.getmaxx(PRINT_RESULT);
                     display(0,(char*)"GigE");
                     if(label == 1) labelData(0,labelBuffer);
-                    checkEvents;
+                    //checkEvents;
                     UIData.newwindowflag = 0;  // if 0 opens the new image in the old window, if 1 it opens it in a new window
                 }
                 // stop the streaming
@@ -1327,13 +1321,15 @@ int gige(int n, char* args)
                 float fratec = 1./(tempo - tempo_pr);
                 tempo_pr = tempo;
                 
-                if (trigger == 0){
-                    fprintf(timeFile,"%s\tFrame %d/%d\t%d\tfps\texp.\t%d\tus\n ",
-                            asctime(timeinfo), i+1, sFrames, frameRate, exptime);
-                } else if (trigger == 1){
-                    fprintf(timeFile,"%s\tFrame %d/%d\t%f\tfps\texp.\t%d\tus\n ",
-                            asctime(timeinfo), i+1, sFrames, fratec, exptime);
+                if (trigger == FIXED){
+                    fprintf(timeFile,"%2d:%2d:%.4f\t(Frame %d/%d - %d fps - exp. %d us)\n",
+                            timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, i+1, sFrames, frameRate, exptime);
+                } else if (trigger == SYNCIN){
+                    fprintf(timeFile,"%2d:%2d:%.4f\t(Frame %d/%d - %.1f fps - exp. %d us)\n",
+                            timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, i+1, sFrames, fratec, exptime);
                 }
+                    
+
 
                 
                 //checkevents();
