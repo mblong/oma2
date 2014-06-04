@@ -3023,6 +3023,7 @@ int ln_c(int n,char* args){
 int 	bigfile_fd;
 int 	bigfile_open = 0;
 char 	bigfile_name[CHPERLN] = {0};
+int     bigfileFrames = 0;
 
 int createfile_c(int n,char* args)
 {
@@ -3031,6 +3032,7 @@ int createfile_c(int n,char* args)
     bigfile_fd = open(fullname(args,SAVE_DATA),WMODE);
 	strcpy(bigfile_name,args);
     iBuffer.saveFile((char*)&bigfile_fd,LEAVE_OPEN);
+    bigfileFrames++;
 	bigfile_open = 1;
 	return iBuffer.err();
 }
@@ -3044,6 +3046,7 @@ int concatfile_c(int n,char* args)
 		return FILE_ERR;
 	}
     iBuffer.saveFile((char*)&bigfile_fd,IS_OPEN);
+    bigfileFrames++;
     return iBuffer.err();
 }
 
@@ -3052,7 +3055,28 @@ int concatfile_c(int n,char* args)
 int closefile_c(int n,char* args)
 {
     close(bigfile_fd);
+    FILE* big;
+    big = fopen(bigfile_name, "r+");
+    if (big) {                      // set the number of frames
+        char txt[HEADLEN];
+        int nspecs = NSPECS;
+        int nvalues = NVALUES;
+        int nrulerchar = NRULERCHAR;
+        
+        int* specs = iBuffer.getspecs();
+        specs[ NFRAMES] = --bigfileFrames;
+
+        strcpy(txt, OMA2_BINARY_DATA_STRING);
+        fwrite(txt, sizeof(char), HEADLEN, big);
+        fwrite(&nspecs,sizeof(int),1,big);
+        fwrite(&nvalues,sizeof(int),1,big);
+        fwrite(&nrulerchar,sizeof(int),1,big);
+        fwrite(specs,sizeof(int),nspecs,big);
+        fclose(big);
+        free(specs);
+    }
 	bigfile_open = 0;
+    bigfileFrames = 0;
 	//setdata(bigfile_name);
 	//fileflush(bigfile_name);	/* for updating directory */
 	printf("File %s Closed.\n",bigfile_name);
@@ -3067,6 +3091,10 @@ int openFileFd = -1;
 
 
 int openfile_c(int n,char* args){
+    extern Variable user_variables[];
+    char txt[CHPERLN];
+    strncpy(txt, args, CHPERLN);
+    unsigned long filesize = fsize(fullname(txt, GET_DATA));
     Image new_im(args,LEAVE_OPEN);
     if(new_im.err()){
         beep();
@@ -3077,6 +3105,15 @@ int openfile_c(int n,char* args){
     iBuffer.free();     // release the old data
     iBuffer = new_im;   // this is the new data
     iBuffer.getmaxx(PRINT_RESULT);
+    int* specs = iBuffer.getspecs();
+    if (filesize < specs[ROWS]*specs[COLS]*sizeof(DATAWORD)*specs[NFRAMES]) { // number of frames must not have been set
+        specs[NFRAMES] = (int)(filesize-sizeof(Image))/(specs[ROWS]*specs[COLS]*sizeof(DATAWORD))-1;    // this is a reasonable guess
+        iBuffer.setspecs(specs);
+    }
+    printf("%d Frames.\n",specs[NFRAMES]+1);
+    user_variables[0].ivalue = user_variables[0].fvalue = specs[NFRAMES]+1;
+	user_variables[0].is_float = 0;
+    free(specs);
     update_UI();
     return NO_ERR;
 }

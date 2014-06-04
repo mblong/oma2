@@ -40,6 +40,7 @@ Image::Image()              // create an empty Image with default values
     specs[ROWS]=specs[COLS]=0;
 
     specs[Y0] = specs[X0] = specs[IS_COLOR] = specs[HAVE_MAX] = 0;
+    specs[NFRAMES] = 0; // the first frame is frame 0 
     specs[DX] = specs[DY] = 1;
     error = 0;
     specs[HAS_RULER]=0;
