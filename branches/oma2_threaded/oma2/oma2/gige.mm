@@ -953,6 +953,7 @@ int gige(int n, char* args)
     static int triggerDelay = 0;
     static int sav = 0;
     static int fixBad = 0;
+    static int realTimeDisplay = 1;
     unsigned long fsize,scap;
     
     char pixelformat[256];
@@ -1189,29 +1190,31 @@ int gige(int n, char* args)
             
             if(CameraStartContinuous(&Camera,exptime,frameRate,gain,FREERUN,triggerDelay,bx,by)){
             //if(CameraStart_preview(&Camera,&exptime)){
+                PvCommandRun(Camera.Handle,"TimeStampReset");
                 PvAttrUint32Get(Camera.Handle,"TimeStampFrequency",&Tfreq);
                 for(int i=0; i< numPreviews; i++){
                     // snap now
                     CameraSnapOneFrame(&Camera);
                     
+                    if(label && realTimeDisplay){
+                        PvCommandRun(Camera.Handle,"TimeStampValueLatch");
+                        PvAttrUint32Get(Camera.Handle,"TimeStampValueHi",&T_hi);
+                        PvAttrUint32Get(Camera.Handle,"TimeStampValueLo",&T_lo);
                     
-                    PvCommandRun(Camera.Handle,"TimeStampValueLatch");
-                    PvAttrUint32Get(Camera.Handle,"TimeStampValueHi",&T_hi);
-                    PvAttrUint32Get(Camera.Handle,"TimeStampValueLo",&T_lo);
+                        tempo = (T_hi*4294967296. + T_lo) / Tfreq;
+                        float fratec = 1./(tempo - tempo_pr);
+                        tempo_pr = tempo;
                     
-                    tempo = (T_hi*4294967296. + T_lo) / Tfreq;
-                    float fratec = 1./(tempo - tempo_pr);
-                    tempo_pr = tempo;
-                    
-                    if(label == 1){
                         sprintf(labelBuffer,"%2d:%2d:%.4f (Frame %d/%d - %.1f fps - exp. %d us) ",
                                 timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, i+1, numPreviews, fratec, exptime);
                     }
-
+                    
                     if (fixBad) clearbad_c(0,(char*)"NoPrint");
                     if(i==0) iBuffer.getmaxx(PRINT_RESULT);
-                    display(0,(char*)"GigE");
-                    if(label == 1) labelData(0,labelBuffer);
+                    if(realTimeDisplay){
+                        display(0,(char*)"GigE");
+                        if(label ) labelData(0,labelBuffer);
+                    }
                     //checkEvents;
                     UIData.newwindowflag = 0;  // if 0 opens the new image in the old window, if 1 it opens it in a new window
                 }
@@ -1282,15 +1285,11 @@ int gige(int n, char* args)
     if ( strncmp(args,"sframes",3) == 0){
 
         FILE* timeFile = NULL;
-        
         time (&rawtime);
         timeinfo = localtime (&rawtime);
-
-        
         char timeFileName[256];
         int sFrames = 1;
         
-            
         sscanf(args,"%s %d",txt, &sFrames);
         if( sFrames < 1) sFrames = 1;
         
@@ -1302,20 +1301,19 @@ int gige(int n, char* args)
 
         // continuous acquisition mode
         if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
+            PvCommandRun(Camera.Handle,"TimeStampReset");
             PvAttrUint32Get(Camera.Handle,"TimeStampFrequency",&Tfreq);
             for(int i=0; i< sFrames; i++){
                 // snap now
                 CameraSnapOneFrame(&Camera);
                 
-                
-                display(0,(char*)"GigE");
+                if(realTimeDisplay) display(0,(char*)"GigE");
                 //dquartz(0,0);
                 concatfile_c(0,0);
                 
                 PvCommandRun(Camera.Handle,"TimeStampValueLatch");
                 PvAttrUint32Get(Camera.Handle,"TimeStampValueHi",&T_hi);
                 PvAttrUint32Get(Camera.Handle,"TimeStampValueLo",&T_lo);
-                
                 
                 tempo = (T_hi*4294967296. + T_lo) / Tfreq;
                 float fratec = 1./(tempo - tempo_pr);
@@ -1329,9 +1327,6 @@ int gige(int n, char* args)
                             timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, i+1, sFrames, fratec, exptime);
                 }
                     
-
-
-                
                 //checkevents();
                 
             }
@@ -1357,9 +1352,52 @@ int gige(int n, char* args)
         CameraUnsetup(&Camera, 1);
         
         return -1;
-        
-        // multiframe acquisition mode
 
+    }
+    if ( strncmp(args,"hdr",3) == 0){
+        int sFrames = 1;
+        int nextExpTime = exptime;
+        float multiplier = 2.;
+        
+        sscanf(args,"%s %d %f",txt, &sFrames,&multiplier);
+        if( sFrames < 2) sFrames = 2;
+        if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
+            PvCommandRun(Camera.Handle,"TimeStampReset");
+            for(int i=0; i< sFrames; i++){
+                // snap now
+                CameraSnapOneFrame(&Camera);
+                nextExpTime *= multiplier;
+                if(PvAttrUint32Set(Camera.Handle, "ExposureValue", nextExpTime)){
+                    printf("Couldn't set exposure.\n");
+                }
+
+                if(realTimeDisplay) display(0,(char*)"GigE");
+                concatfile_c(0,0);
+                
+                //checkevents();
+                
+            }
+            // stop the streaming
+            PvCommandRun(Camera.Handle,"AcquisitionStop");
+            PvCaptureEnd(Camera.Handle);
+            CameraUnsetup(&Camera, 1);
+            
+            iBuffer.getmaxx(PRINT_RESULT);
+            UIData.newwindowflag = save_new_status;
+            
+            closefile_c(0,0);
+            return 0;
+            
+        } else
+            printf("Failed to start continuous streaming\n");
+        
+        closefile_c(0,0);
+        
+        // unsetup the camera
+        CameraUnsetup(&Camera, 1);
+        
+        return -1;
+        
     }
     beep();
     gige(0,(char*) "help");
