@@ -979,21 +979,24 @@ int gige(int n, char* args)
     //int concatfile();
     if ( strncmp(args,"help",3) == 0){
         printf("Available Commands:\n");
-        printf("  ACQuire \n");
+        printf("  ACQuire (gets frames in MULTIFRAME mode)\n");
         printf("  EXPosure <exposureTime> (in microseconds)\n");
         printf("  GAIn <gain> (0 or 33)\n");
-        printf("  NUMber <numberOfFrames> (to be acquired; default is 1)\n");
+        printf("  NUMber <numberOfFrames> (to be acquired by the ACQUIRE command; default is 1)\n");
         printf("  RATe <frameRate> \n");
         printf("  LABON (label frames) \n");
         printf("  LABOFf (don't label frames) \n");
         printf("  PREview <numberFrames> (show preview for specified number of frames) \n");
         printf("  EXTernal (set external triggering) \n");
         printf("  INTernal (set internal triggering) \n");
-        printf("  DELay <triggerDelay> (set the trigger delay [microseconds]\n");
-        printf("  SAVe <filename> (enable save mode; filename will store all frames\n");
-        printf("  ENDSave (disable save mode\n");
-        printf("  STAtus (print camera settings\n");
-        printf("  FIXbad (clear bad pixels before display --> must use FINDBAD first\n");
+        printf("  DELay <triggerDelay> (set the trigger delay [microseconds])\n");
+        printf("  SAVe <filename> (enable save mode; filename will store all frames)\n");
+        printf("  ENDSave (disable save mode)\n");
+        printf("  SFRames <numFrames> (save the specified number of frames using the filename specified in the \n    SAVe command. Uses CONTINUOUS mode. Also saves a text file showing frame times.)\n");
+        printf("  STAtus (print camera settings)\n");
+        printf("  FIXbad <flag> (set flag to 1 to clear bad pixels before display or save --> must use FINDBAD first)\n");
+        printf("  DISplay <flag> (set flag to 1 to display during acqusition)\n");
+        printf("  HDR <numFrames> <multiplier> (save the specified number of frames using the filename\n    specified in the SAVe command. Subsequent exposure times are multiplied by the multiplier.)\n");
         return NO_ERR;
         
     }
@@ -1012,6 +1015,19 @@ int gige(int n, char* args)
         } else{
             fixBad = 0;
             printf("No bad pixel fix before display.\n");
+        }
+        
+        return NO_ERR;
+    }
+
+    if ( strncmp(args,"display",3) == 0){
+        sscanf(args,"%s %d",txt, &n);
+        if (n) {
+            realTimeDisplay = 1;
+            printf("Will display in capture.\n");
+        } else{
+            realTimeDisplay = 0;
+            printf("No display in capture.\n");
         }
         
         return NO_ERR;
@@ -1151,7 +1167,7 @@ int gige(int n, char* args)
     else if ( strncmp(args,"stat",3) == 0){
         int* specs = iBuffer.getspecs();
         printf("\n");
-        printf("OMA version: June 2013\n");
+        
         PvAttrEnumGet(Camera.Handle,"SensorType",pixelformat,sizeof(pixelformat),NULL);
         sprintf(buffer,"Sensor type: %s\n",pixelformat);
         printf("\t%s",buffer);
@@ -1196,7 +1212,7 @@ int gige(int n, char* args)
                     // snap now
                     CameraSnapOneFrame(&Camera);
                     
-                    if(label && realTimeDisplay){
+                    if(label ){
                         PvCommandRun(Camera.Handle,"TimeStampValueLatch");
                         PvAttrUint32Get(Camera.Handle,"TimeStampValueHi",&T_hi);
                         PvAttrUint32Get(Camera.Handle,"TimeStampValueLo",&T_lo);
@@ -1211,10 +1227,9 @@ int gige(int n, char* args)
                     
                     if (fixBad) clearbad_c(0,(char*)"NoPrint");
                     if(i==0) iBuffer.getmaxx(PRINT_RESULT);
-                    if(realTimeDisplay){
-                        display(0,(char*)"GigE");
-                        if(label ) labelData(0,labelBuffer);
-                    }
+                    display(0,(char*)"GigE");
+                    if(label ) labelData(0,labelBuffer);
+                    
                     //checkEvents;
                     UIData.newwindowflag = 0;  // if 0 opens the new image in the old window, if 1 it opens it in a new window
                 }
@@ -1296,10 +1311,12 @@ int gige(int n, char* args)
         strcpy(args, savestr);
         strcpy(timeFileName, savestr);
         strcat(timeFileName, "_times.txt");
-        createfile_c(0,args);
+        
         timeFile = fopen(fullname(timeFileName,RAW_DATA),"w");
 
         // continuous acquisition mode
+        // use frame rate for internal trigger
+        // should work for external trigger as well
         if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
             PvCommandRun(Camera.Handle,"TimeStampReset");
             PvAttrUint32Get(Camera.Handle,"TimeStampFrequency",&Tfreq);
@@ -1309,7 +1326,10 @@ int gige(int n, char* args)
                 
                 if(realTimeDisplay) display(0,(char*)"GigE");
                 //dquartz(0,0);
-                concatfile_c(0,0);
+                if(i == 0)
+                    createfile_c(0,args);
+                else
+                    concatfile_c(0,0);
                 
                 PvCommandRun(Camera.Handle,"TimeStampValueLatch");
                 PvAttrUint32Get(Camera.Handle,"TimeStampValueHi",&T_hi);
@@ -1345,7 +1365,6 @@ int gige(int n, char* args)
         } else
             printf("Failed to start continuous streaming\n");
         
-        closefile_c(0,0);
         fclose(timeFile);
 
         // unsetup the camera
@@ -1360,6 +1379,10 @@ int gige(int n, char* args)
         float multiplier = 2.;
         
         sscanf(args,"%s %d %f",txt, &sFrames,&multiplier);
+        printf("%d frames with %f multiplier",sFrames,multiplier);
+        
+        strcpy(args, savestr);
+        
         if( sFrames < 2) sFrames = 2;
         if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
             PvCommandRun(Camera.Handle,"TimeStampReset");
@@ -1370,9 +1393,12 @@ int gige(int n, char* args)
                 if(PvAttrUint32Set(Camera.Handle, "ExposureValue", nextExpTime)){
                     printf("Couldn't set exposure.\n");
                 }
-
+                if (fixBad) clearbad_c(0,(char*)"NoPrint");
                 if(realTimeDisplay) display(0,(char*)"GigE");
-                concatfile_c(0,0);
+                if(i == 0)
+                    createfile_c(0,args);
+                else
+                    concatfile_c(0,0);
                 
                 //checkevents();
                 
@@ -1391,7 +1417,7 @@ int gige(int n, char* args)
         } else
             printf("Failed to start continuous streaming\n");
         
-        closefile_c(0,0);
+        
         
         // unsetup the camera
         CameraUnsetup(&Camera, 1);
