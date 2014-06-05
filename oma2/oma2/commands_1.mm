@@ -3054,6 +3054,13 @@ int concatfile_c(int n,char* args)
 
 int closefile_c(int n,char* args)
 {
+    int extraSize = iBuffer.getExtraSize();
+    if (extraSize) {
+        float* extra = iBuffer.getextra();
+        write(bigfile_fd,extra,extraSize*sizeof(float));
+        free(extra);
+    }
+
     close(bigfile_fd);
     FILE* big;
     big = fopen(bigfile_name, "r+");
@@ -3393,9 +3400,13 @@ int seq2hdr_c(int n,char* args){
     int* specs = iBuffer.getspecs();
     int extraSize = iBuffer.getExtraSize();
     if (extraSize != specs[NFRAMES]+ 1) {
-        
+        beep();
+        printf("The sequence does not contain exposure values.\n");
+        closefile_c(0,(char*) "");
+        free(specs);
+        return FILE_ERR;
     }
-    
+    float* expValues = iBuffer.getextra();
     
     Image* exp = new Image[specs[NFRAMES]+ 1];
     for(ex=0; ex < specs[NFRAMES]; ex++){
@@ -3404,22 +3415,25 @@ int seq2hdr_c(int n,char* args){
     }
     exp[ex] << iBuffer;
     closefile_c(0,(char*) "");
-    float multiplier = 2;
     for( int row=0; row < specs[ROWS]; row++){
         for( int col=0; col < specs[COLS]; col++){
             DATAWORD sum = 0.;
             int num = 0;
-            for(int ex=0; ex < specs[NFRAMES]+1; ex++){
+            for(int ex=0; ex < extraSize; ex++){
                 DATAWORD val = exp[ex].getpix(row,col);
                 if (val < 4090) {
-                    sum += val/((ex+1)*powf(multiplier, ex));
+                    sum += val/(expValues[ex]/expValues[0]);
                     num++;
                 }
             }
             iBuffer.setpix(row,col, sum/num);
         }
     }
+    
+    for(int ex=0; ex < extraSize; ex++) exp[ex].free();
     free(specs);
+    free(expValues);
+    delete[] exp;
     iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
 
