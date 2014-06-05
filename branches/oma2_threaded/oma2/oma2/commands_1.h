@@ -130,6 +130,7 @@ int savefile_c(int,char*);
 int satiff_c(int,char*);
 int satiffscaled_c(int,char*);
 int sysCommand_c(int,char*);
+int seq2hdr_c(int,char*);
 
 int tsmooth_c(int,char*);
 
