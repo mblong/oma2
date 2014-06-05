@@ -69,7 +69,7 @@ bool CameraStartContinuous(tCamera* Camera, int exptime, int frate, int gain, in
 bool CameraStart_preview(tCamera* Camera, int* time);
 bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain, int* trigger, int *triggerDelay, int *binx, int* biny);
 void CameraSnap(tCamera* Camera, int time, int fcount, int frate, int label, int trigger, int sav, char* savestr);
-void CameraSnapOneFrame(tCamera* Camera);
+void CameraSnapOneFrame(tCamera* Camera,DATAWORD*);
 void CameraStop(tCamera* Camera);
 void CameraUnsetup(tCamera* Camera, int fcount);
 
@@ -858,7 +858,7 @@ void CameraSnap(tCamera* Camera, int exptime, int fcount, int frate, int label, 
 
 // use when the camera has been started in continuous mode
 // return one frame
-void CameraSnapOneFrame(tCamera* Camera)
+void CameraSnapOneFrame(tCamera* Camera,DATAWORD* dataBuffer)
 {
     int i;
     short *ptr;
@@ -874,10 +874,12 @@ void CameraSnapOneFrame(tCamera* Camera)
         {
 			ptr = (short*)Camera->Frame[0].ImageBuffer;
             // move the data
-            for(i=0; i< specs[ROWS];i++){
-                for(int k=0;k<specs[COLS]; k++)
-                    iBuffer.setpix(i,k,*(ptr++));
-            }
+            //for(i=0; i< specs[ROWS];i++){
+                //for(int k=0;k<specs[COLS]; k++)
+                    //iBuffer.setpix(i,k,*(ptr++));
+            //}
+            for(i=0; i< specs[ROWS]*specs[COLS];i++)
+                *(dataBuffer++) = *(ptr++);
             
 
 			//pattern on the GC1380CH is Red Green Green Blue
@@ -1210,7 +1212,7 @@ int gige(int n, char* args)
                 PvAttrUint32Get(Camera.Handle,"TimeStampFrequency",&Tfreq);
                 for(int i=0; i< numPreviews; i++){
                     // snap now
-                    CameraSnapOneFrame(&Camera);
+                    CameraSnapOneFrame(&Camera,iBuffer.data);
                     
                     if(label ){
                         PvCommandRun(Camera.Handle,"TimeStampValueLatch");
@@ -1322,7 +1324,7 @@ int gige(int n, char* args)
             PvAttrUint32Get(Camera.Handle,"TimeStampFrequency",&Tfreq);
             for(int i=0; i< sFrames; i++){
                 // snap now
-                CameraSnapOneFrame(&Camera);
+                CameraSnapOneFrame(&Camera,iBuffer.data);
                 
                 if(realTimeDisplay) display(0,(char*)"GigE");
                 //dquartz(0,0);
@@ -1384,11 +1386,17 @@ int gige(int n, char* args)
         strcpy(args, savestr);
         
         if( sFrames < 2) sFrames = 2;
+        iBuffer.extraSize = sFrames;                // save exposure times in the extra space
+        iBuffer.extra = new float(sFrames);
+        for(int i=0; i< sFrames; i++){
+            iBuffer.extra[i] = powf(exptime/1.e6, i);
+        }
+        
         if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
             PvCommandRun(Camera.Handle,"TimeStampReset");
             for(int i=0; i< sFrames; i++){
                 // snap now
-                CameraSnapOneFrame(&Camera);
+                CameraSnapOneFrame(&Camera,iBuffer.data);
                 nextExpTime *= multiplier;
                 if(PvAttrUint32Set(Camera.Handle, "ExposureValue", nextExpTime)){
                     printf("Couldn't set exposure.\n");

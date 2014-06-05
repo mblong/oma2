@@ -3385,18 +3385,24 @@ int uprefix_c(int n,char* args)		/* force the use of a particular prefix andsuff
 /* ********** */
 
 int seq2hdr_c(int n,char* args){
-    
+    int ex;
     int err = openfile_c(0, args);
     if (err) {
         return err;
     }
     int* specs = iBuffer.getspecs();
+    int extraSize = iBuffer.getExtraSize();
+    if (extraSize != specs[NFRAMES]+ 1) {
+        
+    }
+    
     
     Image* exp = new Image[specs[NFRAMES]+ 1];
-    for(int ex=0; ex < specs[NFRAMES]+ 1; ex++){
+    for(ex=0; ex < specs[NFRAMES]; ex++){
         exp[ex] << iBuffer;
         getNext_c(0,(char*) "");
     }
+    exp[ex] << iBuffer;
     closefile_c(0,(char*) "");
     float multiplier = 2;
     for( int row=0; row < specs[ROWS]; row++){
