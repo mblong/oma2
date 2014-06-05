@@ -155,6 +155,7 @@ ComDef   commands[] =    {
     {{"SUBFILE        "},	subfile_c},
     {{"SUBTMPIMAGE    "},	subtmp_c},
     {{"SHELL          "},	sysCommand_c},
+    {{"SEQ2HDR       "},	seq2hdr_c},
     
     {{"TSMOOTH        "},	tsmooth_c},
     

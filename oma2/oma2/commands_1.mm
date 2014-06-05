@@ -3382,3 +3382,41 @@ int uprefix_c(int n,char* args)		/* force the use of a particular prefix andsuff
     
 }
 
+/* ********** */
+
+int seq2hdr_c(int n,char* args){
+    
+    int err = openfile_c(0, args);
+    if (err) {
+        return err;
+    }
+    int* specs = iBuffer.getspecs();
+    
+    Image* exp = new Image[specs[NFRAMES]+ 1];
+    for(int ex=0; ex < specs[NFRAMES]+ 1; ex++){
+        exp[ex] << iBuffer;
+        getNext_c(0,(char*) "");
+    }
+    closefile_c(0,(char*) "");
+    float multiplier = 2;
+    for( int row=0; row < specs[ROWS]; row++){
+        for( int col=0; col < specs[COLS]; col++){
+            DATAWORD sum = 0.;
+            int num = 0;
+            for(int ex=0; ex < specs[NFRAMES]+1; ex++){
+                DATAWORD val = exp[ex].getpix(row,col);
+                if (val < 4090) {
+                    sum += val/((ex+1)*powf(multiplier, ex));
+                    num++;
+                }
+            }
+            iBuffer.setpix(row,col, sum/num);
+        }
+    }
+    free(specs);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+
+    return NO_ERR;
+}
+

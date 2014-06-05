@@ -8221,7 +8221,9 @@ void CLASS oma_write_ppm_tiff (int thecolor, Image* im)
 			}
 		}
 	}
-    
+    im->specs[EXPOSURE] = shutter;
+    im->specs[APERTURE] = aperture;
+    im->specs[ISO] = iso_speed;
 }
 
 // -----------------------------
@@ -8629,6 +8631,8 @@ int dcrawGlue(char* name, int thecolor, Image* im){
         if (aperture == 0.0)aperture=1.0;
 		user_variables[4].fvalue = log2f(aperture*aperture/shutter);
 		user_variables[4].is_float = 1;
+        
+        
 		
 		// -- oma
 		// need to put this back after printing stuff out or rotated images
