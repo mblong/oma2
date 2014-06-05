@@ -662,14 +662,15 @@ void Image::saveFile(char* name, int kindOfName){
         if (commentSize) {
             write(fd,comment,commentSize);
         }
-        if (extraSize) {
-            write(fd,extra,extraSize*sizeof(float));
-        }
     }
     // now the data
     write(fd,data,sizeof(DATAWORD)*specs[ROWS]*specs[COLS ]);
+    
 
     if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN)
+        if (extraSize) {
+            write(fd,extra,extraSize*sizeof(float));
+        }
         close(fd);
     error = NO_ERR;
     
