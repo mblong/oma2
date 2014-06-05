@@ -801,6 +801,19 @@ DATAWORD* Image::getvalues(){       // this allocates space for values that the 
     return thevalues;
 }
 
+float* Image::getextra(){       // returns a copy of the extra data array
+    float* theExtra = new DATAWORD[extraSize];
+    for(int i=0; i<extraSize; i++){
+        theExtra[i] = extra[i];
+    }
+    return theExtra;
+}
+
+int Image::getExtraSize(){      // returns the size of the extra data array
+    return extraSize;
+}
+
+
 char* Image::getunit_text(){       // this allocates space for unit text that the user must free
     char* thetext = new char[NRULERCHAR];
     for(int i=0; i<NRULERCHAR; i++){

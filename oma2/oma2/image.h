@@ -86,6 +86,8 @@ public:
     
     void copyABD(Image);        ///< copy All But Data from one image to another
     int* getspecs();            ///< returns a copy of the image specs array
+    float* getextra();          ///< returns a copy of the extra data array
+    int getExtraSize();         ///< returns the size of the extra data array
     int rows();                 ///< returns the number of rows in the current image (height)
     int cols();                 ///< returns the number of columns in the current image (width)
     void setspecs(int*);        ///< sets the image specs array
@@ -118,6 +120,9 @@ public:
     friend int readTiff(char* filename, Image*);
     friend int readHDR(char* filename, Image*);
     friend void oma_write_ppm_tiff (int thecolor, Image* im);
+#ifdef GIGE_
+    friend int gige(int n, char* args);
+#endif
     // Special friends that need to go fast
     friend  int dofft(int,char*);
     friend class ImageBitmap;
