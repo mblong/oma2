@@ -140,6 +140,10 @@ int getfile_c(int n,char* args){
     iBuffer.free();     // release the old data
     iBuffer = new_im;   // this is the new data
     iBuffer.getmaxx(PRINT_RESULT);
+    int extraSize = iBuffer.getExtraSize();
+    if (extraSize) {
+        printf("Image has %d extra floating point values.\n",extraSize);
+    }
     update_UI();
     return NO_ERR;
 }
@@ -3054,6 +3058,11 @@ int concatfile_c(int n,char* args)
 
 int closefile_c(int n,char* args)
 {
+    if(bigfile_open == 0){
+        beep();
+        printf("There is no open file from the CREATEFILE command.\n");
+        return FILE_ERR;
+    }
     int extraSize = iBuffer.getExtraSize();
     if (extraSize) {
         float* extra = iBuffer.getextra();
@@ -3095,6 +3104,7 @@ int closefile_c(int n,char* args)
 
 int	fileIsOpen = 0;
 int openFileFd = -1;
+int remainingFrames = 0;
 
 
 int openfile_c(int n,char* args){
@@ -3118,6 +3128,7 @@ int openfile_c(int n,char* args){
         iBuffer.setspecs(specs);
     }
     printf("%d Frames.\n",specs[NFRAMES]+1);
+    remainingFrames = specs[NFRAMES];
     user_variables[0].ivalue = user_variables[0].fvalue = specs[NFRAMES]+1;
 	user_variables[0].is_float = 0;
     free(specs);
@@ -3131,7 +3142,7 @@ int getNext_c(int n,char* args)
 {
     if (!fileIsOpen) {
         beep();
-        printf("No file has been opend. Use the OPENFILE command.\n");
+        printf("No file has been opened. Use the OPENFILE command.\n");
         return FILE_ERR;
 
     }
@@ -3142,7 +3153,24 @@ int getNext_c(int n,char* args)
         fileIsOpen = 0;
         close(openFileFd);
         openFileFd= -1;
+        new_im.free();
         return new_im.err();
+    }
+    remainingFrames--;
+    if (remainingFrames == 0) {
+        
+        fileIsOpen = 0;
+        int extraSize = iBuffer.getExtraSize();
+        if(extraSize ){
+            float* extra = new float[extraSize];
+            read(openFileFd,extra,extraSize*sizeof(float));
+            iBuffer.setExtra(extra,extraSize);
+            free(extra);
+        }
+        close(openFileFd);
+        printf("Last image -- file is now closed.\n");
+        openFileFd= -1;
+
     }
     iBuffer.free();     // release the old data
     iBuffer = new_im;   // this is the new data
@@ -3402,11 +3430,9 @@ int seq2hdr_c(int n,char* args){
     if (extraSize != specs[NFRAMES]+ 1) {
         beep();
         printf("The sequence does not contain exposure values.\n");
-        closefile_c(0,(char*) "");
         free(specs);
         return FILE_ERR;
     }
-    float* expValues = iBuffer.getextra();
     
     Image* exp = new Image[specs[NFRAMES]+ 1];
     for(ex=0; ex < specs[NFRAMES]; ex++){
@@ -3414,7 +3440,10 @@ int seq2hdr_c(int n,char* args){
         getNext_c(0,(char*) "");
     }
     exp[ex] << iBuffer;
-    closefile_c(0,(char*) "");
+    
+    
+    float* expValues = iBuffer.getextra();
+
     for( int row=0; row < specs[ROWS]; row++){
         for( int col=0; col < specs[COLS]; col++){
             DATAWORD sum = 0.;
@@ -3430,7 +3459,10 @@ int seq2hdr_c(int n,char* args){
         }
     }
     
-    for(int ex=0; ex < extraSize; ex++) exp[ex].free();
+    for(int ex=0; ex < extraSize; ex++){
+        exp[ex].free();
+        printf("%f\n",expValues[ex]);
+    }
     free(specs);
     free(expValues);
     delete[] exp;

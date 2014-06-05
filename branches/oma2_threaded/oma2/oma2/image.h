@@ -87,6 +87,7 @@ public:
     void copyABD(Image);        ///< copy All But Data from one image to another
     int* getspecs();            ///< returns a copy of the image specs array
     float* getextra();          ///< returns a copy of the extra data array
+    void setExtra(float*,int);  ///< Loads the extra buffer with the specified number of floating point values
     int getExtraSize();         ///< returns the size of the extra data array
     int rows();                 ///< returns the number of rows in the current image (height)
     int cols();                 ///< returns the number of columns in the current image (width)

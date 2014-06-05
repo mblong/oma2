@@ -194,14 +194,8 @@ Image::Image(char* filename, int kindOfName)
                 comment = new char[commentSize];
                 read(fd,comment,commentSize);
             }
-            if(extraSize){
-                extra = new float[extraSize];
-                read(fd,extra,extraSize*sizeof(float));
-            }
-            // finally the data
+            // next the data
             data = new DATAWORD[specs[ROWS]*specs[COLS]];
-            openFileRows = specs[ROWS];
-            openFileCols = specs[COLS];
             if(data == 0){
                 specs[ROWS]=specs[COLS]=0;
                 error = MEM_ERR;
@@ -209,6 +203,8 @@ Image::Image(char* filename, int kindOfName)
                 windowNameMemory = 0;
                 return;
             }
+            openFileRows = specs[ROWS];
+            openFileCols = specs[COLS];
         } else {
             newFormat = 0;
             // old data save format
@@ -236,8 +232,15 @@ Image::Image(char* filename, int kindOfName)
         nr = read(fd,data,sizeof(DATAWORD)*specs[ROWS]*specs[COLS]);
         if (nr != sizeof(DATAWORD)*specs[ROWS]*specs[COLS]) {
             error = FILE_ERR;
+        }// finally read any extra unless we are leaving the file open
+
+        if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN){
+            if(extraSize ){
+                extra = new float[extraSize];
+                read(fd,extra,extraSize*sizeof(float));
+            }
+            close(fd);
         }
-        if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN) close(fd);
         if (error) windowNameMemory = 0;
         return;
     }
@@ -667,11 +670,13 @@ void Image::saveFile(char* name, int kindOfName){
     write(fd,data,sizeof(DATAWORD)*specs[ROWS]*specs[COLS ]);
     
 
-    if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN)
+    if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN){
+        // write extra data after the image data
         if (extraSize) {
             write(fd,extra,extraSize*sizeof(float));
         }
         close(fd);
+    }
     error = NO_ERR;
     
 }
@@ -810,6 +815,20 @@ float* Image::getextra(){       // returns a copy of the extra data array
     return theExtra;
 }
 
+void Image::setExtra(float* ext,int size){
+    if (extra){
+        delete[] extra;
+        extra = NULL;
+    }
+    if (size <=0) {
+        extraSize = 0;
+        return;
+    }
+    extra = new float[size];
+    for(int i=0; i<size; i++) extra[i] = ext[i];
+    extraSize = size;
+}
+
 int Image::getExtraSize(){      // returns the size of the extra data array
     return extraSize;
 }
@@ -905,7 +924,7 @@ void Image::copyABD(Image im){    // copy All But Data from one image to another
     comment = im.getComment();
     extraSize = im.extraSize;
     if (extraSize) {
-        extra = new float(extraSize);
+        extra = new float[extraSize];
         for (i=0; i<extraSize; i++) {
             extra[i] = im.extra[i];
         }
