@@ -9,6 +9,10 @@ extern oma2UIData UIData;
 
 extern Image  iTempImages[];
 extern Image   accumulator;   // the accumulator
+extern Image   hdrAccumulator;   // the HDR accumulator
+extern Image   hdrCounter;       // the HDR counter
+extern DATAWORD hdrCutoff;       // the HDR saturation value
+extern int      hdrFrames;     // HDR frame counter
 extern int numberNamedTempImages;
 extern Variable namedTempImages[];
 
@@ -2760,12 +2764,13 @@ int accumulate_c(int n,char* args)
     accumulator.free();
     int* specs = iBuffer.getspecs();
     accumulator = Image(specs[ROWS],specs[COLS]);
+    free(specs);
     if(accumulator.err()){
         return accumulator.err();
     }
     accumulator.copyABD(iBuffer);
     accumulator.zero();
-
+    free(specs);
     return NO_ERR;
 }
 
@@ -2818,12 +2823,141 @@ int acget_c(int n,char* args){
         printf("Accumulator has not been initialized.\n");
         return CMND_ERR;
     }
+    iBuffer.free();
     iBuffer << accumulator;
     iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return iBuffer.err();
 }
 
+/* ********** */
+/* --------------------------- */
+
+/*
+HDRACCUMULATE cutoff
+ Allocates and clears memory for an image accumulator buffer that can be used to sum
+ individual images. The size of the accumulator is determined by the image size parameters
+ when the accumulate command is first given.
+ */
+
+int hdrAccumulate_c(int n,char* args)
+{
+    hdrCutoff = n;
+    hdrFrames = 0;
+    hdrAccumulator.free();
+    hdrCounter.free();
+    int* specs = iBuffer.getspecs();
+    hdrAccumulator = Image(specs[ROWS],specs[COLS]);
+    if(hdrAccumulator.err()){
+        free(specs);
+        return hdrAccumulator.err();
+    }
+    hdrAccumulator.copyABD(iBuffer);
+    hdrAccumulator.zero();
+
+    hdrCounter = Image(specs[ROWS],specs[COLS]);
+    if(hdrCounter.err()){
+        free(specs);
+        return hdrCounter.err();
+    }
+    hdrCounter.zero();
+    free(specs);
+    return NO_ERR;
+}
+
+
+/*
+ ACDELETE
+ Frees the memory associated with the accumulator.
+ */
+
+int hdrAcdelete_c(int n,char* args)
+{
+    if (!hdrAccumulator.isEmpty()) {
+        hdrAccumulator.free();
+        hdrCounter.free();
+    }
+    return NO_ERR;
+}
+
+
+/*
+ ACADD
+ Adds the current image data buffer to the accumulator buffer.
+ */
+
+int hdrAcadd_c(int n,char* args)
+{
+    if (hdrAccumulator.isEmpty()) {
+        beep();
+        printf("HDR Accumulator has not been initialized.\n");
+        return CMND_ERR;
+    }
+    
+    if(hdrAccumulator != iBuffer){
+        beep();
+        printf("HDR Accumulator is not the corret size for the current image.\n");
+        return SIZE_ERR;
+    }
+    static float firstExposure = 1;
+    int* specs = iBuffer.getspecs();
+    DATAWORD* values = iBuffer.getvalues();
+    if(hdrFrames == 0){
+        firstExposure = values[EXPOSURE];
+    }
+    float normalize = values[EXPOSURE]/firstExposure;
+    hdrFrames++;
+    for( int row=0; row < specs[ROWS]; row++){
+        for( int col=0; col < specs[COLS]; col++){
+            DATAWORD val = iBuffer.getpix(row,col);
+            if (val < hdrCutoff) {
+                hdrAccumulator.setpix(row, col, hdrAccumulator.getpix(row,col)+val/normalize);
+                hdrCounter.setpix(row, col, hdrCounter.getpix(row,col)+1);
+            }
+        }
+    }
+    free(specs);
+    free(values);
+    return NO_ERR;
+}
+
+/*
+ ACGET
+ Moves the data from the accumulator buffer into the current image data area. The
+ previous contents of the image data buffer are destroyed.
+ */
+
+int hdrAcget_c(int n,char* args){
+    if (hdrAccumulator.isEmpty()) {
+        beep();
+        printf("HDR Accumulator has not been initialized.\n");
+        return CMND_ERR;
+    }
+    iBuffer.free();
+    int* specs = hdrAccumulator.getspecs();
+    iBuffer = Image(specs[ROWS],specs[COLS]);
+    iBuffer.copyABD(hdrAccumulator);
+    
+    for( int row=0; row < specs[ROWS]; row++){
+        for( int col=0; col < specs[COLS]; col++){
+            iBuffer.setpix(row, col, hdrAccumulator.getpix(row,col)/hdrCounter.getpix(row,col));
+            
+        }
+    }
+    free(specs);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return iBuffer.err();
+}
+
+int exposure_c(int n,char* args){
+    DATAWORD* values = iBuffer.getvalues();
+    float exp;
+    scanf(args,"%f",&exp);
+    values[EXPOSURE] = exp;
+    iBuffer.setvalues(values);
+    return NO_ERR;
+}
 /* ********** */
 
 /*
@@ -3146,6 +3280,9 @@ int getNext_c(int n,char* args)
         return FILE_ERR;
 
     }
+    int extraSize = 0;
+    extraSize = iBuffer.getExtraSize();
+    printf("%d extra\n",extraSize);
     Image new_im((char*)&openFileFd,IS_OPEN);
     if(new_im.err()){
         beep();
@@ -3156,14 +3293,21 @@ int getNext_c(int n,char* args)
         new_im.free();
         return new_im.err();
     }
+    // some potential problems here if sizes aren't right
+    // probably need more checking
+    new_im.copyABD(iBuffer);
     remainingFrames--;
     if (remainingFrames == 0) {
         
         fileIsOpen = 0;
-        int extraSize = iBuffer.getExtraSize();
+        extraSize = iBuffer.getExtraSize();
+        printf("%d extra\n",extraSize);
         if(extraSize ){
             float* extra = new float[extraSize];
             read(openFileFd,extra,extraSize*sizeof(float));
+            for (int i = 0; i<extraSize; i++) {
+                printf("%f\n",extra[i]);
+            }
             iBuffer.setExtra(extra,extraSize);
             free(extra);
         }
@@ -3435,6 +3579,7 @@ int seq2hdr_c(int n,char* args){
     }
     
     Image* exp = new Image[specs[NFRAMES]+ 1];
+    //Image exp[4];
     for(ex=0; ex < specs[NFRAMES]; ex++){
         exp[ex] << iBuffer;
         getNext_c(0,(char*) "");
@@ -3465,7 +3610,7 @@ int seq2hdr_c(int n,char* args){
     }
     free(specs);
     free(expValues);
-    delete[] exp;
+    //delete[] exp;
     iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
 
