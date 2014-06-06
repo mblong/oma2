@@ -8221,9 +8221,9 @@ void CLASS oma_write_ppm_tiff (int thecolor, Image* im)
 			}
 		}
 	}
-    im->specs[EXPOSURE] = shutter;
-    im->specs[APERTURE] = aperture;
-    im->specs[ISO] = iso_speed;
+    im->values[EXPOSURE] = shutter;
+    im->values[APERTURE] = aperture;
+    im->values[ISO] = iso_speed;
 }
 
 // -----------------------------

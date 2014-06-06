@@ -455,6 +455,7 @@ int list_c(int n, char* args){
     i = 0;
     char* comment = iBuffer.getComment();
     int* specs = iBuffer.getspecs();
+    DATAWORD* values = iBuffer.getvalues();
     if(comment){
         while (comment[i]) {
             printf( "Line #%d: ",lc++);
@@ -474,6 +475,7 @@ int list_c(int n, char* args){
     printf(" %7d  Y0\n",specs[Y0]);
     printf(" %7d  Delta X\n",specs[DX]);
     printf(" %7d  Delta Y\n",specs[DY]);
+    printf(" %g  Exposure \n",values[EXPOSURE]);
     /*
      #ifdef FLOAT
      printf(" %g  Color Minimum\n %g  Color Maximum\n",cmin,cmax);
@@ -494,6 +496,7 @@ int list_c(int n, char* args){
      else
      pprintf("\nUnknown Commands Flagged.\n");  */
     free(specs);
+    free(values);
     return NO_ERR;
     
     
@@ -2877,6 +2880,7 @@ int hdrAcdelete_c(int n,char* args)
         hdrAccumulator.free();
         hdrCounter.free();
     }
+    hdrFrames = 0;
     return NO_ERR;
 }
 
@@ -2906,6 +2910,7 @@ int hdrAcadd_c(int n,char* args)
         firstExposure = values[EXPOSURE];
     }
     float normalize = values[EXPOSURE]/firstExposure;
+    printf("%f\n",normalize);
     hdrFrames++;
     for( int row=0; row < specs[ROWS]; row++){
         for( int col=0; col < specs[COLS]; col++){
@@ -2953,7 +2958,7 @@ int hdrAcget_c(int n,char* args){
 int exposure_c(int n,char* args){
     DATAWORD* values = iBuffer.getvalues();
     float exp;
-    scanf(args,"%f",&exp);
+    sscanf(args,"%f",&exp);
     values[EXPOSURE] = exp;
     iBuffer.setvalues(values);
     return NO_ERR;
@@ -3197,12 +3202,6 @@ int closefile_c(int n,char* args)
         printf("There is no open file from the CREATEFILE command.\n");
         return FILE_ERR;
     }
-    int extraSize = iBuffer.getExtraSize();
-    if (extraSize) {
-        float* extra = iBuffer.getextra();
-        write(bigfile_fd,extra,extraSize*sizeof(float));
-        free(extra);
-    }
 
     close(bigfile_fd);
     FILE* big;
@@ -3280,9 +3279,6 @@ int getNext_c(int n,char* args)
         return FILE_ERR;
 
     }
-    int extraSize = 0;
-    extraSize = iBuffer.getExtraSize();
-    printf("%d extra\n",extraSize);
     Image new_im((char*)&openFileFd,IS_OPEN);
     if(new_im.err()){
         beep();
@@ -3298,19 +3294,7 @@ int getNext_c(int n,char* args)
     new_im.copyABD(iBuffer);
     remainingFrames--;
     if (remainingFrames == 0) {
-        
         fileIsOpen = 0;
-        extraSize = iBuffer.getExtraSize();
-        printf("%d extra\n",extraSize);
-        if(extraSize ){
-            float* extra = new float[extraSize];
-            read(openFileFd,extra,extraSize*sizeof(float));
-            for (int i = 0; i<extraSize; i++) {
-                printf("%f\n",extra[i]);
-            }
-            iBuffer.setExtra(extra,extraSize);
-            free(extra);
-        }
         close(openFileFd);
         printf("Last image -- file is now closed.\n");
         openFileFd= -1;
@@ -3579,7 +3563,7 @@ int seq2hdr_c(int n,char* args){
     }
     
     Image* exp = new Image[specs[NFRAMES]+ 1];
-    //Image exp[4];
+    
     for(ex=0; ex < specs[NFRAMES]; ex++){
         exp[ex] << iBuffer;
         getNext_c(0,(char*) "");
@@ -3606,7 +3590,7 @@ int seq2hdr_c(int n,char* args){
     
     for(int ex=0; ex < extraSize; ex++){
         exp[ex].free();
-        printf("%f\n",expValues[ex]);
+        //printf("%f\n",expValues[ex]);
     }
     free(specs);
     free(expValues);

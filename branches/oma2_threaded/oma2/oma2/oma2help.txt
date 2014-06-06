@@ -196,6 +196,9 @@ ENDIF
 EXECUTE <filename>
 	Reads OMA commands stored in the specified file into a special execute buffer and then performs those commands. Unlike macros, these should not contain dummy numerical arguments (%d).
 
+EXPOSURE exposureValue
+	Sets an exposure time to be used in generating HDR images.
+
 FFT mode scale_factor
 	mode = 0  return the magnitude scaled by scale_factor
 	mode = 1  return the real part scaled by scale_factor
@@ -273,8 +276,42 @@ GTEMPIMAGE name
 GETNEXT
 	Get the next image from the file opened with the OPENFILE command. If no additional image data is available, the open file is closed.
 
+GIGE command
+	Available in oma2cam. Commands are as follows:
+	ACQuire (gets frames in MULTIFRAME mode)
+	EXPosure <exposureTime> (in microseconds)
+	GAIn <gain> (0 or 33)
+	NUMber <numberOfFrames> (to be acquired by the ACQUIRE command; default is 1)
+	RATe <frameRate>
+	LABON (label frames)
+	LABOFf (don't label frames)
+	PREview <numberFrames> (show preview for specified number of frames)
+	EXTernal (set external triggering)
+	INTernal (set internal triggering)
+	DELay <triggerDelay> (set the trigger delay [microseconds])
+	SAVe <filename> (enable save mode; filename will store all frames)
+	ENDSave (disable save mode)
+	SFRames <numFrames> (save the specified number of frames using the filename specified in the SAVe command. Uses CONTINUOUS mode. Also saves a text file showing frame times.)
+	STAtus (print camera settings)
+	FIXbad <flag> (set flag to 1 to clear bad pixels before display or save --> must use FINDBAD first)
+	DISplay <flag> (set flag to 1 to display during acqusition)
+	HDR <numFrames> <multiplier> (save the specified number of frames using the filename specified in the SAVe command. Subsequent exposure times are multiplied by the multiplier.)
+
+
 HELP [command name or fragment]
 	If a command name is given, a brief explanation of the command is printed in the command window. If only part of the command is given, a description of all commands that match the command fragment is printed. All help information is from the file "OMA HELP." If no argument is given, all command names are printed with no explanation.
+
+HDRACADD
+	Adds the current image data buffer to the HDR accumulator buffer. Values greater than the cutoff are excluded and values are then normalized by the exposure time.
+
+HDRACCUMULATE cutoff
+	Allocates and clears memory for an HDR accumulator that can be used to generate HDR imnages from a series of different exposures. The cuttoff value should be less than the saturation value for the detector. The size of the accumulator is determined by the image size parameters when the accumulate command is first given. Be sure the exposure value for the image is set (e.g., imported from and raw file or set using the EXPOSURE command).
+
+HDRACDELETE
+	Frees the memory associated with the HDR accumulator.
+
+HDRACGET
+	Calculates an HDR image based on the HDR accumulator and moves that to the current image data area. The previous contents of the image data buffer are destroyed.
 
 IF condition
 	If condition evaluates to a non-zero value, the commands following the IF are executed. However, if the condition is zero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators < (less than), > (greater than), others to come....

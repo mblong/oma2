@@ -201,6 +201,7 @@ Image::Image(char* filename, int kindOfName)
             }
             if(extraSize ){ // make room, but we won't read until later
                 extra = new float[extraSize];
+                read(fd,extra,extraSize*sizeof(float));
             }
             // next the data
             data = new DATAWORD[specs[ROWS]*specs[COLS]];
@@ -240,12 +241,9 @@ Image::Image(char* filename, int kindOfName)
         nr = read(fd,data,sizeof(DATAWORD)*specs[ROWS]*specs[COLS]);
         if (nr != sizeof(DATAWORD)*specs[ROWS]*specs[COLS]) {
             error = FILE_ERR;
-        }// finally read any extra unless we are leaving the file open
+        }
 
         if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN){
-            if(extraSize ){
-                read(fd,extra,extraSize*sizeof(float));
-            }
             close(fd);
         }
         if (error) windowNameMemory = 0;
@@ -672,16 +670,15 @@ void Image::saveFile(char* name, int kindOfName){
         if (commentSize) {
             write(fd,comment,commentSize);
         }
+        if (extraSize) {
+            write(fd,extra,extraSize*sizeof(float));
+        }
     }
     // now the data
     write(fd,data,sizeof(DATAWORD)*specs[ROWS]*specs[COLS ]);
     
 
     if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN){
-        // write extra data after the image data
-        if (extraSize) {
-            write(fd,extra,extraSize*sizeof(float));
-        }
         close(fd);
     }
     error = NO_ERR;

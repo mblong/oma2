@@ -874,12 +874,12 @@ void CameraSnapOneFrame(tCamera* Camera,DATAWORD* dataBuffer)
         {
 			ptr = (short*)Camera->Frame[0].ImageBuffer;
             // move the data
-            for(i=0; i< specs[ROWS];i++){
-                for(int k=0;k<specs[COLS]; k++)
-                    iBuffer.setpix(i,k,*(ptr++));
-            }
-            //for(i=0; i< specs[ROWS]*specs[COLS];i++)
-                //*(dataBuffer++) = *(ptr++);
+            //for(i=0; i< specs[ROWS];i++){
+                //for(int k=0;k<specs[COLS]; k++)
+                    //iBuffer.setpix(i,k,*(ptr++));
+            //}
+            for(i=0; i< specs[ROWS]*specs[COLS];i++)
+                *(dataBuffer++) = *(ptr++);
             
 
 			//pattern on the GC1380CH is Red Green Green Blue
@@ -1389,12 +1389,13 @@ int gige(int n, char* args)
         iBuffer.extraSize = sFrames;                // save exposure times in the extra space
         iBuffer.extra = new float[sFrames];
         iBuffer.extra[0] = exptime/1e6;
+        iBuffer.values[EXPOSURE] = exptime/1e6;
         for(int i=1; i< sFrames; i++){
             iBuffer.extra[i] = iBuffer.extra[i-1]*multiplier;
             printf("%f\n",iBuffer.extra[i]);
         }
         
-        if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
+        if(CameraStartContinuous(&Camera,exptime,frameRate,gain,FREERUN,triggerDelay,bx,by)){
             PvCommandRun(Camera.Handle,"TimeStampReset");
             for(int i=0; i< sFrames; i++){
                 // snap now
