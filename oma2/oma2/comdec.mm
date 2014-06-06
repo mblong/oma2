@@ -63,6 +63,7 @@ ComDef   commands[] =    {
     {{"ENDIF          "},	endifcmnd},
     {{"ECHO           "},	echo_c},
     {{"EXECUTE        "},	execut},
+    {{"EXPOSURE       "},	exposure_c},
         
     {{"FLOATVARIABLE  "},	vfloat},
     {{"FCLOSE         "},	fclose_c},
@@ -89,7 +90,11 @@ ComDef   commands[] =    {
     {{"GETNEXT        "},	getNext_c},
     
     {{"HELP           "},	help},
-        
+    {{"HDRACCUMULATE  "},	hdrAccumulate_c},
+    {{"HDRACADD       "},	hdrAcadd_c},
+    {{"HDRACDELETE    "},	hdrAcdelete_c},
+    {{"HDRACGET       "},	hdrAcget_c},
+    
     {{"IF             "},	ifcmnd},
     {{"IFNOT          "},	ifnotcmnd},
     {{"INVERT         "},	invert_c},
