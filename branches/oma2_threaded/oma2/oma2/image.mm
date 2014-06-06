@@ -11,6 +11,11 @@ Image   iBuffer(200,200);     // the image buffer
 oma2UIData UIData;            // Put all the UI globals here
 Image  iTempImages[NUM_TEMP_IMAGES];  // temporary in-memmory images
 Image   accumulator;          // the accumulator image
+Image   hdrAccumulator;     // the HDR accumulator
+Image   hdrCounter;         // the HDR counter
+DATAWORD hdrCutoff;         // the HDR saturation value
+int      hdrFrames=0;       // HDR frame counter
+
 int numberNamedTempImages = 0;
 Variable namedTempImages[NUM_TEMP_IMAGES-NUMBERED_TEMP_IMAGES];
 
@@ -194,6 +199,9 @@ Image::Image(char* filename, int kindOfName)
                 comment = new char[commentSize];
                 read(fd,comment,commentSize);
             }
+            if(extraSize ){ // make room, but we won't read until later
+                extra = new float[extraSize];
+            }
             // next the data
             data = new DATAWORD[specs[ROWS]*specs[COLS]];
             if(data == 0){
@@ -236,7 +244,6 @@ Image::Image(char* filename, int kindOfName)
 
         if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN){
             if(extraSize ){
-                extra = new float[extraSize];
                 read(fd,extra,extraSize*sizeof(float));
             }
             close(fd);
@@ -894,6 +901,12 @@ void Image::setspecs(int* newspecs){
     }
     for(int i=0; i<NSPECS; i++){
         specs[i] = newspecs[i];
+    }
+}
+
+void Image::setvalues(float* newvalues){
+    for(int i=0; i<NVALUES; i++){
+        values[i] = newvalues[i];
     }
 }
 

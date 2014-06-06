@@ -55,6 +55,7 @@ int dy_c(int n,char* args);
 int doc2rgb_c(int n, char* args);
 
 int echo_c(int,char*);
+int exposure_c(int,char*);
 
 int fopen_c (int,char*);
 int fclose_c (int,char*);
@@ -74,6 +75,12 @@ int gmacro_c(int,char*);
 int gradient_c(int,char*);
 int gsmooth_c(int, char*);
 int gtemp_c(int, char*);
+
+int hdrAccumulate_c(int,char*);
+int hdrAcadd_c(int,char*);
+int hdrAcdelete_c(int,char*);
+int hdrAcget_c(int,char*);
+
 
 int invert_c(int,char*);
 int integrate_c(int,char*);
