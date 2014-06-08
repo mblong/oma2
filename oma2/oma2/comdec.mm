@@ -63,6 +63,7 @@ ComDef   commands[] =    {
     {{"ENDIF          "},	endifcmnd},
     {{"ECHO           "},	echo_c},
     {{"EXECUTE        "},	execut},
+    {{"EXTRA          "},	extra_c},
     {{"EXPOSURE       "},	exposure_c},
         
     {{"FLOATVARIABLE  "},	vfloat},
