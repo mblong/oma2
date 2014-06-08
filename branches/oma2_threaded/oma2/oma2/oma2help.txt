@@ -199,6 +199,9 @@ EXECUTE <filename>
 EXPOSURE exposureValue
 	Sets an exposure time to be used in generating HDR images.
 
+EXTRA [index] [value]
+    Add extra information to the current image in the form of a floating point value. If no argument is given, the command lists extra values in the current image buffer. Indexing starts at 1.
+
 FFT mode scale_factor
 	mode = 0  return the magnitude scaled by scale_factor
 	mode = 1  return the real part scaled by scale_factor
@@ -311,7 +314,7 @@ HDRACDELETE
 	Frees the memory associated with the HDR accumulator.
 
 HDRACGET
-	Calculates an HDR image based on the HDR accumulator and moves that to the current image data area. The previous contents of the image data buffer are destroyed.
+	Calculates an HDR image based on the data in the HDR accumulator and moves that to the current image. The previous contents of the image data buffer are destroyed.
 
 IF condition
 	If condition evaluates to a non-zero value, the commands following the IF are executed. However, if the condition is zero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators < (less than), > (greater than), others to come....
@@ -533,6 +536,9 @@ SBIG command_string [parameters]
 
 SUBTMPIMAGE name
 	Subtracts the contents of the named temporary image from the data in the current buffer.
+
+SEQ2HDR filename
+    Convert a sequence of images with different exposures to an HDR image. The file contains all images and must have information on exposures stored in the EXTRA data (see the EXTRA command). This type of file can be created by GigE cameras in oma2cam or can be created using the CREATEFILE/CONCATENATEFILE/COLSEFILE commands. Note that all exposure information must be entered in the extra space before CREATEFILE is used to open the file.
 
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.

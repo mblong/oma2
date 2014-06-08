@@ -148,6 +148,11 @@ int getfile_c(int n,char* args){
     if (extraSize) {
         printf("Image has %d extra floating point values.\n",extraSize);
     }
+    int* specs = iBuffer.getspecs();
+    if (specs[NFRAMES]) {
+        printf("Showing image 1 of %d.\n",specs[NFRAMES]);
+    }
+
     update_UI();
     return NO_ERR;
 }
@@ -3547,6 +3552,11 @@ int uprefix_c(int n,char* args)		/* force the use of a particular prefix andsuff
 
 /* ********** */
 
+/*
+ SEQ2HDR filename
+    Convert a sequence of images with different exposures to an HDR image. The file contains all images and must have information on exposures stored in the EXTRA data (see the EXTRA command). This type of file can be created by GigE cameras in oma2cam or can be created using the CREATEFILE/CONCATENATEFILE/COLSEFILE commands. Note that all exposure information must be entered in the extra space before CREATEFILE is used to open the file.
+ */
+
 int seq2hdr_c(int n,char* args){
     int ex;
     int err = openfile_c(0, args);
@@ -3600,4 +3610,52 @@ int seq2hdr_c(int n,char* args){
 
     return NO_ERR;
 }
+/* ********** */
 
+/*
+ EXTRA [index] [value]
+    Add extra information to the current image in the form of a floating point value. If no argument is given, the command lists extra values in the current image buffer. Indexing starts at 1.
+ */
+
+int extra_c(int n,char* args){
+    int size = iBuffer.getExtraSize();
+    if (*args == 0) {
+        if ( size) {
+            printf("Extra values are as follows:\n");
+            float* extra = iBuffer.getextra();
+            for (int i = 0; i< size; i++){
+                printf("%g\n",extra[i]);
+            }
+            free(extra);
+            return NO_ERR;
+        } else {
+            printf("No extra values are present.\n");
+            return NO_ERR;
+        }
+    }
+    float value;
+    sscanf(args, "%d %f)",&n,&value);
+    if (--n < 0) {
+        printf("Index must be > 0.\n");
+        return CMND_ERR;
+    }
+    
+    if (n < size) {
+        // we aready have space, just fill in the value
+        float* extra = iBuffer.getextra();
+        extra[n] = value;
+        iBuffer.setExtra(extra, size);
+        return NO_ERR;
+    }
+    // need more space
+    float* newextra = new float[n+1];
+    float* extra = iBuffer.getextra();
+    for (int i = 0; i < size; i++) {
+        newextra[i] = extra[i];
+    }
+    newextra[n] = value;
+    iBuffer.setExtra(newextra, n+1);
+    
+    return NO_ERR;
+    
+}

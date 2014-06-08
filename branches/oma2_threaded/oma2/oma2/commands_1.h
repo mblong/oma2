@@ -55,6 +55,7 @@ int dy_c(int n,char* args);
 int doc2rgb_c(int n, char* args);
 
 int echo_c(int,char*);
+int extra_c(int,char*);
 int exposure_c(int,char*);
 
 int fopen_c (int,char*);
