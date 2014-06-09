@@ -3307,7 +3307,12 @@ int getNext_c(int n,char* args)
     }
     iBuffer.free();     // release the old data
     iBuffer = new_im;   // this is the new data
-    iBuffer.getmaxx(PRINT_RESULT);
+    if (strncmp(args, "NoPrint", 7)== 0) {
+        iBuffer.getmaxx(NO_PRINT);
+    } else {
+        iBuffer.getmaxx(PRINT_RESULT);
+    }
+
     update_UI();
     return NO_ERR;
 }
@@ -3553,14 +3558,25 @@ int uprefix_c(int n,char* args)		/* force the use of a particular prefix andsuff
 /* ********** */
 
 /*
- SEQ2HDR filename
+ SEQ2HDR filename cutoff
     Convert a sequence of images with different exposures to an HDR image. The file contains all images and must have information on exposures stored in the EXTRA data (see the EXTRA command). This type of file can be created by GigE cameras in oma2cam or can be created using the CREATEFILE/CONCATENATEFILE/COLSEFILE commands. Note that all exposure information must be entered in the extra space before CREATEFILE is used to open the file.
  */
 
 int seq2hdr_c(int n,char* args){
     int ex;
-    int err = openfile_c(0, args);
+    DATAWORD cutoff;
+    char filename[FILENAME_MAX];
+    int narg = sscanf(args,"%s %f",filename, &cutoff);
+    if (narg != 2) {
+        beep();
+        printf("Need two arguments: filename cutoff\n");
+        return CMND_ERR;
+    }
+    
+    int err = openfile_c(0, filename);
     if (err) {
+        beep();
+        printf("Could not open %s\n",filename);
         return err;
     }
     int* specs = iBuffer.getspecs();
@@ -3576,7 +3592,7 @@ int seq2hdr_c(int n,char* args){
     
     for(ex=0; ex < specs[NFRAMES]; ex++){
         exp[ex] << iBuffer;
-        getNext_c(0,(char*) "");
+        getNext_c(0,(char*) "NoPrint");
     }
     exp[ex] << iBuffer;
     
@@ -3589,7 +3605,7 @@ int seq2hdr_c(int n,char* args){
             int num = 0;
             for(int ex=0; ex < extraSize; ex++){
                 DATAWORD val = exp[ex].getpix(row,col);
-                if (val < 4090) {
+                if (val < cutoff) {
                     sum += val/(expValues[ex]/expValues[0]);
                     num++;
                 }
@@ -3598,16 +3614,64 @@ int seq2hdr_c(int n,char* args){
         }
     }
     
+    specs[NFRAMES] = 0;     // this is just a single image now
+    iBuffer.setspecs(specs);
+    
     for(int ex=0; ex < extraSize; ex++){
         exp[ex].free();
         //printf("%f\n",expValues[ex]);
     }
+    
     free(specs);
     free(expValues);
-    //delete[] exp;
+    delete[] exp;
     iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
 
+    return NO_ERR;
+}
+/* ********** */
+/* ********** */
+
+/*
+ GETSEQUENCE filename
+ Open all frames of a sequence of images to a single image whose height is NFRAMES*FRAMEHEIGHT.
+ */
+
+int getSequence_c(int n,char* args){
+    int ex;
+    int err;
+    err = openfile_c(0, args);
+    if (err) {
+        beep();
+        printf("Could not open %s\n",args);
+        return err;
+    }
+    int* specs = iBuffer.getspecs();    // iBuffer has the first frame
+    int frames = specs[NFRAMES];    // this is the index of the last frame
+    specs[NFRAMES] = 0;     // this is just a single image now
+    iBuffer.setspecs(specs);
+    free(specs);
+    
+    Image result;
+    result << iBuffer;
+    
+    for(ex=0; ex < frames; ex++){
+        getNext_c(0,(char*) "NoPrint");
+        result.composite(iBuffer);
+        err = result.err();
+        if (err) {
+            beep();
+            printf("Composite error.\n");
+            return err;
+        }
+
+    }
+    iBuffer.free();
+    iBuffer = result;
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    
     return NO_ERR;
 }
 /* ********** */

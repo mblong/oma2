@@ -292,14 +292,11 @@ GIGE command
 	EXTernal (set external triggering)
 	INTernal (set internal triggering)
 	DELay <triggerDelay> (set the trigger delay [microseconds])
-	SAVe <filename> (enable save mode; filename will store all frames)
-	ENDSave (disable save mode)
-	SFRames <numFrames> (save the specified number of frames using the filename specified in the SAVe command. Uses CONTINUOUS mode. Also saves a text file showing frame times.)
+	SFRames <filename> <numFrames> (save the specified number of frames using the specified filename. Uses FREERUN mode. Also saves a text file showing frame times.)
 	STAtus (print camera settings)
 	FIXbad <flag> (set flag to 1 to clear bad pixels before display or save --> must use FINDBAD first)
 	DISplay <flag> (set flag to 1 to display during acqusition)
-	HDR <numFrames> <multiplier> (save the specified number of frames using the filename specified in the SAVe command. Subsequent exposure times are multiplied by the multiplier.)
-
+	HDR <filename> <numFrames> <multiplier> (save the specified number of frames using the specified filename. Subsequent exposure times are multiplied by the multiplier.)
 
 HELP [command name or fragment]
 	If a command name is given, a brief explanation of the command is printed in the command window. If only part of the command is given, a description of all commands that match the command fragment is printed. All help information is from the file "OMA HELP." If no argument is given, all command names are printed with no explanation.
@@ -537,8 +534,8 @@ SBIG command_string [parameters]
 SUBTMPIMAGE name
 	Subtracts the contents of the named temporary image from the data in the current buffer.
 
-SEQ2HDR filename
-    Convert a sequence of images with different exposures to an HDR image. The file contains all images and must have information on exposures stored in the EXTRA data (see the EXTRA command). This type of file can be created by GigE cameras in oma2cam or can be created using the CREATEFILE/CONCATENATEFILE/COLSEFILE commands. Note that all exposure information must be entered in the extra space before CREATEFILE is used to open the file.
+SEQ2HDR filename cutoff
+    Convert a sequence of images with different exposures to an HDR image. The file contains all images and must have information on exposures stored in the EXTRA data (see the EXTRA command). This type of file can be created by GigE cameras in oma2cam or can be created using the CREATEFILE/CONCATENATEFILE/COLSEFILE commands. Note that all exposure information must be entered in the extra space before CREATEFILE is used to open the file. Image values larger thatn the cutoff value will not be included and this should be close to the detector saturation value.
 
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.

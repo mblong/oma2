@@ -89,6 +89,7 @@ ComDef   commands[] =    {
     {{"GREY2RGB       "},	grey2rgb_c},
     {{"GSMOOTH        "},	gsmooth_c},
     {{"GETNEXT        "},	getNext_c},
+    {{"GETSEQUENCE    "},	getSequence_c},
     
     {{"HELP           "},	help},
     {{"HDRACCUMULATE  "},	hdrAccumulate_c},

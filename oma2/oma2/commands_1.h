@@ -76,6 +76,7 @@ int gmacro_c(int,char*);
 int gradient_c(int,char*);
 int gsmooth_c(int, char*);
 int gtemp_c(int, char*);
+int getSequence_c(int,char*);
 
 int hdrAccumulate_c(int,char*);
 int hdrAcadd_c(int,char*);
