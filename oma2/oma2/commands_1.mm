@@ -150,7 +150,7 @@ int getfile_c(int n,char* args){
     }
     int* specs = iBuffer.getspecs();
     if (specs[NFRAMES]) {
-        printf("Showing image 1 of %d.\n",specs[NFRAMES]);
+        printf("Showing image 1 of %d.\n",specs[NFRAMES]+1);
     }
 
     update_UI();

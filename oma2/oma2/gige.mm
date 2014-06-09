@@ -1153,6 +1153,7 @@ int gige(int n, char* args)
         printf(" Trigger delay set to %d us. \n",triggerDelay);
         return NO_ERR;
     }
+    /*
     // enable image saving 
     else if ( strncmp(args,"save",3) == 0){
         sscanf(args,"%s %s",txt, savestr);
@@ -1165,6 +1166,7 @@ int gige(int n, char* args)
         sav = 0;
         return NO_ERR;
     }
+     */
     // statistics
     else if ( strncmp(args,"stat",3) == 0){
         int* specs = iBuffer.getspecs();
@@ -1307,8 +1309,18 @@ int gige(int n, char* args)
         char timeFileName[256];
         int sFrames = 1;
         
-        sscanf(args,"%s %d",txt, &sFrames);
+        //sscanf(args,"%s %d",txt, &sFrames);
+        sscanf(args,"%s %s %d",txt, savestr, &sFrames);
         if( sFrames < 1) sFrames = 1;
+        iBuffer.extraSize = sFrames;                // save exposure times in the extra space
+        iBuffer.extra = new float[sFrames];
+        iBuffer.extra[0] = exptime/1e6;
+        iBuffer.values[EXPOSURE] = exptime/1e6;
+        for(int i=1; i< sFrames; i++){
+            iBuffer.extra[i] = iBuffer.extra[i-1];
+            //printf("%f\n",iBuffer.extra[i]);
+        }
+
         
         strcpy(args, savestr);
         strcpy(timeFileName, savestr);
@@ -1319,7 +1331,8 @@ int gige(int n, char* args)
         // continuous acquisition mode
         // use frame rate for internal trigger
         // should work for external trigger as well
-        if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
+        //if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
+        if(CameraStartContinuous(&Camera,exptime,frameRate,gain,FREERUN,triggerDelay,bx,by)){
             PvCommandRun(Camera.Handle,"TimeStampReset");
             PvAttrUint32Get(Camera.Handle,"TimeStampFrequency",&Tfreq);
             for(int i=0; i< sFrames; i++){
@@ -1380,7 +1393,7 @@ int gige(int n, char* args)
         int nextExpTime = exptime;
         float multiplier = 2.;
         
-        sscanf(args,"%s %d %f",txt, &sFrames,&multiplier);
+        sscanf(args,"%s %s %d %f",txt, savestr, &sFrames,&multiplier);
         printf("%d frames with %f multiplier\n",sFrames,multiplier);
         
         strcpy(args, savestr);
@@ -1392,7 +1405,7 @@ int gige(int n, char* args)
         iBuffer.values[EXPOSURE] = exptime/1e6;
         for(int i=1; i< sFrames; i++){
             iBuffer.extra[i] = iBuffer.extra[i-1]*multiplier;
-            printf("%f\n",iBuffer.extra[i]);
+            //printf("%f\n",iBuffer.extra[i]);
         }
         
         if(CameraStartContinuous(&Camera,exptime,frameRate,gain,FREERUN,triggerDelay,bx,by)){
