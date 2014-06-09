@@ -1408,7 +1408,7 @@ int gige(int n, char* args)
             //printf("%f\n",iBuffer.extra[i]);
         }
         
-        if(CameraStartContinuous(&Camera,exptime,frameRate,gain,FREERUN,triggerDelay,bx,by)){
+        if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
             PvCommandRun(Camera.Handle,"TimeStampReset");
             for(int i=0; i< sFrames; i++){
                 // snap now
