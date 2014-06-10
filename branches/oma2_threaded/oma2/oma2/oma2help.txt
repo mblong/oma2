@@ -337,6 +337,9 @@ INTFILL direction_flag selection_flag do_average
 INTVARIABLE variable_name
 	Specifies that variable_name is to be used as an integer variable.
 
+IM2SEQUENCE filename frames
+    Save the current image as a sequence of images with the specified number of frames. This type of data file can be used by the SEQ2HDR command.
+
 KILLBOX [value]
 	Much like FILLBOX, this command works on the region of the image that has been specified with the RECT command or mouse. The contents of this region are set to 'value'. Default for 'value' is 0.
 
@@ -536,6 +539,9 @@ SUBTMPIMAGE name
 
 SEQ2HDR filename cutoff
     Convert a sequence of images with different exposures to an HDR image. The file contains all images and must have information on exposures stored in the EXTRA data (see the EXTRA command). This type of file can be created by GigE cameras in oma2cam or can be created using the CREATEFILE/CONCATENATEFILE/COLSEFILE commands. Note that all exposure information must be entered in the extra space before CREATEFILE is used to open the file. Image values larger thatn the cutoff value will not be included and this should be close to the detector saturation value.
+
+SEQ2IMAGE filename
+    Open all frames of a sequence of images to a single image whose height is NFRAMES*FRAMEHEIGHT.
 
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.
