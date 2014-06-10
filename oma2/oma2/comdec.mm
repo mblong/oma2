@@ -89,7 +89,6 @@ ComDef   commands[] =    {
     {{"GREY2RGB       "},	grey2rgb_c},
     {{"GSMOOTH        "},	gsmooth_c},
     {{"GETNEXT        "},	getNext_c},
-    {{"GETSEQUENCE    "},	getSequence_c},
     
     {{"HELP           "},	help},
     {{"HDRACCUMULATE  "},	hdrAccumulate_c},
@@ -103,6 +102,7 @@ ComDef   commands[] =    {
     {{"INTEGRATE      "},	integrate_c},
     {{"INTFILL        "},	intfill_c},
     {{"INTVARIABLE    "},	vint},
+    {{"IM2SEQUENCE    "},	im2Sequence_c},
         
     {{"KILLBOX        "},	killBox_c},
     {{"KWABEL         "},	kwabel_g},
@@ -146,7 +146,7 @@ ComDef   commands[] =    {
     {{"RAMP           "},	ramp_c},
     {{"RNDOFF         "},	roundoff_c},
     {{"RNDUP          "},	roundUp_c},
-    {{"RULER         "},	ruler_c},
+    {{"RULER          "},	ruler_c},
     
     
     {{"SAVEFILE       "},	savefile_c},
@@ -162,11 +162,12 @@ ComDef   commands[] =    {
     {{"SUBFILE        "},	subfile_c},
     {{"SUBTMPIMAGE    "},	subtmp_c},
     {{"SHELL          "},	sysCommand_c},
-    {{"SEQ2HDR       "},	seq2hdr_c},
+    {{"SEQ2HDR        "},	seq2hdr_c},
+    {{"SEQ2IMAGE      "},	seq2Image_c},
     
     {{"TSMOOTH        "},	tsmooth_c},
     
-    {{"UPREFIX       "},	uprefix_c},
+    {{"UPREFIX        "},	uprefix_c},
     
     {{"VARIABLES      "},	variab},
     

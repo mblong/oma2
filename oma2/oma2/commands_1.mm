@@ -3631,14 +3631,13 @@ int seq2hdr_c(int n,char* args){
     return NO_ERR;
 }
 /* ********** */
-/* ********** */
 
 /*
- GETSEQUENCE filename
- Open all frames of a sequence of images to a single image whose height is NFRAMES*FRAMEHEIGHT.
+ SEQ2IMAGE filename
+    Open all frames of a sequence of images to a single image whose height is NFRAMES*FRAMEHEIGHT.
  */
 
-int getSequence_c(int n,char* args){
+int seq2Image_c(int n,char* args){
     int ex;
     int err;
     err = openfile_c(0, args);
@@ -3676,6 +3675,58 @@ int getSequence_c(int n,char* args){
 }
 /* ********** */
 
+/*
+ IM2SEQUENCE filename frames
+    Save the current image as a sequence of images with the specified number of frames. This type of data file can be used by the SEQ2HDR command.
+ */
+
+int im2Sequence_c(int n,char* args){
+    
+    int err,frames;
+    char filename[FILENAME_MAX];
+    int narg = sscanf(args,"%s %d",filename, &frames);
+    
+    if (narg != 2) {
+        beep();
+        printf("Need two arguments: filename frames\n");
+        return CMND_ERR;
+    }
+    if(frames < 1) frames = 1;
+    int* specs = iBuffer.getspecs();
+    iBuffer.saveFile(filename, SAVE_DATA);
+    err = iBuffer.err();
+    if (err) {
+        beep();
+        printf("Could not open %s\n",filename);
+        return err;
+    }
+    specs[NFRAMES] = frames-1;
+    specs[ROWS] /= frames;
+    
+    FILE* big;
+    big = fopen(filename, "r+");
+    if (big) {                      // set the number of frames
+        char txt[HEADLEN];
+        int nspecs = NSPECS;
+        int nvalues = NVALUES;
+        int nrulerchar = NRULERCHAR;
+        
+        strcpy(txt, OMA2_BINARY_DATA_STRING);
+        fwrite(txt, sizeof(char), HEADLEN, big);
+        fwrite(&nspecs,sizeof(int),1,big);
+        fwrite(&nvalues,sizeof(int),1,big);
+        fwrite(&nrulerchar,sizeof(int),1,big);
+        fwrite(specs,sizeof(int),nspecs,big);
+        fclose(big);
+    }
+    free(specs);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    
+    return NO_ERR;
+}
+
+/* ********** */
 /*
  EXTRA [index] [value]
     Add extra information to the current image in the form of a floating point value. If no argument is given, the command lists extra values in the current image buffer. Indexing starts at 1.

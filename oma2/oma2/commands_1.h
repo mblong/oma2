@@ -76,7 +76,6 @@ int gmacro_c(int,char*);
 int gradient_c(int,char*);
 int gsmooth_c(int, char*);
 int gtemp_c(int, char*);
-int getSequence_c(int,char*);
 
 int hdrAccumulate_c(int,char*);
 int hdrAcadd_c(int,char*);
@@ -88,6 +87,7 @@ int invert_c(int,char*);
 int integrate_c(int,char*);
 int intfill_c(int,char*);
 int integrateFill(int,char*,int);
+int im2Sequence_c(int,char*);
 
 int killBox_c(int,char*);
 
@@ -140,6 +140,8 @@ int satiff_c(int,char*);
 int satiffscaled_c(int,char*);
 int sysCommand_c(int,char*);
 int seq2hdr_c(int,char*);
+int seq2Image_c(int,char*);
+
 
 int tsmooth_c(int,char*);
 
