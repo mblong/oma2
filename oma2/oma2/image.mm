@@ -19,7 +19,7 @@ int      hdrFrames=0;       // HDR frame counter
 int numberNamedTempImages = 0;
 Variable namedTempImages[NUM_TEMP_IMAGES-NUMBERED_TEMP_IMAGES];
 
-int argc = 0;               // these three fro dcraw
+int argc = 0;               // these three for dcraw
 char *argv[200];
 char dcraw_arg[CHPERLN];
 

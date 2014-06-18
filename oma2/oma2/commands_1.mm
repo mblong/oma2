@@ -152,7 +152,7 @@ int getfile_c(int n,char* args){
     if (specs[NFRAMES]) {
         printf("Showing image 1 of %d.\n",specs[NFRAMES]+1);
     }
-
+    free(specs);
     update_UI();
     return NO_ERR;
 }
@@ -632,6 +632,7 @@ int rotate_c(int n,char* args){
             beep();
             printf("Error: %d.\n",err);
             iBuffer.errclear();
+            free(specs);
             return err;
         }
         free(specs);
@@ -723,7 +724,7 @@ int smooth_c(int n,char* args){
             smoothed.setpix(nt, nc, sum/count);
         }
     }
-    free(bufferspecs);  // release buffer copy
+    free(bufferspecs);  // release specs copy
     iBuffer.free();     // release the old data
     iBuffer = smoothed;   // this is the new data
     iBuffer.getmaxx(PRINT_RESULT);
@@ -3581,12 +3582,13 @@ int seq2hdr_c(int n,char* args){
     }
     int* specs = iBuffer.getspecs();
     int extraSize = iBuffer.getExtraSize();
-    if (extraSize != specs[NFRAMES]+ 1) {
+    if (extraSize < specs[NFRAMES]+ 1) {
         beep();
-        printf("The sequence does not contain exposure values.\n");
+        printf("The sequence does not contain enough exposure values.\n");
         free(specs);
         return FILE_ERR;
     }
+    extraSize = specs[NFRAMES]+ 1;
     
     Image* exp = new Image[specs[NFRAMES]+ 1];
     
