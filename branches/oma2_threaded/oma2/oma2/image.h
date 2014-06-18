@@ -40,7 +40,7 @@ protected:
     int         error;              ///< An error flag
     int         is_big_endian;  ///< You guessed it.
     int         commentSize;    ///< Size of text entered with the LOG command
-    int         extraSize;      ///< Space of extra buffer to be stored with an image. Not used so far.
+    int         extraSize;      ///< Space of extra buffer to be stored with an image. Used for exposure values in HDR sequence files.
     char*       comment;        ///< Text entered with the LOG command
     float*      extra;          ///< Pointer to extra data (float)
     DATAWORD*   data;           ///< Pointer to image data (DATAWORD=float currently)
