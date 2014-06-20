@@ -926,9 +926,9 @@ int abelinv(int n,int index){
     }
     
     // copy the 2nd col to the 1st col.
-    for (i=0; i<row; i++) {
-        *(datp+i*col) = *(datp+i*col+1);
-    }
+    //for (i=0; i<row; i++) {
+    //    *(datp+i*col) = *(datp+i*col+1);
+    //}
     
     free(datpt);
     datpt = datp-doffset;    /* Needs the 80 bytes thing for buffer*/
@@ -976,15 +976,16 @@ float OP_D(int i,int j)
     
     float ID=0;
     if (j<i-1)
-    {ID = 0.;}
+        ID = 0.;
     else if (j==i-1)
-    {ID = OP0(i,j+1)-OP1(i,j+1);}
+        ID = OP0(i,j+1)-OP1(i,j+1);
     else if (j==i)
-    {ID = OP0(i,j+1)-OP1(i,j+1)+2*OP1(i,j);}
-    else if (j>=i+1)
-    {ID = OP0(i,j+1)-OP1(i,j+1)+2*OP1(i,j)-OP0(i,j-1)-OP1(i,j-1);}
+        ID = OP0(i,j+1)-OP1(i,j+1)+2*OP1(i,j);
     else if (i==0&&j==1)
-    {ID = OP0(i,j+1)-OP1(i,j+1)+2*OP1(i,j)-2*OP1(i,j-1);}
+        ID = OP0(i,j+1)-OP1(i,j+1)+2*OP1(i,j)-2*OP1(i,j-1);
+    else if (j>=i+1)
+        ID = OP0(i,j+1)-OP1(i,j+1)+2*OP1(i,j)-OP0(i,j-1)-OP1(i,j-1);
+
     return (ID);
 }
 
