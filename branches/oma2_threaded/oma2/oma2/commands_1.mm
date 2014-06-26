@@ -692,9 +692,9 @@ int smooth_c(int n,char* args){
     
     
     if(smoothed.err()){
+        free(bufferspecs);
         return smoothed.err();
     }
-    smoothed.copyABD(iBuffer);
     
     dxs = -dx/2;
     dys = -dy/2;
