@@ -798,9 +798,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1172"
-            endingLineNumber = "1172"
-            landmarkName = "gige(int n, char* args)"
-            landmarkType = "7">
+            endingLineNumber = "1172">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
