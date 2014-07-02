@@ -2779,7 +2779,7 @@ int accumulate_c(int n,char* args)
     }
     accumulator.copyABD(iBuffer);
     accumulator.zero();
-    free(specs);
+    //free(specs);
     return NO_ERR;
 }
 
