@@ -22,6 +22,7 @@ int accumulate_c(int,char*);
 int acdelete_c(int,char*);
 int acget_c(int,char*);
 int acadd_c(int,char*);
+int addRGB_c(int,char*);
 
 int bit8_c(int,char*);
 int bit16_c(int,char*);
@@ -53,6 +54,7 @@ int delay_c(int,char*);
 int dx_c(int n,char* args);
 int dy_c(int n,char* args);
 int doc2rgb_c(int n, char* args);
+int divRGB_c(int,char*);
 
 int echo_c(int,char*);
 int extra_c(int,char*);
@@ -101,6 +103,7 @@ int mirror_c(int,char*);
 int mulfile_c(int,char*);
 int multmp_c(int,char*);
 int multiply_c(int,char*);
+int mulRGB_c(int,char*);
 
 int newWindow_c(int,char*);
 int nextFile_c(int,char*);
@@ -112,6 +115,7 @@ int palette_c(int,char*);
 int plus_c(int,char*);
 int power_c(int,char*);
 int positive_c(int, char*);
+int powRGB_c(int,char*);
 
 int rectan_c(int,char*);
 int resize_c(int,char*);
@@ -141,6 +145,7 @@ int satiffscaled_c(int,char*);
 int sysCommand_c(int,char*);
 int seq2hdr_c(int,char*);
 int seq2Image_c(int,char*);
+int subRGB_c(int,char*);
 
 
 int tsmooth_c(int,char*);

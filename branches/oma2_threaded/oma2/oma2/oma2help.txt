@@ -1,18 +1,32 @@
 + x
 	Adds x to the data in the current image data buffer.
 
++RGB x y z
+	Adds x, y, and z to the red, green, and blue data in the current image data buffer.
+
 - x
 	Subtracts x from the data in the current image data buffer.
+
+-RGB x y z
+	Subtracts x, y, and z from the red, green, and blue data in the current image data buffer.
 
 * x
 	Multiplies the data in the current image data buffer by x.
 
+*RGB x y z
+	Multiply the red, green, and blue data in the current image data buffer by x, y, and z.
+
 / x
 	Divides the data in the current image data buffer by x.
+
+/RGB x y z
+	Divide the red, green, and blue data in the current image data buffer by x, y, and z.
 
 ^ x
 	Raises the data in the current image data to the power x.
 
+^RGB x y z
+	Raise the red, green, and blue data in the current image data buffer to the power x, y, and z.
 
 ADDFILE <filename>
 	Adds the contents of an OMA file of a given name to the data in the current image data buffer.
