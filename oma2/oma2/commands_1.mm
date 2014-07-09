@@ -79,6 +79,98 @@ int multiply_c(int n,char* args){
 }
 
 /* ********** */
+/// Multiply RGB by a specified constants.
+///
+
+int mulRGB_c(int n,char* args){
+    
+    float x,y,z;
+	
+	if( sscanf(args,"%f %f %f",&x,&y,&z) != 3){
+		beep();
+		printf("3 Arguments needed\n");
+		return CMND_ERR;
+	}
+    iBuffer.rgbMult(x,y,z);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
+/* ********** */
+/// divide RGB by a specified constants.
+///
+
+int divRGB_c(int n,char* args){
+    
+    float x,y,z;
+	
+	if( sscanf(args,"%f %f %f",&x,&y,&z) != 3){
+		beep();
+		printf("3 Arguments needed\n");
+		return CMND_ERR;
+	}
+    iBuffer.rgbDiv(x,y,z);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
+/* ********** */
+/// subtract RGB by a specified constants.
+///
+
+int subRGB_c(int n,char* args){
+    
+    float x,y,z;
+	
+	if( sscanf(args,"%f %f %f",&x,&y,&z) != 3){
+		beep();
+		printf("3 Arguments needed\n");
+		return CMND_ERR;
+	}
+    iBuffer.rgbSub(x,y,z);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
+/* ********** */
+/// add RGB by a specified constants.
+///
+
+int addRGB_c(int n,char* args){
+    
+    float x,y,z;
+	
+	if( sscanf(args,"%f %f %f",&x,&y,&z) != 3){
+		beep();
+		printf("3 Arguments needed\n");
+		return CMND_ERR;
+	}
+    iBuffer.rgbAdd(x,y,z);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
+/// raise RGB to power by specified constants.
+///
+
+int powRGB_c(int n,char* args){
+    
+    float x,y,z;
+	
+	if( sscanf(args,"%f %f %f",&x,&y,&z) != 3){
+		beep();
+		printf("3 Arguments needed\n");
+		return CMND_ERR;
+	}
+    iBuffer.rgbPow(x,y,z);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
 
 int power_c(int n,char* args)				// raise the data to a power
 {

@@ -113,6 +113,12 @@ public:
     void composite(Image);     ///< composite two images. Error if images are not the same width.
     void resize(int,int);      ///< resize the current image to specified rows and columns
     
+    void rgbMult(float,float,float);
+    void rgbDiv(float,float,float);
+    void rgbAdd(float,float,float);
+    void rgbSub(float,float,float);
+    void rgbPow(float,float,float);
+    
     
     
     // These friends help read in images

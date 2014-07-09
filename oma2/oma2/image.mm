@@ -345,6 +345,99 @@ void Image::power(DATAWORD val){
     //return *this;
 }
 
+void Image::rgbMult(float x, float y, float z){
+    
+    DATAWORD *pt,*pt_green,*pt_blue;
+	int num = specs[ROWS]*specs[COLS]/3;
+	int i;
+	
+	pt = data;
+	pt_green = pt + num;
+	pt_blue =  pt_green + num;
+	
+	for (i=0; i < num; i++) {
+		*(pt++) *= x;
+		*(pt_green++) *= y;
+		*(pt_blue++) *= z;
+	}
+    specs[HAVE_MAX]=0;
+}
+
+void Image::rgbDiv(float x, float y, float z){
+    
+    DATAWORD *pt,*pt_green,*pt_blue;
+	int num = specs[ROWS]*specs[COLS]/3;
+	int i;
+	
+	pt = data;
+	pt_green = pt + num;
+	pt_blue =  pt_green + num;
+	
+	for (i=0; i < num; i++) {
+		*(pt++) /= x;
+		*(pt_green++) /= y;
+		*(pt_blue++) /= z;
+	}
+    specs[HAVE_MAX]=0;
+}
+
+void Image::rgbAdd(float x, float y, float z){
+    
+    DATAWORD *pt,*pt_green,*pt_blue;
+	int num = specs[ROWS]*specs[COLS]/3;
+	int i;
+	
+	pt = data;
+	pt_green = pt + num;
+	pt_blue =  pt_green + num;
+	
+	for (i=0; i < num; i++) {
+		*(pt++) += x;
+		*(pt_green++) += y;
+		*(pt_blue++) += z;
+	}
+    specs[HAVE_MAX]=0;
+}
+
+void Image::rgbSub(float x, float y, float z){
+    
+    DATAWORD *pt,*pt_green,*pt_blue;
+	int num = specs[ROWS]*specs[COLS]/3;
+	int i;
+	
+	pt = data;
+	pt_green = pt + num;
+	pt_blue =  pt_green + num;
+	
+	for (i=0; i < num; i++) {
+		*(pt++) -= x;
+		*(pt_green++) -= y;
+		*(pt_blue++) -= z;
+	}
+    specs[HAVE_MAX]=0;
+}
+
+void Image::rgbPow(float x, float y, float z){
+    
+    DATAWORD *pt,*pt_green,*pt_blue;
+	int num = specs[ROWS]*specs[COLS]/3;
+	int i;
+	
+	pt = data;
+	pt_green = pt + num;
+	pt_blue =  pt_green + num;
+	
+	for (i=0; i < num; i++) {
+        
+		*(pt+i) = pow(*(pt+i),x);
+		*(pt_green+i) = pow(*(pt_green+i),y);
+		*(pt_blue+i) = pow(*(pt_blue+i),z);
+	}
+    specs[HAVE_MAX]=0;
+}
+
+
+
 void Image::operator+(Image im2){
     if (*this != im2){
         error = SIZE_ERR;
