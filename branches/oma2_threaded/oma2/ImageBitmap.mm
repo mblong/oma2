@@ -15,7 +15,7 @@ RGBColor color[256][8];
 ImageBitmap::ImageBitmap(){
     pixdata = 0;            //
     intensity = 0;
-    width = height = UIData.iscolor = 0;
+    width = height = 0;
     UIData.pixsiz = 1;
     
 }
