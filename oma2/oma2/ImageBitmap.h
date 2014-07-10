@@ -24,13 +24,13 @@ class ImageBitmap
 {
 private:
     PIXBYTES**  pdptr;
-    PIXBYTES*   pixdata;            //
+    PIXBYTES*   pixdata;            // the RGB to be displayed
     int         width;              // 
     int         height;
     int         thePalette;
     DATAWORD    cmin;
     DATAWORD    crange;
-    PIXBYTES*   intensity;
+    PIXBYTES*   intensity;          // for false color plots, this is the intensity (i.e., palette index)
 
     
 
@@ -38,6 +38,7 @@ public:
     ImageBitmap();            // default constructor with no arguments
     
     void operator=(Image);
+    void freeMaps();
     
     PIXBYTES* getpixdata();
     PIXBYTES** getpixdatap();

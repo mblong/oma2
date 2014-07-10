@@ -195,6 +195,9 @@ DOC2RGB c1 c2 c3 c4
 	c1 - c4 should be 1 2 0 1
 	Appropriate values depend on the specific camera. (See the output from the GET command when reading raw files.)
 
+DISP2RGB
+ Convert the display image to rgb. Use this to turn a false color intensity map into an RGB image or to modify a color image so the values follow the display settings. Returned values are integers between 0 - 255.
+
 DOUTPUT channel state
 	Sets the specified digital output channel on a Labjack U3 to the specified state (0 or 1). Channel must be in the range 4-7. [oma2cam only]
 

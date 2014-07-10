@@ -3868,3 +3868,48 @@ int extra_c(int n,char* args){
     return NO_ERR;
     
 }
+
+/* ********** */
+/*
+ DISP2RGB
+ Convert the display image to rgb. Use this to turn a false color intensity map into an RGB image or to modify a color image so the values follow the display settings. Returned values are integers between 0 - 255.
+ */
+
+int disp2rgb_c(int n,char* args){
+    ImageBitmap bitmap;
+    unsigned char* pixbytes;
+    int saveAutoScale = UIData.autoscale;
+    UIData.autoscale = 0;
+    bitmap = iBuffer;   // get the bitmap
+    pixbytes = bitmap.getpixdata();
+    UIData.autoscale = saveAutoScale;
+    if (!iBuffer.isColor()) {
+        // need a bigger image to handle three colors
+        Image newim(iBuffer.height()*3,iBuffer.width());    // allocates space for color image
+        newim.copyABD(iBuffer);     // height and color setting are wrong now
+        int* specs = newim.getspecs();
+        specs[IS_COLOR] = 1;
+        specs[ROWS] = iBuffer.height()*3;
+        newim.setspecs(specs);
+        free(specs);
+        iBuffer.free(); // done with this old data
+        iBuffer = newim;
+        
+    }
+    
+    int height = iBuffer.height();      // remember the height method returns Rows/3 for color images
+    for (int r = 0; r < height; r++) {
+        for (int c = 0; c < iBuffer.width(); c++) {
+            iBuffer.setpix(r, c, *pixbytes++);
+            iBuffer.setpix(r+height, c, *pixbytes++);
+            iBuffer.setpix(r+2*height, c, *pixbytes++);
+        }
+    }
+
+    bitmap.freeMaps();
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    
+    return NO_ERR;
+    
+}
