@@ -14,6 +14,7 @@ RGBColor color[256][8];
 
 ImageBitmap::ImageBitmap(){
     pixdata = 0;            //
+    intensity = 0;
     width = height = UIData.iscolor = 0;
     UIData.pixsiz = 1;
     
@@ -40,8 +41,6 @@ void ImageBitmap::operator=(Image im){
 	int k = 0, i,j,n=0,m=0;
 	int ntrack = im.specs[ROWS];
 	int nchan = im.specs[COLS];
-	int nth;
-	float pix_scale;
     int pindx;
     
     int allocate_new=1;
@@ -54,25 +53,17 @@ void ImageBitmap::operator=(Image im){
     
 	crange = UIData.cmax - UIData.cmin;
 	cmin = UIData.cmin;
-	
-	if( UIData.pixsiz > 0 ){
-		nth = 1;
-		pix_scale = 1.0;
-	} else {
-		nth = abs(UIData.pixsiz);
-		pix_scale=1.0/nth;
-	}
-    
-    width = im.specs[COLS]/nth;
-    if (im.specs[IS_COLOR]) 
-        height = im.specs[ROWS]/nth/3;
+	   
+    width = im.specs[COLS];
+    if (im.specs[IS_COLOR])
+        height = im.specs[ROWS]/3;
 	else
-        height = im.specs[ROWS]/nth;
-
+        height = im.specs[ROWS];
+    
 	
 	if(allocate_new){
         if(pixdata) free(pixdata);
-		pixdata = (PIXBYTES*)calloc(width*height,3);
+		pixdata = (PIXBYTES*)malloc(width*height*3);
         
         if(intensity) free(intensity);
         if(im.specs[IS_COLOR])
@@ -85,16 +76,16 @@ void ImageBitmap::operator=(Image im){
          oma_wind[gwnum-1].height == im.specs[ROWS]/nth) {
          pixdata = oma_wind[gwnum-1].window_rgb_data;
          } else {
-         if(oma_wind[gwnum-1].window_rgb_data != 0) 
+         if(oma_wind[gwnum-1].window_rgb_data != 0)
          free(oma_wind[gwnum-1].window_rgb_data);
          return NULL;
          }
          */
 	}
-	if(pixdata == NULL){
+	if(pixdata == NULL || intensity == NULL){
 		beep();
 		printf("memory error\n");
-		//return pixdata;
+		return;
 	}
     if (im.specs[IS_COLOR]) {
         thePalette = -1;
@@ -102,71 +93,41 @@ void ImageBitmap::operator=(Image im){
         pt_green = im.data + nchan*ntrack/3;
         pt_blue =  pt_green + nchan*ntrack/3;
         int k=0;
-
-        if( UIData.pixsiz > 0 ) {
-            for(i=0; i < ntrack/3; i++){
-                for(j=0; j < nchan; j++){
-                    pindx = scale_pixval(*(im.data+k)*UIData.r_scale);
-                    *(pixdata+n++) = pindx;
-                    *(intensity+m++) =pindx;
-                    pindx = scale_pixval(*(pt_green+k)*UIData.g_scale);
-                    *(pixdata+n++) = pindx;
-                    *(intensity+m++) =pindx;
-                    pindx = scale_pixval(*(pt_blue+k++)*UIData.b_scale);
-                    *(pixdata+n++) = pindx;
-                    *(intensity+m++) =pindx;
-                }
+        
+        
+        for(i=0; i < ntrack/3; i++){
+            for(j=0; j < nchan; j++){
+                pindx = scale_pixval(*(im.data+k)*UIData.r_scale);
+                *(pixdata+n++) = pindx;
+                *(intensity+m++) =pindx;
+                pindx = scale_pixval(*(pt_green+k)*UIData.g_scale);
+                *(pixdata+n++) = pindx;
+                *(intensity+m++) =pindx;
+                pindx = scale_pixval(*(pt_blue+k++)*UIData.b_scale);
+                *(pixdata+n++) = pindx;
+                *(intensity+m++) =pindx;
             }
-        }/*else {     // this case isn't implemented
-            i = 0;
-            while(++i < ntrack/nth){
-                j = 0;
-                while( j++ < nchan/nth){
-                    pindx = scale_pixval(*(im.data+k));
-                    k += nth;                
-                    *(pixdata+n++) = color[pindx][UIData.thepalette].red;
-                    *(pixdata+n++) = color[pindx][UIData.thepalette].green;
-                    *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
-                    *(intensity+m++) =pindx;
-                }
-                k = i * nth * nchan;
-            }
-        }*/
+        }
     } else {
         thePalette = UIData.thepalette;
-        if( UIData.pixsiz > 0 ) {
-            for(i=0; i < ntrack; i++){
-                for(j=0; j < nchan; j++){
-                    pindx = scale_pixval(*(im.data+k++));
-                    *(pixdata+n++) = color[pindx][UIData.thepalette].red;
-                    *(pixdata+n++) = color[pindx][UIData.thepalette].green;
-                    *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
-                    /*
-                    // Could set alpha value to 0 or FF according to a threshold; used this to make icon
-                    if (pindx < 10) {
-                        *(pixdata+n++) = 0;
-                    }else{
-                        *(pixdata+n++) = 0xFF;
-                    }
-                    */
-                    *(intensity+m++) =pindx;
-                }
+        
+        for(i=0; i < ntrack; i++){
+            for(j=0; j < nchan; j++){
+                pindx = scale_pixval(*(im.data+k++));
+                *(pixdata+n++) = color[pindx][UIData.thepalette].red;
+                *(pixdata+n++) = color[pindx][UIData.thepalette].green;
+                *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
+                /*
+                 // Could set alpha value to 0 or FF according to a threshold; used this to make icon
+                 if (pindx < 10) {
+                 *(pixdata+n++) = 0;
+                 }else{
+                 *(pixdata+n++) = 0xFF;
+                 }
+                 */
+                *(intensity+m++) =pindx;
             }
-        }/*else {
-            i = 0;
-            while(++i < ntrack/nth){
-                j = 0;
-                while( j++ < nchan/nth){
-                    pindx = scale_pixval(*(im.data+k));
-                    k += nth;                
-                    *(pixdata+n++) = color[pindx][UIData.thepalette].red;
-                    *(pixdata+n++) = color[pindx][UIData.thepalette].green;
-                    *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
-                    *(intensity+m++) =pindx;
-                }
-                k = i * nth * nchan;
-            }
-        }*/
+        }
     }
 }
 
@@ -180,6 +141,14 @@ PIXBYTES* ImageBitmap::getintensitydata(){
 
 PIXBYTES** ImageBitmap::getpixdatap(){
     return pdptr;
+}
+
+void ImageBitmap::freeMaps(){
+    if(pixdata) free(pixdata);
+    pixdata = NULL;
+    
+    if(intensity) free(intensity);
+    intensity = NULL;
 }
 
 

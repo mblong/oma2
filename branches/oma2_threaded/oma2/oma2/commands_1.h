@@ -55,6 +55,7 @@ int dx_c(int n,char* args);
 int dy_c(int n,char* args);
 int doc2rgb_c(int n, char* args);
 int divRGB_c(int,char*);
+int disp2rgb_c(int,char*);
 
 int echo_c(int,char*);
 int extra_c(int,char*);
