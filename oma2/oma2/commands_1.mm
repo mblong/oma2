@@ -3913,3 +3913,57 @@ int disp2rgb_c(int n,char* args){
     return NO_ERR;
     
 }
+
+/* ********** */
+/*
+MASK> value
+ Create a mask based on values in the current image greater than or equal to the specified value. Mask values are 0 or 1.
+ 
+ */
+
+int maskGreater_c(int n,char* args){
+    float value = n;
+    sscanf(args,"%f",&value);
+    int* specs = iBuffer.getspecs();
+    for (int r = 0; r < specs[ROWS]; r++) {
+        for (int c = 0; c < specs[COLS]; c++) {
+            if (iBuffer.getpix(r, c) >= value)
+                iBuffer.setpix(r, c, 1.);
+            else
+                iBuffer.setpix(r, c, 0.);
+        }
+    }
+    free(specs);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    
+    return NO_ERR;
+    
+}
+
+/* ********** */
+/*
+ MASK< value
+ Create a mask based on values in the current image less than the specified value. Mask values are 0 or 1.
+ 
+ */
+
+int maskLess_c(int n,char* args){
+    float value = n;
+    sscanf(args,"%f",&value);
+    int* specs = iBuffer.getspecs();
+    for (int r = 0; r < specs[ROWS]; r++) {
+        for (int c = 0; c < specs[COLS]; c++) {
+            if (iBuffer.getpix(r, c) < value)
+                iBuffer.setpix(r, c, 1.);
+            else
+                iBuffer.setpix(r, c, 0.);
+        }
+    }
+    free(specs);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    
+    return NO_ERR;
+    
+}
