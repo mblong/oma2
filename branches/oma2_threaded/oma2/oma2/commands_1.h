@@ -105,6 +105,9 @@ int mulfile_c(int,char*);
 int multmp_c(int,char*);
 int multiply_c(int,char*);
 int mulRGB_c(int,char*);
+int maskGreater_c(int,char*);
+int maskLess_c(int,char*);
+
 
 int newWindow_c(int,char*);
 int nextFile_c(int,char*);

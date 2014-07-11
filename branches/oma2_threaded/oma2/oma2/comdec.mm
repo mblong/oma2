@@ -129,6 +129,9 @@ ComDef   commands[] =    {
     {{"MIRROR         "},	mirror_c},
     {{"MULFILE        "},	mulfile_c},
     {{"MULTMPIMAGE    "},	multmp_c},
+    {{"MASK>          "},	maskGreater_c},
+    {{"MASK<          "},	maskLess_c},
+    
         
     {{"NEWWINDOW      "},	newWindow_c},
     {{"NEXTFILE       "},	nextFile_c},

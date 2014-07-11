@@ -410,6 +410,12 @@ MACRO [n m]
 MAKNEW n m
 	Change the resolution of the data in the current data buffer to be n rows x m columns. Bilinear interpolation is performed.
 
+MASK> value
+ Create a mask based on values in the current image greater than or equal to the specified value. Mask values are 0 or 1.
+
+MASK< value
+ Create a mask based on values in the current image less than the specified value. Mask values are 0 or 1.
+
 MIRROR
 	Form a left-right mirror image operation on the data in the current data buffer.
 
