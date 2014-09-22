@@ -79,6 +79,7 @@ int gmacro_c(int,char*);
 int gradient_c(int,char*);
 int gsmooth_c(int, char*);
 int gtemp_c(int, char*);
+int getmatch_c(int, char*);
 
 int hdrAccumulate_c(int,char*);
 int hdrAcadd_c(int,char*);
@@ -107,7 +108,7 @@ int multiply_c(int,char*);
 int mulRGB_c(int,char*);
 int maskGreater_c(int,char*);
 int maskLess_c(int,char*);
-
+int match_c(int, char*);
 
 int newWindow_c(int,char*);
 int nextFile_c(int,char*);
@@ -156,6 +157,8 @@ int tsmooth_c(int,char*);
 
 int uprefix_c(int n,char* args);
 
+int warpar_c(int, char*);
+int warp_c(int, char*);
 int writebad_c(int,char*);
 
 int x0_c(int n,char* args);
@@ -163,6 +166,9 @@ int y0_c(int n,char* args);
 
 // Others
 int temp_image_index (char* name,int define);
+int loadmatch(char* name);
+int loadwarp(char* name);
+float xwarp(float,float),ywarp(float,float);
 
 void update_UI();    
 

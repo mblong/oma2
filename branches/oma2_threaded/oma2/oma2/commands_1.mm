@@ -3967,3 +3967,537 @@ int maskLess_c(int n,char* args){
     return NO_ERR;
     
 }
+
+/* ********** */
+
+float x1_ref,y1_ref,x2_ref,y2_ref,x1_i1,x2_i1,x1_i2,x2_i2,y1_i1,y2_i1,y1_i2,y2_i2;
+int	  have_match_stuff = 0;
+int   image1_width,image1_height,image2_width,image2_height;
+
+int getmatch_c(int n, char* args)		/* get file matching information from a text file */
+{
+    int err,loadmatch(char*);
+    
+    err = loadmatch(args);
+    return err;
+}
+
+int loadmatch(char* name)
+{
+    
+    FILE *fp;
+    int notfound = 0;
+    
+    // 	fp = fopen(name,"r");
+    fp = fopen(fullname(name,GET_DATA),"r");
+    
+    if( fp != NULL) {
+        if( fscanf(fp,"%f %f %f %f %f %f",&x1_ref,&y1_ref,&x1_i1,&y1_i1,
+                   &x1_i2,&y1_i2) != 6) notfound = 1;
+        if( fscanf(fp,"%f %f %f %f %f %f",&x2_ref,&y2_ref,&x2_i1,&y2_i1,
+                   &x2_i2,&y2_i2) != 6) notfound = 1;
+        if( fscanf(fp,"%d %d",&image1_width,&image1_height) != 2) notfound = 1;
+        if( fscanf(fp,"%d %d",&image2_width,&image2_height) != 2) notfound = 1;
+        fclose(fp);
+        
+        if(notfound == 1) {
+            beep();
+            printf(" Data Format Problem.\n");
+            return(FILE_ERR);
+        }
+        printf(" Reference point 1 is %.2f %.2f\n",x1_ref,y1_ref);
+        printf(" Reference point 2 is %.2f %.2f\n",x2_ref,y2_ref);
+        printf(" Image 1 is %d by %d.\n",image1_width,image1_height);
+        printf(" Image 1 point 1 is %.2f %.2f\n",x1_i1,y1_i1);
+        printf(" Image 1 point 2 is %.2f %.2f\n",x2_i1,y2_i1);
+        printf(" Image 2 is %d by %d.\n",image2_width,image2_height);
+        printf(" Image 2 point 1 is %.2f %.2f\n",x1_i2,y1_i2);
+        printf(" Image 2 point 2 is %.2f %.2f\n",x2_i2,y2_i2);
+        have_match_stuff = 1;
+        return(NO_ERR);
+        
+    }
+    else {
+        beep();
+        printf(" File Not Found.\n");
+        return(FILE_ERR);
+    }
+}
+
+
+/* ********** */
+
+int match_c(int n, char* args)			/* Using the data in the current buffer as one input and
+                                         the specified file as the other input, create two new
+                                         files that have the same resolution and cover the same
+                                         region. The new files will be called Match_1 and Match_2.
+                                         Use the file matching parameters previously read in */
+{
+    extern char txt[];
+    extern Point substart,subend;	/* these two points define a data subarray */
+    
+    char scratch[CHPERLN];
+    float ax,ay,tan_th1,th1,tan_th2,th2;
+    float x1,x2,scale1,scale2;
+    
+    int i,j,di1,di2;
+    Point i2start,i2end;
+    //
+    // this version ignores the reference image stuff
+    //
+    if( !have_match_stuff ) {
+        beep();
+        printf("Load Matching Parameters First (use 'GETMAT filename').\n");
+        return CMND_ERR;
+    }
+    /* Next check the size of the current image (image 1) */
+    
+    if( (iBuffer.width() != image1_width) || (iBuffer.height() != image1_height)) {
+        beep();
+        printf("Current Image is not the right size for Image 1.\n");
+        return CMND_ERR;
+    }
+    
+    /* Save the name of image2 -- we will get to that later */
+    
+    for(i=0; *(args+i) != EOL; i++ ) scratch[i] = args[i];
+    scratch[i] = 0;
+    
+    /* get the rotation angle for image 1 */
+    ax = x2_i1 - x1_i1;
+    ay = y2_i1 - y1_i1;
+    
+    // the distance between the points will give the scale factor
+    scale1 = sqrt(ax*ax + ay*ay);
+    // this is the angle made by the points in image 1
+    tan_th1 = ay/ax;
+    th1 = atan(tan_th1);
+    
+    /* get the rotation angle for image 2 */
+    ax = x2_i2 - x1_i2;
+    ay = y2_i2 - y1_i2;
+    
+    // the distance between the points will give the scale factor
+    scale2 = sqrt(ax*ax + ay*ay);
+    // this is the angle made by the points in image 2
+    tan_th2 = ay/ax;
+    th2 = atan(tan_th2);
+    
+    if(scale1 > scale2){
+        beep();
+        printf(" Reverse Image 1 and 2 -- Image 1 must be lower rosolution.\n");
+        return CMND_ERR;
+    }
+    
+    printf("Image 1: Scale Factor %.3f; Rotation Angle %.3f\n", scale1, th1);
+    printf("Image 2: Scale Factor %.3f; Rotation Angle %.3f\n", scale2, th2);
+    
+    if( fabs(th1 - th2) < (float)( 0.1/iBuffer.height()) ) {
+        printf("No Rotation Needed.\n");
+    }
+    else {
+        /* rotate the image in memory by the difference */
+        
+        th2 = (th1 - th2);              /* th2 is now the difference angle in radians */
+        th1 = 180.0 / PI * th2;		/* th1 is now the difference angle in degrees */
+        printf( "Rotate by %f\n", th1);
+        
+        /*
+         keylimit(-1);			// disable printing
+         sprintf(cmnd,"%f",th1);
+         rotate(1,0);			// go rotate image 1
+         keylimit(-2);			// reset printing  to previous mode
+         */
+        
+        iBuffer.rotate(th1);
+        
+        /* In image 1, the old x1_i1,y1_i1 and x2_i1,y2_i1 no longer correspond
+         to the reference points because of the rotation -- find the new points */
+        
+        x1_i1 = x1_i1 - (image1_width)/2.0;
+        y1_i1 = y1_i1 - (image1_height)/2.0;
+        /* printf(" moved point 1 is %.2f %.2f\n",x1_i1,y1_i1); */
+        
+        x1 = x1_i1 * cos(-th2) - y1_i1*sin(-th2);
+        x2 = x1_i1 * sin(-th2) + y1_i1*cos(-th2);
+        /* printf(" rotated 1 point 1 is %.2f %.2f\n",x1,x2); */
+        
+        x1_i1 = x1 + (iBuffer.width()-1)/2.0;         // different
+        y1_i1 = x2 + (iBuffer.height()-1)/2.0;
+        printf(" Final point 1 is %.2f %.2f\n",x1_i1,y1_i1);
+        
+        x2_i1 -= (image1_width)/2.0;
+        y2_i1 -= (image1_height)/2.0;
+        x1 = x2_i1 * cos(-th2) - y2_i1*sin(-th2);
+        x2 = x2_i1 * sin(-th2) + y2_i1*cos(-th2);
+        x2_i1 = x1 + (iBuffer.width()-1)/2.0;
+        y2_i1 = x2 + (iBuffer.height()-1)/2.0;
+        
+        printf(" Final point 2 is %.2f %.2f\n",x2_i1,y2_i1);
+        
+        image1_width = iBuffer.width();
+        image1_height = iBuffer.height();
+        
+    }
+    
+    // Scale up Image 1 -- the whole thing
+    
+    i = image1_width*scale2/scale1+0.5;
+    j = image1_height*scale2/scale1+0.5;
+    
+    printf("New Image 1 size: %d by %d\n",i,j);
+    
+    /*
+     keylimit(-1);			// disable printing
+     sprintf(cmnd,"%d %d",i,j);
+     maknew(1,0);                    // make larger image 1
+     keylimit(-2);			// reset printing  to previous mode
+     */
+    iBuffer.resize(j, i);
+    
+    printf("New Image 1 size: %d by %d\n",image1_width,image1_height);
+    
+    x1_i1 -= (image1_width-1)/2.0;
+    y1_i1 -= (image1_height-1)/2.0;
+    
+    x1 = x1_i1 * scale2/scale1;
+    x2 = y1_i1 * scale2/scale1;
+    
+    x1_i1 = x1 + (iBuffer.width()-1)/2.0;
+    y1_i1 = x2 + (iBuffer.height()-1)/2.0;
+    printf(" Final point 1 is %.2f %.2f\n",x1_i1,y1_i1);
+    
+    x2_i1 -= (image1_width-1)/2.0;
+    y2_i1 -= (image1_height-1)/2.0;
+    x1 = x2_i1 * scale2/scale1;
+    x2 = y2_i1 * scale2/scale1;
+    x2_i1 = x1 + (iBuffer.width()-1)/2.0;
+    y2_i1 = x2 + (iBuffer.height()-1)/2.0;
+    
+    printf(" Final point 2 is %.2f %.2f\n",x2_i1,y2_i1);
+    
+    image1_width = iBuffer.width();
+    image1_height = iBuffer.height();
+    
+    /* For Image 1, find the cropping coords */
+    // use the average of the two points as a position reference
+    
+    x1_i1 = (x1_i1 + x2_i1)/ 2.0;
+    y1_i1 = (y1_i1 + y2_i1)/ 2.0;
+    x1_i2 = (x1_i2 + x2_i2)/ 2.0;
+    y1_i2 = (y1_i2 + y2_i2)/ 2.0;
+    
+    substart.h = x1_i1 - x1_i2 + 0.5;
+    if(substart.h <= 0) {
+        i2start.h = -substart.h;    // crop left of image 2
+        substart.h = 0;
+    } else {
+        i2start.h = 0;              // crop left of image 1; not image2
+    }
+    substart.v = y1_i1 - y1_i2  + 0.5;
+    if(substart.v <= 0) {
+        i2start.v = -substart.v;    // crop top of image 2
+        substart.v = 0;
+    } else {
+        i2start.v = 0;              // crop top of image 1; not image2
+    }
+    
+    di1 = image1_width - 1 - x1_i1 + 0.5;  // the distance to the end of image 1
+    di2 = image2_width - 1 - x1_i2 + 0.5;  // the distance to the end of image 2
+    
+    printf(" x1 x2 %.2f %.2f\n",x1,x2);
+    
+    if(di2 >= di1) {
+        subend.h = image1_width - 1;  // keep all of image 1
+        i2end.h =  i2start.h + subend.h - substart.h;
+    } else {
+        i2end.h =  image2_width - 1;  // keep all of image 2
+        subend.h = substart.h + i2end.h - i2start.h;
+    }
+    
+    di1 = image1_height - 1 - y1_i1 + 0.5;  // the distance to the end of image 1
+    di2 = image2_height - 1 - y1_i2 + 0.5;  // the distance to the end of image 2
+    
+    if(di2 >= di1) {
+        subend.v = image1_height-1;  // keep all of image 1
+        i2end.v =  i2start.v + subend.v - substart.v;
+    } else {
+        i2end.v =  image2_height - 1;  // keep all of image 2
+        subend.v = substart.v + i2end.v - i2start.v;
+    }
+    
+    /* save the cropped image in a temp file */
+    
+    strcpy(txt,"Match_1");
+    /*
+     saverectangle(fullname(txt,SAVE_DATA));
+     setdata(txt);
+     fileflush(txt);	// for updating directory
+     */
+    rect cropRect = {substart.h,substart.v,subend.h,subend.v};
+    iBuffer.crop(cropRect);
+    iBuffer.getmaxx(PRINT_RESULT);
+    iBuffer.saveFile(fullname(txt,SAVE_DATA), LONG_NAME);
+    
+    printf("Image 1 cropped to %d %d %d %d.\n",substart.h,substart.v,subend.h,subend.v);
+    
+    
+    /* Now work with image 2 */
+    
+    /* Open Image 2 */
+    
+    strcpy(txt,scratch);
+    /*
+     fullname(txt,GET_DATA);
+     getfile (0,-1);			// get the file
+     keylimit(-2);			// reset printing  to previous mode
+     */
+    Image new_im(args,SHORT_NAME);
+    if(new_im.err()){
+        beep();
+        printf("Could not load %s\n",args);
+        return new_im.err();
+    }
+    iBuffer.free();     // release the old data
+    iBuffer = new_im;   // this is image2
+    
+    /* For Image 2, find the cropping coords */
+    
+    substart = i2start;
+    subend = i2end;
+    
+    /* save the cropped image in a temp file */
+    
+    strcpy(txt,"Match_2");
+    
+    /*
+     saverectangle(fullname(txt,SAVE_DATA));
+     setdata(txt);
+     fileflush(txt);	// for updating directory
+     */
+    
+    rect cropRect2 = {substart.h,substart.v,subend.h,subend.v};
+    iBuffer.crop(cropRect2);
+    iBuffer.getmaxx(PRINT_RESULT);
+    iBuffer.saveFile(fullname(txt,SAVE_DATA), LONG_NAME);
+    
+    update_UI();
+    
+    
+    printf("Image 2 cropped to %d %d %d %d.\n",substart.h,substart.v,subend.h,subend.v);
+    
+    /* must read parameters in before each match since we have changed things */
+    have_match_stuff = 0;	
+    return 0;
+}
+
+float a00,a01,a10,a11;
+float b00,b01,b10,b11;
+int warp_parameters_defined = 0;
+
+int warpar_c(int n, char* args)		// get image warping information from a text file
+{
+    
+    int err;
+    
+    err = loadwarp(args);
+    return err;
+}
+
+int loadwarp(char* name)
+{
+    FILE *fp;
+    int notfound = 0;
+    
+    fp = fopen(fullname(name,GET_DATA),"r");
+    
+    if( fp != NULL) {
+        if( fscanf(fp,"%f %f %f %f\n",&a00,&a01,&a10,&a11) != 4) notfound = 1;
+        if( fscanf(fp,"%f %f %f %f\n",&b00,&b01,&b10,&b11) != 4) notfound = 1;
+        fclose(fp);
+        
+        if(notfound == 1) {
+            beep();
+            printf(" Data Format Problem.\n");
+            return(FILE_ERR);
+        }
+        printf(" a parameters: %f   %f   %f",a00,a01,a10);
+        printf("   %f\n",a11);
+        printf(" b parameters: %f   %f   %f",b00,b01,b10);
+        printf("   %f\n",b11);
+        warp_parameters_defined = 1;
+        return(NO_ERR);
+        
+    }
+    else {
+        beep();
+        printf(" File Not Found.\n");
+        return(FILE_ERR);
+    }
+}
+
+
+/* ********** */
+
+/**************************************************************************************/
+/*
+ x’ = a00 + a01x + a10y + a11xy
+ y’ = b00 + b01x + b10y + b11xy
+ */
+// warp the image according to parameters specified  with the WARPAR command
+int warp_c(int n,char* args)
+{
+    int i,j,chan2,track2,ix,iy;
+    DATAWORD *datp2;
+    float xi,yi,x,y;
+    float xmax,xmin,ymax,ymin,fx,fy,pixval,subpix=0.2;
+    
+    
+    extern int	dlen,dhi;
+    
+    if(!warp_parameters_defined){
+        beep();
+        printf("Parameters Not Defined -- Use 'WARPAR filename' first.\n");
+        return CMND_ERR;
+    }
+    
+    xmax = ymax = 0;
+    xmin = dlen;
+    ymin = dhi;
+    
+    if(*args) sscanf(args,"%f",&subpix);
+    
+    printf("Subpixel resolution: %.2f\n", subpix);
+    // get the size of the new image
+    // look along top row
+    y = 0;
+    for(x=0; x<iBuffer.width(); x+= subpix){
+        xi = xwarp(x,y);
+        yi = ywarp(x,y);
+        if(xi > xmax) xmax = xi;
+        if(xi < xmin) xmin = xi;
+        if(yi > ymax) ymax = yi;
+        if(yi < ymin) ymin = yi;
+        
+    }
+    // look along bottom row
+    y = iBuffer.height()-1;
+    for(x=0; x<iBuffer.width(); x+= subpix){
+        xi = xwarp(x,y);
+        yi = ywarp(x,y);
+        if(xi > xmax) xmax = xi;
+        if(xi < xmin) xmin = xi;
+        if(yi > ymax) ymax = yi;
+        if(yi < ymin) ymin = yi;
+        
+    }
+    // look along left column
+    x = 0;
+    for(y=0; y<iBuffer.height(); y+= subpix){
+        xi = xwarp(x,y);
+        yi = ywarp(x,y);
+        if(xi > xmax) xmax = xi;
+        if(xi < xmin) xmin = xi;
+        if(yi > ymax) ymax = yi;
+        if(yi < ymin) ymin = yi;
+        
+    }
+    // look along right column
+    x = iBuffer.width()-1;
+    for(y=0; y<iBuffer.height(); y+= subpix){
+        xi = xwarp(x,y);
+        yi = ywarp(x,y);
+        if(xi > xmax) xmax = xi;
+        if(xi < xmin) xmin = xi;
+        if(yi > ymax) ymax = yi;
+        if(yi < ymin) ymin = yi;
+        
+    }
+    printf("xmin: %.2f  xmax: %.2f\n", xmin,xmax);
+    printf("ymin: %.2f  ymax: %.2f\n", ymin,ymax);
+    
+    track2 = ymax - ymin + 1.5;
+    chan2 = xmax - xmin + 1.5;
+    
+    Image warpedImage;
+    warpedImage.copyABD(iBuffer);
+    warpedImage.resize(track2,chan2);
+    if (warpedImage.err()) {
+        beep();
+        printf("Could not create warped image.\n");
+        return warpedImage.err();
+    }
+    datp2 = warpedImage.data;
+    
+    /*
+     //datp = malloc(size);
+     datp = calloc(size,1);
+     if(datp == 0) {
+     nomemory();
+     return -1;
+     }
+     datp2 = datp + doffset;
+     */
+    
+    for( y=0; y<iBuffer.height(); y += subpix) {
+        for( x=0; x<iBuffer.width(); x += subpix) {
+            i = x;
+            j = y;
+            pixval = iBuffer.getpix(j,i);  //idat(j,i);
+            xi = xwarp(x,y);
+            yi = ywarp(x,y);
+            ix = xi;
+            iy = yi;
+            //coordinates of pixel in the new image
+            
+            //put the intensity from this pixel into the (up to 4) pixels that this pixel covers
+            fx = xi - ix;   // the fractions
+            fy = yi - iy;
+            //
+            // remap origin to 0,0
+            xi -= xmin;
+            yi -= ymin;
+            ix = xi;
+            iy = yi;
+            // this pixel
+            *(datp2+ix+iy*chan2) += pixval * (1.0 - fx) * (1.0 - fy);
+            // pixel to the right
+            *(datp2+ix+1+iy*chan2) += pixval * (fx) * (1.0 - fy);
+            // pixel above
+            *(datp2+ix+(iy+1)*chan2) += pixval * (1.0 - fx) * (fy);
+            // pixel diagonally across
+            *(datp2+ix+1+(iy+1)*chan2) += pixval * (fx) * (fy);
+            /*if(i == 100) {
+             printf("%d %d\n",i,j);
+             printf("%d %d\n",ix,iy);
+             printf("%f %f\n",fx,fy);
+             printf("%f %f\n\n",xi,yi);
+             
+             }*/
+        }
+    }
+    iBuffer.free();
+    iBuffer =  warpedImage;
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    
+    return NO_ERR;
+}
+
+float xwarp(float x, float y)
+{
+    float xi;
+    xi = a00 + a01*x + a10*y + a11 * x * y;
+    return xi;
+}
+float ywarp(float x, float y)
+{
+    float yi;
+    yi = b00 + b01*x + b10*y + b11 * x * y;
+    return yi;
+}
+
+/* ********** */
+
+
+
