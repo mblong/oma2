@@ -263,6 +263,13 @@ GET <filename>
 GETFILENAMES NameFile
 	Open NameFile (currently uses macro prefix and suffix) which contains the names of files. The NEXTFILE command is used to open the next file. NameFile is left open until all files have been accessed.
 
+GETMATCH parameterfile
+Load the file matching parameters contained in the text file "parameterfile". The format of the file is as follows:
+x1_ref y1_ref x1_i1 y1_i1 x1_i2 y1_i2
+x2_ref y2_ref x2_i1 y2_i1 x2_i2 y2_i2
+image1_width image1_height
+image2_width image2_height
+
 GETSETTINGS [filename]
 	Gets settings from the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings from within the oma application are loaded.
 
@@ -415,6 +422,9 @@ MASK> value
 
 MASK< value
  Create a mask based on values in the current image less than the specified value. Mask values are 0 or 1.
+
+MATCH image2_data_file
+This command is used to create matching image pairs from images taken with different magnification, displacement, and rotation. The first image is assumed to be in the current image buffer. "image2_data_file" specifies the name of a file containing the second image. The necessary image matching parameters are stored in an ASCII text file and must be loaded with the GETMATCH command prior to executing the MATCH command. The command creates two new images and stores them in files named Match_1 and Match_2. Image 1 should be the lower resolution of the two.
 
 MIRROR
 	Form a left-right mirror image operation on the data in the current data buffer.

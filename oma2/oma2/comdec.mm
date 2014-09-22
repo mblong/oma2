@@ -95,6 +95,7 @@ ComDef   commands[] =    {
     {{"GREY2RGB       "},	grey2rgb_c},
     {{"GSMOOTH        "},	gsmooth_c},
     {{"GETNEXT        "},	getNext_c},
+    {{"GETMATCH       "},	getmatch_c},
     
     {{"HELP           "},	help},
     {{"HDRACCUMULATE  "},	hdrAccumulate_c},
@@ -131,6 +132,7 @@ ComDef   commands[] =    {
     {{"MULTMPIMAGE    "},	multmp_c},
     {{"MASK>          "},	maskGreater_c},
     {{"MASK<          "},	maskLess_c},
+    {{"MATCH          "},	match_c},
     
         
     {{"NEWWINDOW      "},	newWindow_c},
@@ -181,6 +183,8 @@ ComDef   commands[] =    {
     {{"VARIABLES      "},	variab},
     
     {{"WRITEBADPIX    "},	writebad_c},
+    {{"WARP           "},	warp_c},
+    {{"WARPARAM       "},	warpar_c},
     
     {{"X0             "},	x0_c},
     

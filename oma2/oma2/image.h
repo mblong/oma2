@@ -133,6 +133,7 @@ public:
 #endif
     // Special friends that need to go fast
     friend  int dofft(int,char*);
+    friend  int warp_c(int,char*);
     friend class ImageBitmap;
 };
 
