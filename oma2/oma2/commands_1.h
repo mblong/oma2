@@ -80,6 +80,7 @@ int gradient_c(int,char*);
 int gsmooth_c(int, char*);
 int gtemp_c(int, char*);
 int getmatch_c(int, char*);
+int gnoise_c(int, char*);
 
 int hdrAccumulate_c(int,char*);
 int hdrAcadd_c(int,char*);
@@ -112,6 +113,7 @@ int match_c(int, char*);
 
 int newWindow_c(int,char*);
 int nextFile_c(int,char*);
+int noise_c(int, char*);
 
 int openfile_c(int,char*);
 
@@ -151,6 +153,7 @@ int sysCommand_c(int,char*);
 int seq2hdr_c(int,char*);
 int seq2Image_c(int,char*);
 int subRGB_c(int,char*);
+int snr_c(int,char*);
 
 
 int tsmooth_c(int,char*);
