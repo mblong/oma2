@@ -3054,11 +3054,19 @@ int hdrAcget_c(int n,char* args){
 }
 
 int exposure_c(int n,char* args){
+    extern Variable user_variables[];
     DATAWORD* values = iBuffer.getvalues();
     float exp;
-    sscanf(args,"%f",&exp);
-    values[EXPOSURE] = exp;
-    iBuffer.setvalues(values);
+    if(sscanf(args,"%f",&exp) == 1){
+        values[EXPOSURE] = exp;
+        iBuffer.setvalues(values);
+    } else {
+        printf("Exposure: %f\n",values[EXPOSURE]);
+    }
+    free(values);
+    user_variables[0].fvalue = values[EXPOSURE];
+    user_variables[0].is_float = 1;
+
     return NO_ERR;
 }
 /* ********** */
@@ -4291,6 +4299,8 @@ int match_c(int n, char* args)			/* Using the data in the current buffer as one 
     return 0;
 }
 
+/* ********** */
+
 float a00,a01,a10,a11;
 float b00,b01,b10,b11;
 int warp_parameters_defined = 0;
@@ -4498,6 +4508,195 @@ float ywarp(float x, float y)
 }
 
 /* ********** */
+/*
+SNR gsmoothx gsmoothy aveSize
+ Calculate the signal/noise ratio of the image by first gaussian smoothing the image by the specified amount, then dividing the smoothed image by the original unsmoothed image. The SNR is taken to be the rms deviation calculated over an aveSize x aveSize area (the average is assumed to be 1)centered on each pixel.
+
+ */
+int snr_c(int n, char* args){
+    int gsx,gsy,aveSize,err,r,c,i,j;
+    float ave;
+    int nargs = sscanf(args, "%d %d %d",&gsx,&gsy,&aveSize);
+    if(nargs != 3){
+        beep();
+        printf("Need three arguments: gsmoothx, gsmoothy, aveSize");
+        return CMND_ERR;
+    }
+    // make a copy of this image
+    Image original;
+    original << iBuffer;
+    
+    // gradient smooth according to the first two arguments
+    err = gsmooth_c(0, args);
+    if(err) return err; // there was a problem with gsmooth
+    // iBuffer is the smoothed image
+    
+    // with no noise, this should be 1
+    iBuffer/original;
+    
+    original.zero();
+    aveSize /=2;
+    int nsum = (2*aveSize+1)*(2*aveSize+1);
+    int height = iBuffer.height();
+    if (iBuffer.isColor()) {
+        height *=3;
+    }
+    for(r = aveSize; r < height-aveSize; r++){
+        for(c = aveSize; c < iBuffer.width()-aveSize; c++){
+            ave = 0;
+            for(i = -aveSize; i<aveSize; i++){
+                for(j = -aveSize; j<aveSize; j++){
+                    ave += pow(iBuffer.getpix(r+i, c+j)-1.,2);
+                }
+            }
+            original.setpix(r, c, 1./sqrt(ave/nsum));
+        }
+    }
+    iBuffer.free();
+    iBuffer = original;
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    
+    return NO_ERR;
+
+}
+
+/* ************************* */
+// noise generating functions---------
+/*	NOISE mean rms seed
+ uniform deviate generator with using built-in random-number
+ generator */
 
 
+int noise_c(int n,char* args)
+{
+    unsigned int seed = 0;
+    float x;
+    float mean=0, rms = 1;
+    int nt,nc;
+    
+    // Get the arguments
+    sscanf(args,"%f %f %d",&mean,&rms,&seed);
+    printf(" Mean: %.2f, rms: %.2f, seed %d\n",mean,rms,seed);
+    
+    srand(seed);
+    rms *= 1.75;
+    int height = iBuffer.height();
+    if (iBuffer.isColor()) {
+        height *=3;
+    }
+    for(nt=0; nt<height; nt++) {
+        for(nc=0; nc<iBuffer.width();nc++){
+            x = rand();
+            x = (x/RAND_MAX*2.0 -1.0)*rms;
+            iBuffer.setpix(nt,nc,mean + x);
+        }
+    }
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+
+    return NO_ERR;
+}
+
+// gaussian deviate generator.  source: "Numerical Recipes in C", W.H. Press
+float ranfGauss()
+{
+    static int iset = 0;
+    static float gset;
+    float fac, rsq, v1, v2;
+    
+    if (iset==0) {
+        do {
+            v1 = (float)rand()/(float)(RAND_MAX);
+            v2 = (float)rand()/(float)(RAND_MAX);
+            v1 = 2.0*v1-1.0;
+            v2 = 2.0*v2-1.0;
+            rsq = v1*v1+v2*v2;
+        } while (rsq>=1.0 || rsq==0.0);
+        
+        fac = sqrt(-2.0*log(rsq)/rsq);
+        gset = v1*fac;
+        iset = 1;
+        //test = v2*fac;
+        return v2*fac;
+        
+    } else {
+        iset = 0;
+        //test = gset;
+        return gset;
+    }
+}
+
+// gaussian noise
+//	GNOISE mean rms seed
+// gaussian deviate generator using built-in random-number
+// generator followed by Box-Muller transform
+
+int gnoise_c(int n,char* args)
+{
+    unsigned int seed = 0;
+    float x;
+    float mean=0, rms = 1;
+    int nt,nc;
+
+    // Get the arguments
+    sscanf(args,"%f %f %d",&mean,&rms,&seed);
+    printf(" Mean: %.2f, rms: %.2f, seed %d\n",mean,rms,seed);
+ 
+    srand(seed);
+    int height = iBuffer.height();
+    if (iBuffer.isColor()) {
+        height *=3;
+    }
+    for(nt=0; nt<height; nt++) {
+        for(nc=0; nc<iBuffer.width();nc++){
+            x = ranfGauss();
+            iBuffer.setpix(nt,nc,(x*rms+mean));
+        }
+    }
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+
+}
+/*
+// shot noise
+//	SHOTNOISE seed
+//treat the data as counts and add random root N noise to the data
+int shotnoise(int n,int index)
+{
+    extern DATAWORD *datpt;
+    extern int	doffset;
+    unsigned int seed=0;
+    float x;
+    int i,nt,nc;
+    DATAWORD *datp;
+    
+    // Get the arguments
+    
+    for ( i = index; cmnd[i] != EOL; i++) {
+        if(cmnd[i] == ' ') {
+            sscanf(&cmnd[index],"%d",&seed);
+            break;
+        }
+    }
+    printf(" Seed %d\n",seed);
+    
+    srand(seed);
+    
+    datp = datpt+doffset;
+    for(nt=0; nt<header[NTRAK]; nt++) {
+        
+        for(nc=0; nc<header[NCHAN];nc++){
+            x = idat(nt,nc);
+            x += ((float)rand()/(float)RAND_MAX-.5)*sqrtf(x);
+            *(datp++) = x;
+        }
+    }
+    trailer[SFACTR] = 1;
+    have_max = 0;
+    return 0;
+}
+*/
+/*----------------------------------------------------------------*/
 

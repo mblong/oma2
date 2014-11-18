@@ -214,7 +214,7 @@ EXECUTE <filename>
 	Reads OMA commands stored in the specified file into a special execute buffer and then performs those commands. Unlike macros, these should not contain dummy numerical arguments (%d).
 
 EXPOSURE exposureValue
-	Sets an exposure time to be used in generating HDR images.
+	Sets an exposure time to be used in generating HDR images. If no argument is given, the value of the current exposure is echoed.
 
 EXTRA [index] [value]
     Add extra information to the current image in the form of a floating point value. If no argument is given, the command lists extra values in the current image buffer. Indexing starts at 1.
@@ -322,6 +322,9 @@ GIGE command
 	DISplay <flag> (set flag to 1 to display during acqusition)
 	HDR <filename> <numFrames> <multiplier> (save the specified number of frames using the specified filename. Subsequent exposure times are multiplied by the multiplier.)
 
+GNOISE mean rms [seed]
+	Gaussian deviate generator using built-in random-number generator followed by Box-Muller transform.
+
 HELP [command name or fragment]
 	If a command name is given, a brief explanation of the command is printed in the command window. If only part of the command is given, a description of all commands that match the command fragment is printed. All help information is from the file "OMA HELP." If no argument is given, all command names are printed with no explanation.
 
@@ -329,7 +332,7 @@ HDRACADD
 	Adds the current image data buffer to the HDR accumulator buffer. Values greater than the cutoff are excluded and values are then normalized by the exposure time.
 
 HDRACCUMULATE cutoff
-	Allocates and clears memory for an HDR accumulator that can be used to generate HDR imnages from a series of different exposures. The cuttoff value should be less than the saturation value for the detector. The size of the accumulator is determined by the image size parameters when the accumulate command is first given. Be sure the exposure value for the image is set (e.g., imported from and raw file or set using the EXPOSURE command).
+	Allocates and clears memory for an HDR accumulator that can be used to generate HDR imnages from a series of different exposures. The cuttoff value should be less than the saturation value for the detector. The size of the accumulator is determined by the image size parameters when the accumulate command is first given. Be sure the exposure value for the image is set (e.g., imported from a raw file or set using the EXPOSURE command).
 
 HDRACDELETE
 	Frees the memory associated with the HDR accumulator.
@@ -440,6 +443,9 @@ NEWWINDOW flag
 
 NEXTFILE [prefix]
 	Open the next file specified in the FileNames file that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. command_return_1 is the the filename without any prefix and without the extension (last 4 characters).
+
+NOISE average rms [seed]
+	Creates a noise image with the specified average and rms. See also GNOISE.
 
 OPENFILE <filename>
 	Reads data from the specified filename but does not close it. If there is more than one image in the file, the GETNEXT command will read the next image. This type of multi-image data file can be created with the CREATEFILE, CONCATFILE, CLOSEFILE commands, or may be produced by some cameras.
@@ -576,6 +582,9 @@ SEQ2HDR filename cutoff
 SEQ2IMAGE filename
     Open all frames of a sequence of images to a single image whose height is NFRAMES*FRAMEHEIGHT.
 
+SNR gsmoothx gsmoothy aveSize
+	Calculate the signal/noise ratio of the image by first gaussian smoothing the image by the specified amount, then dividing the smoothed image by the original unsmoothed image. The SNR is taken to be the rms deviation calculated over an aveSize x aveSize area (the average is assumed to be 1)centered on each pixel.
+
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.
 
@@ -598,8 +607,19 @@ VARIABLES
 	save datfile_@my_var\_corrected
 	See also commands FLOAT and INTVARIABLE
 
+WARP subpix
+	Remaps an image coordinate system using bilinear geometric warping.
+	x' = a00 + a01x + a10y + a11xy
+	y' = b00 + b01x + b10y + b11xy
+	The 8 parameters must first be read in with the WARPARAMS command. The subpix value specifies subpixel resolution used (default is 0.2). Without subpixel sampling, there would likely be holes in the warped image.
+
+WARPARAMS <filename>
+	Reads in 8 warp parameters from the specified file. The format of the text file should be as follows:
+	a00 a01 a10 a11
+	b00 b01 b10 b11
+
 WRITEBADPIX filename
-	save bad pixel data to a text file.
+	Save bad pixel data to a text file.
 	Format is:
 	# of bad pixels
 	detector_width	detector_height

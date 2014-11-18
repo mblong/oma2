@@ -96,6 +96,7 @@ ComDef   commands[] =    {
     {{"GSMOOTH        "},	gsmooth_c},
     {{"GETNEXT        "},	getNext_c},
     {{"GETMATCH       "},	getmatch_c},
+    {{"GNOISE         "},	gnoise_c},
     
     {{"HELP           "},	help},
     {{"HDRACCUMULATE  "},	hdrAccumulate_c},
@@ -137,6 +138,7 @@ ComDef   commands[] =    {
         
     {{"NEWWINDOW      "},	newWindow_c},
     {{"NEXTFILE       "},	nextFile_c},
+    {{"NOISE          "},	noise_c},
         
     {{"OPENFILE       "},	openfile_c},
         
@@ -175,6 +177,7 @@ ComDef   commands[] =    {
     {{"SHELL          "},	sysCommand_c},
     {{"SEQ2HDR        "},	seq2hdr_c},
     {{"SEQ2IMAGE      "},	seq2Image_c},
+    {{"SNR            "},	snr_c},
     
     {{"TSMOOTH        "},	tsmooth_c},
     
