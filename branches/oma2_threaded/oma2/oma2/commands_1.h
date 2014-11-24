@@ -180,5 +180,7 @@ int calc(point,point);
 
 float tabfun(int,float);
 
+float ranfGauss();
+
 
 //#endif
