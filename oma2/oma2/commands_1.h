@@ -155,7 +155,6 @@ int seq2Image_c(int,char*);
 int subRGB_c(int,char*);
 int snr_c(int,char*);
 
-
 int tsmooth_c(int,char*);
 
 int uprefix_c(int n,char* args);
