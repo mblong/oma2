@@ -140,8 +140,9 @@ extern AppController* appController;
 
     NSImage* im = [[NSImage alloc] initWithSize:NSMakeSize(iBitmap.getwidth(), iBitmap.getheight())];
     [im addRepresentation:bitmap];
-    [im compositeToPoint:NSZeroPoint
-               operation:NSCompositeDestinationOver];
+    
+    //[im compositeToPoint:NSZeroPoint operation:NSCompositeDestinationOver];
+    [im drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeDestinationOver fraction:1];
     
     /*
     NSData* tifdata = [im TIFFRepresentation];
@@ -196,9 +197,9 @@ extern AppController* appController;
     
     NSImage *im = [[NSImage alloc] init];
     [im addRepresentation:bitmap];
-    [im compositeToPoint:NSZeroPoint
-                      operation:NSCompositeDestinationOver];
     
+    //[im compositeToPoint:NSZeroPoint operation:NSCompositeDestinationOver];
+    [im drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeDestinationOver fraction:1];
     
     NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
     [imageView setFrame:rect];
