@@ -178,6 +178,7 @@ ComDef   commands[] =    {
     {{"SEQ2HDR        "},	seq2hdr_c},
     {{"SEQ2IMAGE      "},	seq2Image_c},
     {{"SNR            "},	snr_c},
+    {{"SHOTNOISE      "},	shotnoise_c},
     
     {{"TSMOOTH        "},	tsmooth_c},
     

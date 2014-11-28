@@ -4661,42 +4661,38 @@ int gnoise_c(int n,char* args)
 }
 /*
 // shot noise
-//	SHOTNOISE seed
-//treat the data as counts and add random root N noise to the data
-int shotnoise(int n,int index)
+SHOTNOISE seed
+    Treat the data as counts and add random root N noise to the data
+
+ */
+int shotnoise_c(int n,char* args)
 {
-    extern DATAWORD *datpt;
-    extern int	doffset;
     unsigned int seed=0;
     float x;
-    int i,nt,nc;
-    DATAWORD *datp;
+    int nt,nc;
     
     // Get the arguments
     
-    for ( i = index; cmnd[i] != EOL; i++) {
-        if(cmnd[i] == ' ') {
-            sscanf(&cmnd[index],"%d",&seed);
-            break;
-        }
-    }
-    printf(" Seed %d\n",seed);
+    // Get the arguments
+    sscanf(args,"%d",&seed);
     
     srand(seed);
     
-    datp = datpt+doffset;
-    for(nt=0; nt<header[NTRAK]; nt++) {
-        
-        for(nc=0; nc<header[NCHAN];nc++){
-            x = idat(nt,nc);
+    int height = iBuffer.height();
+    if (iBuffer.isColor()) {
+        height *=3;
+    }
+    for(nt=0; nt<height; nt++) {
+        for(nc=0; nc<iBuffer.width();nc++){
+            x = iBuffer.getpix(nt,nc);
             x += ((float)rand()/(float)RAND_MAX-.5)*sqrtf(x);
-            *(datp++) = x;
+            iBuffer.setpix(nt,nc,x);
         }
     }
-    trailer[SFACTR] = 1;
-    have_max = 0;
-    return 0;
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
 }
-*/
+
 /*----------------------------------------------------------------*/
 

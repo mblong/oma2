@@ -582,6 +582,9 @@ SEQ2HDR filename cutoff
 SEQ2IMAGE filename
     Open all frames of a sequence of images to a single image whose height is NFRAMES*FRAMEHEIGHT.
 
+SHOTNOISE seed
+	Treat the data as counts and add random root N noise to the data.
+
 SNR gsmoothx gsmoothy aveSize
 	Calculate the signal/noise ratio of the image by first gaussian smoothing the image by the specified amount, then dividing the smoothed image by the original unsmoothed image. The SNR is taken to be the rms deviation calculated over an aveSize x aveSize area (the average is assumed to be 1)centered on each pixel.
 
