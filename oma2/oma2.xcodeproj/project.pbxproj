@@ -38,7 +38,7 @@
 		DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
 		DB35126018F0B8AE00202FFC /* macImageSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB35125F18F0B8AE00202FFC /* macImageSupport.mm */; };
 		DB35126118F0B8AE00202FFC /* macImageSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB35125F18F0B8AE00202FFC /* macImageSupport.mm */; };
-		DB371F7918469FE400265D79 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
+		DB371F7918469FE400265D79 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB3E355D18E6030300381607 /* serial.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3E355C18E6030300381607 /* serial.c */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
@@ -101,7 +101,7 @@
 		DB8A887A18E3297E007C79AF /* pal4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5515A2895B00502B50 /* pal4.jpg */; };
 		DB8A887B18E3297E007C79AF /* pal3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5615A2895B00502B50 /* pal3.jpg */; };
 		DB8A887C18E3297E007C79AF /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
-		DB8A887E18E3297E007C79AF /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
+		DB8A887E18E3297E007C79AF /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB8C23F918FC2FC100969763 /* labjackU3.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB8C23F718FC2BA500969763 /* labjackU3.mm */; };
 		DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
@@ -526,7 +526,7 @@
 		DB0FC0151519183B008A9B54 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Yale University";
 			};
 			buildConfigurationList = DB0FC0181519183B008A9B54 /* Build configuration list for PBXProject "oma2" */;
@@ -728,8 +728,10 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -766,9 +768,11 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
