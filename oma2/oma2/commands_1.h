@@ -43,7 +43,6 @@ int concatfile_c(int n,char* args);
 int closefile_c(int n,char* args);
 int columns_c(int n,char* args);
 
-
 int dcrawarg_c(int,char*);
 int divfile_c(int,char*);
 int diffx_c(int,char*);
