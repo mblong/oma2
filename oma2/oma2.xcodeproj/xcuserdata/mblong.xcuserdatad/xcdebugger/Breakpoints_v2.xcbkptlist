@@ -581,7 +581,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "226"
             endingLineNumber = "226"
-            landmarkName = "-keyDown:"
+            landmarkName = "-acceptsFirstResponder"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
