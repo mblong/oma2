@@ -4562,6 +4562,7 @@ int snr_c(int n, char* args){
 }
 
 /* ************************* */
+
 // noise generating functions---------
 /*	NOISE mean rms seed
  uniform deviate generator with using built-in random-number
@@ -4598,34 +4599,7 @@ int noise_c(int n,char* args)
     return NO_ERR;
 }
 
-// gaussian deviate generator.  source: "Numerical Recipes in C", W.H. Press
-float ranfGauss()
-{
-    static int iset = 0;
-    static float gset;
-    float fac, rsq, v1, v2;
-    
-    if (iset==0) {
-        do {
-            v1 = (float)rand()/(float)(RAND_MAX);
-            v2 = (float)rand()/(float)(RAND_MAX);
-            v1 = 2.0*v1-1.0;
-            v2 = 2.0*v2-1.0;
-            rsq = v1*v1+v2*v2;
-        } while (rsq>=1.0 || rsq==0.0);
-        
-        fac = sqrt(-2.0*log(rsq)/rsq);
-        gset = v1*fac;
-        iset = 1;
-        //test = v2*fac;
-        return v2*fac;
-        
-    } else {
-        iset = 0;
-        //test = gset;
-        return gset;
-    }
-}
+/* ************************* */
 
 // gaussian noise
 //	GNOISE mean rms seed
@@ -4659,6 +4633,37 @@ int gnoise_c(int n,char* args)
     return NO_ERR;
 
 }
+// gaussian deviate generator.  source: "Numerical Recipes in C", W.H. Press
+float ranfGauss()
+{
+    static int iset = 0;
+    static float gset;
+    float fac, rsq, v1, v2;
+    
+    if (iset==0) {
+        do {
+            v1 = (float)rand()/(float)(RAND_MAX);
+            v2 = (float)rand()/(float)(RAND_MAX);
+            v1 = 2.0*v1-1.0;
+            v2 = 2.0*v2-1.0;
+            rsq = v1*v1+v2*v2;
+        } while (rsq>=1.0 || rsq==0.0);
+        
+        fac = sqrt(-2.0*log(rsq)/rsq);
+        gset = v1*fac;
+        iset = 1;
+        //test = v2*fac;
+        return v2*fac;
+        
+    } else {
+        iset = 0;
+        //test = gset;
+        return gset;
+    }
+}
+
+/* ************************* */
+
 /*
 // shot noise
 SHOTNOISE seed
