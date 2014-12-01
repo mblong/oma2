@@ -35,7 +35,6 @@ extern StatusController *statusController;
 
 enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
 
-
 #define printf omaprintf
 /*
  #define display_data [appController showDataWindow:(char*) args];
