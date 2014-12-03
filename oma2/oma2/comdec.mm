@@ -979,6 +979,7 @@ int do_assignment(char* cmnd)
 	
 	//printf("%d values; %c\n",rhs_vals,exp_el[0].op_char);
 	vprint(var_index);
+    update_UI();
 	return 0;
 }
 
@@ -1274,6 +1275,63 @@ int vprint(int index)
 		printf("%s: %s\n", user_variables[index].vname,&user_variables[index].estring[0]);
     }
 	return 0;
+}
+
+std::string getVariablesString(std::string varString)
+{
+    char str[256];
+    int i;
+    for(i=0; i<num_variables; i++){
+        if(user_variables[i].is_float > 0){
+            sprintf(str,"%s:\t%g\n", user_variables[i].vname,user_variables[i].fvalue);
+        }else if(user_variables[i].is_float == 0){
+            sprintf(str,"%s:\t%d\n", user_variables[i].vname,user_variables[i].ivalue);
+        }else{
+            sprintf(str,"%s:\t%s\n", user_variables[i].vname,&user_variables[i].estring[0]);
+        }
+        varString += str;
+    }
+    return varString;
+}
+
+std::string getTempImagesString(std::string varString)
+{
+    char str[256];
+    int i,ncolors,n,haveOne=0;
+    extern Image  iTempImages[];
+    extern int numberNamedTempImages;
+    extern Variable namedTempImages[];
+    
+    for (n=0; n<NUMBERED_TEMP_IMAGES; n++) {
+        if(!iTempImages[n].isEmpty()){
+            if (!haveOne) {
+                varString += "\nDefined Temp Images\n";
+                haveOne=1;
+            }
+            if(iTempImages[n].isColor())
+                ncolors=3;
+            else
+                ncolors=1;
+            sprintf(str,"%d:\t%d x %d x %d\n",n,
+                   iTempImages[n].width(),iTempImages[n].height(),ncolors);
+            varString += str;
+        }
+    }
+    for (i = 0; i<numberNamedTempImages; i++) {
+        if (!haveOne) {
+            varString += "\nDefined Temp Images\n";
+            haveOne=1;
+        }
+        n = i+NUMBERED_TEMP_IMAGES;
+        if(iTempImages[n].isColor())
+            ncolors=3;
+        else
+            ncolors=1;
+        sprintf(str,"%s:\t%d x %d x %d\n",namedTempImages[i].vname,
+               iTempImages[n].width(),iTempImages[n].height(),ncolors);
+        varString += str;
+    }
+    return varString;
 }
 
 

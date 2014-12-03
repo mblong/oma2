@@ -25,6 +25,8 @@ extern oma2UIData UIData;
 void update_UI(){
     [[appController preferenceController] fillInUIData];
     
+    [appController updateVariablesWindow];
+    
     /*
      
      */

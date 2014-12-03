@@ -1487,11 +1487,11 @@ int stemp_c(int n, char* args)
     n = temp_image_index(args,1);
     if(n >=0){
         iTempImages[n] << iBuffer;
+        update_UI();
         return NO_ERR;
     } else {
         return MEM_ERR;
     }
-    
 }
 /* ********** */
 
@@ -1532,6 +1532,7 @@ int ftemp_c(int n, char* args)
                 iTempImages[i+NUMBERED_TEMP_IMAGES] = iTempImages[i+NUMBERED_TEMP_IMAGES+1];
             }
         }
+        update_UI();
         return NO_ERR;
     }
     return MEM_ERR;
