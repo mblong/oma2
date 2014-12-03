@@ -26,7 +26,7 @@ int comdec(char*);
 // its window is the "oma2" (i.e, command) window
 
 
-
+@class VariablesWindowController;
 @class PreferenceController;
 @class DataWindowController;
 @class CommandView;
@@ -46,7 +46,8 @@ int comdec(char*);
     CommandView *__strong theCommands;
     //char oma2Command[CHPERLN];
 }
- 
+
+@property (strong) VariablesWindowController *variablesWindowController;
 @property (strong) PreferenceController *preferenceController;
 @property (strong) IBOutlet CommandView *theCommands;
 @property (strong) IBOutlet NSWindow *theWindow;
@@ -75,6 +76,7 @@ int comdec(char*);
 -(void) eraseWindow:(int) n;
 -(void) dataWindowClosing;
 -(void) updateDataWindow;
+-(void) updateVariablesWindow;
 
 -(void) windowDidBecomeKey:(NSNotification *)note;
 

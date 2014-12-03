@@ -8,6 +8,7 @@
 
 #import "AppController.h"
 #import "PreferenceController.h"
+#import "VariablesWindowController.h"
 #import "DataWindowController.h"
 #import "DrawingWindowController.h"
 #import "StatusController.h"
@@ -27,6 +28,7 @@ extern oma2UIData UIData;
 @synthesize theWindow;
 @synthesize tool;
 @synthesize preferenceController;
+@synthesize variablesWindowController;
 @synthesize windowArray;
 //@synthesize last_return;
 
@@ -81,6 +83,30 @@ extern oma2UIData UIData;
     [preferenceController showWindow:self];
     [preferenceController fillInUIData];
 }
+
+- (IBAction)showVariablesWindow:(id)sender{
+    extern int numberNamedTempImages;
+    if(!variablesWindowController){
+        variablesWindowController = [[VariablesWindowController alloc] initWithWindowNibName:@"VariablesWindow"];
+    }
+    [variablesWindowController showWindow:self];
+    std::string variables("Defined Variables:\n");
+    variables = getVariablesString(variables);
+    variables = getTempImagesString(variables);
+
+    [variablesWindowController updateVariableList:variables.c_str()];
+}
+
+-(void) updateVariablesWindow{
+    if(variablesWindowController){
+        std::string variables("Defined Variables:\n");
+        variables = getVariablesString(variables);
+        variables = getTempImagesString(variables);
+
+        [variablesWindowController updateVariableList:variables.c_str()];
+    }
+}
+
 
 - (IBAction)openDocument:(id)sender{
     NSOpenPanel* openDlg = [NSOpenPanel openPanel];
@@ -616,6 +642,7 @@ extern oma2UIData UIData;
     // this next is not needed?
     //[[windowArray lastObject] showWindow:self];
 }
+
 
 -(void) eraseWindow:(int) n{
     if (n < 0) {            // erase everything
