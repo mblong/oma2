@@ -608,7 +608,10 @@ VARIABLES
 	save datfile_@4myvar
 	As with loops, the end of a variable can be tagged by adding a '\' For example,
 	save datfile_@my_var\_corrected
-	See also commands FLOAT and INTVARIABLE
+	See also commands FLOAT, INTVARIABLE and VARCLEAR
+
+VARCLEAR
+	Clears all user-defined variables.
 
 WARP subpix
 	Remaps an image coordinate system using bilinear geometric warping.

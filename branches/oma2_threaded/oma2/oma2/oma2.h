@@ -95,6 +95,7 @@ name of the units. Occupies trailer[5] to trailer[12] */
 
 #define MAX_VAR_LENGTH 32
 #define MAX_VAR 200
+#define NUM_COMMAND_RETURN_VARIABLES 10
 #define ESTRING_LENGTH 128
 #define MBUFLEN 10240     	/* number of bytes in macro buffer */
 #define VBUFLEN	1024		/* the storage for variable names in macros */

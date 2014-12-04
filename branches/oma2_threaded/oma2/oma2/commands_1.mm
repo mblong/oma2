@@ -503,7 +503,7 @@ int rectan_c(int n, char* args)
         user_variables[2].is_float = 0;
         user_variables[3].ivalue = UIData.iRect.lr.v;
         user_variables[3].is_float = 0;
-        
+        update_UI();
         return NO_ERR;
     }
     
@@ -1343,7 +1343,8 @@ int calc_cmd_c(int n, char* args)
 	
 	calc(substart,subend);
     free(bufferspecs);
-	return 0;
+    
+	return NO_ERR;
 }
 
 /* ********** */
@@ -1419,7 +1420,7 @@ int calc(point start,point end){
 	user_variables[2].is_float = 1;
 	user_variables[3].fvalue = ycom;
 	user_variables[3].is_float = 1;
-
+    update_UI();
     return 0;
 
 }
@@ -3067,7 +3068,7 @@ int exposure_c(int n,char* args){
     free(values);
     user_variables[0].fvalue = values[EXPOSURE];
     user_variables[0].is_float = 1;
-
+    update_UI();
     return NO_ERR;
 }
 /* ********** */
