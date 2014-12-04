@@ -94,6 +94,7 @@ int rmacro(int, char*);
 int variab(int, char*);
 int vfloat(int, char*);
 int vint(int, char*);
+int varClear(int, char*);
 int getsettings(int,char*);
 int savsettings(int,char*);
 int defmac(int,char*);
