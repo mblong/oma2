@@ -50,6 +50,13 @@
 
 @property (copy) IBOutlet NSString *sometext;
 
+- (IBAction)highlightSaturatedCheckbox:(id)sender;
+@property (weak) IBOutlet NSButton *highlightSaturatedState;
+
+
+@property (weak) IBOutlet NSColorWell *highlightColor;
+- (IBAction)highlightColorSet:(id)sender;
+
 - (void) fillInUIData;
 
 

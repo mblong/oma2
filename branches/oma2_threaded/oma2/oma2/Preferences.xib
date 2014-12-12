@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferenceController">
             <connections>
                 <outlet property="getPrefix" destination="33" id="48"/>
                 <outlet property="getSuffix" destination="41" id="50"/>
+                <outlet property="highlightColor" destination="een-Lp-ji0" id="4nc-AF-vQR"/>
+                <outlet property="highlightSaturatedState" destination="2kh-Pw-9Bn" id="iNh-Gn-ekp"/>
                 <outlet property="macroPrefix" destination="35" id="52"/>
                 <outlet property="macroSuffix" destination="43" id="54"/>
                 <outlet property="paletteSelected" destination="ut4-KH-YWc" id="wvb-3a-o8q"/>
@@ -21,8 +23,8 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
-        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" wantsToBeColor="NO" animationBehavior="default" id="1">
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="35" y="200" width="723" height="542"/>
@@ -398,6 +400,25 @@ Gw
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
+                                        <colorWell id="een-Lp-ji0">
+                                            <rect key="frame" x="223" y="87" width="89" height="23"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="highlightColorSet:" target="-2" id="BGG-CX-BNH"/>
+                                            </connections>
+                                        </colorWell>
+                                        <button id="2kh-Pw-9Bn">
+                                            <rect key="frame" x="37" y="89" width="180" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Highlight Saturated Areas" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="WQQ-bS-09y">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="highlightSaturatedCheckbox:" target="-2" id="Pxz-80-Czf"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </view>
                             </tabViewItem>
@@ -410,6 +431,8 @@ Gw
             <connections>
                 <outlet property="getPrefix" destination="33" id="75"/>
                 <outlet property="getSuffix" destination="41" id="62"/>
+                <outlet property="highlightColor" destination="een-Lp-ji0" id="pSG-UT-AAD"/>
+                <outlet property="highlightSaturatedState" destination="2kh-Pw-9Bn" id="5WK-9C-GSk"/>
                 <outlet property="macroPrefix" destination="35" id="67"/>
                 <outlet property="macroSuffix" destination="43" id="64"/>
                 <outlet property="paletteSelected" destination="ut4-KH-YWc" id="osW-P1-XzE"/>
