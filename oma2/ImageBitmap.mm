@@ -34,7 +34,6 @@ int ImageBitmap::scale_pixval(DATAWORD val)
     return pval;
 }
 
-
 void ImageBitmap::operator=(Image im){
 	//Ptr ptr;
 	pdptr = &pixdata;
@@ -97,15 +96,27 @@ void ImageBitmap::operator=(Image im){
         
         for(i=0; i < ntrack/3; i++){
             for(j=0; j < nchan; j++){
+                int saturated = 0;
                 pindx = scale_pixval(*(im.data+k)*UIData.r_scale);
+                if(pindx == NCOLORS-1) saturated = 1;
                 *(pixdata+n++) = pindx;
                 *(intensity+m++) =pindx;
                 pindx = scale_pixval(*(pt_green+k)*UIData.g_scale);
+                if(pindx == NCOLORS-1) saturated = 1;
                 *(pixdata+n++) = pindx;
                 *(intensity+m++) =pindx;
                 pindx = scale_pixval(*(pt_blue+k++)*UIData.b_scale);
+                if(pindx == NCOLORS-1) saturated = 1;
                 *(pixdata+n++) = pindx;
                 *(intensity+m++) =pindx;
+                
+                if(saturated & UIData.highlightSaturated){
+                    *(pixdata+n-3)= UIData.highlightSaturatedRed;
+                    *(pixdata+n-2)= UIData.highlightSaturatedGreen;
+                    *(pixdata+n-1)= UIData.highlightSaturatedBlue;
+                    
+                }
+                
             }
         }
     } else {
@@ -114,9 +125,16 @@ void ImageBitmap::operator=(Image im){
         for(i=0; i < ntrack; i++){
             for(j=0; j < nchan; j++){
                 pindx = scale_pixval(*(im.data+k++));
-                *(pixdata+n++) = color[pindx][UIData.thepalette].red;
-                *(pixdata+n++) = color[pindx][UIData.thepalette].green;
-                *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
+                if(UIData.highlightSaturated && pindx == NCOLORS-1){
+                    *(pixdata+n++) = UIData.highlightSaturatedRed;;
+                    *(pixdata+n++) = UIData.highlightSaturatedGreen;
+                    *(pixdata+n++) = UIData.highlightSaturatedBlue;
+                    
+                } else{
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].red;
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].green;
+                    *(pixdata+n++) = color[pindx][UIData.thepalette].blue;
+                }
                 /*
                  // Could set alpha value to 0 or FF according to a threshold; used this to make icon
                  if (pindx < 10) {

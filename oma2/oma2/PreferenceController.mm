@@ -26,6 +26,9 @@ extern oma2UIData UIData;
 @synthesize transparencyValue;
 @synthesize  transparent;
 
+@synthesize  highlightSaturatedState;
+@synthesize  highlightColor;
+
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -107,10 +110,28 @@ extern oma2UIData UIData;
     
     [transparencyValue setStringValue:[NSString stringWithFormat:@"%.0f",100.*(1.-UIData.alphaValue)]];
     
+    [highlightSaturatedState setState:UIData.highlightSaturated];
+    [highlightColor setColor: [NSColor colorWithRed:UIData.highlightSaturatedRed/255.
+                                              green:UIData.highlightSaturatedGreen/255.
+                                              blue:UIData.highlightSaturatedBlue/255. alpha:1.0]];
+    
 }
 
 -(BOOL) acceptsFirstResponder{
     return YES;
+}
+
+- (IBAction)highlightSaturatedCheckbox:(id)sender {
+    if([highlightSaturatedState state] )
+        UIData.highlightSaturated = 1;
+    else
+        UIData.highlightSaturated = 0;
+}
+
+- (IBAction)highlightColorSet:(id)sender {
+    UIData.highlightSaturatedRed = 255*[[highlightColor color] redComponent];
+    UIData.highlightSaturatedGreen = 255*[[highlightColor color] greenComponent];
+    UIData.highlightSaturatedBlue = 255*[[highlightColor color] blueComponent];
 }
 
 @end

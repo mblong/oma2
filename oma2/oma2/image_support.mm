@@ -70,11 +70,17 @@ void setUpUIData(){
         }
     }
     // end of palette setup
+    
     UIData.r_scale = 1.;
     UIData.g_scale = 1.;
     UIData.b_scale = 1.;
     
     UIData.alphaValue = 0.5;
+    
+    UIData.highlightSaturated = 0;
+    UIData.highlightSaturatedRed = 255;
+    UIData.highlightSaturatedGreen = 255;
+    UIData.highlightSaturatedBlue = 0;
 }
 
 int two_to_four(DATAWORD* dpt, int num, TWOBYTE scale)
@@ -368,7 +374,7 @@ int loadprefs(char* name)
     if (strcmp((const char*)header, SETTINGS_VERSION_1) == 0) {
         // read oma2 settings
         int nbytes = sizeof(oma2UIData);
-        read(fd,(char*)UIData.saveprefixbuf,nbytes-HEADLEN);    // 
+        long actualCount = read(fd,(char*)UIData.saveprefixbuf,nbytes-HEADLEN);
         close(fd);
         int* thespecs = iBuffer.getspecs();
         thespecs[ROWS] = UIData.rows;
@@ -383,6 +389,15 @@ int loadprefs(char* name)
         //iBuffer.getmaxx(PRINT_RESULT);
 
         free(thespecs);
+        long missingBytes = nbytes - HEADLEN - actualCount;
+        if(missingBytes >= 4*sizeof(int)){
+            // set these default values
+            UIData.highlightSaturated = 0;
+            UIData.highlightSaturatedRed = 255;
+            UIData.highlightSaturatedGreen = 255;
+            UIData.highlightSaturatedBlue = 0;
+            missingBytes -= 4*sizeof(int);
+        }
         return NO_ERR;
     }
 	

@@ -213,6 +213,15 @@ typedef struct {
     float alphaValue;
     
     
+    // Note -- these values were added later and change the size of preferences
+    // Older versions of the preferences won't have anything for these values
+    // Need to account for this in the loadprefs() function of image_support.mm
+    
+    int highlightSaturated;
+    
+    int highlightSaturatedRed;
+    int highlightSaturatedGreen;
+    int highlightSaturatedBlue;
     
     /*
 	settings[4] = detector;
