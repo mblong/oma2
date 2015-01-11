@@ -85,6 +85,7 @@ int hdrAccumulate_c(int,char*);
 int hdrAcadd_c(int,char*);
 int hdrAcdelete_c(int,char*);
 int hdrAcget_c(int,char*);
+int hdrNumget_c(int,char*);
 
 
 int invert_c(int,char*);
@@ -129,6 +130,7 @@ int rgb2grey_c(int,char*);
 int rgb2red_c(int,char*);
 int rgb2green_c(int,char*);
 int rgb2blue_c(int,char*);
+int rgb2color_c(int,char*);
 int rotate_c(int,char*);
 int readbad_c(int,char*);
 int ramp_c(int,char*);
