@@ -103,6 +103,7 @@ ComDef   commands[] =    {
     {{"HDRACADD       "},	hdrAcadd_c},
     {{"HDRACDELETE    "},	hdrAcdelete_c},
     {{"HDRACGET       "},	hdrAcget_c},
+    {{"HDRNUMGET      "},	hdrNumget_c},
     
     {{"IF             "},	ifcmnd},
     {{"IFNOT          "},	ifnotcmnd},
@@ -153,6 +154,7 @@ ComDef   commands[] =    {
     {{"RGB2RED        "},	rgb2red_c},
     {{"RGB2GREEN      "},	rgb2green_c},
     {{"RGB2BLUE       "},	rgb2blue_c},
+    {{"RGB2COLOR      "},	rgb2color_c},
     {{"ROWS           "},	rows_c},
     {{"ROTATE         "},	rotate_c},
     {{"READBADPIX     "},	readbad_c},

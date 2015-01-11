@@ -13,7 +13,9 @@ Image  iTempImages[NUM_TEMP_IMAGES];  // temporary in-memmory images
 Image   accumulator;          // the accumulator image
 Image   hdrAccumulator;     // the HDR accumulator
 Image   hdrCounter;         // the HDR counter
-DATAWORD hdrCutoff;         // the HDR saturation value
+DATAWORD hdrCutoffMax;         // the HDR saturation value
+DATAWORD hdrCutoffMin;       // the HDR min value for inclusion in the image
+float   hdrMaxScale;        // this is the biggest scale factor -- use to determine largest value in an hdr image
 int      hdrFrames=0;       // HDR frame counter
 
 int numberNamedTempImages = 0;

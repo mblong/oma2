@@ -11,7 +11,9 @@ extern Image  iTempImages[];
 extern Image   accumulator;   // the accumulator
 extern Image   hdrAccumulator;   // the HDR accumulator
 extern Image   hdrCounter;       // the HDR counter
-extern DATAWORD hdrCutoff;       // the HDR saturation value
+extern DATAWORD hdrCutoffMax;       // the HDR saturation value
+extern DATAWORD hdrCutoffMin;       // the HDR min value for inclusion in the image
+extern float   hdrMaxScale;        // this is the biggest scale factor -- use to determine largest value in an hdr image
 extern int      hdrFrames;     // HDR frame counter
 extern int numberNamedTempImages;
 extern Variable namedTempImages[];
@@ -677,6 +679,32 @@ int rgb2grey_c(int n,char* args){
     imBlue.rgb2color(2);
     iBuffer + imGreen;
     iBuffer + imBlue;
+    if(iBuffer.err()){
+        int err = iBuffer.err();
+        beep();
+        printf("Error: %d.\n",err);
+        iBuffer.errclear();
+        return err;
+    }
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
+
+/*
+ RGB2COLOR colorNumber
+ Get the red, green, or blue channel of the current color image for colorNumber = 1, 2, or 3.
+ */
+
+int rgb2color_c(int n,char* args){
+    if(n < 1 || n > 3){
+        beep();
+        printf("Color numbers must be 1=red, 2=green, or 3=blue.\n");
+        return CMND_ERR;
+    }
+    iBuffer.rgb2color(n-1);
     if(iBuffer.err()){
         int err = iBuffer.err();
         beep();
@@ -1978,7 +2006,12 @@ int fecho_c (int n,char* args)
 {
 	if (*args != 0) {
 		if( fptr_local != NULL) {
-			fprintf(fptr_local, "%s\n",args);
+            if(strncmp(&args[strlen(args)-3],"...",3) == 0){
+                args[strlen(args)-3]=0;
+                fprintf(fptr_local, "%s",args);
+            }else {
+                fprintf(fptr_local, "%s\n",args);
+            }
 		} else {
 			beep();
 			printf("Error: No file open. File pointer is NULL\n");
@@ -2937,16 +2970,23 @@ int acget_c(int n,char* args){
 /* --------------------------- */
 
 /*
-HDRACCUMULATE cutoff
- Allocates and clears memory for an image accumulator buffer that can be used to sum
- individual images. The size of the accumulator is determined by the image size parameters
- when the accumulate command is first given.
+HDRACCUMULATE cutoffMax [cutoffMin]
+ Allocates and clears memory for an HDR accumulator that can be used to generate HDR
+ images from a series of different exposures. The cuttoffMax value should be less than
+ the saturation value for the detector. Values less than cutoffMin are not included; the default 
+ for cutoffMin is 0. The size of the accumulator is determined
+ by the image size parameters when the accumulate command is first given. Be sure
+ the exposure value for the image is set (e.g., imported from a raw file or set using
+ the EXPOSURE command).
  */
 
 int hdrAccumulate_c(int n,char* args)
 {
-    hdrCutoff = n;
+    hdrCutoffMax = n;
+    hdrCutoffMin = 0;
+    sscanf(args,"%f %f",&hdrCutoffMax,&hdrCutoffMin);
     hdrFrames = 0;
+    hdrMaxScale = 1.;
     hdrAccumulator.free();
     hdrCounter.free();
     int* specs = iBuffer.getspecs();
@@ -3011,11 +3051,14 @@ int hdrAcadd_c(int n,char* args)
     }
     float normalize = values[EXPOSURE]/firstExposure;
     printf("%f\n",normalize);
+    if (1./normalize > hdrMaxScale) {
+        hdrMaxScale = 1./normalize;
+    }
     hdrFrames++;
     for( int row=0; row < specs[ROWS]; row++){
         for( int col=0; col < specs[COLS]; col++){
             DATAWORD val = iBuffer.getpix(row,col);
-            if (val < hdrCutoff) {
+            if (val < hdrCutoffMax && val >= hdrCutoffMin) {
                 hdrAccumulator.setpix(row, col, hdrAccumulator.getpix(row,col)+val/normalize);
                 hdrCounter.setpix(row, col, hdrCounter.getpix(row,col)+1);
             }
@@ -3045,11 +3088,28 @@ int hdrAcget_c(int n,char* args){
     
     for( int row=0; row < specs[ROWS]; row++){
         for( int col=0; col < specs[COLS]; col++){
-            iBuffer.setpix(row, col, hdrAccumulator.getpix(row,col)/hdrCounter.getpix(row,col));
-            
+            if(hdrCounter.getpix(row,col) > 0)  // check in case there are no images contributing at this pixel
+                iBuffer.setpix(row, col, hdrAccumulator.getpix(row,col)/hdrCounter.getpix(row,col));
+            else
+                // if counter is zero, assume we're saturated
+                iBuffer.setpix(row, col,hdrCutoffMax*hdrMaxScale);
         }
     }
     free(specs);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return iBuffer.err();
+}
+
+int hdrNumget_c(int n,char* args){
+    if (hdrCounter.isEmpty()) {
+        beep();
+        printf("HDR Accumulator has not been initialized.\n");
+        return CMND_ERR;
+    }
+    iBuffer.free();
+    iBuffer << hdrCounter;
+    
     iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return iBuffer.err();
@@ -3065,9 +3125,10 @@ int exposure_c(int n,char* args){
     } else {
         printf("Exposure: %f\n",values[EXPOSURE]);
     }
-    free(values);
+    
     user_variables[0].fvalue = values[EXPOSURE];
     user_variables[0].is_float = 1;
+    free(values);
     update_UI();
     return NO_ERR;
 }
