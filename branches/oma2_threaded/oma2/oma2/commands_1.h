@@ -53,6 +53,7 @@ int delay_c(int,char*);
 int dx_c(int n,char* args);
 int dy_c(int n,char* args);
 int doc2rgb_c(int n, char* args);
+int doc2color_c(int n, char* args);
 int divRGB_c(int,char*);
 int disp2rgb_c(int,char*);
 
