@@ -3691,6 +3691,74 @@ int doc2rgb_c(int n, char* args){
     update_UI();
     return NO_ERR;
 }
+/* ********** */
+
+/*
+ DOC2COLOR c1 c2 c3 c4 c5
+ Treat the image in the current image buffer as a raw document
+ (e.g., output from the dcraw routine with options -d or -D selected)
+ and convert it to an R, G, or B image. This is assumed to have a 2 x 2 color matrix
+ of R G B values in a Bayer pattern.
+ c1 - c4 have values 0, 1 or 2, corresponding to red, green, and blue. For example if Bayer Matrix is
+ G B
+ R G
+ c1 - c4 should be 1 2 0 1
+ c5 is 0, 1, or 2 for conversion to red, green, or blue
+ Pixels associated with non-selected colors have a value of 0. Doing a BLOCK 2 2 command after this command will remove the zeros. 
+Blocking 2 by 2 on the green channel will sum the two green pixels.
+ 
+ Appropriate values depend on the specific camera. (See the output from the GETRGB command.)
+ */
+
+int doc2color_c(int n, char* args){
+    
+    int bayer[2][2] = {{ 0 }};
+    int color;
+    
+    int narg = sscanf(args,"%d %d %d %d %d",&bayer[0][0],&bayer[0][1],&bayer[1][0],&bayer[1][1],&color);
+    if(narg != 5){
+        beep();
+        printf("5 arguments needed. E.g., 1 2 0 1 1 for GBRG pattern, zero all but G\n");
+        return CMND_ERR;
+    }
+    
+    int row,col;
+    
+    Image newim(iBuffer.height(),iBuffer.width());    // allocates space for new image
+    newim.copyABD(iBuffer);     // same size
+    
+    for (row=0; row < iBuffer.height(); row++) {
+        for (col=0; col < iBuffer.width(); col++){
+            switch (bayer[row&1][col&1]){
+                case 0:		// red
+                    if(color == 0)
+                        newim.setpix(row,col,iBuffer.getpix(row,col));
+                    else
+                        newim.setpix(row,col,0);
+                    break;
+                case 1:		// green
+                    if(color == 1)
+                        newim.setpix(row,col,iBuffer.getpix(row,col));
+                    else
+                        newim.setpix(row,col,0);
+                    break;
+                case 2:		// blue
+                    if(color == 2)
+                        newim.setpix(row,col,iBuffer.getpix(row,col));
+                    else
+                        newim.setpix(row,col,0);
+                    break;
+            }
+        }
+        //if(header[NCHAN]&1) datp++;	// there may be an odd number of columns
+    }
+    
+    iBuffer.free();     // release the old data
+    iBuffer = newim;   // this is the new data
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
 
 /* ********** */
 

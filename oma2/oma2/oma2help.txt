@@ -195,6 +195,13 @@ DOC2RGB c1 c2 c3 c4
 	c1 - c4 should be 1 2 0 1
 	Appropriate values depend on the specific camera. (See the output from the GET command when reading raw files.)
 
+DOC2COLOR c1 c2 c3 c4 c5
+	Treat the image in the current image buffer as a raw document (e.g., output from the dcraw routine with options -d or -D selected) and convert it to an R, G, or B image. This is assumed to have a 2 x 2 color matrix of R G B values in a Bayer pattern. c1 - c4 have values 0, 1 or 2, corresponding to red, green, and blue. For example if Bayer Matrix is
+	G B
+	R G
+	c1 - c4 should be 1 2 0 1
+	c5 is 0, 1, or 2 for conversion to red, green, or blue. Pixels associated with non-selected colors have a value of 0. Doing a BLOCK 2 2 command after this command will remove the zeros. Blocking 2 by 2 on the green channel will sum the two green pixels.
+
 DISP2RGB
  Convert the display image to rgb. Use this to turn a false color intensity map into an RGB image or to modify a color image so the values follow the display settings. Returned values are integers between 0 - 255.
 

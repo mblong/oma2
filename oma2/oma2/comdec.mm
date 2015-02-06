@@ -63,6 +63,7 @@ ComDef   commands[] =    {
     {{"DX             "},	dx_c},
     {{"DY             "},	dy_c},
     {{"DOC2RGB        "},	doc2rgb_c},
+    {{"DOC2COLOR      "},	doc2color_c},
     {{"DISP2RGB       "},	disp2rgb_c},
     
     {{"ERASE          "},	erase},
