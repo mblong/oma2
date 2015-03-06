@@ -533,8 +533,8 @@ SATIFFSCALED min max <filename>
 SERCLOSE
 	Closes the serial port opened with the last "SERIAL device_name" command. This can be used if you need to talk to more than one serial device -- open device 1, send commands, close the serial port, open device 2, send commands, and so forth. Available in oma2cam.
 
-SERIAL device_name (or character_string)
-	Provides a simple way of sending text strings to a serial device. For example, a KeySpan USB to serial converter can be used to control a variety stepping motor controllers, spectrographs, etc. The device name should be something like "/dev/tty.KeySpan1" Note that upper/lower case matters on these specifications. Look in the "/dev" directory to find the name of your specific hardware. After opening the device with the first SERIAL command, subsequent SERIAL commands will send across the specified character_string, followed by a <CR>. This uses standard POSIX calls.  Available in oma2cam.
+SERIAL device_name (or character_string) [baudRate Timeout]
+	Provides a simple way of sending text strings to a serial device. For example, a KeySpan USB to serial converter can be used to control a variety stepping motor controllers, spectrographs, arduinos etc. The device name should be something like "/dev/tty.KeySpan1" Note that upper/lower case matters on these specifications. Look in the "/dev" directory to find the name of your specific hardware. When opening a device, the baud rate and timeout value (in thenths of seconds) can be specified. Defaults are baud = 9600 and timeout = 0. After opening the device with the first SERIAL command, subsequent SERIAL commands will send across the specified character_string, followed by a <CR>. This uses standard POSIX calls.  Available in oma2cam.
 
 SIZE rows cols 
 	Set the number of rows and columns of the current image and zero the data.
