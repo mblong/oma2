@@ -10,10 +10,11 @@
  * Taken from: http://credentiality2.blogspot.com/2008/07/linux-libgphoto2-image-capture-from.html 
  */
 
-#ifdef GPHOTO
 
 #include "oma2.h"
 #include "UI.h"
+
+#ifdef GPHOTO
 
 
 #include <unistd.h>

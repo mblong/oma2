@@ -89,6 +89,7 @@ ComDef   commands[] =    {
     {{"GETFILENAMES   "},	getFileNames_c},
     {{"GETSETTINGS    "},	getsettings},
     {{"GETFUNCTION    "},	getfun_c},
+    {{"GETBINARYFILE  "},	getbin_c},
     {{"GMACRO         "},	gmacro_c},
     {{"GAUSSIAN       "},	gaussian_c},
     {{"GTEMPIMAGE     "},	gtemp_c},
