@@ -81,6 +81,7 @@ int gsmooth_c(int, char*);
 int gtemp_c(int, char*);
 int getmatch_c(int, char*);
 int gnoise_c(int, char*);
+int getbin_c(int,char*);
 
 int hdrAccumulate_c(int,char*);
 int hdrAcadd_c(int,char*);

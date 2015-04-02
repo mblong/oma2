@@ -289,6 +289,9 @@ GETFUNCTION n filename
 	x values are ordered smallest to largest
 	y = f(x) is single valued
 
+GETBINARYFILE <filename> rows columns headerBytes bytesPerDataPoint swapBytesFlag [unsignedFlag]
+	Read in a binary file with the specified parameters. If bytesPerDataPoint is -sizeof(float), the binary data are treated as float. Other reasonable values would be 1, 2, or 4.
+
 GMACRO <filename>
 	Loads the contents of the specified file into the current macro buffer.
 
