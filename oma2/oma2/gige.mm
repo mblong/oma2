@@ -264,6 +264,7 @@ bool CameraStartContinuous(tCamera* Camera, int exptime, int frate, int gain, in
 {
     unsigned long FrameSize = 0;
     char pixelformat[256];
+    tPvErr err;
     
     // Auto adjust the packet size to max supported by the network, up to a max of 8228.
     // NOTE: In Vista, if the packet size on the network card is set lower than 8228,
@@ -392,8 +393,8 @@ bool CameraStartContinuous(tCamera* Camera, int exptime, int frate, int gain, in
     if (trigger == FIXED) {
         
         // set the frame rate value
-        if(PvAttrFloat32Set(Camera->Handle, "FrameRate",frate)){
-            printf("Couldn't set frame rate.\n");
+        if((err = PvAttrFloat32Set(Camera->Handle, "FrameRate",frate))){
+            printf("Couldn't set frame rate. Return %d\n",err);
             free(specs);
             return false;
         }
@@ -477,6 +478,7 @@ bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain,
     unsigned long strcap = 0;
     unsigned long strbyte = 0;
     char pixelformat[256];
+    tPvErr err;
     
     // Auto adjust the packet size to max supported by the network, up to a max of 8228.
     // NOTE: In Vista, if the packet size on the network card is set lower than 8228,
@@ -653,8 +655,8 @@ bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain,
     if (*trigger == FIXED) {
         
         // set the frame rate value
-        if(PvAttrFloat32Set(Camera->Handle, "FrameRate",*frate)){
-            printf("Couldn't set frame rate.\n");
+        if((err = PvAttrFloat32Set(Camera->Handle, "FrameRate",*frate))){
+            printf("Couldn't set frame rate. Return %d\n",err);
             free(specs);
             return false;
         }
@@ -1299,6 +1301,92 @@ int gige(int n, char* args)
             
             return -1;
         } 
+    }
+    
+    if ( strncmp(args,"sfmemory",3) == 0){
+        
+        time (&rawtime);
+        timeinfo = localtime (&rawtime);
+        int sFrames = 1;
+        
+        //sscanf(args,"%s %d",txt, &sFrames);
+        sscanf(args,"%s %d",txt, &sFrames);
+        if( sFrames < 1) sFrames = 1;
+        iBuffer.extraSize = sFrames;                // extra space will have time stamp
+        iBuffer.extra = new float[sFrames];
+        iBuffer.values[EXPOSURE] = exptime/1e6;
+        
+        // put everything in a single image
+        // make space for big image
+        DATAWORD* buffer = new DATAWORD[iBuffer.rows()*iBuffer.cols()*sFrames];
+        if(buffer == 0){
+            CameraUnsetup(&Camera, 1);
+            return MEM_ERR;
+        }
+        DATAWORD* next = buffer;
+        // continuous acquisition mode
+        // use frame rate for internal trigger
+        // should work for external trigger as well
+        //if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
+        if(CameraStartContinuous(&Camera,exptime,frameRate,gain,trigger,triggerDelay,bx,by)){
+            PvCommandRun(Camera.Handle,"TimeStampReset");
+            PvAttrUint32Get(Camera.Handle,"TimeStampFrequency",&Tfreq);
+            for(int i=0; i< sFrames; i++){
+                // snap now
+                CameraSnapOneFrame(&Camera,next);
+                next += iBuffer.rows()*iBuffer.cols();
+                if(realTimeDisplay) display(0,(char*)"GigE");
+                //dquartz(0,0);
+                
+                PvCommandRun(Camera.Handle,"TimeStampValueLatch");
+                PvAttrUint32Get(Camera.Handle,"TimeStampValueHi",&T_hi);
+                PvAttrUint32Get(Camera.Handle,"TimeStampValueLo",&T_lo);
+                
+                tempo = (T_hi*4294967296. + T_lo) / Tfreq;
+                //float fratec = 1./(tempo - tempo_pr);
+                tempo_pr = tempo;
+                /*
+                if (trigger == FIXED){
+                    //fprintf(timeFile,"%2d:%2d:%.4f\t(Frame %d/%d - %d fps - exp. %d us)\n",
+                            //timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, i+1, sFrames, frameRate, exptime);
+                } else if (trigger == SYNCIN){
+                    //fprintf(timeFile,"%2d:%2d:%.4f\t(Frame %d/%d - %.1f fps - exp. %d us)\n",
+                            //timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec+tempo, i+1, sFrames, fratec, exptime);
+                }
+                 */
+                iBuffer.extra[i] = timeinfo->tm_sec+tempo;
+                
+                //checkevents();
+                
+            }
+            // stop the streaming
+            PvCommandRun(Camera.Handle,"AcquisitionStop");
+            PvCaptureEnd(Camera.Handle);
+            CameraUnsetup(&Camera, 1);
+            
+            if(iBuffer.data != NULL){
+                delete[] iBuffer.data;
+                iBuffer.data = buffer;
+                iBuffer.specs[ROWS] *= sFrames;
+            }
+
+            
+            iBuffer.getmaxx(PRINT_RESULT);
+            UIData.newwindowflag = save_new_status;
+            
+            
+            return 0;
+            
+        } else
+            printf("Failed to start continuous streaming\n");
+        
+        
+        
+        // unsetup the camera
+        CameraUnsetup(&Camera, 1);
+        
+        return -1;
+        
     }
 
     if ( strncmp(args,"sframes",3) == 0){
