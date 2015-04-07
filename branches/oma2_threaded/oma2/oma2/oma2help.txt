@@ -326,6 +326,7 @@ GIGE command
 	EXTernal (set external triggering)
 	INTernal (set internal triggering)
 	DELay <triggerDelay> (set the trigger delay [microseconds])
+	SFMemory <numFrames> (save the specified number of frames to one big image in memory. Uses specified frame RATE. Saves time stamp seconds to extra.)
 	SFRames <filename> <numFrames> (save the specified number of frames using the specified filename. Uses FREERUN mode. Also saves a text file showing frame times.)
 	STAtus (print camera settings)
 	FIXbad <flag> (set flag to 1 to clear bad pixels before display or save --> must use FINDBAD first)
