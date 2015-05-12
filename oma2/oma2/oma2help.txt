@@ -305,7 +305,7 @@ GRADIENT
 	Find the magnitude of the gradient of the data in the current image buffer. Use two pixels on either side of current pixel for gradient.
 
 GSMOOTH dx [dy]
-	Gaussian Smoothing of the data. dx and dy are the smoothing size parameters. If dy is omitted, it is taken as dx. dx and dy must be odd. sigma_x = (dx-1)/3.5
+	Gaussian Smoothing of the data. dx and dy are the smoothing size parameters. If dy is omitted, it is taken as dx. dx and dy must be odd. 1/e2 weighting at (dx-1)/2 and (dy-1)/2
 
 GTEMPIMAGE name
 	Get temporary image that has been previously saved using STEMP.

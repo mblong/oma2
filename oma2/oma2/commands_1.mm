@@ -1011,7 +1011,7 @@ int smooth_c(int n,char* args){
 int gsmooth_c(int n, char* args)
 //  Gaussian Smoothing of the Data
 // GSMOOT NX [NY]
-// sigma_x = (NX-1)/3.5
+// 1/e2 weight at  = (NX-1)/2 pixels from center
 {
 	
 	int dx,dy,dxs,dys,i,j,m,nt,nc;
@@ -1046,11 +1046,11 @@ int gsmooth_c(int n, char* args)
 	norm = 0;
 	dx = (dx-1)/2;
 	dxs = -dx;
-	sigx = dx/1.75;
+	sigx = dx/2;
     
 	dy = (dy-1)/2;
 	dys = -dy;
-	sigy = dy/1.75;
+	sigy = dy/2;
 	printf("Sigx=%5.2f, Sigy=%5.2f, ",sigx,sigy);
 	printf("pixels=%d x %d\n",dx*2+1,dy*2+1);
 	
