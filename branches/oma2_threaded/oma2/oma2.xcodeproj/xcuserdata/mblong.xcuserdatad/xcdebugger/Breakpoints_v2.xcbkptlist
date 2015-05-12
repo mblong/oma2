@@ -485,7 +485,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "581"
             endingLineNumber = "581"
-            landmarkName = "list_c(int n, char* args)"
+            landmarkName = "frame_c(int n, char* args)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -500,7 +500,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "742"
-            endingLineNumber = "742">
+            endingLineNumber = "742"
+            landmarkName = "list_c(int n, char* args)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -620,6 +622,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[DataWindowController placeImage:]"
                   moduleName = "oma2"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mblong/oma2_trunk/oma2/oma2/DataWindowController.mm"
                   timestampString = "408314556.464804"
                   startingColumnNumber = "9223372036854775807"
@@ -634,6 +637,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[DataWindowController placeImage:]"
                   moduleName = "oma2"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mblong/oma2_trunk/oma2/oma2/DataWindowController.mm"
                   timestampString = "408314556.465033"
                   startingColumnNumber = "9223372036854775807"
@@ -648,6 +652,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[DataWindowController placeImage:]"
                   moduleName = "oma2"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mblong/oma2_trunk/oma2/oma2/DataWindowController.mm"
                   timestampString = "408314556.465257"
                   startingColumnNumber = "9223372036854775807"
@@ -782,7 +787,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "387"
-            endingLineNumber = "387">
+            endingLineNumber = "387"
+            landmarkName = "getbin_c(int n,char* args)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -845,7 +852,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3396"
             endingLineNumber = "3396"
-            landmarkName = "closefile_c(int n,char* args)"
+            landmarkName = "integrateFill(int n,char* args, int integratefill )"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -861,7 +868,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3426"
             endingLineNumber = "3426"
-            landmarkName = "openfile_c(int n,char* args)"
+            landmarkName = "integrateFill(int n,char* args, int integratefill )"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -877,7 +884,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2571"
             endingLineNumber = "2571"
-            landmarkName = "writebad_c(int n, char* args)"
+            landmarkName = "findbad_c(int n, char* args)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -892,7 +899,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3554"
-            endingLineNumber = "3554">
+            endingLineNumber = "3554"
+            landmarkName = "closefile_c(int n,char* args)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -907,7 +916,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3275"
             endingLineNumber = "3275"
-            landmarkName = "integrateFill(int n,char* args, int integratefill )"
+            landmarkName = "exposure_c(int n,char* args)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -923,7 +932,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3975"
             endingLineNumber = "3975"
-            landmarkName = "extra_c(int n,char* args)"
+            landmarkName = "seq2hdr_c(int n,char* args)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -938,7 +947,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3961"
-            endingLineNumber = "3961">
+            endingLineNumber = "3961"
+            landmarkName = "seq2hdr_c(int n,char* args)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
