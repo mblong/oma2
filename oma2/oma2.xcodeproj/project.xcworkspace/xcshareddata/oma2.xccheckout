@@ -11,9 +11,7 @@
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>e068d6cc-edb8-4e28-8308-4603fcd97593</key>
-		<string>http://guilford.eng.yale.edu:9880/oma2</string>
-		<key>e068d6cc-edb8-4e28-8308-4603fcd97593++5962</key>
-		<string>http://guilford.eng.yale.edu:9880/oma2/branches/oma2_threaded</string>
+		<string>svn://guilford.eng.yale.edu/oma2</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>branches/oma2_threaded/oma2/oma2.xcodeproj</string>
@@ -21,13 +19,6 @@
 	<dict>
 		<key>e068d6cc-edb8-4e28-8308-4603fcd97593</key>
 		<string>../../../../..</string>
-		<key>e068d6cc-edb8-4e28-8308-4603fcd97593++5962</key>
-		<string>../../../../../../oma2_trunk</string>
-	</dict>
-	<key>IDESourceControlProjectRepositoryRootDictionary</key>
-	<dict>
-		<key>e068d6cc-edb8-4e28-8308-4603fcd97593++5962</key>
-		<string>http://guilford.eng.yale.edu:9880/oma2</string>
 	</dict>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
@@ -36,26 +27,12 @@
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
-			<key>IDESourceControlRepositoryBranchesRelativeLocationKey</key>
-			<string>branches</string>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.subversion</string>
-			<key>IDESourceControlRepositoryTagsRelativeLocationKey</key>
-			<string>tags</string>
-			<key>IDESourceControlRepositoryTrunkRelativeLocationKey</key>
-			<string>trunk</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>e068d6cc-edb8-4e28-8308-4603fcd97593++5962</string>
-			<key>IDESourceControlWCCName</key>
-			<string>oma2_trunk</string>
-		</dict>
-		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.subversion</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>e068d6cc-edb8-4e28-8308-4603fcd97593</string>
 			<key>IDESourceControlWCCName</key>
-			<string>oma2Threaded</string>
+			<string>oma2</string>
 		</dict>
 	</array>
 </dict>

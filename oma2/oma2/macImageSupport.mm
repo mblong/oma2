@@ -27,7 +27,7 @@ int readJpeg(char* filename,Image* im)
     int cols = im->specs[COLS] = (int)imageRep.pixelsWide;
     int rows = im->specs[ROWS] = (int)imageRep.pixelsHigh;
 
-    if(bytesPerPixel == 3){
+    if(bytesPerPixel >= 3){
         im->specs[IS_COLOR] = 1;
         im->specs[ROWS] *= 3;
     }
@@ -46,7 +46,7 @@ int readJpeg(char* filename,Image* im)
     for(int i=0; i< rows; i++){
         for(int j=0; j< cols;j++){
             *pt++ = *(bytes+i*bytesPerRow+j*bytesPerPixel);
-            if(bytesPerPixel == 3){
+            if(bytesPerPixel >= 3){
                 *pt_green++ = *(bytes+i*bytesPerRow+j*bytesPerPixel+1);
                 *pt_blue++ = *(bytes+i*bytesPerRow+j*bytesPerPixel+2);
             }
