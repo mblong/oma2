@@ -512,11 +512,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/image.mm"
-            timestampString = "423695610.274893"
+            timestampString = "456248717.992512"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "261"
-            endingLineNumber = "261"
+            startingLineNumber = "262"
+            endingLineNumber = "262"
             landmarkName = "Image::Image(char* filename, int kindOfName)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1061,6 +1061,22 @@
             startingLineNumber = "108"
             endingLineNumber = "108"
             landmarkName = "serial()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/macImageSupport.mm"
+            timestampString = "456248883.519179"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "readJpeg(char* filename,Image* im)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

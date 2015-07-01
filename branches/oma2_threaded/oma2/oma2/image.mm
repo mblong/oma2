@@ -113,6 +113,8 @@ Image::Image(char* filename, int kindOfName)
     }
 
     if (strncmp(&filename[strlen(filename)-4],".jpg",4) == 0 ||
+        strncmp(&filename[strlen(filename)-4],".png",4) == 0 ||
+        strncmp(&filename[strlen(filename)-4],".PNG",4) == 0 ||
         strncmp(&filename[strlen(filename)-4],".JPG",4) == 0) {
         if (kindOfName == LONG_NAME) {
             //error = read_jpeg(filename,-1,this);
