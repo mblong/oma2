@@ -597,9 +597,9 @@ int frame_c(int n, char* args)
                 im.setpix(i,j,value);
 			}else {
                 if(fraction)
-                    im.setpix(i,j,iBuffer.getpix(j+x0,i+y0));
+                    im.setpix(i,j,iBuffer.getpix(i+y0,j+x0));
                 else
-                    im.setpix(i,j,iBuffer.getpix((int)j+x0,(int)i+y0));
+                    im.setpix(i,j,iBuffer.getpix((int)i+y0,(int)j+x0));
 			}
 		}
 	}
