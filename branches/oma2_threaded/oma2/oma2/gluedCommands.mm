@@ -38,8 +38,9 @@ int	dhi = 75000;		/* the max number of tracks on the detector   */
 
 char	passflag = 0;		/* flag that, when set, passes unrecognised
                              commands to the controller */
-
-unsigned int     maxint = (1<<(DATABYTES*8-1))-4;		//	32764		// the max count
+#ifndef FLOAT_
+int     maxint = ~(1<<(DATABYTES*8-1));		//	32764		// the max count
+#endif
 DATAWORD	cmin = 0;		/* the color display parameters */
 DATAWORD	cmax = 1000;
 short	pixsiz = 1;		/* block pixel size */
@@ -406,13 +407,20 @@ int new_float_image(int nx, int ny)			// initialize a floating-point buffer of a
 int get_float_image()			// copy the current floating image into the image buffer
 {
     extern float *fdatpt;
-    int n,i,newsf;
-    float fmn,fmx;
+    int n;
     
-    
-    
-    
+
     if(fdatpt == 0) return(0);
+    
+#ifdef FLOAT_
+    for(n=0; n < npts; n++) {
+        *(datpt+n+doffset) = *(fdatpt+n);
+    }
+
+#else
+    
+    int i,newsf;
+    float fmn,fmx;
     
     fmn = *(fdatpt);
     fmx = *(fdatpt);
@@ -432,7 +440,7 @@ int get_float_image()			// copy the current floating image into the image buffer
         *(datpt+n+doffset) = *(fdatpt+n)/newsf;
     }
     trailer[SFACTR] = newsf;
-    
+#endif
     
     free(fdatpt);
     fdatpt = 0;

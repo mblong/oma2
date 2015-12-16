@@ -2601,37 +2601,37 @@ int findbad_c(int n, char* args){
         for(i=0; i< specs[ROWS]; i++){
             for(j = 0; j< specs[COLS]; j++) {
                 int usefulNeighbors = 0;
-                if( abs(iBuffer.getpix(i,j) - target) >= n ){ // we have a hot one
+                if( fabs(iBuffer.getpix(i,j) - target) >= n ){ // we have a hot one
                     hot_pix[num_hot] = i*specs[COLS] + j;
-                    if (abs(iBuffer.getpix(i-1,j-1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i-1,j-1) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 1;
                         usefulNeighbors++;
                     }
-                    if (abs(iBuffer.getpix(i-1,j) - target) < n) {
+                    if (fabs(iBuffer.getpix(i-1,j) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 2;
                         usefulNeighbors++;
                     }
-                    if (abs(iBuffer.getpix(i-1,j+1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i-1,j+1) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 3;
                         usefulNeighbors++;
                     }
-                    if (abs(iBuffer.getpix(i,j-1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i,j-1) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 4;
                         usefulNeighbors++;
                     }
-                    if (abs(iBuffer.getpix(i,j+1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i,j+1) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 5;
                         usefulNeighbors++;
                     }
-                    if (abs(iBuffer.getpix(i+1,j-1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i+1,j-1) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 6;
                         usefulNeighbors++;
                     }
-                    if (abs(iBuffer.getpix(i+1,j) - target) < n) {
+                    if (fabs(iBuffer.getpix(i+1,j) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 7;
                         usefulNeighbors++;
                     }
-                    if (abs(iBuffer.getpix(i+1,j+1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i+1,j+1) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 8;
                         usefulNeighbors++;
                     }
