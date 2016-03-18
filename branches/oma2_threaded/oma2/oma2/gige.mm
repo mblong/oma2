@@ -1177,6 +1177,9 @@ int gige(int n, char* args)
         PvAttrEnumGet(Camera.Handle,"SensorType",pixelformat,sizeof(pixelformat),NULL);
         sprintf(buffer,"Sensor type: %s\n",pixelformat);
         printf("\t%s",buffer);
+        PvAttrEnumGet(Camera.Handle,"WhitebalMode",pixelformat,sizeof(pixelformat),NULL);
+        sprintf(buffer,"White Balance: %s\n",pixelformat);
+        printf("\t%s",buffer);
         PvAttrUint32Get(Camera.Handle,"SensorWidth",&pixwidth);
         PvAttrUint32Get(Camera.Handle,"SensorHeight",&pixheight);
         printf("\tSensor dimension: %d x %d pixels \n",pixwidth,pixheight);
