@@ -965,6 +965,9 @@ int gige(int n, char* args)
     static char savestr[256];
     unsigned long pixwidth = 0;
     unsigned long pixheight = 0;
+    unsigned long redBalance = 0;
+    unsigned long blueBalance = 0;
+    
     
     double tempo_pr = 0;
     unsigned long Tfreq;
@@ -1180,6 +1183,10 @@ int gige(int n, char* args)
         PvAttrEnumGet(Camera.Handle,"WhitebalMode",pixelformat,sizeof(pixelformat),NULL);
         sprintf(buffer,"White Balance: %s\n",pixelformat);
         printf("\t%s",buffer);
+        PvAttrUint32Get(Camera.Handle,"WhitebalValueRed",&redBalance);
+        PvAttrUint32Get(Camera.Handle,"WhitebalValueBlue",&blueBalance);
+        printf("\tRed Balance: %d%%\n",redBalance);
+        printf("\tBlue Balance: %d%%\n",blueBalance);
         PvAttrUint32Get(Camera.Handle,"SensorWidth",&pixwidth);
         PvAttrUint32Get(Camera.Handle,"SensorHeight",&pixheight);
         printf("\tSensor dimension: %d x %d pixels \n",pixwidth,pixheight);
