@@ -1158,6 +1158,24 @@ int gige(int n, char* args)
         printf(" Trigger delay set to %d us. \n",triggerDelay);
         return NO_ERR;
     }
+    else if ( strncmp(args,"red",3) == 0){
+        sscanf(args,"%s %ld",txt, &redBalance);
+        if(PvAttrUint32Set(Camera.Handle, "WhitebalValueRed", redBalance)){
+            printf("Couldn't set red balance.\n");
+            return -1;
+        }
+        printf(" Red balance set to %ld%%. \n",redBalance);
+        return NO_ERR;
+    }
+    else if ( strncmp(args,"blue",3) == 0){
+        sscanf(args,"%s %ld",txt, &blueBalance);
+        if(PvAttrUint32Set(Camera.Handle, "WhitebalValueBlue", blueBalance)){
+            printf("Couldn't set blue balance.\n");
+            return -1;
+        }
+        printf(" Blue balance set to %ld%%. \n",blueBalance);
+        return NO_ERR;
+    }
     /*
     // enable image saving 
     else if ( strncmp(args,"save",3) == 0){
