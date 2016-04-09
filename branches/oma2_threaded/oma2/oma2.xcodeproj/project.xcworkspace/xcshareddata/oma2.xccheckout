@@ -10,27 +10,34 @@
 	<string>oma2</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>e068d6cc-edb8-4e28-8308-4603fcd97593</key>
-		<string>svn://guilford.eng.yale.edu/oma2</string>
+		<key>e068d6cc-edb8-4e28-8308-4603fcd97593++5962</key>
+		<string>svn://guilford.eng.yale.edu/oma2/branches/oma2_threaded</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>branches/oma2_threaded/oma2/oma2.xcodeproj</string>
+	<string>oma2/oma2.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>e068d6cc-edb8-4e28-8308-4603fcd97593</key>
-		<string>../../../../..</string>
+		<key>e068d6cc-edb8-4e28-8308-4603fcd97593++5962</key>
+		<string>../../..</string>
 	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>e068d6cc-edb8-4e28-8308-4603fcd97593++5962</key>
+		<string>svn://guilford.eng.yale.edu/oma2</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>svn://guilford.eng.yale.edu/oma2/branches/oma2_threaded/oma2/oma2.xcodeproj</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>e068d6cc-edb8-4e28-8308-4603fcd97593</string>
+	<string>e068d6cc-edb8-4e28-8308-4603fcd97593++5962</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.subversion</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>e068d6cc-edb8-4e28-8308-4603fcd97593</string>
+			<string>e068d6cc-edb8-4e28-8308-4603fcd97593++5962</string>
 			<key>IDESourceControlWCCName</key>
 			<string>oma2</string>
 		</dict>

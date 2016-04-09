@@ -151,6 +151,7 @@ int subfile_c(int,char*);
 int subtmp_c(int, char*);
 int savefile_c(int,char*);
 int satiff_c(int,char*);
+int saveJpg_c(int,char*);
 int satiffscaled_c(int,char*);
 int sysCommand_c(int,char*);
 int seq2hdr_c(int,char*);
