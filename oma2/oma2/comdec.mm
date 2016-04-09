@@ -170,6 +170,7 @@ ComDef   commands[] =    {
     {{"SAVSETTINGS    "},	savsettings},
     {{"SATIFF         "},	satiff_c},
     {{"SATIFFSCALED   "},	satiffscaled_c},
+    {{"SAVEJPG        "},	saveJpg_c},
     {{"SIZE           "},	size_c},
     {{"SINGRID        "},	sinGrid_c},
     {{"STEMPIMAGE     "},	stemp_c},

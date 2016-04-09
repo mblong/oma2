@@ -2175,6 +2175,23 @@ int fecho_c (int n,char* args)
 	return NO_ERR;
 }
 
+int saveJpg_c(int n, char* args){
+#ifdef MacOSX_UI
+    beep();
+    printf("Not implemented in oma2.\n");
+    return CMND_ERR;
+#endif
+#ifndef MacOSX_UI
+    char txt[CHPERLN];
+    int saveJpeg(char*);
+    sscanf(args,"%s",txt);
+    fullname(txt,SAVE_DATA_NO_SUFFIX);  // you should add the jpg suffix yourself
+    printf("Writing JPG to file: %s\n",txt);
+    return saveJpeg(txt);
+#endif
+    
+}
+
 //***************************************************
 //*** SATIFF - Convert image to 8bit and save as a
 //***          Greyscale TIFF file (uses LibTIFF)
@@ -2258,8 +2275,14 @@ int satiff_c(int n, char* args)
 	if (buf)
 		_TIFFfree(buf);
     free(specs);
+    return NO_ERR;
 #endif
-	return NO_ERR;
+#ifndef MacOSX_UI
+    beep();
+    printf("Not implemented in QtOMA.\n");
+    return CMND_ERR;
+#endif
+    
 }
 
 //***************************************************
@@ -2359,8 +2382,14 @@ int satiffscaled_c(int n, char* args)
 	if (buf)
 		_TIFFfree(buf);
     free(specs);
+    return NO_ERR;
 #endif
-	return NO_ERR;
+#ifndef MacOSX_UI
+    beep();
+    printf("Not implemented in QtOMA.\n");
+    return CMND_ERR;
+#endif
+    
 }
 
 
