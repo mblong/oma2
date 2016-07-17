@@ -5015,3 +5015,28 @@ int shotnoise_c(int n,char* args)
 
 /*----------------------------------------------------------------*/
 
+int demosaic_c(int n,char* args){
+    int redx = 0,redy = 0;
+    sscanf(args,"%d %d ",&redx,&redy);
+    printf("First red pixel is at %d %d",redx,redy);
+
+    int* bufferspecs = iBuffer.getspecs();
+    Image newIm(bufferspecs[ROWS]*3,bufferspecs[COLS]);
+    
+    if(newIm.err()){
+        return newIm.err();
+    }
+    newIm.copyABD(iBuffer);
+    bufferspecs[ROWS] *=3;
+    bufferspecs[IS_COLOR] = 1;
+    newIm.setspecs(bufferspecs);
+    newIm.demosaic(iBuffer, redx, redy);
+        
+    free(bufferspecs);  // release buffer copy
+    iBuffer.free();     // release the old data
+    iBuffer = newIm;   // this is the new data
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    
+    return NO_ERR;
+}

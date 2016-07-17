@@ -2,6 +2,7 @@
 #include "image_support.h"
 #include "UI.h"
 #include <math.h>
+#include "dmbilinear.h"
 //#include "ImageBitmap.h"
 
 
@@ -118,7 +119,8 @@ public:
     void rgbAdd(float,float,float);
     void rgbSub(float,float,float);
     void rgbPow(float,float,float);
-    
+
+    void demosaic(Image, int, int); // bilinear demosaic
     
     
     // These friends help read in images
@@ -135,6 +137,8 @@ public:
     friend  int dofft(int,char*);
     friend  int warp_c(int,char*);
     friend class ImageBitmap;
+    friend void BilinearDemosaic(float *Output, const float *Input, int Width, int Height,
+                                 int RedX, int RedY);
 };
 
 #endif
