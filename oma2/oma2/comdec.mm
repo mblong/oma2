@@ -65,6 +65,7 @@ ComDef   commands[] =    {
     {{"DOC2RGB        "},	doc2rgb_c},
     {{"DOC2COLOR      "},	doc2color_c},
     {{"DISP2RGB       "},	disp2rgb_c},
+    {{"DEMOSAIC       "},	demosaic_c},
     
     {{"ERASE          "},	erase},
     {{"ENDIF          "},	endifcmnd},

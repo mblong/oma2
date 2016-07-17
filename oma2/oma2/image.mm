@@ -1297,3 +1297,8 @@ void Image::composite(Image bottom){
     //return *this;
 }
 
+void Image::demosaic(Image input, int redX, int redY){
+    
+    BilinearDemosaic(data, input.data, input.specs[COLS], input.specs[ROWS],redX,redY);
+}
+

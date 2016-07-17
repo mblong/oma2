@@ -131,6 +131,8 @@
 		DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
 		DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
+		DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
+		DBF24A2D1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
 		DBF879C21906C13F006C5872 /* gphotoCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF879C11906C13F006C5872 /* gphotoCommands.mm */; };
 		DBF879C41906C18D006C5872 /* gphotoFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = DBF879C31906C18D006C5872 /* gphotoFunctions.c */; };
 		DBFCF5EB18FC3EEF00956047 /* u3.c in Sources */ = {isa = PBXBuildFile; fileRef = DB8C23FF18FC32D500969763 /* u3.c */; };
@@ -267,6 +269,8 @@
 		DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatusDrop.mm; sourceTree = "<group>"; };
 		DBC81582153DFBB7002BEFD4 /* UI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UI.mm; sourceTree = "<group>"; };
 		DBF08DE2159D63980099CB4C /* c-box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "c-box.jpg"; sourceTree = "<group>"; };
+		DBF24A2A1D3B091700115E4E /* dmbilinear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dmbilinear.h; sourceTree = "<group>"; };
+		DBF24A2B1D3B091700115E4E /* dmbilinear.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dmbilinear.mm; sourceTree = "<group>"; };
 		DBF879C11906C13F006C5872 /* gphotoCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gphotoCommands.mm; sourceTree = "<group>"; };
 		DBF879C31906C18D006C5872 /* gphotoFunctions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gphotoFunctions.c; sourceTree = "<group>"; };
 		DBF879C51906C6FC006C5872 /* gphotoFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gphotoFunctions.h; sourceTree = "<group>"; };
@@ -456,6 +460,8 @@
 		DBA96AB81520C6AC0043754E /* UI Independent */ = {
 			isa = PBXGroup;
 			children = (
+				DBF24A2A1D3B091700115E4E /* dmbilinear.h */,
+				DBF24A2B1D3B091700115E4E /* dmbilinear.mm */,
 				DB2E76B8152611BD004B6502 /* ImageBitmap.h */,
 				DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */,
 				DBA96ABB1520C7820043754E /* oma2.h */,
@@ -656,6 +662,7 @@
 				DB021E7D15211EFA001D1B05 /* image.mm in Sources */,
 				DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */,
 				DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */,
+				DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */,
 				DB17A30C15247965004F810A /* DataWindowController.mm in Sources */,
 				DB4E036E1835272400250EA4 /* dofft.mm in Sources */,
 				DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */,
@@ -690,6 +697,7 @@
 				DB8A884F18E3297E007C79AF /* image.mm in Sources */,
 				DB8A885018E3297E007C79AF /* dcrawx.mm in Sources */,
 				DBBCFA3418E380B000FEE3F6 /* gige.mm in Sources */,
+				DBF24A2D1D3B091700115E4E /* dmbilinear.mm in Sources */,
 				DB8A885118E3297E007C79AF /* DrawingView.mm in Sources */,
 				DB8A885218E3297E007C79AF /* DataWindowController.mm in Sources */,
 				DB8A885318E3297E007C79AF /* dofft.mm in Sources */,
