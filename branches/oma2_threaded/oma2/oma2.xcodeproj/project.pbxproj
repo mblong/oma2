@@ -47,6 +47,8 @@
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DB6FF6FE18467EA1002D728B /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
+		DB83FD771D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
+		DB83FD781D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
 		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
 		DB8A884418E3297E007C79AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
 		DB8A884518E3297E007C79AF /* oma2AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */; };
@@ -228,6 +230,8 @@
 		DB6FF6FF18467F46002D728B /* tiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiff.h; sourceTree = "<group>"; };
 		DB6FF70018467F46002D728B /* tiffio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffio.h; sourceTree = "<group>"; };
 		DB6FF70118467F46002D728B /* tiffvers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffvers.h; sourceTree = "<group>"; };
+		DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dmmalvar.mm; sourceTree = "<group>"; };
+		DB83FD761D4FE5DE009B3204 /* dmmalvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dmmalvar.h; sourceTree = "<group>"; };
 		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
 		DB8A888218E3297E007C79AF /* oma2cam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2cam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB8A888318E3297F007C79AF /* oma2cam-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "oma2cam-Info.plist"; path = "/Users/mblong/oma2_trunk/oma2/oma2cam-Info.plist"; sourceTree = "<absolute>"; };
@@ -466,6 +470,8 @@
 				DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */,
 				DBA96ABB1520C7820043754E /* oma2.h */,
 				DB021E7A15211EFA001D1B05 /* image.h */,
+				DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */,
+				DB83FD761D4FE5DE009B3204 /* dmmalvar.h */,
 				DB021E7915211EFA001D1B05 /* image.mm */,
 				DB021E7815211EFA001D1B05 /* image_support.h */,
 				DB021E7715211EFA001D1B05 /* image_support.mm */,
@@ -662,6 +668,7 @@
 				DB021E7D15211EFA001D1B05 /* image.mm in Sources */,
 				DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */,
 				DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */,
+				DB83FD771D4FE5DE009B3204 /* dmmalvar.mm in Sources */,
 				DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */,
 				DB17A30C15247965004F810A /* DataWindowController.mm in Sources */,
 				DB4E036E1835272400250EA4 /* dofft.mm in Sources */,
@@ -684,6 +691,7 @@
 				DB8A884718E3297E007C79AF /* DrawingWindowController.mm in Sources */,
 				DBA3CB871911985800AD10BC /* gpib.mm in Sources */,
 				DB8A884818E3297E007C79AF /* StatusController.mm in Sources */,
+				DB83FD781D4FE5DE009B3204 /* dmmalvar.mm in Sources */,
 				DB8A884918E3297E007C79AF /* AppController.mm in Sources */,
 				DB3E355D18E6030300381607 /* serial.c in Sources */,
 				DB95A94E1A2F415E00823467 /* VariablesWindowController.mm in Sources */,

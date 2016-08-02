@@ -3,6 +3,7 @@
 #include "UI.h"
 #include <math.h>
 #include "dmbilinear.h"
+#include "dmmalvar.h"
 //#include "ImageBitmap.h"
 
 
@@ -29,6 +30,9 @@ enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR,ARG_ERR,CMND_ERR,HARD_ERR,GET_MACRO_LINE,
 
 // arguments for getmaxx
 enum {NO_PRINT,PRINT_RESULT};
+
+// demosaic algorithms
+enum {BILINEAR,MALVAR};
 
 /******************** Class Definitions ********************/
 
@@ -120,7 +124,7 @@ public:
     void rgbSub(float,float,float);
     void rgbPow(float,float,float);
 
-    void demosaic(Image, int, int); // bilinear demosaic
+    void demosaic(Image, int, int, int ); // demosaic
     
     
     // These friends help read in images
@@ -138,6 +142,8 @@ public:
     friend  int warp_c(int,char*);
     friend class ImageBitmap;
     friend void BilinearDemosaic(float *Output, const float *Input, int Width, int Height,
+                                 int RedX, int RedY);
+    friend void MalvarDemosaic(float *Output, const float *Input, int Width, int Height,
                                  int RedX, int RedY);
 };
 
