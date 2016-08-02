@@ -1297,8 +1297,14 @@ void Image::composite(Image bottom){
     //return *this;
 }
 
-void Image::demosaic(Image input, int redX, int redY){
+void Image::demosaic(Image input, int redX, int redY, int method){
+    switch(method){
+        case MALVAR:
+            MalvarDemosaic(data, input.data, input.specs[COLS], input.specs[ROWS],redX,redY);
+            break;
+        default:
+            BilinearDemosaic(data, input.data, input.specs[COLS], input.specs[ROWS],redX,redY);
+    }
     
-    BilinearDemosaic(data, input.data, input.specs[COLS], input.specs[ROWS],redX,redY);
 }
 

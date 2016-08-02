@@ -208,6 +208,9 @@ DISP2RGB
 DOUTPUT channel state
 	Sets the specified digital output channel on a Labjack U3 to the specified state (0 or 1). Channel must be in the range 4-7. [oma2cam only]
 
+DEMOSAIC redX redY [algorithm]
+	Assume the current image is a raw Bayer intensity profile and perform demosaicing to produce an RGB image of the same size with three color channels. redX and redY are the x and y coordinates of the first red pixel and must be either 0 or 1 (default is 0, 0). The optional algorithm value specifies what demosaicing algorithm to apply. 0 -> bilinear (default). 1 -> Malvar.
+
 ERASE [n]
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.
 
