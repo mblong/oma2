@@ -910,6 +910,194 @@ int readTiff(char* filename,Image* im)
 }
 #endif
 
+/* ********** */
+int readHobj(char* filename,Image* theImage){
+    int fd;
+    extern int windowNameMemory;
+    char buffer[256];
+    char* pointer;
+    
+    
+    printf("Read .hobj format image.\n");
+    
+    fd = open(filename,READBINARY);
+    if(fd == -1) {
+        windowNameMemory = 0;
+        return FILE_ERR;
+    }
+    unsigned long filesize = fsize(filename);
+    read(fd,buffer,84);
+    pointer = buffer+72;
+    swap_bytes_routine(pointer,4,4);   // 4 bytes taken 4 at a time (1 int)
+    int imagePixels = *((int*)pointer);
+    
+    swap_bytes_routine(buffer+80,4,2);   // 4 bytes taken two at a time (2 shorts)
+    short rows = *((short*)buffer+40)+1;
+    short cols = *((short*)buffer+41)+1;
+    
+    printf("Image width/height is %d x %d. %d image pixels\n",cols,rows, imagePixels);
+    
+    unsigned char* ptr2 = new unsigned char[rows*6]; // skip over this part that has row, start pix, end pix for each row
+    if(ptr2 == 0) {
+        close(fd);
+        return MEM_ERR;
+    }
+    
+    read(fd,ptr2,rows*6);	// skip over the header
+    delete[] ptr2;
+    
+    printf("%d data offset.\n",84+rows*6 +16);
+    read(fd,buffer,16);
+    swap_bytes_routine(buffer,16,4); // 16 bytes taken 4 at a time (4 ints)
+    
+    int samplesPerPix = *(int*)buffer;
+    unsigned long bytesPerPix = *((int*)buffer+1);    // not sure what this is
+    bytesPerPix = filesize/samplesPerPix/imagePixels;
+    printf("%d samples per pixel; %d bytes per pixel\n",samplesPerPix,bytesPerPix);
+    close(fd);
+    
+    //
+    // copy/paste from getbin_c
+    //
+    int bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag=0;
+    int binary_file_is_float = 0;
+    int nbyte,r,c;
+    long nr,i;
+    unsigned short *usptr;
+    short *sptr;
+    unsigned char tc;
+    float *fptr;
+    int *iptr;
+    
+
+    
+    //
+    bin_header = 84+rows*6 + 16;
+    bin_rows = rows;
+    bin_cols = cols;
+    binary_file_bytes_per_data_point = bytesPerPix;
+    swap_bytes_flag = 1;
+    unsigned_flag = 1;
+    //
+    
+    fd = open(filename,READBINARY);
+    
+    if(bin_header > 0) {
+        ptr2 = new unsigned char[bin_header];
+        if(ptr2 == 0) {
+            close(fd);
+            return MEM_ERR;
+        }
+        
+        read(fd,ptr2,bin_header);	// skip over the header
+        delete[] ptr2;
+    }
+    Image newImage(bin_rows,bin_cols);
+    if(newImage.err()){
+        beep();
+        printf("Could not allocate %d x %d image\n",bin_rows,bin_cols);
+        close(fd);
+        return newImage.err();
+    }
+    
+    nbyte = bin_rows * bin_cols * binary_file_bytes_per_data_point;
+    
+    if( binary_file_bytes_per_data_point == 1) {
+        // allocate memory -- assume unsigned
+        ptr2 = new unsigned char[nbyte];
+        if(ptr2 == 0) {
+            close(fd);
+            return MEM_ERR;
+        }
+        // Read in the actual data
+        nr = read(fd,ptr2, nbyte);
+        printf("%d Bytes read.\n",nr);
+        close(fd);
+        
+        for (r=0,i=0; r<bin_rows; r++) {
+            for (c=0; c<bin_cols; c++) {
+                newImage.setpix(r, c, *(ptr2+i++));
+            }
+        }
+        delete[] ptr2;
+    } else if( binary_file_bytes_per_data_point == sizeof(short)) {
+        // allocate memory
+        sptr = (short*)malloc(nbyte);
+        if(sptr == 0) {
+            close(fd);
+            return MEM_ERR;
+        }
+        // Read in the actual data
+        nr = read(fd,sptr, nbyte);
+        printf("%d Bytes read.\n",nr);
+        close(fd);
+        
+        if(swap_bytes_flag){
+            // fiddle the byte order
+            ptr2 = (unsigned char *)sptr;		// a copy of the data pointer
+            for(i=0; i< nr; i+=2){
+                tc = *(ptr2);
+                *(ptr2) = *(ptr2+1);
+                *(++ptr2) = tc;
+                ptr2++;
+            }
+        }
+        usptr = (unsigned short*) sptr;		// point to the same data
+        for (r=0,i=0; r<bin_rows; r++) {
+            for (c=0; c<bin_cols; c++) {
+                if(unsigned_flag)
+                    newImage.setpix(r, c, *(usptr+i++));
+                else
+                    newImage.setpix(r, c, *(sptr+i++));
+            }
+        }
+        free(sptr);
+    } else if( binary_file_bytes_per_data_point == sizeof(float) && binary_file_is_float) {
+        // allocate memory
+        fptr = (float*)malloc(nbyte);
+        if(fptr == 0) {
+            close(fd);
+            return MEM_ERR;
+        }
+        // Read in the actual data
+        nr = read(fd,fptr, nbyte);
+        printf("%d Bytes read.\n",nr);
+        close(fd);
+        for (r=0,i=0; r<bin_rows; r++) {
+            for (c=0; c<bin_cols; c++) {
+                newImage.setpix(r, c, *(fptr+i++));
+            }
+        }
+        free(fptr);
+    }  else if( binary_file_bytes_per_data_point == sizeof(int)){
+        // allocate memory
+        iptr = (int*)malloc(nbyte);
+        if(iptr == 0) {
+            close(fd);
+            return MEM_ERR;
+        }
+        // Read in the actual data
+        nr = read(fd,iptr, nbyte);
+        printf("%d Bytes read.\n",nr);
+        close(fd);
+        for (r=0,i=0; r<bin_rows; r++) {
+            for (c=0; c<bin_cols; c++) {
+                newImage.setpix(r, c, *(iptr+i++));
+            }
+        }
+        free(iptr);
+    }
+    //iBuffer.free();     // release the old data
+    *theImage = newImage;   // this is the new data
+    theImage->getmaxx(PRINT_RESULT);
+    update_UI();
+
+    
+    return NO_ERR;
+}
+
+/* ********** */
+
 /***********************************************************************************
  Created:	17:9:2002
  FileName: 	hdrloader.cpp

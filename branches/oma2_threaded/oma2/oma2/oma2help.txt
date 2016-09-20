@@ -28,6 +28,9 @@
 ^RGB x y z
 	Raise the red, green, and blue data in the current image data buffer to the power x, y, and z.
 
+ABSOLUTE
+	Take the absolute value of the data in the current image data buffer.
+
 ADDFILE <filename>
 	Adds the contents of an OMA file of a given name to the data in the current image data buffer.
 
@@ -320,7 +323,9 @@ GIGE command
 	Available in oma2cam. Commands are as follows:
 	ACQuire (gets frames in MULTIFRAME mode)
 	EXPosure <exposureTime> (in microseconds)
-	GAIn <gain> (0 or 33)
+	GAIn <gain> (0 - 33)
+	RED <Red channel gain percent -> 100% = no gain applied>
+	BLUe <Blue channel gain percent -> 100% = no gain applied>
 	NUMber <numberOfFrames> (to be acquired by the ACQUIRE command; default is 1)
 	RATe <frameRate>
 	LABON (label frames)
@@ -469,6 +474,9 @@ OPENFILE <filename>
 
 PIXSIZE [WindowScaleFactor]
 	Specifies a scale factor used to determine the size of a window displayed. PIXSIZE 1 associates one screen point with one data point. If WindowScaleFactor is negative, a scale factor of -1/WindowScaleFactor is used. If no argument is given, the current WindowScaleFactor is printed.
+
+PIXVALUE row column
+	Prints the value of the pixel at the specified row and column. The upper left of an image is at 0,0. If the image is color, prints RGB values. command_return_1 is the value for BW images; command_return_1 - command_return_3 are RGB for color images.
 
 POSITVE
 	Sets all negative values in the image buffer to 0.  Positive values are unaffected.

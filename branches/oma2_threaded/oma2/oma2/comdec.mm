@@ -28,6 +28,7 @@ ComDef   commands[] =    {
     {{"ACDELETE       "},   acdelete_c},
     {{"ACADD          "},   acadd_c},
     {{"ACGET          "},   acget_c},
+    {{"ABSOLUTE       "},   absolute_c},
 
     {{"BLOCK          "},	block_g},
     {{"BIT8           "},	bit8_c},
@@ -151,6 +152,9 @@ ComDef   commands[] =    {
     {{"POSITIVE       "},	positive_c},
     {{"PAUSE          "},	imp_pause},
     {{"POWER          "},	power_c},
+    {{"PIXVALUE       "},	pixValue_c},
+    
+    
     {{"RMACRO         "},	rmacro},
     {{"RECTANGLE      "},	rectan_c},
     {{"RGB2GREY       "},	rgb2grey_c},

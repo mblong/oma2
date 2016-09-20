@@ -150,6 +150,17 @@ Image::Image(char* filename, int kindOfName)
         if (error) windowNameMemory = 0;
         return;
     }
+    
+    if (strncmp(&filename[strlen(filename)-5],".hobj",5) == 0 ||
+        strncmp(&filename[strlen(filename)-5],".HOBJ",5) == 0 ) {
+        if (kindOfName == LONG_NAME) {
+            error = readHobj(filename,this);
+        } else {
+            error = readHobj(fullname(filename,RAW_DATA),this);
+        }
+        if (error) windowNameMemory = 0;
+        return;
+    }
 
     switch (kindOfName) {
         case LONG_NAME:
@@ -609,6 +620,15 @@ void Image::floor(DATAWORD floorVal){
     DATAWORD* mydatpt=data;
     while ( mydatpt < data+npts ) {
         if ( *mydatpt < floorVal ) *mydatpt = floorVal;
+        mydatpt++;
+    }
+}
+
+void Image::abs(){
+    int npts=specs[ROWS]*specs[COLS];
+    DATAWORD* mydatpt=data;
+    while ( mydatpt < data+npts ) {
+        *mydatpt = fabs(*mydatpt);
         mydatpt++;
     }
 }

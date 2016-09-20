@@ -77,7 +77,7 @@ BOOL dropped_file(char* extension, char* name){
         extension[i] = toupper(extension[i]);
     if(strcmp(extension, "DAT")==0 || strcmp(extension, "NEF")==0 || strcmp(extension, "JPG")==0
        || strcmp(extension, "TIF")==0 || strcmp(extension, "TIFF")==0 || strcmp(extension, "HDR")==0
-       || strcmp(extension, "O2D")==0 || strcmp(extension, "PNG")==0){
+       || strcmp(extension, "O2D")==0 || strcmp(extension, "PNG")==0 || strcmp(extension, "HOBJ")==0){
         Image new_im(name,LONG_NAME);
         if(new_im.err()){
             beep();
