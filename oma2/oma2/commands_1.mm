@@ -225,6 +225,30 @@ int fwdatm_c(int n,char* args)
 	}
 	return NO_ERR;
 }
+/* ********** */
+
+int pixValue_c(int n,char* args)
+{
+    int	r=0, c=0, frameSize = iBuffer.width()*iBuffer.height();
+    extern Variable user_variables[];
+    
+    sscanf(args,"%d %d",&r,&c);
+    printf("Pixel at row %d and column %d is: ",r,c);
+    if (iBuffer.isColor()) {
+        printf("%g R, %g G, %g B\n",iBuffer.getpix(r,c),iBuffer.getpix(r+frameSize,c),iBuffer.getpix(r+frameSize*2,c));
+        user_variables[0].fvalue = iBuffer.getpix(r,c);
+        user_variables[0].is_float = 1;
+        user_variables[1].fvalue = iBuffer.getpix(r+frameSize,c);
+        user_variables[1].is_float = 1;
+        user_variables[2].fvalue = iBuffer.getpix(r+frameSize*2,c);
+        user_variables[2].is_float = 1;
+    } else {
+        printf("%g\n",iBuffer.getpix(r,c));
+        user_variables[0].fvalue = iBuffer.getpix(r,c);
+        user_variables[0].is_float = 1;
+    }
+    return NO_ERR;
+}
 
 /* ********** */
 
@@ -1441,6 +1465,15 @@ int positive_c(int n, char* args)
 	return NO_ERR;
 }
 
+/* ********** */
+
+int absolute_c(int n, char* args)
+{
+    iBuffer.abs();
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
 /* ********** */
 
 int clip_c(int n, char* args)

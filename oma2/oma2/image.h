@@ -84,6 +84,7 @@ public:
     void errclear();            ///< clear the image error code
     void free();                ///< release the data associated with an Image
     void zero();                ///< set the data associated with an Image to 0
+    void abs();                 ///< take the absolute value of an image
     void getmaxx(char);         ///< fill in the min and max for the current Image; argument is print flag
     void clip(DATAWORD);        ///< set values > specifiedValue to specifiedValue
     void floor(DATAWORD);       ///< set values < specifiedValue to specifiedValue
@@ -133,6 +134,7 @@ public:
     friend int readJpeg(char* filename, Image*);
     friend int readTiff(char* filename, Image*);
     friend int readHDR(char* filename, Image*);
+    friend int readHobj(char* filename, Image*);
     friend void oma_write_ppm_tiff (int thecolor, Image* im);
 #ifdef GIGE_
     friend int gige(int n, char* args);

@@ -965,8 +965,8 @@ int gige(int n, char* args)
     static char savestr[256];
     unsigned long pixwidth = 0;
     unsigned long pixheight = 0;
-    unsigned long redBalance = 0;
-    unsigned long blueBalance = 0;
+    unsigned long redBalance = 100;
+    unsigned long blueBalance = 100;
     
     
     double tempo_pr = 0;
@@ -988,7 +988,9 @@ int gige(int n, char* args)
         printf("Available Commands:\n");
         printf("  ACQuire (gets frames in MULTIFRAME mode)\n");
         printf("  EXPosure <exposureTime> (in microseconds)\n");
-        printf("  GAIn <gain> (0 or 33)\n");
+        printf("  GAIn <gain> (0 - 33)\n");
+        printf("  RED <Red channel gain percent -> 100% = no gain applied>\n");
+        printf("  BLUe <Blue channel gain percent -> 100% = no gain applied>\n");
         printf("  NUMber <numberOfFrames> (to be acquired by the ACQUIRE command; default is 1)\n");
         printf("  RATe <frameRate> \n");
         printf("  LABON (label frames) \n");

@@ -23,6 +23,7 @@ int acdelete_c(int,char*);
 int acget_c(int,char*);
 int acadd_c(int,char*);
 int addRGB_c(int,char*);
+int absolute_c(int,char*);
 
 int bit8_c(int,char*);
 int bit16_c(int,char*);
@@ -126,6 +127,7 @@ int plus_c(int,char*);
 int power_c(int,char*);
 int positive_c(int, char*);
 int powRGB_c(int,char*);
+int pixValue_c(int,char*);
 
 int rectan_c(int,char*);
 int resize_c(int,char*);

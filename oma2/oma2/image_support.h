@@ -33,6 +33,8 @@ typedef struct  {
 } HDRLoaderResult;
 int readHDR(char* filename,Image*);
 int loadHDR(const char*, HDRLoaderResult*);
+int readHobj(char* filename,Image*);
+
 
 
 #endif
