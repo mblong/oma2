@@ -34,7 +34,7 @@
             startingLineNumber = "274"
             endingLineNumber = "274"
             landmarkName = "getfile_c(int n,char* args)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -100,7 +100,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "144"
-            endingLineNumber = "144">
+            endingLineNumber = "144"
+            landmarkName = "enum {DEFAULTMAP,BGRBOW,GRAYMAP,REDMAP,GREENMAP,BLUEMAP,FROMAFILE2,FROMAFILE3}"
+            landmarkType = "13">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -486,7 +488,7 @@
             startingLineNumber = "605"
             endingLineNumber = "605"
             landmarkName = "frame_c(int n, char* args)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -502,7 +504,7 @@
             startingLineNumber = "766"
             endingLineNumber = "766"
             landmarkName = "list_c(int n, char* args)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -789,7 +791,7 @@
             startingLineNumber = "411"
             endingLineNumber = "411"
             landmarkName = "getbin_c(int n,char* args)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -805,7 +807,7 @@
             startingLineNumber = "1195"
             endingLineNumber = "1195"
             landmarkName = "gige(int n, char* args)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -853,7 +855,7 @@
             startingLineNumber = "3429"
             endingLineNumber = "3429"
             landmarkName = "integrateFill(int n,char* args, int integratefill )"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -869,7 +871,7 @@
             startingLineNumber = "3459"
             endingLineNumber = "3459"
             landmarkName = "integrateFill(int n,char* args, int integratefill )"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -885,7 +887,7 @@
             startingLineNumber = "2604"
             endingLineNumber = "2604"
             landmarkName = "grey2rgb_c(int n,char* args)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -901,7 +903,7 @@
             startingLineNumber = "3587"
             endingLineNumber = "3587"
             landmarkName = "closefile_c(int n,char* args)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -917,7 +919,7 @@
             startingLineNumber = "3308"
             endingLineNumber = "3308"
             landmarkName = "hdrAcget_c(int n,char* args)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -947,7 +949,7 @@
             startingLineNumber = "3994"
             endingLineNumber = "3994"
             landmarkName = "uprefix_c(int n,char* args)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

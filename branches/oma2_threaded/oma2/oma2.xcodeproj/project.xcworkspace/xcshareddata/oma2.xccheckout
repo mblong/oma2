@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>CD506127-5E45-4C27-9940-92BF04843A04</string>
 	<key>IDESourceControlProjectName</key>
-	<string>oma2</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>e068d6cc-edb8-4e28-8308-4603fcd97593++5962</key>
 		<string>svn://guilford.eng.yale.edu/oma2/branches/oma2_threaded</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>oma2/oma2.xcodeproj</string>
+	<string>oma2/oma2.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>e068d6cc-edb8-4e28-8308-4603fcd97593++5962</key>
@@ -26,7 +26,7 @@
 		<string>svn://guilford.eng.yale.edu/oma2</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>svn://guilford.eng.yale.edu/oma2/branches/oma2_threaded/oma2/oma2.xcodeproj</string>
+	<string>svn://guilford.eng.yale.edu/oma2/branches/oma2_threaded/oma2/oma2.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
