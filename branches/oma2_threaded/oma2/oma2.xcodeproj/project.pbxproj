@@ -43,7 +43,7 @@
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
 		DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB57E31818F58D7900FA4D29 /* sbig.mm */; };
-		DB57E31D18F5901D00FA4D29 /* SBIGUDrv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; };
+		DB57E31D18F5901D00FA4D29 /* SBIGUDrv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DB6FF6FE18467EA1002D728B /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };

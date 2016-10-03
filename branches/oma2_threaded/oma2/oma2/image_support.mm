@@ -1,12 +1,13 @@
 #include "image_support.h"
+#include "commands_1.h"
 
 extern char reply[1024];
 extern oma2UIData UIData;
 
 /*
-    These are general purpose C functions that may be used anywhere.
-    The assumption is they don't use anything in the oma2 classes unless passed as arguments.
-*/
+ These are general purpose C functions that may be used anywhere.
+ The assumption is they don't use anything in the oma2 classes unless passed as arguments.
+ */
 
 /* ***************************** Support Routines **************************** */
 
@@ -15,7 +16,7 @@ void setUpUIData(){
     char text[NEW_PREFIX_CHPERLN];
     strcpy(UIData.version, SETTINGS_VERSION_1);
     extern RGBColor color[256][8];
-
+    
     // setup color palettes
     strcpy(text,PALETTEFILE);
     UIData.thepalette = DEFAULTMAP;
@@ -24,7 +25,7 @@ void setUpUIData(){
     strcpy(text,PALETTEFILE2);
     UIData.thepalette = FROMAFILE2;
     getpalettefile(text);
-
+    
     strcpy(text,PALETTEFILE3
            );
     UIData.thepalette = FROMAFILE3;
@@ -35,12 +36,12 @@ void setUpUIData(){
     for(int thepalette = BGRBOW; thepalette <= BLUEMAP; thepalette++){
         switch(thepalette) {
             case GRAYMAP:
-                for(i=0; i<NCOLORS; i++) 
-                    color[i][thepalette].red = color[i][thepalette].green = 
+                for(i=0; i<NCOLORS; i++)
+                    color[i][thepalette].red = color[i][thepalette].green =
                     color[i][thepalette].blue = i;
                 break;
             case REDMAP:
-                for(i=0; i<NCOLORS; i++) { 
+                for(i=0; i<NCOLORS; i++) {
                     color[i][thepalette].red = i;
                     color[i][thepalette].green = color[i][thepalette].blue = 0; }
                 break;
@@ -91,7 +92,7 @@ int two_to_four(DATAWORD* dpt, int num, TWOBYTE scale)
     two_byte_ptr = (TWOBYTE*) dpt;
     
     if(scale <= 0) scale = 1;
-    for(i=num-1; i>=0; i--){			
+    for(i=num-1; i>=0; i--){
         *(dpt+i) = *(two_byte_ptr+i);
         *(dpt+i) *= scale;
     }
@@ -102,19 +103,19 @@ int two_to_four(DATAWORD* dpt, int num, TWOBYTE scale)
 
 int get_byte_swap_value(short id)
 {
-	char* cp;
-	cp = (char*) &id;
-	if( IS_BIG_ENDIAN ) {	// running on a PowerPC
-		if( *(cp) ==  LITTLE_ENDIAN_CODE && *(cp+1) ==  LITTLE_ENDIAN_CODE)
-			return 1;	// must have been saved on an intel machine so have to swap bytes
-		else
-			return 0;	// must be same kind, leave it alone
-	} else {			// running on intel
-		if( *(cp) ==  LITTLE_ENDIAN_CODE && *(cp+1) ==  LITTLE_ENDIAN_CODE)
-			return 0;	// must have been saved on an intel machine so leave it as is
-		else
-			return 1;	// must be from a powerPC, have to change it
-	}
+    char* cp;
+    cp = (char*) &id;
+    if( IS_BIG_ENDIAN ) {	// running on a PowerPC
+        if( *(cp) ==  LITTLE_ENDIAN_CODE && *(cp+1) ==  LITTLE_ENDIAN_CODE)
+            return 1;	// must have been saved on an intel machine so have to swap bytes
+        else
+            return 0;	// must be same kind, leave it alone
+    } else {			// running on intel
+        if( *(cp) ==  LITTLE_ENDIAN_CODE && *(cp+1) ==  LITTLE_ENDIAN_CODE)
+            return 0;	// must have been saved on an intel machine so leave it as is
+        else
+            return 1;	// must be from a powerPC, have to change it
+    }
     
 }
 
@@ -124,43 +125,43 @@ int get_byte_swap_value(short id)
 
 void swap_bytes_routine(char* co, int num,int nb)
 {
-	int nr;
-	char ch;
-	if(nb == 2){
-		for(nr=0; nr < num; nr += nb) {
-			ch = co[nr+1];
-			co[nr+1] = co[nr];
-			co[nr] = ch;
-		}
-	} else if (nb == 4){
-		for(nr=0; nr < num; nr += nb) {
-			ch = co[nr+3];
-			co[nr+3] = co[nr];
-			co[nr] = ch;
-			ch = co[nr+2];
-			co[nr+2] = co[nr+1];
-			co[nr+1] = ch;
-		}
-	} else if (nb == 8){
-		for(nr=0; nr < num; nr += nb) {
-			ch = co[nr+7];
-			co[nr+7] = co[nr];
-			co[nr] = ch;
-			
-			ch = co[nr+6];
-			co[nr+6] = co[nr+1];
-			co[nr+1] = ch;
-			
-			ch = co[nr+5];
-			co[nr+5] = co[nr+2];
-			co[nr+2] = ch;
-			
-			ch = co[nr+4];
-			co[nr+4] = co[nr+3];
-			co[nr+3] = ch;
-		}
-	}
-	
+    int nr;
+    char ch;
+    if(nb == 2){
+        for(nr=0; nr < num; nr += nb) {
+            ch = co[nr+1];
+            co[nr+1] = co[nr];
+            co[nr] = ch;
+        }
+    } else if (nb == 4){
+        for(nr=0; nr < num; nr += nb) {
+            ch = co[nr+3];
+            co[nr+3] = co[nr];
+            co[nr] = ch;
+            ch = co[nr+2];
+            co[nr+2] = co[nr+1];
+            co[nr+1] = ch;
+        }
+    } else if (nb == 8){
+        for(nr=0; nr < num; nr += nb) {
+            ch = co[nr+7];
+            co[nr+7] = co[nr];
+            co[nr] = ch;
+            
+            ch = co[nr+6];
+            co[nr+6] = co[nr+1];
+            co[nr+1] = ch;
+            
+            ch = co[nr+5];
+            co[nr+5] = co[nr+2];
+            co[nr+2] = ch;
+            
+            ch = co[nr+4];
+            co[nr+4] = co[nr+3];
+            co[nr+3] = ch;
+        }
+    }
+    
 }
 
 
@@ -169,90 +170,90 @@ void swap_bytes_routine(char* co, int num,int nb)
 
 void trimName(char* lastname)
 {
-	long length,i,j;
-	length = strlen(lastname);
-	for(i=length-1; i>0; i--){
-		if(lastname[i] == '/')
-			break;
-	}
-	if(i <= 2) return;	// nothing to be done here -- the name is short anyway
-	strcpy(lastname, "...");
-	for(j=0; j<length-i;j++){
-		lastname[j+3] = lastname[j+i+1];
-	}
+    long length,i,j;
+    length = strlen(lastname);
+    for(i=length-1; i>0; i--){
+        if(lastname[i] == '/')
+            break;
+    }
+    if(i <= 2) return;	// nothing to be done here -- the name is short anyway
+    strcpy(lastname, "...");
+    for(j=0; j<length-i;j++){
+        lastname[j+3] = lastname[j+i+1];
+    }
 }
 
 
 
 char* fullname(char* fnam,int  type)
 {
-
+    
     extern int normal_prefix;                   // this used for UPREFIX command
     
-	char const *prefixbuf;		
-	char const *suffixbuf;
-	
-	char long_name[CHPERLN];
+    char const *prefixbuf;
+    char const *suffixbuf;
+    
+    char long_name[CHPERLN];
     
     extern char applicationPath[];
-	
-	if( type == GET_DATA || type == SAVE_DATA ) {
-		switch(normal_prefix) {
-			case 0:
-				type = GET_DATA;
-				break;
-			case -1:
-				type = SAVE_DATA;
-				break;
-			default:
-			case 1:
-				break;
-		}		
-	}
-	
-	switch (type) {
-        case GET_DATA:				
-            prefixbuf = UIData.getprefixbuf;	
-            suffixbuf = UIData.getsuffixbuf;		
-            break;				
+    
+    if( type == GET_DATA || type == SAVE_DATA ) {
+        switch(normal_prefix) {
+            case 0:
+                type = GET_DATA;
+                break;
+            case -1:
+                type = SAVE_DATA;
+                break;
+            default:
+            case 1:
+                break;
+        }
+    }
+    
+    switch (type) {
+        case GET_DATA:
+            prefixbuf = UIData.getprefixbuf;
+            suffixbuf = UIData.getsuffixbuf;
+            break;
         case SETTINGS_DATA:
-            prefixbuf = UIData.graphicsprefixbuf;		
-            suffixbuf = UIData.graphicssuffixbuf;	
+            prefixbuf = UIData.graphicsprefixbuf;
+            suffixbuf = UIData.graphicssuffixbuf;
             break;
             
         case MACROS_DATA:
-            prefixbuf = UIData.macroprefixbuf;	
+            prefixbuf = UIData.macroprefixbuf;
             suffixbuf = UIData.macrosuffixbuf;
             break;
-        case TIFF_DATA:				
-            prefixbuf = UIData.getprefixbuf;	
-            suffixbuf = ".tiff";		
-            break;				
-        case TIF_DATA:				
-            prefixbuf = UIData.getprefixbuf;	
-            suffixbuf = ".tif";		
-            break;				
-        case PDF_DATA:				
-            prefixbuf = UIData.getprefixbuf;	
-            suffixbuf = ".pdf";		
-            break;				
-        case FTS_DATA:				
-            prefixbuf = UIData.getprefixbuf;	
-            suffixbuf = ".fts";		
-            break;				
-        case RAW_DATA:				
-            prefixbuf = UIData.getprefixbuf;	
-            suffixbuf = "";		
-            break;				
-        case CSV_DATA:				
-            prefixbuf = UIData.saveprefixbuf;	
-            suffixbuf = ".csv";		
-            break;				
-        case SAVE_DATA_NO_SUFFIX:
-            prefixbuf = UIData.saveprefixbuf;		
+        case TIFF_DATA:
+            prefixbuf = UIData.getprefixbuf;
+            suffixbuf = ".tiff";
+            break;
+        case TIF_DATA:
+            prefixbuf = UIData.getprefixbuf;
+            suffixbuf = ".tif";
+            break;
+        case PDF_DATA:
+            prefixbuf = UIData.getprefixbuf;
+            suffixbuf = ".pdf";
+            break;
+        case FTS_DATA:
+            prefixbuf = UIData.getprefixbuf;
+            suffixbuf = ".fts";
+            break;
+        case RAW_DATA:
+            prefixbuf = UIData.getprefixbuf;
             suffixbuf = "";
             break;
-		case LOAD_SAVE_PREFIX:
+        case CSV_DATA:
+            prefixbuf = UIData.saveprefixbuf;
+            suffixbuf = ".csv";
+            break;
+        case SAVE_DATA_NO_SUFFIX:
+            prefixbuf = UIData.saveprefixbuf;
+            suffixbuf = "";
+            break;
+        case LOAD_SAVE_PREFIX:
             strcpy(UIData.saveprefixbuf,fnam);
             return fnam;
         case LOAD_GET_PREFIX:
@@ -264,7 +265,7 @@ char* fullname(char* fnam,int  type)
         case LOAD_GET_SUFFIX:
             strcpy(UIData.getsuffixbuf,fnam);
             return fnam;
-		case LOAD_MACRO_PREFIX:
+        case LOAD_MACRO_PREFIX:
             strcpy(UIData.macroprefixbuf,fnam);
             return fnam;
         case LOAD_SETTINGS_PREFIX:
@@ -278,31 +279,31 @@ char* fullname(char* fnam,int  type)
             return fnam;
         default:
         case SAVE_DATA:
-            prefixbuf = UIData.saveprefixbuf;		
+            prefixbuf = UIData.saveprefixbuf;
             suffixbuf = UIData.savesuffixbuf;
             
-	}
- 	
-	
-	strlcpy(long_name,prefixbuf,NEW_PREFIX_CHPERLN);
+    }
+    
+    
+    strlcpy(long_name,prefixbuf,NEW_PREFIX_CHPERLN);
     if (strlen(long_name) == 0) {
         strlcpy(long_name,applicationPath,NEW_PREFIX_CHPERLN);
     }
-	
-	
-	//n = CHPERLN - strlen(prefixbuf)-1;
-	//strncat(long_name,fnam,n);		// add the middle of the file name 
-	strlcat(long_name,fnam,CHPERLN);
     
-	//n = CHPERLN - strlen(long_name)-1;
-	//strncat(long_name,suffixbuf,n);	// prefix buf now has entire name 
-	strlcat(long_name,suffixbuf,CHPERLN);
     
-	if( (strlen(long_name) + 8) >= CHPERLN) {
-	    beep();
-	    printf(" File Name Is Too Long!\n"); 
-	} else  {
-	    strlcpy(fnam,long_name,CHPERLN);
+    //n = CHPERLN - strlen(prefixbuf)-1;
+    //strncat(long_name,fnam,n);		// add the middle of the file name
+    strlcat(long_name,fnam,CHPERLN);
+    
+    //n = CHPERLN - strlen(long_name)-1;
+    //strncat(long_name,suffixbuf,n);	// prefix buf now has entire name
+    strlcat(long_name,suffixbuf,CHPERLN);
+    
+    if( (strlen(long_name) + 8) >= CHPERLN) {
+        beep();
+        printf(" File Name Is Too Long!\n");
+    } else  {
+        strlcpy(fnam,long_name,CHPERLN);
     }
     
     return(fnam);
@@ -338,37 +339,37 @@ int loadprefs(char* name)
     
     int prefixLength = PREFIX_CHPERLN;
     
-
     
-
-	getcwd(oldname,CHPERLN);
-
-	if(name == nil) {
-   		/*
-        // load using dialog
-		err = getfile_dialog(  PREFS_file);
-		if(err) return -1;
-#ifdef DO_MACH_O
-        FSRefMakePath(&final_parentFSRef,(unsigned char*)curname,255);
-        chdir(curname);
-        //printf("%s\n",curname);
-#endif
+    
+    
+    getcwd(oldname,CHPERLN);
+    
+    if(name == nil) {
+        /*
+         // load using dialog
+         err = getfile_dialog(  PREFS_file);
+         if(err) return -1;
+         #ifdef DO_MACH_O
+         FSRefMakePath(&final_parentFSRef,(unsigned char*)curname,255);
+         chdir(curname);
+         //printf("%s\n",curname);
+         #endif
          */
         return FILE_ERR;
-	}
+    }
     
     unsigned long len = fsize(name);
     if(len > OLD_SETTINGS_LENGTH) prefixLength = NEW_PREFIX_CHPERLN;
-        
+    
     
     fd = open(name,READBINARY);
     
     if(fd == -1) {
-		beep();
+        beep();
         printf("Could not load settings from %s\n",name);
-		return FILE_ERR;
-	}
-	
+        return FILE_ERR;
+    }
+    
     
     read(fd,(char*)header,HEADLEN);
     if (strcmp((const char*)header, SETTINGS_VERSION_1) == 0) {
@@ -387,9 +388,10 @@ int loadprefs(char* name)
         thespecs[Y0] = UIData.y0;
         iBuffer.setspecs(thespecs);
         //iBuffer.getmaxx(PRINT_RESULT);
-
+        
         free(thespecs);
         long missingBytes = nbytes - HEADLEN - actualCount;
+        //printf("%d missing\n",missingBytes);
         if(missingBytes >= 4*sizeof(int)){
             // set these default values
             UIData.highlightSaturated = 0;
@@ -398,9 +400,16 @@ int loadprefs(char* name)
             UIData.highlightSaturatedBlue = 0;
             missingBytes -= 4*sizeof(int);
         }
+        if(missingBytes >= 2*sizeof(int)){
+            // set these default values
+            UIData.decodeHobjFlag = 1;     // setting for automatic decoding Halcon .hobj files
+            UIData.demosaicHobjFlag  = HOBJ_NO_DEMOSAIC;
+            missingBytes -= 2*sizeof(int);
+        }
+
         return NO_ERR;
     }
-	
+    
     // read old oma settings files
     
     read(fd,(char*)comment,COMLEN);
@@ -412,165 +421,165 @@ int loadprefs(char* name)
     iBuffer.setspecs(specs);
     free(specs);
     
-	
-  	read(fd,(char*)UIData.saveprefixbuf,prefixLength);		// file prefixes and suffixes
-  	read(fd,(char*)UIData.savesuffixbuf,prefixLength);
-  	read(fd,(char*)UIData.macroprefixbuf,prefixLength);
-  	read(fd,(char*)UIData.macrosuffixbuf,prefixLength);
-  	read(fd,(char*)UIData.graphicsprefixbuf,prefixLength);
-  	read(fd,(char*)UIData.graphicssuffixbuf,prefixLength);
-	
     
-	read(fd,(char*)settings,32);
-    /*
-	if(do_swap) swap_bytes_routine((char*)settings,32,2);
+    read(fd,(char*)UIData.saveprefixbuf,prefixLength);		// file prefixes and suffixes
+    read(fd,(char*)UIData.savesuffixbuf,prefixLength);
+    read(fd,(char*)UIData.macroprefixbuf,prefixLength);
+    read(fd,(char*)UIData.macrosuffixbuf,prefixLength);
+    read(fd,(char*)UIData.graphicsprefixbuf,prefixLength);
+    read(fd,(char*)UIData.graphicssuffixbuf,prefixLength);
     
-	pdatminmax = settings[0];					// for integration plots 
-	pstdscrnsize = settings[1];
-	ponemax = settings[2];
-	ponemin = settings[3];
-	ponewidth = settings[4];
-	poneheight = settings[5];
-	poneplotwhite = settings[6];
-	pintegrate = settings[7];
-	pintx = settings[8];
-    */
-	read(fd,(char*)settings,32);
-    /*
-	if(do_swap) swap_bytes_routine((char*)settings,32,2);
     
-	sdatminmax = settings[0];				// for surface plots 
-	sstdscrnsize = settings[1];
-	scolor = settings[2];
-	surfmax = settings[3];
-	surfmin = settings[4];
-	surfwidth = settings[5];
-	surfheight = settings[6];
-	plotwhite = settings[7];
-	incrementby = settings[8];
-	persp = settings[9];
-    */
-	read(fd,(char*)settings,32);
+    read(fd,(char*)settings,32);
     /*
-	if(do_swap) swap_bytes_routine((char*)settings,32,2);
-    
-	hautoscale = settings[0];				// for histogram plots 
-	hstdscrnsize = settings[1];
-	histmax = settings[2];
-	histmin = settings[3];
-	histwidth = settings[4];
-	histheight = settings[5];
-	hclear = settings[6];
-	*/
-	read(fd,(char*)settings,32);
+     if(do_swap) swap_bytes_routine((char*)settings,32,2);
+     
+     pdatminmax = settings[0];					// for integration plots
+     pstdscrnsize = settings[1];
+     ponemax = settings[2];
+     ponemin = settings[3];
+     ponewidth = settings[4];
+     poneheight = settings[5];
+     poneplotwhite = settings[6];
+     pintegrate = settings[7];
+     pintx = settings[8];
+     */
+    read(fd,(char*)settings,32);
     /*
-	if(do_swap) swap_bytes_routine((char*)settings,32,2);
-	
-	lgwidth = settings[0];					// for coutour plots 
-	lgheight = settings[1];
-	nlevls = settings[2];
-	ctrmax = settings[3];
-	ctrmin = settings[4];
-	datminmax = settings[5];
-	stdscrnsize = settings[6];
-	colorctrs = settings[7];
-	noctrtyping = settings[8];
-	inwhite = settings[9];
-    //	linegraphicstofile = settings[10];
-    //	linedrawing = settings[11];				// don't need to save/restore this 
-	*/
+     if(do_swap) swap_bytes_routine((char*)settings,32,2);
+     
+     sdatminmax = settings[0];				// for surface plots
+     sstdscrnsize = settings[1];
+     scolor = settings[2];
+     surfmax = settings[3];
+     surfmin = settings[4];
+     surfwidth = settings[5];
+     surfheight = settings[6];
+     plotwhite = settings[7];
+     incrementby = settings[8];
+     persp = settings[9];
+     */
+    read(fd,(char*)settings,32);
+    /*
+     if(do_swap) swap_bytes_routine((char*)settings,32,2);
+     
+     hautoscale = settings[0];				// for histogram plots
+     hstdscrnsize = settings[1];
+     histmax = settings[2];
+     histmin = settings[3];
+     histwidth = settings[4];
+     histheight = settings[5];
+     hclear = settings[6];
+     */
+    read(fd,(char*)settings,32);
+    /*
+     if(do_swap) swap_bytes_routine((char*)settings,32,2);
+     
+     lgwidth = settings[0];					// for coutour plots
+     lgheight = settings[1];
+     nlevls = settings[2];
+     ctrmax = settings[3];
+     ctrmin = settings[4];
+     datminmax = settings[5];
+     stdscrnsize = settings[6];
+     colorctrs = settings[7];
+     noctrtyping = settings[8];
+     inwhite = settings[9];
+     //	linegraphicstofile = settings[10];
+     //	linedrawing = settings[11];				// don't need to save/restore this
+     */
     float clevls[10];
-	read(fd,(char*)clevls,40);
+    read(fd,(char*)clevls,40);
     /*
-	if(do_swap) swap_bytes_routine((char*)clevls,40,4);
-	*/
-	read(fd,(char*)settings,32);
+     if(do_swap) swap_bytes_routine((char*)clevls,40,4);
+     */
+    read(fd,(char*)settings,32);
     /*
-	if(do_swap) swap_bytes_routine((char*)settings,32,2);
+     if(do_swap) swap_bytes_routine((char*)settings,32,2);
+     
+     pixsiz = settings[0];					// various things
+     cmin = settings[1];
+     cmax = settings[2];
+     newwindowflag = settings[3];
+     detector = settings[4];
+     cminmaxinc = settings[5];
+     autoupdate = settings[6];
+     toolselected = settings[7];
+     showselection = settings[8];
+     docalcs = settings[9];
+     autoscale = settings[10];
+     dlen =	settings[11];
+     dhi = settings[12];
+     c_font = settings[13];
+     s_font = settings[14];
+     showruler = settings[15];
+     
+     
+     if( detector != 0) detectorspecified = 1;	// If saved detector type is CCD, no
+     //	automatic type switching based on
+     //	image size will be done; if saved
+     //	type is SIT, type switching will be
+     //	enabled.
+     
+     */
     
-	pixsiz = settings[0];					// various things 
-	cmin = settings[1];
-	cmax = settings[2];
-	newwindowflag = settings[3];
-	detector = settings[4];
-	cminmaxinc = settings[5];
-	autoupdate = settings[6];
-	toolselected = settings[7];
-	showselection = settings[8];
-	docalcs = settings[9];
-	autoscale = settings[10];
-	dlen =	settings[11];
-	dhi = settings[12];
-	c_font = settings[13];
-	s_font = settings[14];
-	showruler = settings[15];
-    
-    
-	if( detector != 0) detectorspecified = 1;	// If saved detector type is CCD, no
-    //	automatic type switching based on
-    //	image size will be done; if saved
-    //	type is SIT, type switching will be
-    //	enabled. 
-	
-    */
-    
-	//read(fd,(char*)Nu200_par,CAM_PARMS*2);		// Parameters for the Nu200 
-	//read(fd,(char*)settings,64-CAM_PARMS*2);      // Get rid of this extra 
+    //read(fd,(char*)Nu200_par,CAM_PARMS*2);		// Parameters for the Nu200
+    //read(fd,(char*)settings,64-CAM_PARMS*2);      // Get rid of this extra
     read(fd,(char*)settings,32);
     read(fd,(char*)settings,32);
     
     /*
-	if(do_swap) swap_bytes_routine((char*)Nu200_par,CAM_PARMS*2,2);
-    */
-	read(fd,(char*)settings,32);
+     if(do_swap) swap_bytes_routine((char*)Nu200_par,CAM_PARMS*2,2);
+     */
+    read(fd,(char*)settings,32);
     /*
-	if(do_swap) swap_bytes_routine((char*)settings,32,2);
-	
-    
-	star_time = settings[0];					// Star 1 Settings 
-	star_treg = settings[1];
-	star_auto = settings[2];
-	star_gain = settings[3];
-	
-    */
-	read(fd,(char*)settings,32);
+     if(do_swap) swap_bytes_routine((char*)settings,32,2);
+     
+     
+     star_time = settings[0];					// Star 1 Settings
+     star_treg = settings[1];
+     star_auto = settings[2];
+     star_gain = settings[3];
+     
+     */
+    read(fd,(char*)settings,32);
     /*
-	if(do_swap) swap_bytes_routine((char*)settings,32,2);
-    
-	plotline = settings[0];					// moe various things 
-    
-	enable_dcs = settings[1];				// ST-6 settings 
-	abg_state = settings[2];
-	head_offset = settings[3];
-	temp_control = settings[4];
-	serial_port = settings[5];	
-    */
+     if(do_swap) swap_bytes_routine((char*)settings,32,2);
+     
+     plotline = settings[0];					// moe various things
+     
+     enable_dcs = settings[1];				// ST-6 settings
+     abg_state = settings[2];
+     head_offset = settings[3];
+     temp_control = settings[4];
+     serial_port = settings[5];
+     */
     float exposure_time,set_temp;
-	read(fd,(char*)&exposure_time,4);	
-	read(fd,(char*)&set_temp,4);	
+    read(fd,(char*)&exposure_time,4);
+    read(fd,(char*)&set_temp,4);
     
     
-  	read(fd,(char*)UIData.getprefixbuf,prefixLength);		// file prefixes and suffixes for get data commands
-  	read(fd,(char*)UIData.getsuffixbuf,prefixLength);
+    read(fd,(char*)UIData.getprefixbuf,prefixLength);		// file prefixes and suffixes for get data commands
+    read(fd,(char*)UIData.getsuffixbuf,prefixLength);
     
     close(fd);
-	//err = setvol("", oldvol);
-	//HSetVol(NULL,v_ref_num,dir_ID);
-
-	chdir(oldname);
-
-	//setfonts(oldfont,-1);		// removed
+    //err = setvol("", oldvol);
+    //HSetVol(NULL,v_ref_num,dir_ID);
+    
+    chdir(oldname);
+    
+    //setfonts(oldfont,-1);		// removed
     /*
-	if(Status_window != 0){
-		SetPortWindowPort(Status_window);
-        
-		//setup_status_fonts();
-		//printcmin_cmax();
-		update_status();
-	}
+     if(Status_window != 0){
+     SetPortWindowPort(Status_window);
+     
+     //setup_status_fonts();
+     //printcmin_cmax();
+     update_status();
+     }
      */
-	return NO_ERR;
-	
+    return NO_ERR;
+    
 }
 
 int saveprefs(char* name)
@@ -578,15 +587,15 @@ int saveprefs(char* name)
     //int fd = creat(name,PMODE);
     int fd = open(name,WMODE);
     if(fd == -1) {
-		beep();
+        beep();
         printf("Could not open preferences: %s",name);
-		return FILE_ERR;
-	}
+        return FILE_ERR;
+    }
     
     int nbytes = sizeof(oma2UIData);
     write(fd,(char*)&UIData,nbytes);
     
-
+    
     close(fd);
     return NO_ERR;
 }
@@ -595,8 +604,8 @@ int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im)
     int nr,swap_bytes;
     char ch;
     TWOBYTE *scpt,tmp_2byte;
-
-
+    
+    
     /*  68000 aranges text differently */
     for(nr=0; nr < COMLEN; nr += 2) {
         ch = comment[nr+1];
@@ -610,18 +619,18 @@ int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im)
         swap_bytes_routine((char*)trailer,TRAILEN,2);
     }
     
-    if(trailer[IS_COLOR_] == 1) 
+    if(trailer[IS_COLOR_] == 1)
         im->specs[IS_COLOR] = 1;
-    else 
+    else
         im->specs[IS_COLOR] = 0;
     
-    if(trailer[RULER_CODE] == MAGIC_NUMBER) {	// If there was a ruler defined 
+    if(trailer[RULER_CODE] == MAGIC_NUMBER) {	// If there was a ruler defined
         im->specs[HAS_RULER] = 1;
         
         scpt = (TWOBYTE*) &(im->values[RULER_SCALE]);
         if(swap_bytes) {
             *(scpt+1) = trailer[OLD_RULER_SCALE];
-            *(scpt) = trailer[OLD_RULER_SCALE+1];	
+            *(scpt) = trailer[OLD_RULER_SCALE+1];
             // need to change the order of values in the trailer as well
             tmp_2byte = trailer[OLD_RULER_SCALE];
             trailer[OLD_RULER_SCALE] = trailer[OLD_RULER_SCALE+1];
@@ -654,15 +663,15 @@ int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im)
     return swap_bytes;
 }
 
-int getpalettefile(char* name) 
+int getpalettefile(char* name)
 {
     // read from a file into the palette specified by UIData.thepalette
-    extern RGBColor color[256][8];    
+    extern RGBColor color[256][8];
     
     unsigned short i;
     int fd;
-	unsigned char thecolors[256];
-	
+    unsigned char thecolors[256];
+    
     fd = open(name,READBINARY);
     if(fd == -1) {
         beep();
@@ -680,7 +689,7 @@ int getpalettefile(char* name)
     for(i=0; i<256; i++)
         color[i][UIData.thepalette].blue = thecolors[i];
     
-	return 0;
+    return 0;
 }
 
 //********************************************************
@@ -693,52 +702,52 @@ int getpalettefile(char* name)
 int readTiff(char* filename,Image* im)
 {
     
-	uint16 		photometric;
-	uint16 		compression;
-	uint16 		bitspersample;
-	uint16 		bytespersample;
-	uint16 		config;
-	uint32 		rowsperstrip = (uint32) -1;
-	uint16 		fillorder = 1;
-	
-	uint16 		spp;
-	TIFF 		*image;
-	uint32 		w, h, countbyte;
-	uint32 		*bytecounts;
+    uint16 		photometric;
+    uint16 		compression;
+    uint16 		bitspersample;
+    uint16 		bytespersample;
+    uint16 		config;
+    uint32 		rowsperstrip = (uint32) -1;
+    uint16 		fillorder = 1;
     
-	extern int is_big_endian;
-	extern Variable user_variables[];
+    uint16 		spp;
+    TIFF 		*image;
+    uint32 		w, h, countbyte;
+    uint32 		*bytecounts;
     
-	//****/  V A R I A B L E S - Added by PKALT 8Apr03
-	
-	DATAWORD		*datpk2,*pt_green,*pt_blue;	// Pointer to buffer
-	uint8  			*buffer, tempbyte;			// PKALT lets give it a try
-	int				count;		// Loop counters...
-	unsigned long	imageOffset;
-	unsigned long	bufferSize;
-	unsigned long	result;
-	int				stripMax, stripCount;
-	int				IFDPageNo;				// Page number for Multiple Images in 1 TIFF file
-	tsize_t			stripSize;
-	unsigned short		pkDW;
+    extern int is_big_endian;
+    extern Variable user_variables[];
+    
+    //****/  V A R I A B L E S - Added by PKALT 8Apr03
+    
+    DATAWORD		*datpk2,*pt_green,*pt_blue;	// Pointer to buffer
+    uint8  			*buffer, tempbyte;			// PKALT lets give it a try
+    int				count;		// Loop counters...
+    unsigned long	imageOffset;
+    unsigned long	bufferSize;
+    unsigned long	result;
+    int				stripMax, stripCount;
+    int				IFDPageNo;				// Page number for Multiple Images in 1 TIFF file
+    tsize_t			stripSize;
+    unsigned short		pkDW;
     int npts;
-	
+    
     IFDPageNo = 0;
-	
-	image = TIFFOpen(filename, "r");
-	if (image == NULL) {
+    
+    image = TIFFOpen(filename, "r");
+    if (image == NULL) {
         beep();
         printf("Error Opening TIFF File %s\n", filename);
         return FILE_ERR;
     }
-
-	//***
-	//***  L i b T I F F   C A L L S   T O   G E T F I E L D
-	//***
-	//**  Move to the Right Directory (For multifile TIFF images)
-	
-	/* this seems to exclude tiff files from a movie sequence, so take it out
-	 
+    
+    //***
+    //***  L i b T I F F   C A L L S   T O   G E T F I E L D
+    //***
+    //**  Move to the Right Directory (For multifile TIFF images)
+    
+    /* this seems to exclude tiff files from a movie sequence, so take it out
+     
      for (count=0; count < IFDPageNo; count++){
      if (TIFFReadDirectory(image) == 0){
      beep();
@@ -746,97 +755,97 @@ int readTiff(char* filename,Image* im)
      return(-1);
      }
      }
-	 */
-	// Read the TIFF fields
-	TIFFGetField(image, TIFFTAG_PHOTOMETRIC, &photometric);
-	
-	if (TIFFGetField(image, TIFFTAG_FILLORDER, &fillorder)) {
-		if(fillorder != FILLORDER_MSB2LSB) printf("Fill Order is strange!!\n");
-	}
+     */
+    // Read the TIFF fields
+    TIFFGetField(image, TIFFTAG_PHOTOMETRIC, &photometric);
     
-	if (TIFFGetField(image, TIFFTAG_BITSPERSAMPLE, &bitspersample)) {
-		printf("%d bits per sample.\n",bitspersample);
-	}
-	bytespersample = (short)bitspersample/8;
-	//printf("%d bytes per sample.\n",bytespersample);
-	TIFFGetField(image, TIFFTAG_SAMPLESPERPIXEL, &spp);
-	if (spp != 1 && spp != 3) {
-		printf("Samples per pixel recorded as: %d\nDisregard...\n",spp);
-		spp = 1;
-	} else {
-		printf("%d Samples per pixel\n",spp);
-	}
+    if (TIFFGetField(image, TIFFTAG_FILLORDER, &fillorder)) {
+        if(fillorder != FILLORDER_MSB2LSB) printf("Fill Order is strange!!\n");
+    }
     
-	TIFFGetField(image, TIFFTAG_IMAGEWIDTH,  &w);
-	TIFFGetField(image, TIFFTAG_IMAGELENGTH, &h);
-	TIFFGetField(image, TIFFTAG_PLANARCONFIG, &config);
-	
-	if (config != PLANARCONFIG_CONTIG) {
-		printf("Can only handle contiguous data packing\n");
-	}
-	TIFFGetField(image, TIFFTAG_COMPRESSION, &compression);
-	
-	if (TIFFGetField(image, TIFFTAG_ROWSPERSTRIP, &rowsperstrip)) {
-		//printf("%d rows per strip.\n",rowsperstrip);
-	}
-	
-	TIFFGetField(image, TIFFTAG_STRIPBYTECOUNTS, &bytecounts);
-	
-	// Find the number of strips in the image and their size
-	stripSize = TIFFStripSize (image);
-	stripMax = TIFFNumberOfStrips (image);
-	imageOffset = 0;
+    if (TIFFGetField(image, TIFFTAG_BITSPERSAMPLE, &bitspersample)) {
+        printf("%d bits per sample.\n",bitspersample);
+    }
+    bytespersample = (short)bitspersample/8;
+    //printf("%d bytes per sample.\n",bytespersample);
+    TIFFGetField(image, TIFFTAG_SAMPLESPERPIXEL, &spp);
+    if (spp != 1 && spp != 3) {
+        printf("Samples per pixel recorded as: %d\nDisregard...\n",spp);
+        spp = 1;
+    } else {
+        printf("%d Samples per pixel\n",spp);
+    }
     
-	// Allocate the memory for the buffer used in TIFFReadImage
-	bufferSize = TIFFNumberOfStrips (image) * stripSize;
-	//printf("%d buff size\n",bufferSize);
-	if((buffer = (uint8 *) malloc(bufferSize)) == NULL){
-		beep();
-		printf("Cannot Allocate Memory for TIFF File Read\n");
-		return MEM_ERR;
-	}
-	
-	// Sort out the OMA impdef variables for the header
-	im->specs[COLS] = w;
-	im->specs[ROWS] = h*spp;
-	im->specs[DX] = im->specs[DY] = 1;
-	im->specs[X0] = im->specs[Y0] = 0;
-	npts = im->specs[COLS]*im->specs[ROWS];
-	
+    TIFFGetField(image, TIFFTAG_IMAGEWIDTH,  &w);
+    TIFFGetField(image, TIFFTAG_IMAGELENGTH, &h);
+    TIFFGetField(image, TIFFTAG_PLANARCONFIG, &config);
+    
+    if (config != PLANARCONFIG_CONTIG) {
+        printf("Can only handle contiguous data packing\n");
+    }
+    TIFFGetField(image, TIFFTAG_COMPRESSION, &compression);
+    
+    if (TIFFGetField(image, TIFFTAG_ROWSPERSTRIP, &rowsperstrip)) {
+        //printf("%d rows per strip.\n",rowsperstrip);
+    }
+    
+    TIFFGetField(image, TIFFTAG_STRIPBYTECOUNTS, &bytecounts);
+    
+    // Find the number of strips in the image and their size
+    stripSize = TIFFStripSize (image);
+    stripMax = TIFFNumberOfStrips (image);
+    imageOffset = 0;
+    
+    // Allocate the memory for the buffer used in TIFFReadImage
+    bufferSize = TIFFNumberOfStrips (image) * stripSize;
+    //printf("%d buff size\n",bufferSize);
+    if((buffer = (uint8 *) malloc(bufferSize)) == NULL){
+        beep();
+        printf("Cannot Allocate Memory for TIFF File Read\n");
+        return MEM_ERR;
+    }
+    
+    // Sort out the OMA impdef variables for the header
+    im->specs[COLS] = w;
+    im->specs[ROWS] = h*spp;
+    im->specs[DX] = im->specs[DY] = 1;
+    im->specs[X0] = im->specs[Y0] = 0;
+    npts = im->specs[COLS]*im->specs[ROWS];
+    
     if(spp == 3){
         im->specs[IS_COLOR] = 1;
     } else {
         im->specs[IS_COLOR] = 0;
     }
     
-	// Allocate memory for the new OMA image 
+    // Allocate memory for the new OMA image
     im->setspecs(im->specs);
-	if(im->error){
-		return MEM_ERR;
-	}
-	
-	datpk2 = im->data;
-	pt_green = datpk2 + h*w;
-	pt_blue =  pt_green + h*w;
+    if(im->error){
+        return MEM_ERR;
+    }
     
-	// The number of TOTAL bytes remaining to be read (initially the whole lot)
-	countbyte = w * h * bytespersample*spp;
-	
-	//Transfer the image from the LibTIFF to Buffers
-	for (stripCount = 0; stripCount<stripMax; stripCount++){
-		if((result = TIFFReadEncodedStrip (image, stripCount,
+    datpk2 = im->data;
+    pt_green = datpk2 + h*w;
+    pt_blue =  pt_green + h*w;
+    
+    // The number of TOTAL bytes remaining to be read (initially the whole lot)
+    countbyte = w * h * bytespersample*spp;
+    
+    //Transfer the image from the LibTIFF to Buffers
+    for (stripCount = 0; stripCount<stripMax; stripCount++){
+        if((result = TIFFReadEncodedStrip (image, stripCount,
                                            buffer + imageOffset,
                                            stripSize)) == -1){
-			beep();
-			printf("Read error on input strip number %d\n", stripCount);
-			return(-1);
-		}
-		imageOffset += result;
-	}
+            beep();
+            printf("Read error on input strip number %d\n", stripCount);
+            return(-1);
+        }
+        imageOffset += result;
+    }
     
-	// Deal with Photometric Interpretations
-	
-	/*
+    // Deal with Photometric Interpretations
+    
+    /*
      if(photometric != PHOTOMETRIC_MINISBLACK){
      // Flip bits
      printf("Fixing the Photometric Interpretation\n");
@@ -844,30 +853,30 @@ int readTiff(char* filename,Image* im)
      buffer[count] = ~buffer[count];
      }
      */
-	
-	//if (photometric == PHOTOMETRIC_MINISBLACK) printf("Photometric: Min is BLACK\n");
-	//if (photometric == PHOTOMETRIC_MINISWHITE) printf("Photometric: Min is WHITE\n");
     
-	// Deal with the FILL Order
-	if(fillorder != FILLORDER_MSB2LSB){
-		// We need to swap bits - ABCDEFGH becomes HGFEDCBA
-		printf("Fixing the Fill Order to Big Endian\n");
-		for(count = 0; count<bufferSize; count++){
-			tempbyte = 0;
-			if(buffer[count] & 128) tempbyte += 1;
-			if(buffer[count] & 64) tempbyte += 2;
-			if(buffer[count] & 32) tempbyte += 4;
-			if(buffer[count] & 16) tempbyte += 8;
-			if(buffer[count] & 8) tempbyte += 16;
-			if(buffer[count] & 4) tempbyte += 32;
-			if(buffer[count] & 2) tempbyte += 64;
-			if(buffer[count] & 1) tempbyte += 128;
-			buffer[count] = tempbyte;
-		}
-	}
-	
-	//  Move the Buffer to the image
-	for (count = 0; count < npts; count++) {
+    //if (photometric == PHOTOMETRIC_MINISBLACK) printf("Photometric: Min is BLACK\n");
+    //if (photometric == PHOTOMETRIC_MINISWHITE) printf("Photometric: Min is WHITE\n");
+    
+    // Deal with the FILL Order
+    if(fillorder != FILLORDER_MSB2LSB){
+        // We need to swap bits - ABCDEFGH becomes HGFEDCBA
+        printf("Fixing the Fill Order to Big Endian\n");
+        for(count = 0; count<bufferSize; count++){
+            tempbyte = 0;
+            if(buffer[count] & 128) tempbyte += 1;
+            if(buffer[count] & 64) tempbyte += 2;
+            if(buffer[count] & 32) tempbyte += 4;
+            if(buffer[count] & 16) tempbyte += 8;
+            if(buffer[count] & 8) tempbyte += 16;
+            if(buffer[count] & 4) tempbyte += 32;
+            if(buffer[count] & 2) tempbyte += 64;
+            if(buffer[count] & 1) tempbyte += 128;
+            buffer[count] = tempbyte;
+        }
+    }
+    
+    //  Move the Buffer to the image
+    for (count = 0; count < npts; count++) {
         if (bytespersample != 1) {
             if(is_big_endian)
                 //pkDW =  ((buffer[count*bytespersample]<<8| buffer[count*bytespersample+1]))/2;
@@ -892,32 +901,33 @@ int readTiff(char* filename,Image* im)
         } else {
             *(datpk2++) = pkDW;
         }
-	}
+    }
     
-	//Clode the TIFF File using the LibTIFF call
-	(void) TIFFClose(image);
+    //Clode the TIFF File using the LibTIFF call
+    (void) TIFFClose(image);
     
-	// Pass the OMA image to datpt
+    // Pass the OMA image to datpt
     
-	// Free up loose memory
-	if (buffer) _TIFFfree(buffer);
-	
-	if( bitspersample == 16){
-		//trailer[SFACTR] = 2;
-	}
-	user_variables[0].fvalue = user_variables[0].ivalue = spp;
-	return NO_ERR;
+    // Free up loose memory
+    if (buffer) _TIFFfree(buffer);
+    
+    if( bitspersample == 16){
+        //trailer[SFACTR] = 2;
+    }
+    user_variables[0].fvalue = user_variables[0].ivalue = spp;
+    return NO_ERR;
 }
 #endif
 
 /* ********** */
+
+
 int readHobj(char* filename,Image* theImage){
     int fd;
     extern int windowNameMemory;
     char buffer[256];
     char* pointer;
-    
-    
+
     printf("Read .hobj format image.\n");
     
     fd = open(filename,READBINARY);
@@ -969,13 +979,13 @@ int readHobj(char* filename,Image* theImage){
     float *fptr;
     int *iptr;
     
-
+    
     
     //
     bin_header = 84+rows*6 + 16;
     bin_rows = rows;
     bin_cols = cols;
-    binary_file_bytes_per_data_point = bytesPerPix;
+    binary_file_bytes_per_data_point = (int)bytesPerPix;
     swap_bytes_flag = 1;
     unsigned_flag = 1;
     //
@@ -1089,9 +1099,70 @@ int readHobj(char* filename,Image* theImage){
     }
     //iBuffer.free();     // release the old data
     *theImage = newImage;   // this is the new data
+    
+    
+    if(binary_file_bytes_per_data_point == 2 && UIData.decodeHobjFlag == 1){
+        decodeHobj(theImage, theImage->width(), theImage->height());
+    }
+    if(UIData.demosaicHobjFlag !=HOBJ_NO_DEMOSAIC && UIData.decodeHobjFlag == 1){
+        
+        if (UIData.demosaicHobjFlag == HOBJ_DOC2RGB){
+            int bayer[2][2] = {0,1,1,2};
+            int newrow = theImage->specs[ROWS]/2;
+            int newcol = theImage->specs[COLS]/2;
+            int row,col;
+            Image red(newrow,newcol),green(newrow,newcol),blue(newrow,newcol);
+            for (row=0; row < newrow*2; row++) {
+                for (col=0; col < newcol*2; col++){
+                    switch (bayer[row&1][col&1]){
+                        case 0:		// red
+                            red.setpix(row/2,col/2,theImage->getpix(row,col));   //*datp++;
+                            break;
+                        case 1:		// green
+                            if(row&1){
+                                green.setpix(row/2,col/2,(green.getpix(row/2,col/2)+theImage->getpix(row,col))/2.);
+                            } else {
+                                green.setpix(row/2,col/2,theImage->getpix(row,col));// =  *datp++;
+                            }
+                            break;
+                        case 2:		// blue
+                            blue.setpix(row/2,col/2,theImage->getpix(row,col));// *pt_blue++ =  *datp++;
+                            break;
+                    }
+                }
+                //if(header[NCHAN]&1) datp++;	// there may be an odd number of columns
+            }
+            red.composite(green);
+            red.composite(blue);
+            theImage->free();     // release the old data
+            *theImage = red;   // this is the new data
+            theImage->specs[IS_COLOR] = 1;
+        } else if(UIData.demosaicHobjFlag == HOBJ_BILINEAR){
+            Image newIm(theImage->height()*3,theImage->width());
+            if(newIm.err()){
+                return newIm.err();
+            }
+            newIm.specs[IS_COLOR] = 1;
+            newIm.demosaic(*theImage, 0, 0, 0);
+            theImage->free();     // release the old data
+            *theImage = newIm;   // this is the new data
+            
+        } else if(UIData.demosaicHobjFlag == HOBJ_MALVAR){
+            Image newIm(theImage->height()*3,theImage->width());
+            if(newIm.err()){
+                return newIm.err();
+            }
+            newIm.specs[IS_COLOR] = 1;
+            newIm.demosaic(*theImage, 0, 0, 0);
+            theImage->free();     // release the old data
+            *theImage = newIm;   // this is the new data
+        }
+            
+    }
+            
     theImage->getmaxx(PRINT_RESULT);
     update_UI();
-
+    
     
     return NO_ERR;
 }
@@ -1108,7 +1179,7 @@ int readHobj(char* filename,Image* theImage){
 
 int readHDR(char* filename,Image* im){
     
-	DATAWORD	*datpk2,*pt_green,*pt_blue;	// Pointer to buffer
+    DATAWORD	*datpk2,*pt_green,*pt_blue;	// Pointer to buffer
     HDRLoaderResult result;
     int returnOK,count,npts;
     float *hdrptr;
@@ -1125,23 +1196,23 @@ int readHDR(char* filename,Image* im){
     printf("%d %d width height\n", result.width,result.height);
     
     // Sort out the OMA impdef variables for the header
-	im->specs[COLS] = result.width;
-	im->specs[ROWS] = result.height*3;
-	im->specs[DX] = im->specs[DY] = 1;
-	im->specs[X0] = im->specs[Y0] = 0;
-	npts = im->specs[COLS]*im->specs[ROWS];
+    im->specs[COLS] = result.width;
+    im->specs[ROWS] = result.height*3;
+    im->specs[DX] = im->specs[DY] = 1;
+    im->specs[X0] = im->specs[Y0] = 0;
+    npts = im->specs[COLS]*im->specs[ROWS];
     
     im->specs[IS_COLOR] = 1;
     
     // Allocate memory for the new OMA image (including Headers)
     im->setspecs(im->specs);
-	if(im->error){
-		return MEM_ERR;
-	}
-	
-	datpk2 = im->data;
-	pt_green = datpk2 + result.width*result.height;
-	pt_blue =  pt_green + result.width*result.height;
+    if(im->error){
+        return MEM_ERR;
+    }
+    
+    datpk2 = im->data;
+    pt_green = datpk2 + result.width*result.height;
+    pt_blue =  pt_green + result.width*result.height;
     hdrptr = result.cols;
     
     for (count = 0; count < npts; count++) {
@@ -1156,10 +1227,10 @@ int readHDR(char* filename,Image* im){
                 *(pt_blue++) = *(hdrptr++);
                 break;
         }
-	}
+    }
     free(result.cols);
     
-	return NO_ERR;
+    return NO_ERR;
 }
 
 
@@ -1180,164 +1251,164 @@ float convertComponent(int expo, int val);
 
 int loadHDR(const char *fileName, HDRLoaderResult *res)
 {
-	int i;
-	char str[200];
-	FILE *file;
+    int i;
+    char str[200];
+    FILE *file;
     
-	file = fopen(fileName, "rb");
-	if (!file)
-		return false;
+    file = fopen(fileName, "rb");
+    if (!file)
+        return false;
     
-	fread(str, 10, 1, file);
-	if (memcmp(str, "#?RADIANCE", 10)) {
-		fclose(file);
-		return false;
-	}
+    fread(str, 10, 1, file);
+    if (memcmp(str, "#?RADIANCE", 10)) {
+        fclose(file);
+        return false;
+    }
     
-	fseek(file, 1, SEEK_CUR);
+    fseek(file, 1, SEEK_CUR);
     
-	char cmd[200];
-	i = 0;
-	char c = 0, oldc;
-	while(true) {
-		oldc = c;
-		c = fgetc(file);
-		if (c == 0xa && oldc == 0xa)
-			break;
-		cmd[i++] = c;
-	}
+    char cmd[200];
+    i = 0;
+    char c = 0, oldc;
+    while(true) {
+        oldc = c;
+        c = fgetc(file);
+        if (c == 0xa && oldc == 0xa)
+            break;
+        cmd[i++] = c;
+    }
     
-	char reso[200];
-	i = 0;
-	while(true) {
-		c = fgetc(file);
-		reso[i++] = c;
-		if (c == 0xa)
-			break;
-	}
+    char reso[200];
+    i = 0;
+    while(true) {
+        c = fgetc(file);
+        reso[i++] = c;
+        if (c == 0xa)
+            break;
+    }
     
-	int w, h;
-	if (!sscanf(reso, "-Y %d +X %d", &h, &w)) {
-		fclose(file);
-		return false;
-	}
+    int w, h;
+    if (!sscanf(reso, "-Y %d +X %d", &h, &w)) {
+        fclose(file);
+        return false;
+    }
     
-	res->width = w;
-	res->height = h;
+    res->width = w;
+    res->height = h;
     
-	float *cols = (float*) malloc(w * h * 3*sizeof(float));
-	res->cols = cols;
+    float *cols = (float*) malloc(w * h * 3*sizeof(float));
+    res->cols = cols;
     
-	RGBE *scanline = (RGBE*) malloc(w * sizeof(RGBE));
-	if (!scanline) {
-		fclose(file);
-		return false;
-	}
+    RGBE *scanline = (RGBE*) malloc(w * sizeof(RGBE));
+    if (!scanline) {
+        fclose(file);
+        return false;
+    }
     
-	// convert image
-	for (int y = h - 1; y >= 0; y--) {
-		if (decrunch(scanline, w, file) == false)
-			break;
-		workOnRGBE(scanline, w, cols);
-		cols += w * 3;
-	}
+    // convert image
+    for (int y = h - 1; y >= 0; y--) {
+        if (decrunch(scanline, w, file) == false)
+            break;
+        workOnRGBE(scanline, w, cols);
+        cols += w * 3;
+    }
     
-	free(scanline);
-	fclose(file);
+    free(scanline);
+    fclose(file);
     
-	return true;
+    return true;
 }
 
 float convertComponent(int expo, int val)
 {
-	float v = val / 256.0f;
-	float d = (float) pow(2, expo);
-	return v * d;
+    float v = val / 256.0f;
+    float d = (float) pow(2, expo);
+    return v * d;
 }
 
 void workOnRGBE(RGBE *scan, int len, float *cols)
 {
-	while (len-- > 0) {
-		int expo = scan[0][E] - 128;
-		cols[0] = convertComponent(expo, scan[0][R]);
-		cols[1] = convertComponent(expo, scan[0][G]);
-		cols[2] = convertComponent(expo, scan[0][B]);
-		cols += 3;
-		scan++;
-	}
+    while (len-- > 0) {
+        int expo = scan[0][E] - 128;
+        cols[0] = convertComponent(expo, scan[0][R]);
+        cols[1] = convertComponent(expo, scan[0][G]);
+        cols[2] = convertComponent(expo, scan[0][B]);
+        cols += 3;
+        scan++;
+    }
 }
 
 int decrunch(RGBE *scanline, int len, FILE *file)
 {
-	int  i, j;
+    int  i, j;
     
-	if (len < MINELEN || len > MAXELEN)
-		return oldDecrunch(scanline, len, file);
+    if (len < MINELEN || len > MAXELEN)
+        return oldDecrunch(scanline, len, file);
     
-	i = fgetc(file);
-	if (i != 2) {
-		fseek(file, -1, SEEK_CUR);
-		return oldDecrunch(scanline, len, file);
-	}
-    
-	scanline[0][G] = fgetc(file);
-	scanline[0][B] = fgetc(file);
-	i = fgetc(file);
-    
-	if (scanline[0][G] != 2 || scanline[0][B] & 128) {
-		scanline[0][R] = 2;
-		scanline[0][E] = i;
-		return oldDecrunch(scanline + 1, len - 1, file);
-	}
-    
-	// read each component
-	for (i = 0; i < 4; i++) {
-	    for (j = 0; j < len; ) {
-			unsigned char code = fgetc(file);
-			if (code > 128) { // run
-			    code &= 127;
-			    unsigned char val = fgetc(file);
-			    while (code--)
-					scanline[j++][i] = val;
-			}
-			else  {	// non-run
-			    while(code--)
-					scanline[j++][i] = fgetc(file);
-			}
-		}
+    i = fgetc(file);
+    if (i != 2) {
+        fseek(file, -1, SEEK_CUR);
+        return oldDecrunch(scanline, len, file);
     }
     
-	return feof(file) ? false : true;
+    scanline[0][G] = fgetc(file);
+    scanline[0][B] = fgetc(file);
+    i = fgetc(file);
+    
+    if (scanline[0][G] != 2 || scanline[0][B] & 128) {
+        scanline[0][R] = 2;
+        scanline[0][E] = i;
+        return oldDecrunch(scanline + 1, len - 1, file);
+    }
+    
+    // read each component
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < len; ) {
+            unsigned char code = fgetc(file);
+            if (code > 128) { // run
+                code &= 127;
+                unsigned char val = fgetc(file);
+                while (code--)
+                    scanline[j++][i] = val;
+            }
+            else  {	// non-run
+                while(code--)
+                    scanline[j++][i] = fgetc(file);
+            }
+        }
+    }
+    
+    return feof(file) ? false : true;
 }
 
 int oldDecrunch(RGBE *scanline, int len, FILE *file)
 {
-	int i;
-	int rshift = 0;
-	
-	while (len > 0) {
-		scanline[0][R] = fgetc(file);
-		scanline[0][G] = fgetc(file);
-		scanline[0][B] = fgetc(file);
-		scanline[0][E] = fgetc(file);
-		if (feof(file))
-			return false;
+    int i;
+    int rshift = 0;
+    
+    while (len > 0) {
+        scanline[0][R] = fgetc(file);
+        scanline[0][G] = fgetc(file);
+        scanline[0][B] = fgetc(file);
+        scanline[0][E] = fgetc(file);
+        if (feof(file))
+            return false;
         
-		if (scanline[0][R] == 1 &&
-			scanline[0][G] == 1 &&
-			scanline[0][B] == 1) {
-			for (i = scanline[0][E] << rshift; i > 0; i--) {
-				memcpy(&scanline[0][0], &scanline[-1][0], 4);
-				scanline++;
-				len--;
-			}
-			rshift += 8;
-		}
-		else {
-			scanline++;
-			len--;
-			rshift = 0;
-		}
-	}
-	return true;
+        if (scanline[0][R] == 1 &&
+            scanline[0][G] == 1 &&
+            scanline[0][B] == 1) {
+            for (i = scanline[0][E] << rshift; i > 0; i--) {
+                memcpy(&scanline[0][0], &scanline[-1][0], 4);
+                scanline++;
+                len--;
+            }
+            rshift += 8;
+        }
+        else {
+            scanline++;
+            len--;
+            rshift = 0;
+        }
+    }
+    return true;
 }

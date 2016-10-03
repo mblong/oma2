@@ -12,14 +12,14 @@
 // select cameras here
 
 #define GIGE_
-#define SBIG
-#define GPHOTO
+//#define SBIG
+//#define GPHOTO
 
 // end of camera selection section
 
 // select other hardware here
 
-#define LJU3
+//#define LJU3
 #define SERIAL_PORT
 //#define VISA
 

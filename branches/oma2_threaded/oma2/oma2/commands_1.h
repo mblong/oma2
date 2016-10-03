@@ -58,6 +58,7 @@ int doc2color_c(int n, char* args);
 int divRGB_c(int,char*);
 int disp2rgb_c(int,char*);
 int demosaic_c(int,char*);
+int decodeHobj_c(int,char*);
 
 int echo_c(int,char*);
 int extra_c(int,char*);
@@ -90,6 +91,7 @@ int hdrAcadd_c(int,char*);
 int hdrAcdelete_c(int,char*);
 int hdrAcget_c(int,char*);
 int hdrNumget_c(int,char*);
+int hobjSettings_c(int,char*);
 
 
 int invert_c(int,char*);
@@ -175,6 +177,7 @@ int x0_c(int n,char* args);
 int y0_c(int n,char* args);
 
 // Others
+
 int temp_image_index (char* name,int define);
 int loadmatch(char* name);
 int loadwarp(char* name);
@@ -188,6 +191,6 @@ int calc(point,point);
 float tabfun(int,float);
 
 float ranfGauss();
-
+void decodeHobj(Image*,int,int);
 
 //#endif

@@ -214,6 +214,9 @@ DOUTPUT channel state
 DEMOSAIC redX redY [algorithm]
 	Assume the current image is a raw Bayer intensity profile and perform demosaicing to produce an RGB image of the same size with three color channels. redX and redY are the x and y coordinates of the first red pixel and must be either 0 or 1 (default is 0, 0). The optional algorithm value specifies what demosaicing algorithm to apply. 0 -> bilinear (default). 1 -> Malvar.
 
+DECODEHOBJ
+	Assume the current image has the proprietary .hobj format (from Halcon), and has not been decoded. This attempts to decode the image. See the command HOBJSETTINGS for how this decoding can be done automatically.
+
 ERASE [n]
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.
 
@@ -361,6 +364,9 @@ HDRACGET
 
 HDRNUMGET
 	Returns an image based on the data in the HDR counter, which has the number of images that contribute to the HDR image at each pixel. This "counter" image becomes the current image. The previous contents of the image data buffer are destroyed.
+
+HOBJSETTINGS <decodeFlag> <demosaicSetting>
+	With no arguments, this command gives information on how .hobj files will be read in. If arguments are given, the decodeFlag and demosaicSetting are specified. A nonzero decodeFlag will cause automatic decoding of .hobj files when they are read in. The demosaicSetting has the following values/meanings: 0 = no demosaicing done (appropriate for monochrome images); 1 = treat as a color image and demosaic using DOC2RGB 0 1 1 2; 2 = treat as a color image and demosaic using the bilinear algorithm with the red pixel at 0,0; 3 = treat as a color image and demosaic using the Malvar algorithm with the red pixel at 0,0.
 
 IF condition
 	If condition evaluates to a non-zero value, the commands following the IF are executed. However, if the condition is zero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators < (less than), > (greater than), others to come....

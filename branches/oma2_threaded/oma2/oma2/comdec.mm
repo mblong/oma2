@@ -67,6 +67,7 @@ ComDef   commands[] =    {
     {{"DOC2COLOR      "},	doc2color_c},
     {{"DISP2RGB       "},	disp2rgb_c},
     {{"DEMOSAIC       "},	demosaic_c},
+    {{"DECODEHOBJ     "},	decodeHobj_c},
     
     {{"ERASE          "},	erase},
     {{"ENDIF          "},	endifcmnd},
@@ -108,6 +109,7 @@ ComDef   commands[] =    {
     {{"HDRACDELETE    "},	hdrAcdelete_c},
     {{"HDRACGET       "},	hdrAcget_c},
     {{"HDRNUMGET      "},	hdrNumget_c},
+    {{"HOBJSETTINGS   "},	hobjSettings_c},
     
     {{"IF             "},	ifcmnd},
     {{"IFNOT          "},	ifnotcmnd},
