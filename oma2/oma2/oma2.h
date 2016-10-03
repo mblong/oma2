@@ -223,6 +223,10 @@ typedef struct {
     int highlightSaturatedGreen;
     int highlightSaturatedBlue;
     
+    int decodeHobjFlag;     // setting for automatic decoding Halcon .hobj files
+    int demosaicHobjFlag;    // setting for whether or not the demosaic after decoding
+ 
+    
     /*
 	settings[4] = detector;
 	settings[8] = showselection;

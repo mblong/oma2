@@ -5089,3 +5089,116 @@ int demosaic_c(int n,char* args){
     
     return NO_ERR;
 }
+
+/* ************************* */
+
+
+int decodeHobj_c(int n,char* args)
+{
+    int height = iBuffer.height();
+    int width = iBuffer.width();
+    
+    if (iBuffer.isColor()) {
+        height *=3;
+    }
+    decodeHobj(&iBuffer,width, height);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
+
+void decodeHobj(Image* theImage,int width, int height){
+    int nt,nc,tweak;
+    unsigned int x0,x1;
+    
+    for(nt=0; nt<height; nt++) {
+        for(nc=0; nc<width;nc++){
+            // check for crossed a 256 boundary
+            /*
+             // This bounds checking is not required because of the way the getpix method works
+             int dec = 1;
+             int inc = 1;
+             if (nc == 0) dec = 0;
+             if (nc == width-1) inc = 0;
+             x0 = iBuffer.getpix(nt,nc-dec);
+             x1 = iBuffer.getpix(nt,nc+inc);
+             */
+            x0 = theImage->getpix(nt,nc-1);
+            x1 = theImage->getpix(nt,nc+1);
+            x1/=256;
+            x0/=256;
+            if(x1 != x0){
+                // we crossed a boundary
+                tweak = 256*(x1-x0);
+                theImage->setpix(nt,nc,theImage->getpix(nt,nc)+tweak);
+            }
+        }
+    }
+    
+}
+
+/* ************************* */
+
+
+int hobjSettings_c(int n,char* args)
+{
+    // default values
+    int decode = 1;
+    int demosaic = 0;
+
+    int nargs = sscanf(args,"%d %d",&decode,&demosaic);
+    printf("Settings for .hobj files are:\n");
+    if(nargs <= 0){
+        if (UIData.decodeHobjFlag){
+            printf("Automatic decoding.\n");
+            switch (UIData.demosaicHobjFlag) {
+                case HOBJ_DOC2RGB:
+
+                    printf("Demosaic using DOC2RGB 0 1 1 2\n");
+                    break;
+                case HOBJ_BILINEAR:
+                    printf("Demosaic using BILINEAR,  Red Pixel at 0,0\n");
+                    break;
+                case HOBJ_MALVAR:
+                    printf("Demosaic using MALVAR,  Red Pixel at 0,0\n");
+                    break;
+                case HOBJ_NO_DEMOSAIC:
+                default:
+                    printf("No demosaicing.\n");
+                    break;
+            }
+            return NO_ERR;
+        } else {
+            printf("No automatic decoding.\n");
+            return NO_ERR;
+        }
+    }
+    UIData.decodeHobjFlag = decode;
+    
+    if(UIData.decodeHobjFlag){
+        printf("Automatic decoding.\n");
+        switch (demosaic) {
+            case 1:
+                UIData.demosaicHobjFlag = HOBJ_DOC2RGB;
+                printf("Demosaic using DOC2RGB 0 1 1 2\n");
+                break;
+            case 2:
+                UIData.demosaicHobjFlag = HOBJ_BILINEAR;
+                printf("Demosaic using BILINEAR,  Red Pixel at 0,0\n");
+                break;
+            case 3:
+                UIData.demosaicHobjFlag = HOBJ_MALVAR;
+                printf("Demosaic using MALVAR,  Red Pixel at 0,0\n");
+                break;
+            case 0:
+            default:
+                UIData.demosaicHobjFlag = HOBJ_NO_DEMOSAIC;
+                printf("No demosaicing.\n");
+                break;
+        }
+    }else{
+        printf("No automatic decoding.\n");
+    }
+    return NO_ERR;
+}
+
