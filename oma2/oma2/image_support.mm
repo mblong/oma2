@@ -82,6 +82,10 @@ void setUpUIData(){
     UIData.highlightSaturatedRed = 255;
     UIData.highlightSaturatedGreen = 255;
     UIData.highlightSaturatedBlue = 0;
+    
+    UIData.decodeHobjFlag = 1;     // setting for automatic decoding Halcon .hobj files
+    UIData.demosaicHobjFlag = HOBJ_NO_DEMOSAIC;    // setting for whether or not the demosaic after decoding
+
 }
 
 int two_to_four(DATAWORD* dpt, int num, TWOBYTE scale)
@@ -1137,6 +1141,8 @@ int readHobj(char* filename,Image* theImage){
             theImage->free();     // release the old data
             *theImage = red;   // this is the new data
             theImage->specs[IS_COLOR] = 1;
+            green.free();
+            blue.free();
         } else if(UIData.demosaicHobjFlag == HOBJ_BILINEAR){
             Image newIm(theImage->height()*3,theImage->width());
             if(newIm.err()){
