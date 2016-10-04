@@ -48,6 +48,9 @@
  * Width*Height in row-major order.  RedX, RedY are the coordinates of the 
  * upper-rightmost red pixel to specify the CFA pattern.
  */
+
+#include "dmmalvar.h"
+
 void MalvarDemosaic(float *Output, const float *Input, int Width, int Height, 
     int RedX, int RedY)
 {

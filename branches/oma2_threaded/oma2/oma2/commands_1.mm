@@ -3895,7 +3895,8 @@ int doc2rgb_c(int n, char* args){
     
     red.composite(green);
     red.composite(blue);
-    
+    green.free();
+    blue.free();
     iBuffer.free();     // release the old data
     iBuffer = red;   // this is the new data
     specs[IS_COLOR] = 1;

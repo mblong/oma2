@@ -892,7 +892,7 @@
 					"/usr/local/lib/**",
 					"/opt/local/lib/**",
 				);
-				OTHER_LDFLAGS = "-lgphoto2";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = oma2cam;
 				WRAPPER_EXTENSION = app;
 			};
@@ -924,7 +924,7 @@
 					"/usr/local/lib/**",
 					"/opt/local/lib/**",
 				);
-				OTHER_LDFLAGS = "-lgphoto2";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = oma2cam;
 				WRAPPER_EXTENSION = app;
 			};

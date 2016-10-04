@@ -60,14 +60,12 @@ Image::Image()              // create an empty Image with default values
     extra = NULL;
 }
 
-/*
+
 Image::~Image()
 {
-    if(data)delete data;
-    if(comment)delete comment;
-    if(extra)delete extra;
+    //free();
 }
-*/
+
 
 Image::Image(int rows, int cols)
 {
@@ -294,7 +292,7 @@ Image::Image(char* filename, int kindOfName)
     if (doffset > specs[ROWS]*specs[COLS]) {
         char* junkBuf = new char[doffset*dataSize];
         nr = read((int)fd,junkBuf,doffset*dataSize);   // this will be ignored
-        delete junkBuf;
+        delete[] junkBuf;
     } else {
         nr = read((int)fd,data,doffset*dataSize);   // this will be ignored
     }
