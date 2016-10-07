@@ -925,55 +925,16 @@ int readTiff(char* filename,Image* im)
 
 /* ********** */
 
-
-int readHobj(char* filename,Image* theImage){
+int readBinary(char* filename,Image* theImage, int bin_rows, int bin_cols,
+               int bin_header, int binary_file_bytes_per_data_point, int swap_bytes_flag, int unsigned_flag){
     int fd;
-    extern int windowNameMemory;
-    char buffer[256];
-    char* pointer;
-
-    printf("Read .hobj format image.\n");
-    
-    fd = open(filename,READBINARY);
-    if(fd == -1) {
-        windowNameMemory = 0;
-        return FILE_ERR;
-    }
-    unsigned long filesize = fsize(filename);
-    read(fd,buffer,84);
-    pointer = buffer+72;
-    swap_bytes_routine(pointer,4,4);   // 4 bytes taken 4 at a time (1 int)
-    int imagePixels = *((int*)pointer);
-    
-    swap_bytes_routine(buffer+80,4,2);   // 4 bytes taken two at a time (2 shorts)
-    short rows = *((short*)buffer+40)+1;
-    short cols = *((short*)buffer+41)+1;
-    
-    printf("Image width/height is %d x %d. %d image pixels\n",cols,rows, imagePixels);
-    
-    unsigned char* ptr2 = new unsigned char[rows*6]; // skip over this part that has row, start pix, end pix for each row
-    if(ptr2 == 0) {
-        close(fd);
-        return MEM_ERR;
-    }
-    
-    read(fd,ptr2,rows*6);	// skip over the header
-    delete[] ptr2;
-    
-    printf("%d data offset.\n",84+rows*6 +16);
-    read(fd,buffer,16);
-    swap_bytes_routine(buffer,16,4); // 16 bytes taken 4 at a time (4 ints)
-    
-    int samplesPerPix = *(int*)buffer;
-    unsigned long bytesPerPix = *((int*)buffer+1);    // not sure what this is
-    bytesPerPix = filesize/samplesPerPix/imagePixels;
-    printf("%d samples per pixel; %d bytes per pixel\n",samplesPerPix,bytesPerPix);
-    close(fd);
+    //extern int windowNameMemory;
+    //char buffer[256];
+    //char* pointer;
     
     //
     // copy/paste from getbin_c
     //
-    int bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag=0;
     int binary_file_is_float = 0;
     int nbyte,r,c;
     long nr,i;
@@ -982,17 +943,8 @@ int readHobj(char* filename,Image* theImage){
     unsigned char tc;
     float *fptr;
     int *iptr;
+    unsigned char* ptr2;
     
-    
-    
-    //
-    bin_header = 84+rows*6 + 16;
-    bin_rows = rows;
-    bin_cols = cols;
-    binary_file_bytes_per_data_point = (int)bytesPerPix;
-    swap_bytes_flag = 1;
-    unsigned_flag = 1;
-    //
     
     fd = open(filename,READBINARY);
     
@@ -1104,8 +1056,67 @@ int readHobj(char* filename,Image* theImage){
     //iBuffer.free();     // release the old data
     *theImage = newImage;   // this is the new data
     
+    theImage->getmaxx(PRINT_RESULT);
+    update_UI();
     
-    if(binary_file_bytes_per_data_point == 2 && UIData.decodeHobjFlag == 1){
+    return NO_ERR;
+    
+}
+
+/* ********** */
+
+int readHobj(char* filename,Image* theImage){
+    int fd;
+    extern int windowNameMemory;
+    char buffer[256];
+    char* pointer;
+
+    printf("Read .hobj format image.\n");
+    
+    fd = open(filename,READBINARY);
+    if(fd == -1) {
+        windowNameMemory = 0;
+        return FILE_ERR;
+    }
+    unsigned long filesize = fsize(filename);
+    read(fd,buffer,84);
+    pointer = buffer+72;
+    swap_bytes_routine(pointer,4,4);   // 4 bytes taken 4 at a time (1 int)
+    int imagePixels = *((int*)pointer);
+    
+    swap_bytes_routine(buffer+80,4,2);   // 4 bytes taken two at a time (2 shorts)
+    short rows = *((short*)buffer+40)+1;
+    short cols = *((short*)buffer+41)+1;
+    
+    printf("Image width/height is %d x %d. %d image pixels\n",cols,rows, imagePixels);
+    
+    unsigned char* ptr2 = new unsigned char[rows*6]; // skip over this part that has row, start pix, end pix for each row
+    if(ptr2 == 0) {
+        close(fd);
+        return MEM_ERR;
+    }
+    
+    read(fd,ptr2,rows*6);	// skip over the header
+    delete[] ptr2;
+    
+    printf("%d data offset.\n",84+rows*6 +16);
+    read(fd,buffer,16);
+    swap_bytes_routine(buffer,16,4); // 16 bytes taken 4 at a time (4 ints)
+    
+    int samplesPerPix = *(int*)buffer;
+    unsigned long bytesPerPix = *((int*)buffer+1);    // not sure what this is
+    bytesPerPix = filesize/samplesPerPix/imagePixels;
+    printf("%d samples per pixel; %d bytes per pixel\n",samplesPerPix,bytesPerPix);
+    close(fd);
+    
+    // integer arguments to readBinary:
+    //  bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag
+    //
+    int bin_header = 84+rows*6 + 16;
+    //
+    readBinary(filename,theImage,rows,cols,bin_header,(int)bytesPerPix,1, 1);
+    
+    if(bytesPerPix == 2 && UIData.decodeHobjFlag == 1){
         decodeHobj(theImage, theImage->width(), theImage->height());
     }
     if(UIData.demosaicHobjFlag !=HOBJ_NO_DEMOSAIC && UIData.decodeHobjFlag == 1){
@@ -1159,7 +1170,7 @@ int readHobj(char* filename,Image* theImage){
                 return newIm.err();
             }
             newIm.specs[IS_COLOR] = 1;
-            newIm.demosaic(*theImage, 0, 0, 0);
+            newIm.demosaic(*theImage, 0, 0, 1);
             theImage->free();     // release the old data
             *theImage = newIm;   // this is the new data
         }

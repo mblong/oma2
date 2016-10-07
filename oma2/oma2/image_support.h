@@ -36,6 +36,7 @@ typedef struct  {
 int readHDR(char* filename,Image*);
 int loadHDR(const char*, HDRLoaderResult*);
 int readHobj(char* filename,Image*);
+int readBinary(char* filename,Image*,int,int,int,int,int,int);
 
 
 
