@@ -286,14 +286,6 @@ GETBINARYFILE <filename> rows columns headerBytes bytesPerDataPoint swapBytesFla
 int getbin_c(int n,char* args)
 {
     extern char txt[];		     // the file name will be stored here temporarily
-    int fd,nbyte,r,c;
-    long nr,i;
-    unsigned short *usptr;
-    short *sptr;
-    unsigned char* ptr2;
-    unsigned char tc;
-    float *fptr;
-    int *iptr;
     
     int bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag=0;
     int binary_file_is_float = 0;
@@ -310,122 +302,65 @@ int getbin_c(int n,char* args)
         binary_file_bytes_per_data_point = sizeof(float);
         binary_file_is_float = 1;
     }
-    fullname(txt,GET_DATA);		// add prefix and suffix
-    
-    if((fd = open(txt,READMODE)) == -1) {
-        beep();
-        printf("File %s Not Found.\n",txt);
-        return FILE_ERR;
-    }
-    if(bin_header > 0) {
-        ptr2 = new unsigned char[bin_header];
-        if(ptr2 == 0) {
-            close(fd);
-            return MEM_ERR;
-        }
-        
-        read(fd,ptr2,bin_header);	// skip over the header
-        delete[] ptr2;
-    }
-    Image newImage(bin_rows,bin_cols);
-    if(newImage.err()){
-        beep();
-        printf("Could not allocate %d x %d image\n",bin_rows,bin_cols);
-        close(fd);
-        return newImage.err();
-    }
-    
-    nbyte = bin_rows * bin_cols * binary_file_bytes_per_data_point;
-    
-    if( binary_file_bytes_per_data_point == 1) {
-        // allocate memory -- assume unsigned
-        ptr2 = new unsigned char[nbyte];
-        if(ptr2 == 0) {
-            close(fd);
-            return MEM_ERR;
-        }
-        // Read in the actual data
-        nr = read(fd,ptr2, nbyte);
-        printf("%d Bytes read.\n",nr);
-        close(fd);
-        
-        for (r=0,i=0; r<bin_rows; r++) {
-            for (c=0; c<bin_cols; c++) {
-                newImage.setpix(r, c, *(ptr2+i++));
-            }
-        }
-        delete[] ptr2;
-    } else if( binary_file_bytes_per_data_point == sizeof(short)) {
-        // allocate memory
-        sptr = (short*)malloc(nbyte);
-        if(sptr == 0) {
-            close(fd);
-            return MEM_ERR;
-        }
-        // Read in the actual data
-        nr = read(fd,sptr, nbyte);
-        printf("%d Bytes read.\n",nr);
-        close(fd);
-        
-        if(swap_bytes_flag){
-            // fiddle the byte order
-            ptr2 = (unsigned char *)sptr;		// a copy of the data pointer
-            for(i=0; i< nr; i+=2){
-                tc = *(ptr2);
-                *(ptr2) = *(ptr2+1);
-                *(++ptr2) = tc;
-                ptr2++;
-            }
-        }
-        usptr = (unsigned short*) sptr;		// point to the same data
-        for (r=0,i=0; r<bin_rows; r++) {
-            for (c=0; c<bin_cols; c++) {
-                if(unsigned_flag)
-                    newImage.setpix(r, c, *(usptr+i++));
-                else
-                    newImage.setpix(r, c, *(sptr+i++));
-            }
-        }
-        free(sptr);
-    } else if( binary_file_bytes_per_data_point == sizeof(float) && binary_file_is_float) {
-        // allocate memory
-        fptr = (float*)malloc(nbyte);
-        if(fptr == 0) {
-            close(fd);
-            return MEM_ERR;
-        }
-        // Read in the actual data 
-        nr = read(fd,fptr, nbyte);
-        printf("%d Bytes read.\n",nr);
-        close(fd);
-        for (r=0,i=0; r<bin_rows; r++) {
-            for (c=0; c<bin_cols; c++) {
-                newImage.setpix(r, c, *(fptr+i++));
-            }
-        }
-        free(fptr);
-    }  else if( binary_file_bytes_per_data_point == sizeof(int)){
-        // allocate memory
-        iptr = (int*)malloc(nbyte);
-        if(iptr == 0) {
-            close(fd);
-            return MEM_ERR;
-        }
-        // Read in the actual data 
-        nr = read(fd,iptr, nbyte);
-        printf("%d Bytes read.\n",nr);
-        close(fd);
-        for (r=0,i=0; r<bin_rows; r++) {
-            for (c=0; c<bin_cols; c++) {
-                newImage.setpix(r, c, *(iptr+i++));
-            }
-        }
-        free(iptr);
-    }
+    Image newImage;
+    int error = readBinary(fullname(txt,GET_DATA),&newImage,bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag);
+    if(error)return error;
     iBuffer.free();     // release the old data
     iBuffer = newImage;   // this is the new data
     iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
+    return NO_ERR;
+}
+
+/* ********** */
+
+/*
+ 
+ BINARGUMENTS rows columns headerBytes bytesPerDataPoint swapBytesFlag [unsignedFlag]
+  Specify parameters for reading in binary files. If bytesPerDataPoint is -sizeof(float), the binary data are treated as float. Other reasonable values would be 1, 2, or 4. The extension for binary files is specified using the BINEXTENSION command. Once these are specified, binary files can be read in using the GET command, or by dropping them onto the status window.
+ */
+
+int binarguments_c(int n,char* args)
+{
+    
+    extern int bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag;
+    extern char* binaryExtension;
+    
+    if( args != 0){
+        sscanf(args,"%d %d %d %d %d %d",
+                      &bin_rows, &bin_cols, &bin_header, &binary_file_bytes_per_data_point,
+                      &swap_bytes_flag, &unsigned_flag);
+    }
+    printf("Settings for reading binary files with extension %s are:\n%d rows\n%d comumns\n %d header bytes\n%d bytes per point\n",
+           binaryExtension,bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point);
+    printf("%d swap bytes flag\n%d unsigned flag\n",swap_bytes_flag, unsigned_flag);
+        
+    return NO_ERR;
+}
+
+/* ********** */
+
+/*
+ 
+ BINEXTENSION fileExtension
+ Specify the extension for binary files. Together with the BINARGUMENTS command, this allows binary files to be read with GET or dropped onto the status window.
+ */
+
+int binextension_c(int n,char* args)
+{
+    
+    extern int bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag;
+    extern char* binaryExtension;
+    
+    if( args != 0){
+        sscanf(args,"%d %d %d %d %d %d",
+               &bin_rows, &bin_cols, &bin_header, &binary_file_bytes_per_data_point,
+               &swap_bytes_flag, &unsigned_flag);
+    }
+    printf("Settings for reading binary files with extension %s are:\n%d rows\n%d comumns\n %d header bytes\n%d bytes per point\n",
+           binaryExtension,bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point);
+    printf("%d swap bytes flag\n%d unsigned flag\n",swap_bytes_flag, unsigned_flag);
+    
     return NO_ERR;
 }
 

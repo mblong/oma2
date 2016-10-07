@@ -70,14 +70,21 @@ void update_UI(){
 BOOL dropped_file(char* extension, char* name){
     extern int windowNameMemory;
     extern char windowName[];
+    extern char binaryExtension[];
+    char upperCaseBinExt[256];
     
     //printf("File ext is: %s\n",extension);
     printf("File name is: %s\n",name);
-    for(int i=0; i<strlen(extension); i++)
+    int i;
+    for(i=0; i<strlen(extension); i++){
         extension[i] = toupper(extension[i]);
+        upperCaseBinExt[i] = toupper(binaryExtension[i]);
+    }
+    upperCaseBinExt[i]=0;
     if(strcmp(extension, "DAT")==0 || strcmp(extension, "NEF")==0 || strcmp(extension, "JPG")==0
        || strcmp(extension, "TIF")==0 || strcmp(extension, "TIFF")==0 || strcmp(extension, "HDR")==0
-       || strcmp(extension, "O2D")==0 || strcmp(extension, "PNG")==0 || strcmp(extension, "HOBJ")==0){
+       || strcmp(extension, "O2D")==0 || strcmp(extension, "PNG")==0 || strcmp(extension, "HOBJ")==0
+       || strcmp(extension, upperCaseBinExt)==0){
         Image new_im(name,LONG_NAME);
         if(new_im.err()){
             beep();

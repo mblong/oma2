@@ -36,6 +36,8 @@ float windowScaleFactor = 1.;
 char windowName[CHPERLN];
 int windowNameMemory = 0;
 
+char binaryExtension[CHPERLN] = {"raw"};
+int bin_rows = 1024, bin_cols = 1360, bin_header = 0, binary_file_bytes_per_data_point = 2 , swap_bytes_flag = 0, unsigned_flag=0;
 
 
 //extern "C" int get_byte_swap_value(short);
@@ -97,9 +99,11 @@ Image::Image(char* filename, int kindOfName)
     trimName(windowName);
     windowNameMemory = 2;
     
+    int nameLength = (int)strlen(filename);
+    
     // default specs set -- now decide what kind of file we are opening
-    if (strncmp(&filename[strlen(filename)-4],".nef",4) == 0 ||
-        strncmp(&filename[strlen(filename)-4],".NEF",4) == 0) {
+    if (strncmp(&filename[nameLength-4],".nef",4) == 0 ||
+        strncmp(&filename[nameLength-4],".NEF",4) == 0) {
         if (kindOfName == LONG_NAME) {
             color = dcrawGlue(filename,-1,this);
         } else {
@@ -110,10 +114,10 @@ Image::Image(char* filename, int kindOfName)
         return;
     }
 
-    if (strncmp(&filename[strlen(filename)-4],".jpg",4) == 0 ||
-        strncmp(&filename[strlen(filename)-4],".png",4) == 0 ||
-        strncmp(&filename[strlen(filename)-4],".PNG",4) == 0 ||
-        strncmp(&filename[strlen(filename)-4],".JPG",4) == 0) {
+    if (strncmp(&filename[nameLength-4],".jpg",4) == 0 ||
+        strncmp(&filename[nameLength-4],".png",4) == 0 ||
+        strncmp(&filename[nameLength-4],".PNG",4) == 0 ||
+        strncmp(&filename[nameLength-4],".JPG",4) == 0) {
         if (kindOfName == LONG_NAME) {
             //error = read_jpeg(filename,-1,this);
             error = readJpeg(filename,this);
@@ -125,10 +129,10 @@ Image::Image(char* filename, int kindOfName)
         return;
     }
 
-    if (strncmp(&filename[strlen(filename)-4],".tif",4) == 0 ||
-        strncmp(&filename[strlen(filename)-4],".TIF",4) == 0 ||
-        strncmp(&filename[strlen(filename)-5],".tiff",5) == 0||
-        strncmp(&filename[strlen(filename)-5],".TIFF",5) == 0) {
+    if (strncmp(&filename[nameLength-4],".tif",4) == 0 ||
+        strncmp(&filename[nameLength-4],".TIF",4) == 0 ||
+        strncmp(&filename[nameLength-5],".tiff",5) == 0||
+        strncmp(&filename[nameLength-5],".TIFF",5) == 0) {
         if (kindOfName == LONG_NAME) {
             error = readTiff(filename,this);
         } else {
@@ -138,8 +142,8 @@ Image::Image(char* filename, int kindOfName)
         return;
     }
 
-    if (strncmp(&filename[strlen(filename)-4],".hdr",4) == 0 ||
-        strncmp(&filename[strlen(filename)-4],".HDR",4) == 0 ) {
+    if (strncmp(&filename[nameLength-4],".hdr",4) == 0 ||
+        strncmp(&filename[nameLength-4],".HDR",4) == 0 ) {
         if (kindOfName == LONG_NAME) {
             error = readHDR(filename,this);
         } else {
@@ -149,8 +153,8 @@ Image::Image(char* filename, int kindOfName)
         return;
     }
     
-    if (strncmp(&filename[strlen(filename)-5],".hobj",5) == 0 ||
-        strncmp(&filename[strlen(filename)-5],".HOBJ",5) == 0 ) {
+    if (strncmp(&filename[nameLength-5],".hobj",5) == 0 ||
+        strncmp(&filename[nameLength-5],".HOBJ",5) == 0 ) {
         if (kindOfName == LONG_NAME) {
             error = readHobj(filename,this);
         } else {
@@ -159,6 +163,21 @@ Image::Image(char* filename, int kindOfName)
         if (error) windowNameMemory = 0;
         return;
     }
+    // read a binary file that has an extension specified by the BINEXTENSION command
+    // find the extension
+    int i;
+    for (i=0; (filename[nameLength-i] != '.') && (i < nameLength); i++);
+    i--;
+    if (strncmp(&filename[nameLength-i],binaryExtension,i) == 0 ){
+        if (kindOfName == LONG_NAME) {
+            error = readBinary(filename,this,bin_rows,bin_cols,bin_header,binary_file_bytes_per_data_point,swap_bytes_flag,unsigned_flag);
+        } else {
+            error = readBinary(fullname(filename,RAW_DATA),this,bin_rows,bin_cols,bin_header,binary_file_bytes_per_data_point,swap_bytes_flag,unsigned_flag);
+        }
+        if (error) windowNameMemory = 0;
+        return;
+    }
+
 
     switch (kindOfName) {
         case LONG_NAME:

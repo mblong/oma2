@@ -33,6 +33,9 @@ ComDef   commands[] =    {
     {{"BLOCK          "},	block_g},
     {{"BIT8           "},	bit8_c},
     {{"BIT16          "},	bit16_c},
+    {{"BINARGUMENTS   "},	binarguments_c},
+    {{"BINEXTENSION   "},	binextension_c},
+    
     {{"CALCULATE      "},	calc_cmd_c},
     {{"CALCALL        "},	calcall_c},
     {{"CLIP           "},	clip_c},

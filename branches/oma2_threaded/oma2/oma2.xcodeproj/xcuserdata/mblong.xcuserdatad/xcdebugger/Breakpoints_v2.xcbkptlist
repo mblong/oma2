@@ -159,18 +159,18 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             isPathRelative = "1"
             filePath = "oma2/UI.mm"
-            timestampString = "439317384.547453"
+            timestampString = "497556960.505219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
             landmarkName = "dropped_file(char* extension, char* name)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -323,7 +323,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/image_support.mm"
@@ -465,11 +465,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
-            timestampString = "495898969.789423"
+            timestampString = "497559844.763455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "605"
-            endingLineNumber = "605"
+            startingLineNumber = "488"
+            endingLineNumber = "488"
             landmarkName = "frame_c(int n, char* args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -481,11 +481,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
-            timestampString = "495898969.789423"
+            timestampString = "497559844.763455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "766"
-            endingLineNumber = "766"
+            startingLineNumber = "649"
+            endingLineNumber = "649"
             landmarkName = "list_c(int n, char* args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -497,11 +497,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/image.mm"
-            timestampString = "497282817.964858"
+            timestampString = "497556637.221561"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "271"
-            endingLineNumber = "271"
+            startingLineNumber = "290"
+            endingLineNumber = "290"
             landmarkName = "Image::Image(char* filename, int kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -767,22 +767,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "oma2/commands_1.mm"
-            timestampString = "495898969.789423"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "411"
-            endingLineNumber = "411"
-            landmarkName = "getbin_c(int n,char* args)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "oma2/gige.mm"
             timestampString = "480265679.221703"
             startingColumnNumber = "9223372036854775807"
@@ -832,11 +816,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
-            timestampString = "496062570.149249"
+            timestampString = "497559844.763455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3429"
-            endingLineNumber = "3429"
+            startingLineNumber = "3312"
+            endingLineNumber = "3312"
             landmarkName = "integrateFill(int n,char* args, int integratefill )"
             landmarkType = "9">
          </BreakpointContent>
@@ -848,11 +832,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
-            timestampString = "496062570.149249"
+            timestampString = "497559844.763455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3459"
-            endingLineNumber = "3459"
+            startingLineNumber = "3342"
+            endingLineNumber = "3342"
             landmarkName = "integrateFill(int n,char* args, int integratefill )"
             landmarkType = "9">
          </BreakpointContent>
@@ -864,11 +848,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
-            timestampString = "496062570.149249"
+            timestampString = "497559844.763455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2604"
-            endingLineNumber = "2604"
+            startingLineNumber = "2487"
+            endingLineNumber = "2487"
             landmarkName = "grey2rgb_c(int n,char* args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -880,11 +864,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
-            timestampString = "496062570.149249"
+            timestampString = "497559844.763455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3587"
-            endingLineNumber = "3587"
+            startingLineNumber = "3470"
+            endingLineNumber = "3470"
             landmarkName = "closefile_c(int n,char* args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -896,11 +880,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
-            timestampString = "496062570.149249"
+            timestampString = "497559844.763455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3308"
-            endingLineNumber = "3308"
+            startingLineNumber = "3191"
+            endingLineNumber = "3191"
             landmarkName = "hdrAcget_c(int n,char* args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -912,11 +896,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
-            timestampString = "496062570.149249"
+            timestampString = "497559844.763455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4008"
-            endingLineNumber = "4008">
+            startingLineNumber = "3891"
+            endingLineNumber = "3891">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -926,11 +910,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
-            timestampString = "496062570.149249"
+            timestampString = "497559844.763455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3994"
-            endingLineNumber = "3994"
+            startingLineNumber = "3877"
+            endingLineNumber = "3877"
             landmarkName = "uprefix_c(int n,char* args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1060,6 +1044,22 @@
             startingLineNumber = "22"
             endingLineNumber = "22"
             landmarkName = "readJpeg(char* filename,Image* im)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/image.mm"
+            timestampString = "497556637.221561"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "Image::Image(char* filename, int kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
