@@ -470,7 +470,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "488"
             endingLineNumber = "488"
-            landmarkName = "frame_c(int n, char* args)"
+            landmarkName = "croprectangle_c(int n,char* args)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -486,7 +486,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "649"
             endingLineNumber = "649"
-            landmarkName = "list_c(int n, char* args)"
+            landmarkName = "rectan_c(int n, char* args)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -853,7 +853,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2487"
             endingLineNumber = "2487"
-            landmarkName = "grey2rgb_c(int n,char* args)"
+            landmarkName = "gaussian_c(int n,char* args)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -868,9 +868,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3470"
-            endingLineNumber = "3470"
-            landmarkName = "closefile_c(int n,char* args)"
-            landmarkType = "9">
+            endingLineNumber = "3470">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -885,7 +883,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3191"
             endingLineNumber = "3191"
-            landmarkName = "hdrAcget_c(int n,char* args)"
+            landmarkName = "hdrAcadd_c(int n,char* args)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -900,7 +898,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3891"
-            endingLineNumber = "3891">
+            endingLineNumber = "3891"
+            landmarkName = "doc2color_c(int n, char* args)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -915,7 +915,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3877"
             endingLineNumber = "3877"
-            landmarkName = "uprefix_c(int n,char* args)"
+            landmarkName = "doc2color_c(int n, char* args)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

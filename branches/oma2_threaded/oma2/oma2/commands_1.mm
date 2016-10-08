@@ -277,10 +277,9 @@ int getfile_c(int n,char* args){
 
 /* ********** */
 
-/* 
-
+/*
 GETBINARYFILE <filename> rows columns headerBytes bytesPerDataPoint swapBytesFlag [unsignedFlag]
- Read in a binary file with the specified parameters. If bytesPerDataPoint is -sizeof(float), the binary data are treated as float. Other reasonable values would be 1, 2, or 4.
+ Read in a binary file with the specified parameters. If bytesPerDataPoint is -sizeof(float), the binary data are treated as float. Other reasonable values would be 1, 2, or 4. Specified parameters do not change those set with the BINARGUMENTS command.
  */
 
 int getbin_c(int n,char* args)
@@ -315,7 +314,6 @@ int getbin_c(int n,char* args)
 /* ********** */
 
 /*
- 
  BINARGUMENTS rows columns headerBytes bytesPerDataPoint swapBytesFlag [unsignedFlag]
   Specify parameters for reading in binary files. If bytesPerDataPoint is -sizeof(float), the binary data are treated as float. Other reasonable values would be 1, 2, or 4. The extension for binary files is specified using the BINEXTENSION command. Once these are specified, binary files can be read in using the GET command, or by dropping them onto the status window.
  */
@@ -324,24 +322,23 @@ int binarguments_c(int n,char* args)
 {
     
     extern int bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag;
-    extern char* binaryExtension;
+    extern char binaryExtension[];
     
-    if( args != 0){
+    if( args[0] != 0){
         sscanf(args,"%d %d %d %d %d %d",
-                      &bin_rows, &bin_cols, &bin_header, &binary_file_bytes_per_data_point,
-                      &swap_bytes_flag, &unsigned_flag);
+               &bin_rows, &bin_cols, &bin_header, &binary_file_bytes_per_data_point,
+               &swap_bytes_flag, &unsigned_flag);
     }
-    printf("Settings for reading binary files with extension %s are:\n%d rows\n%d comumns\n %d header bytes\n%d bytes per point\n",
+    printf("Settings for reading binary files with extension %s are:\n%d rows\n%d comumns\n%d header bytes\n%d bytes per point\n",
            binaryExtension,bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point);
     printf("%d swap bytes flag\n%d unsigned flag\n",swap_bytes_flag, unsigned_flag);
-        
+    
     return NO_ERR;
 }
 
 /* ********** */
 
 /*
- 
  BINEXTENSION fileExtension
  Specify the extension for binary files. Together with the BINARGUMENTS command, this allows binary files to be read with GET or dropped onto the status window.
  */
@@ -350,14 +347,12 @@ int binextension_c(int n,char* args)
 {
     
     extern int bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag;
-    extern char* binaryExtension;
+    extern char binaryExtension[];
     
-    if( args != 0){
-        sscanf(args,"%d %d %d %d %d %d",
-               &bin_rows, &bin_cols, &bin_header, &binary_file_bytes_per_data_point,
-               &swap_bytes_flag, &unsigned_flag);
+    if( args[0] != 0){
+        sscanf(args,"%s",binaryExtension);
     }
-    printf("Settings for reading binary files with extension %s are:\n%d rows\n%d comumns\n %d header bytes\n%d bytes per point\n",
+    printf("Settings for reading binary files with extension %s are:\n%d rows\n%d comumns\n%d header bytes\n%d bytes per point\n",
            binaryExtension,bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point);
     printf("%d swap bytes flag\n%d unsigned flag\n",swap_bytes_flag, unsigned_flag);
     
