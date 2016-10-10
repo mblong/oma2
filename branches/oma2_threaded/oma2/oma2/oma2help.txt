@@ -283,7 +283,7 @@ GET <filename>
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.
 
 GETFILENAMES NameFile
-	Open NameFile (currently uses macro prefix and suffix) which contains the names of files. The NEXTFILE command is used to open the next file. NameFile is left open until all files have been accessed.
+	Open NameFile (currently uses macro prefix and suffix), which contains the names of files or directory paths. For files, the NEXTFILE command is used to open the next file. For directory paths, the NEXTPREFIX command is used to set the "Get File" prefix to the specified path. NameFile is left open until all files have been accessed.
 
 GETMATCH parameterfile
 Load the file matching parameters contained in the text file "parameterfile". The format of the file is as follows:
@@ -477,6 +477,9 @@ NEWWINDOW flag
 
 NEXTFILE [prefix]
 	Open the next file specified in the FileNames file that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. command_return_1 is the the filename without any prefix and without the extension (last 4 characters).
+
+NEXTPREFIX
+	Set the "Get File" prefix to be the next string specified in the FileNames file that was opened with the GetFileNames command.
 
 NOISE average rms [seed]
 	Creates a noise image with the specified average and rms. See also GNOISE.

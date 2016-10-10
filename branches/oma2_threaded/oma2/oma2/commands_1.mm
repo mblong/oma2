@@ -1983,6 +1983,39 @@ int nextFile_c(int n,char* args){
 }
 /* ********** */
 
+/*
+ NEXTPREFIX
+ Open the next file specified in the FileNames file that was opened with the GetFileNames command.
+ If a prefix is specified, that is added to the name before trying to open the file.
+ command_return_1 is the the filename without any prefix and without the extension (last 4 characters)
+ */
+int nextPrefix_c(int n,char* args){
+    char 	fulltxt[512];
+    extern FILE* nameFilePtr;
+    
+    if( nameFilePtr == NULL){
+        beep();
+        printf("No Names file is open. Use the GetFileNames command first.\n");
+        return FILE_ERR;
+    }
+    if(fscanf(nameFilePtr, "%s",fulltxt) == EOF){
+        beep();
+        printf("All paths have been read.\n");
+        fclose(nameFilePtr);
+        nameFilePtr = NULL;
+        return FILE_ERR;
+    }
+    
+    printf("New path is %s\n",fulltxt);
+    
+    strncpy(UIData.getprefixbuf, fulltxt,512);
+    
+    return NO_ERR;
+    
+}
+
+/* ********** */
+
 int stringmacro_c(int n,char* args)
 {
     extern char macstring[];

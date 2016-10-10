@@ -148,6 +148,7 @@ ComDef   commands[] =    {
         
     {{"NEWWINDOW      "},	newWindow_c},
     {{"NEXTFILE       "},	nextFile_c},
+    {{"NEXTPREFIX     "},	nextPrefix_c},
     {{"NOISE          "},	noise_c},
         
     {{"OPENFILE       "},	openfile_c},

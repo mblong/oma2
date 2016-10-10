@@ -121,6 +121,7 @@ int match_c(int, char*);
 
 int newWindow_c(int,char*);
 int nextFile_c(int,char*);
+int nextPrefix_c(int,char*);
 int noise_c(int, char*);
 
 int openfile_c(int,char*);
