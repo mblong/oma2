@@ -1104,6 +1104,12 @@ int readHobj(char* filename,Image* theImage){
     swap_bytes_routine(buffer,16,4); // 16 bytes taken 4 at a time (4 ints)
     
     int samplesPerPix = *(int*)buffer;
+    /* Notes on color hobj files:
+        if there are 3 samples per pixel (an rgb color image), just reading in three times the pixels
+        and decoding doesn't work. Assuming the order is RGB, the green in not coded the same way -- it is
+        stored as little endian and has none of the crossing 256 boundry stuff. There also seems to be some
+        extra information so there is an offset on the on the LHS of the image
+     */
     unsigned long bytesPerPix = *((int*)buffer+1);    // not sure what this is
     bytesPerPix = filesize/samplesPerPix/imagePixels;
     printf("%d samples per pixel; %d bytes per pixel\n",samplesPerPix,bytesPerPix);
@@ -1111,10 +1117,10 @@ int readHobj(char* filename,Image* theImage){
     
     // integer arguments to readBinary:
     //  bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag
-    //
+
     int bin_header = 84+rows*6 + 16;
-    //
-    readBinary(filename,theImage,rows,cols,bin_header,(int)bytesPerPix,1, 1);
+
+    readBinary(filename,theImage,rows*samplesPerPix,cols,bin_header,(int)bytesPerPix,1, 1);
     
     if(bytesPerPix == 2 && UIData.decodeHobjFlag == 1){
         decodeHobj(theImage, theImage->width(), theImage->height());
