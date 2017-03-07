@@ -103,7 +103,9 @@ Image::Image(char* filename, int kindOfName)
     
     // default specs set -- now decide what kind of file we are opening
     if (strncmp(&filename[nameLength-4],".nef",4) == 0 ||
-        strncmp(&filename[nameLength-4],".NEF",4) == 0) {
+        strncmp(&filename[nameLength-4],".NEF",4) == 0 ||
+        strncmp(&filename[nameLength-4],".cr2",4) == 0 ||
+        strncmp(&filename[nameLength-4],".CR2",4) == 0) {
         if (kindOfName == LONG_NAME) {
             color = dcrawGlue(filename,-1,this);
         } else {
