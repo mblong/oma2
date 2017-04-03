@@ -19,7 +19,7 @@
 
 // select other hardware here
 
-//#define LJU3
+#define LJU3
 #define SERIAL_PORT
 //#define VISA
 
