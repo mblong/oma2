@@ -10,6 +10,11 @@
 #ifndef oma2_Image_h
 #define oma2_Image_h
 
+typedef struct{
+    char ext[6];
+    int decoder;
+} FileDecoderExtensions;
+
 
 
 /******************** Constants for Classes ********************/
@@ -33,6 +38,10 @@ enum {NO_PRINT,PRINT_RESULT};
 
 // demosaic algorithms
 enum {BILINEAR,MALVAR};
+
+// special file reader types
+enum {DCRAW,JPEG,TIFREAD,HDR,HOBJ,OMA};
+
 
 /******************** Class Definitions ********************/
 

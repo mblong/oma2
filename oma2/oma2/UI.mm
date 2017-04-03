@@ -72,6 +72,7 @@ BOOL dropped_file(char* extension, char* name){
     extern char windowName[];
     extern char binaryExtension[];
     char upperCaseBinExt[256];
+    extern FileDecoderExtensions fileDecoderExtensions[];
     
     //printf("File ext is: %s\n",extension);
     printf("File name is: %s\n",name);
@@ -81,28 +82,37 @@ BOOL dropped_file(char* extension, char* name){
         upperCaseBinExt[i] = toupper(binaryExtension[i]);
     }
     upperCaseBinExt[i]=0;
+    
+    for(i=0; fileDecoderExtensions[i].ext[0]; i++ ){
+        int extLength = (int)strlen(fileDecoderExtensions[i].ext) - 1 ;
+        if(strncmp(extension,&fileDecoderExtensions[i].ext[1],extLength) == 0){
+            Image new_im(name,LONG_NAME);
+            if(new_im.err()){
+                beep();
+                printf("Could not load %s\n",name);
+                [appController appendText: @"OMA2>"];
+                return NO;
+            }
+            iBuffer.free();     // release the old data
+            iBuffer = new_im;   // this is the new data
+            iBuffer.getmaxx(PRINT_RESULT);
+            update_UI();
+            
+            display(0,(char*)"");
+            [appController appendText: @"OMA2>"];
+            //[[appController theWindow] makeKeyAndOrderFront:NULL];
+            [[NSApplication sharedApplication] activateIgnoringOtherApps : YES];    // make oma active
+            return YES;
+        }
+    }
+
+    /*
     if(strcmp(extension, "DAT")==0 || strcmp(extension, "NEF")==0 || strcmp(extension, "JPG")==0
        || strcmp(extension, "TIF")==0 || strcmp(extension, "TIFF")==0 || strcmp(extension, "HDR")==0
        || strcmp(extension, "O2D")==0 || strcmp(extension, "PNG")==0 || strcmp(extension, "HOBJ")==0
        || strcmp(extension, upperCaseBinExt)==0 || strcmp(extension, "CR2")==0){
-        Image new_im(name,LONG_NAME);
-        if(new_im.err()){
-            beep();
-            printf("Could not load %s\n",name);
-            [appController appendText: @"OMA2>"];
-            return NO;
-        }
-        iBuffer.free();     // release the old data
-        iBuffer = new_im;   // this is the new data
-        iBuffer.getmaxx(PRINT_RESULT);
-        update_UI();
-
-        display(0,(char*)"");
-        [appController appendText: @"OMA2>"];
-        //[[appController theWindow] makeKeyAndOrderFront:NULL];
-        [[NSApplication sharedApplication] activateIgnoringOtherApps : YES];    // make oma active
-        return YES;
-    }
+    */
+    
     if(strcmp(extension, "MAC")==0 || strcmp(extension, "O2M")==0){
         extern char	macbuf[];
         int fd,nread,i;
