@@ -34,6 +34,7 @@ char contentsPath[CHPERLN];		// this is the path to the Contents directory where
 float windowScaleFactor = 1.;
 
 char windowName[CHPERLN];
+char lastname[CHPERLN];
 int windowNameMemory = 0;
 
 char binaryExtension[CHPERLN] = {"raw"};
@@ -122,6 +123,7 @@ Image::Image(char* filename, int kindOfName)
     *this = Image();
     
     strncpy(windowName, filename, CHPERLN);
+    strncpy(lastname, filename, CHPERLN);
     trimName(windowName);
     windowNameMemory = 2;
     

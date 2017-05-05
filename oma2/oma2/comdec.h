@@ -17,6 +17,8 @@
 #include "dofft.h"
 
 #include <string>
+#include <ctime>
+
 
 #ifdef MacOSX_UI
 #import "CommandView.h"
@@ -106,5 +108,8 @@ int imp_pause(int, char*);
 
 int gettextline(int, char*);
 int keylimit(int n);
+
+float aveInRect();
+float rmsInRect();
 
 #endif
