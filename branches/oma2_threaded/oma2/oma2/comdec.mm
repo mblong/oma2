@@ -362,6 +362,7 @@ int num_variables = NUM_COMMAND_RETURN_VARIABLES;
 Expression_Element exp_el[CHPERLN];
 
 
+struct timespec omaStartTime;
 
 
 
@@ -382,6 +383,12 @@ int comdec(char* cmnd)
     int     (*fnc)(int,char*);
     
     stopMacroNow = 0;
+    static int first = 1;
+    if(first){
+        first=0;
+        clock_gettime( CLOCK_REALTIME, &omaStartTime);
+        
+    }
     
     switch (command_return) {
         case GET_MACRO_LINE:
@@ -636,6 +643,8 @@ int fill_in_command(char* dest,char* source,int val)
 	//float ave_in_rect(),rms_in_rect();
     char txt[1024] = {0};
     
+    
+    
 	extern char saveprefixbuf[], getprefixbuf[];
 	extern char lastname[];
 	
@@ -709,11 +718,11 @@ int fill_in_command(char* dest,char* source,int val)
                     while(*(dest+j)) 
                         j++;
                     break;
-/*				case 'f':
+				case 'f':
                     sprintf(dest+j,"%s",lastname);
                     while(*(dest+j)) 
                         j++;
-                    break;*/
+                    break;
                 case 'b':
                     sprintf(dest+j,DATAFMT,values[MAX]);
                     while(*(dest+j)) 
@@ -740,16 +749,16 @@ int fill_in_command(char* dest,char* source,int val)
                     while(*(dest+j)) 
                         j++;
                     break;
-/*                case 'a':
-                    sprintf(dest+j,"%g",ave_in_rect());
+                case 'a':
+                    sprintf(dest+j,"%g",aveInRect());
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'r':
-                    sprintf(dest+j,"%g",rms_in_rect());
+                    sprintf(dest+j,"%g",rmsInRect());
                     while(*(dest+j)) 
                         j++;
-                    break;*/
+                    break;
                 case 'w':
                     sprintf(dest+j,"%d",specs[COLS]);
                     while(*(dest+j)) 
@@ -771,26 +780,23 @@ int fill_in_command(char* dest,char* source,int val)
                         j++;
                     break;
                     
-/*                case 'c':
-                    oma_time = TickCount();
-                    nclocks = oma_time - start_oma_time;
-                    //oma_time /= CLOCKS_PER_SEC;
-                    sprintf(dest+j,"%f",nclocks/60.);
+                case 'c':
+                    struct timespec omaTime;
+                    clock_gettime( CLOCK_REALTIME, &omaTime);
+                    double omaSec;
+                    omaSec= (omaTime.tv_sec - omaStartTime.tv_sec) + ( omaTime.tv_nsec - omaStartTime.tv_nsec )/1.0e9;
+                    sprintf(dest+j,"%f",omaSec);
+                    while(*(dest+j))
+                        j++;
+                    break;
+
+                case 't':
+                    time_t theTime;
+                    theTime=time(NULL);
+                    sprintf(dest+j,"%s",ctime(&theTime));
                     while(*(dest+j)) 
                         j++;
-                    break;*/
-                    
-/*                case 't':
-                    GetTime(&datetime);
-                    sprintf(dest+j,"%2d/%2d/%2d %2d:%2d:%2d",datetime.month,
-                            datetime.day,
-                            datetime.year%100,
-                            datetime.hour,
-                            datetime.minute,
-                            datetime.second);
-                    while(*(dest+j)) 
-                        j++;
-                    break;*/
+                    break;
                     
                 default:
                     
@@ -1356,6 +1362,56 @@ std::string getTempImagesString(std::string varString)
         varString += str;
     }
     return varString;
+}
+
+float aveInRect()
+/*  Takes current rectangle and returns the average
+ Used to fill in %a value */
+{
+    int i,j,icount;
+    double sum=0.;
+    point substart,subend;
+    extern oma2UIData UIData;
+    substart = UIData.iRect.ul;
+    subend = UIData.iRect.lr;
+
+    
+    icount = 0;
+    for (i = substart.v; i<=subend.v; i++){
+        for (j = substart.h; j<=subend.h; j++){
+            sum += iBuffer.getpix(i,j);
+            icount++;
+        }
+    }
+    return sum/icount;
+}
+
+float rmsInRect()
+/*  Takes current rectangle and returns the rms
+ Used to fill in %r value */
+{
+    int nt,nc,icount;
+    double ave,rms;
+    DATAWORD datval;
+    point substart,subend;
+    extern oma2UIData UIData;
+    
+    substart = UIData.iRect.ul;
+    subend = UIData.iRect.lr;
+    ave = rms = 0.0;
+    icount = 0;
+    
+    for(nt=substart.v; nt<=subend.v; nt++) {
+        for(nc=substart.h; nc<=subend.h; nc++) {
+            datval = iBuffer.getpix(nt,nc);
+            ave += datval;					/* average */
+            rms += datval*datval;			/* rms */
+            icount++;						/* number of points */
+        }
+    }
+    ave /= icount;
+    rms = rms/icount - ave*ave;
+    return sqrt(rms);
 }
 
 

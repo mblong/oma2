@@ -21,7 +21,7 @@ extern Variable namedTempImages[];
 TWOBYTE	header[HEADLEN/2] = { 0,0,0,0,0,1,500,500,1,1,0,0,0,1,1 };
 TWOBYTE	trailer[TRAILEN/2];
 char	comment[COMLEN] = {0};
-char	lastname[CHPERLN] = {0};	/* a copy of the last file name specified -- for labeling windows */
+
 
 
 char	headcopy[512];		/* copy of all header for file stuff */
