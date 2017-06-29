@@ -257,6 +257,10 @@ char* fullname(char* fnam,int  type)
             prefixbuf = UIData.saveprefixbuf;
             suffixbuf = "";
             break;
+        case GET_DATA_NO_SUFFIX:
+            prefixbuf = UIData.getprefixbuf;
+            suffixbuf = "";
+            break;
         case LOAD_SAVE_PREFIX:
             strcpy(UIData.saveprefixbuf,fnam);
             return fnam;

@@ -708,13 +708,13 @@ int fill_in_command(char* dest,char* source,int val)
                     break;
                 case 'p':
                     txt[0] = 0;
-                    sprintf(dest+j,"%s",fullname(txt, SAVE_DATA));
+                    sprintf(dest+j,"%s",fullname(txt, SAVE_DATA_NO_SUFFIX));
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'q':
                     txt[0] = 0;
-                    sprintf(dest+j,"%s",fullname(txt, GET_DATA));
+                    sprintf(dest+j,"%s",fullname(txt, GET_DATA_NO_SUFFIX));
                     while(*(dest+j)) 
                         j++;
                     break;
