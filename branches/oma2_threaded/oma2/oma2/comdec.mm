@@ -434,7 +434,8 @@ int comdec(char* cmnd)
             /* Now have the command, echo it to terminal */
             
             exe_line_number[which_ex_buffer]++;					/* next line unless modified by loop */
-            printf(" E-%d-%d: %s\n",which_ex_buffer+1,exe_line_number[which_ex_buffer],cmnd);
+            if(!macflag) printf(" E-%d-%d: %s\n",which_ex_buffer+1,exe_line_number[which_ex_buffer],cmnd);
+            // In a macro, don't have an execute command as the last line or there will be unwanted printing when using the macro command
             
             /* Now adjust pointers */
             
