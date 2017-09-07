@@ -167,6 +167,7 @@ int seq2Image_c(int,char*);
 int subRGB_c(int,char*);
 int snr_c(int,char*);
 int shotnoise_c(int,char*);
+int say_c(int,char*);
 
 int tsmooth_c(int,char*);
 

@@ -631,6 +631,9 @@ SHOTNOISE seed
 SNR gsmoothx gsmoothy aveSize
 	Calculate the signal/noise ratio of the image by first gaussian smoothing the image by the specified amount, then dividing the smoothed image by the original unsmoothed image. The SNR is taken to be the rms deviation calculated over an aveSize x aveSize area (the average is assumed to be 1)centered on each pixel.
 
+SAY string
+	Say the string on the computer's speaker.
+
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.
 

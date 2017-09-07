@@ -5166,3 +5166,23 @@ int hobjSettings_c(int n,char* args)
     return NO_ERR;
 }
 
+/* ************************* */
+
+
+int say_c(int n,char* args)
+{
+/*    if(*args == 0)
+        sprintf(pause_string, "PAUSED");
+    else
+        strlcpy(pause_string,args,CHPERLN);
+    // this string will be spoken during pause
+    if (macflag || exflag) {    // don't set this unless we are in a macro
+        pause_flag = 1;
+    }
+    
+    update_status();
+ */
+    alertSound(args);
+    return NO_ERR;
+}
+
