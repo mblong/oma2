@@ -117,6 +117,46 @@ int dout(int n, char* args)
     
 }
 
+int din(int n, char* args)
+{
+    long	errorCode;
+    long 	channel;
+    long	state=0;
+    long    ConfigIO = 1;
+    extern Variable user_variables[];
+    
+    int narg = sscanf(args,"%ld",&channel);
+    if( narg !=1 || channel < 4 || channel > 7){
+        beep();
+        printf("Arguments are: Channel \nChannel must be in the range 4-7\n");
+        return CMND_ERR;
+    }
+    //Open first found U3 over USB
+    if(connectU3())
+    {
+        errorCode = eDI(hDevice,ConfigIO,channel,&state);
+        if(errorCode) {	//errorCode>0 for low-level errors
+            beep();
+            printf("eDO error %ld\n", errorCode);
+            closeUSBConnection(hDevice);
+            u3_connected=0;
+            return HARD_ERR;
+        }
+        user_variables[0].ivalue = state;
+        user_variables[0].fvalue = state;
+        user_variables[0].is_float = 0;
+        update_UI();
+
+        return NO_ERR;
+    }
+    else {
+        beep();
+        printf("No Labjack U3 recognized\n");
+        return HARD_ERR;
+    }
+    
+}
+
 
 /* ********** */
 
@@ -149,6 +189,7 @@ int ain(int n, char* args)
     }
     user_variables[0].fvalue = dblVoltage;
 	user_variables[0].is_float = 1;
+    update_UI();
 
 close:
     if(errorCode) {	//errorCode>0 for low-level errors

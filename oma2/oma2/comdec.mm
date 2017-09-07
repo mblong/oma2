@@ -243,6 +243,7 @@ ComDef   hardwareCommands[] =    {
 
 #ifdef LJU3
     {{"DOUTPUT        "},   dout},
+    {{"DINPUT         "},	din},
 #endif
 
 #ifdef GIGE_

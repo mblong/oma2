@@ -37,6 +37,7 @@ int ain(int,char*);
 int waithi(int,char*);
 int dout(int,char*);
 int aout(int,char*);
+int din(int,char*);
 #endif
 
 #ifdef GPHOTO
