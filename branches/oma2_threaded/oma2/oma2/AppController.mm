@@ -97,6 +97,20 @@ extern oma2UIData UIData;
     [variablesWindowController updateVariableList:variables.c_str()];
 }
 
+-(void) startVariablesWindow{
+    extern int numberNamedTempImages;
+    if(!variablesWindowController){
+        variablesWindowController = [[VariablesWindowController alloc] initWithWindowNibName:@"VariablesWindow"];
+    }
+    [variablesWindowController showWindow:self];
+    std::string variables("Defined Variables:\n");
+    variables = getVariablesString(variables);
+    variables = getTempImagesString(variables);
+    
+    [variablesWindowController updateVariableList:variables.c_str()];
+}
+
+
 -(void) updateVariablesWindow{
     if(variablesWindowController){
         std::string variables("Defined Variables:\n");

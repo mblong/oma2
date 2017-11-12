@@ -51,6 +51,7 @@ ComDef   commands[] =    {
     {{"CYL2           "},	cyl2_g},
     {{"CMINMX         "},	setcminmax_c},
     {{"CLEARBADPIX    "},	clearbad_c},
+    {{"CCLEARBADPIX   "},   cclearbad_c},
     {{"CREATEFILE     "},	createfile_c},
     {{"CONCATFILE     "},	concatfile_c},
     {{"CLOSEFILE      "},	closefile_c},

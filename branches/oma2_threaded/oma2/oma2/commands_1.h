@@ -41,6 +41,8 @@ int clipfraction_c(int,char*);
 int clipbottom_c(int,char*);
 int clipfbottom_c(int,char*);
 int clearbad_c(int,char*);
+int cclearbad_c(int,char*);
+void colorClearBad(Image* image);
 int createfile_c(int n,char* args);
 int concatfile_c(int n,char* args);
 int closefile_c(int n,char* args);

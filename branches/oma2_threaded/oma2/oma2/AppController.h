@@ -77,6 +77,7 @@ int comdec(char*);
 -(void) dataWindowClosing;
 -(void) updateDataWindow;
 -(void) updateVariablesWindow;
+-(void) startVariablesWindow;
 
 -(void) windowDidBecomeKey:(NSNotification *)note;
 
