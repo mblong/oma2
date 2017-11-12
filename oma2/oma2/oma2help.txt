@@ -121,6 +121,9 @@ CYL2
 CLEARBADPIX
  	Sets pixels tagged as bad to the value of their 8 nearest neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands.
 
+CCLEARBADPIX
+	For un-demosaiced color images, sets pixels tagged as bad to the value of their 8 nearest same-color neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands.
+
 CAPTURE file_name
 	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses libgphoto2 calls to capture and download an image from a digital camera that is recognized by libgphoto2 (and supports capture).
 
@@ -276,8 +279,8 @@ FOPEN <filename>
 FRAME NewWidth NewHeight [Value] [X0] [Y0]
 	Put a "frame" around the current image. X0 and Y0 are the coordinates of the start of the new image in the current image's coordinate system. X0 and Y0 can be positive (will crop out some of the current image) or negative (The new image will have a border with the pixels containing the Value specified). If X0 or Y0 are not integers, the routine will interpolate pixel values. Default Value is 0. Default of X0 and Y0 center the old image in the frame.
 
-FINDBADPIX Counts
-	Searches the current image buffer for pixels whose value is more than "Counts" above that of its nearest eight neighbors. Those pixels are tagged as hot pixels.
+FINDBADPIX Counts [TargetValue] [Passes]
+	Searches the current image buffer for pixels whose value is more than "Counts" above that of its nearest eight neighbors. Those pixels are tagged as hot pixels. If the optional TargetValue is specified,a different algorithm is used that will get values from 1 to 8 neighboring pixels that are within the specified number of counts of the target value. A reasonable TargetValue would be the average A/D offset, e.g., from a dark frame. As currently implemented, the alternate algorithm is not appropriate for raw images from a color camera.
 
 FWDATMATLAB  <filename>
 	Writes the data in the current buffer as a tab-delimited text file. Format is a matrix of values that can be loaded directly into matlab.
@@ -286,7 +289,7 @@ GET <filename>
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.
 
 GETFILENAMES NameFile
-	Open NameFile (currently uses macro prefix and suffix), which contains the names of files or directory paths. For files, the NEXTFILE command is used to open the next file. For directory paths, the NEXTPREFIX command is used to set the "Get File" prefix to the specified path. NameFile is left open until all files have been accessed.
+	Open NameFile (uses get prefix and ".txt" as suffix), which contains the names of files or directory paths. For files, the NEXTFILE command is used to open the next file. For directory paths, the NEXTPREFIX command is used to set the "Get File" prefix to the specified path. NameFile is left open until all files have been accessed.
 
 GETMATCH parameterfile
 Load the file matching parameters contained in the text file "parameterfile". The format of the file is as follows:
@@ -374,8 +377,8 @@ HDRACGET
 HDRNUMGET
 	Returns an image based on the data in the HDR counter, which has the number of images that contribute to the HDR image at each pixel. This "counter" image becomes the current image. The previous contents of the image data buffer are destroyed.
 
-HOBJSETTINGS <decodeFlag> <demosaicSetting>
-	With no arguments, this command gives information on how .hobj files will be read in. If arguments are given, the decodeFlag and demosaicSetting are specified. A nonzero decodeFlag will cause automatic decoding of .hobj files when they are read in. The demosaicSetting has the following values/meanings: 0 = no demosaicing done (appropriate for monochrome images); 1 = treat as a color image and demosaic using DOC2RGB 0 1 1 2; 2 = treat as a color image and demosaic using the bilinear algorithm with the red pixel at 0,0; 3 = treat as a color image and demosaic using the Malvar algorithm with the red pixel at 0,0.
+HOBJSETTINGS <decodeFlag> <demosaicSetting> <clearBadPixelsFlag>
+	With no arguments, this command gives information on how .hobj files will be read in. If arguments are given, the decodeFlag, demosaicSetting, and clearBadPixelsFlag are specified. A nonzero decodeFlag will cause automatic decoding of .hobj files when they are read in. The demosaicSetting has the following values/meanings: 0 = no demosaicing done (appropriate for monochrome images); 1 = treat as a color image and demosaic using DOC2RGB 0 1 1 2; 2 = treat as a color image and demosaic using the bilinear algorithm with the red pixel at 0,0; 3 = treat as a color image and demosaic using the Malvar algorithm with the red pixel at 0,0. If the clearBadPixelsFlag is set, bad pixels previously specified with FINDBAD or READBAD will be set to the average of their eight nearest neighbors (of the same color -- assumes this is a raw color image).
 
 IF condition
 	If condition evaluates to a non-zero value, the commands following the IF are executed. However, if the condition is zero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators < (less than), > (greater than), others to come....

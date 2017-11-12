@@ -39,6 +39,9 @@ void setUpUIData();
         statusController = [[StatusController alloc] initWithWindowNibName: @"Status"];
     }
     [statusController showWindow:self];
+    
+    // Include this if you want to start with the variables window showing
+    [appController startVariablesWindow];
    
     NSRect frame = [[NSScreen mainScreen] visibleFrame];
     frame.origin.x += WINDOW_OFFSET;

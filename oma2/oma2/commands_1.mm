@@ -1913,7 +1913,7 @@ int getFileNames_c(int n,char* args)			// open a file containing file names
     
     if( nameFilePtr != NULL) fclose(nameFilePtr);
     
-    nameFilePtr = fopen(fullname(args,MACROS_DATA),"r");
+    nameFilePtr = fopen(fullname(args,GET_FILENAMES),"r");
 	if( nameFilePtr != NULL) {
 		return NO_ERR;
 	}
@@ -2580,7 +2580,8 @@ int grey2rgb_c(int n,char* args){
  Searches the current image buffer for pixels whose value is more than "Counts" above that of it's
  nearest eight neighbors. Those pixels are tagged as hot pixels. If the optional TargetValue is specified,
  a different algorithm is used that will get values from 1 to 8 neighboring pixels that are within the specified
- number of counts of the target value.
+ number of counts of the target value. A reasonable Target Value would be the average A/D offset, e.g., from a dark frame.
+ As currently implemented, the alternate algorithm is not appropriate for raw images from a color camera.
  
  */
 
@@ -2622,6 +2623,7 @@ int findbad_c(int n, char* args){
         free(specs);
         return NO_ERR;
     }
+    // Alternate algorithm, with target value specified, this will call clearbad routine
     for (int p=0; p<passes;p++) {
         for(i=0; i< specs[ROWS]; i++){
             for(j = 0; j< specs[COLS]; j++) {
@@ -2859,6 +2861,51 @@ int clearbad_c(int n, char* args)
     
     update_UI();
     return NO_ERR;
+}
+
+/* ********** */
+int cclearbad_c(int n, char* args){
+    int row,col,k;
+    DATAWORD new_val;
+    int* specs = iBuffer.getspecs();
+    
+    for(k=0; k<num_hot; k++){
+        row = hot_pix[k]/ccd_width;
+        col = hot_pix[k] - row*ccd_width - specs[X0];
+        row -= specs[Y0];
+        //printf(" %d %d\n",j,i);
+        if(row < iBuffer.height() && col < iBuffer.width() && row >= 0 && col >= 0) {
+            new_val = ( iBuffer.getpix(row-2,col-2) + iBuffer.getpix(row-2,col) + iBuffer.getpix(row-2,col+2) +
+                       iBuffer.getpix(row,col-2)                            + iBuffer.getpix(row,col+2) +
+                       iBuffer.getpix(row+2,col-2)  + iBuffer.getpix(row+2,col) + iBuffer.getpix(row+2,col+2) ) / 8;
+            iBuffer.setpix(row,col, new_val);
+        }
+    }
+    free(specs);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+
+ }
+
+void colorClearBad(Image* image){
+    int row,col,k;
+    DATAWORD new_val;
+    int* specs = image->getspecs();
+    
+    for(k=0; k<num_hot; k++){
+        row = hot_pix[k]/ccd_width;
+        col = hot_pix[k] - row*ccd_width - specs[X0];
+        row -= specs[Y0];
+        //printf(" %d %d\n",j,i);
+        if(row < image->height() && col < image->width() && row >= 0 && col >= 0) {
+            new_val = ( image->getpix(row-2,col-2) + image->getpix(row-2,col) + image->getpix(row-2,col+2) +
+                       image->getpix(row,col-2)                            + image->getpix(row,col+2) +
+                       image->getpix(row+2,col-2)  + image->getpix(row+2,col) + image->getpix(row+2,col+2) ) / 8;
+            image->setpix(row,col, new_val);
+        }
+    }
+    free(specs);
 }
 
 /* ********** */
@@ -5109,8 +5156,9 @@ int hobjSettings_c(int n,char* args)
     // default values
     int decode = 1;
     int demosaic = 0;
+    int clearBad = 0;
 
-    int nargs = sscanf(args,"%d %d",&decode,&demosaic);
+    int nargs = sscanf(args,"%d %d %d",&decode,&demosaic,&clearBad);
     printf("Settings for .hobj files are:\n");
     if(nargs <= 0){
         if (UIData.decodeHobjFlag){
@@ -5131,6 +5179,10 @@ int hobjSettings_c(int n,char* args)
                     printf("No demosaicing.\n");
                     break;
             }
+            if (UIData.clearHobjFlag)
+                printf("Automatically clear bad pixels.\n");
+            else
+                printf("No clearing bad pixels.\n");
             return NO_ERR;
         } else {
             printf("No automatic decoding.\n");
@@ -5163,6 +5215,13 @@ int hobjSettings_c(int n,char* args)
     }else{
         printf("No automatic decoding.\n");
     }
+    UIData.clearHobjFlag = clearBad;
+    if (UIData.clearHobjFlag && UIData.decodeHobjFlag)
+        printf("Automatically clear bad pixels.\n");
+    else
+        printf("No clearing bad pixels.\n");
+
+    
     return NO_ERR;
 }
 

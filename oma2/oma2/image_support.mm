@@ -84,8 +84,8 @@ void setUpUIData(){
     UIData.highlightSaturatedBlue = 0;
     
     UIData.decodeHobjFlag = 1;     // setting for automatic decoding Halcon .hobj files
-    UIData.demosaicHobjFlag = HOBJ_NO_DEMOSAIC;    // setting for whether or not the demosaic after decoding
-
+    UIData.demosaicHobjFlag = HOBJ_NO_DEMOSAIC;    // setting for whether or not to demosaic after decoding
+    UIData.clearHobjFlag = 0;    // setting for whether or not to automatically clear bad pixels
 }
 
 int two_to_four(DATAWORD* dpt, int num, TWOBYTE scale)
@@ -261,6 +261,10 @@ char* fullname(char* fnam,int  type)
             prefixbuf = UIData.getprefixbuf;
             suffixbuf = "";
             break;
+        case GET_FILENAMES:
+            prefixbuf = UIData.getprefixbuf;
+            suffixbuf = ".txt";
+            break;
         case LOAD_SAVE_PREFIX:
             strcpy(UIData.saveprefixbuf,fnam);
             return fnam;
@@ -408,11 +412,12 @@ int loadprefs(char* name)
             UIData.highlightSaturatedBlue = 0;
             missingBytes -= 4*sizeof(int);
         }
-        if(missingBytes >= 2*sizeof(int)){
+        if(missingBytes >= 3*sizeof(int)){
             // set these default values
             UIData.decodeHobjFlag = 1;     // setting for automatic decoding Halcon .hobj files
             UIData.demosaicHobjFlag  = HOBJ_NO_DEMOSAIC;
-            missingBytes -= 2*sizeof(int);
+            UIData.clearHobjFlag  = 0;      // whether or not to automatically call cclearbad_c
+            missingBytes -= 3*sizeof(int);
         }
 
         return NO_ERR;
@@ -1129,6 +1134,9 @@ int readHobj(char* filename,Image* theImage){
     if(bytesPerPix == 2 && UIData.decodeHobjFlag == 1){
         decodeHobj(theImage, theImage->width(), theImage->height());
     }
+    
+    if(UIData.clearHobjFlag !=0 && UIData.decodeHobjFlag == 1) colorClearBad(theImage);
+        
     if(UIData.demosaicHobjFlag !=HOBJ_NO_DEMOSAIC && UIData.decodeHobjFlag == 1){
         
         if (UIData.demosaicHobjFlag == HOBJ_DOC2RGB){
