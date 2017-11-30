@@ -1954,8 +1954,10 @@ int nextFile_c(int n,char* args){
     
     user_variables[0].fvalue = user_variables[0].ivalue = 0;
 	user_variables[0].is_float = -1;
-    strncpy( user_variables[0].estring,txt,strlen(txt)-4);
-    user_variables[0].estring[strlen(txt)-4] = 0;   // need to end this explicitly
+    int length = (int)strlen(txt);
+    while(txt[length] != '.' && length > 0) length--;
+    strncpy( user_variables[0].estring,txt,length);
+    user_variables[0].estring[length] = 0;   // need to end this explicitly
     
     printf("%s\n",user_variables[0].estring);
     
