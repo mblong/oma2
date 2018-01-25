@@ -28,6 +28,7 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>o2d</string>
+				<string>hobj</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>Oma2Data</string>
@@ -57,6 +58,24 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>org.oma-x.oma2.macro</string>
+			</array>
+			<key>LSTypeIsPackage</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>hobj</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>Oma2Data</string>
+			<key>CFBundleTypeName</key>
+			<string>Oma2 Data</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>org.oma-x.oma2.data</string>
 			</array>
 			<key>LSTypeIsPackage</key>
 			<integer>0</integer>
@@ -144,6 +163,47 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>o2m</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Oma2 Data</string>
+			<key>UTTypeIconFile</key>
+			<string>Oma2Data</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.oma-x.oma2.data</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>hobj</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Oma2 Data</string>
+			<key>UTTypeIconFile</key>
+			<string>Oma2Data</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.oma-x.oma2.data</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>hobj</string>
 				</array>
 			</dict>
 		</dict>
