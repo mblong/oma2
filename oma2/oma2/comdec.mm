@@ -29,6 +29,7 @@ ComDef   commands[] =    {
     {{"ACADD          "},   acadd_c},
     {{"ACGET          "},   acget_c},
     {{"ABSOLUTE       "},   absolute_c},
+    {{"ACMEVELOCITY   "},   acmevelocity_c},
 
     {{"BLOCK          "},	block_g},
     {{"BIT8           "},	bit8_c},
@@ -197,7 +198,14 @@ ComDef   commands[] =    {
     {{"SNR            "},	snr_c},
     {{"SHOTNOISE      "},	shotnoise_c},
     {{"SAY            "},	say_c},
-    
+
+#ifdef Qt_UI
+    {{"SQLADD         "},    sqlAdd_q},
+    {{"SQLOPEN        "},    sqlOpen_q},
+    {{"SQLCLOSE       "},    sqlClose_q},
+    {{"SQLNEW         "},    sqlNew_q},
+#endif
+
     {{"TSMOOTH        "},	tsmooth_c},
     
     {{"UPREFIX        "},	uprefix_c},

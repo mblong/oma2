@@ -24,6 +24,7 @@ int acget_c(int,char*);
 int acadd_c(int,char*);
 int addRGB_c(int,char*);
 int absolute_c(int,char*);
+int acmevelocity_c(int,char*);
 
 int bit8_c(int,char*);
 int bit16_c(int,char*);
@@ -170,6 +171,14 @@ int subRGB_c(int,char*);
 int snr_c(int,char*);
 int shotnoise_c(int,char*);
 int say_c(int,char*);
+
+#ifdef Qt_UI
+int sqlAdd_q(int,char*);
+int sqlNew_q(int,char*);
+int sqlOpen_q(int,char*);
+int sqlClose_q(int,char*);
+#endif
+
 
 int tsmooth_c(int,char*);
 
