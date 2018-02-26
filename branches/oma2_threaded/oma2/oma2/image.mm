@@ -128,8 +128,9 @@ Image::Image(char* filename, int kindOfName)
     windowNameMemory = 2;
     
     int nameLength = (int)strlen(filename);
-    
+    extraSize = 0;
     // default specs set -- now decide what kind of file we are opening
+    
     
     for(int i=0; fileDecoderExtensions[i].ext[0]; i++ ){
         int extLength = (int)strlen(fileDecoderExtensions[i].ext);

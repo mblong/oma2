@@ -5247,3 +5247,214 @@ int say_c(int n,char* args)
     return NO_ERR;
 }
 
+
+/* ************************* */
+
+
+int getVariableError(char* name, float*);
+float getRMS(float dataArray[], int numPoints,float *average);
+/*
+ mfc1Range = 20;     %SLPM N2 full scale (coflow)
+ %mfc2Range = 0.1;     %SLPM N2 full scale (N2 diluent)
+ fuelRange = 0.1;     %SLPM N2 full scale (fuel mixture)
+ 
+ mfc1CorrectionFactor = 0.995276533; % air from Zin spreadsheet tables
+ mfc2CorrectionFactor = 1; % N2
+ 
+ % this is for conversion from volts to SLPM
+ slpmConversion = [mfc1Range mfc2Range fuelRange] / 5 ...
+ .* [mfc1CorrectionFactor mfc2CorrectionFactor fuelCorrectionFactor];
+ 
+ % the following are for conversion from SLPM to velocity
+ tempCoefficient = 0.92546163; % SLPM to room temp from Zin spreadsheet tables
+ burnerArea = 3.66096154E-06; % from Zin spreadsheet tables
+ coflowArea = 4.86050E-04; % from Zin spreadsheet tables
+ areaFactor = [coflowArea burnerArea burnerArea];
+ 
+ char name[256]={"/Volumes/ACME/flight/18043/18043B1/18043B1_ACME/20180212_171558.773_ACME_18043B1_00454.hobj"};
+ 
+ v(:,:) = m(:,:).*slpmConversion/tempCoefficient/600 ./ areaFactor;
+ */
+
+/*
+ACMEVELOCITY telemetryFileName
+ For ACME color data camera images, this returns values for the velocities of the
+ coflow, N2, and fuel, along with their relative standard deviations. The data for this
+ is based on the timestamp in the image file name and data in the telemetry file. The command requires
+ the following variables to be defined beforehand:
+ mfc2Range
+ fuelCorrection
+ exposure
+ name
+ */
+
+
+//the coefficient of variation (CV), also known as relative standard deviation (RSD)
+
+int acmevelocity_c(int n, char* filename){
+    // declarations and initializations
+    int  i,j,k,l,fileRow=2;
+    FILE *inputFile;    // the file pointer variable
+    char longString[2048],time[32],time2[32],c;
+    float exposure,mfc1Range=20,mfc2Range,mfc3Range,fuelCorrection;
+    mfc1Range = 20;     //SLPM N2 full scale (coflow)
+    mfc3Range = 0.1;     //SLPM N2 full scale (fuel mixture)
+    float mfc1CorrectionFactor = 0.995276533; // air from Zin spreadsheet tables
+    float mfc2CorrectionFactor = 1;     // N2
+    float tempCoefficient = 0.92546163; // SLPM to room temp from Zin spreadsheet tables
+    float burnerArea = 3.66096154E-06;  // from Zin spreadsheet tables
+    float coflowArea = 4.86050E-04;     // from Zin spreadsheet tables
+
+    extern Variable user_variables[];
+    
+    // get necessary values
+
+    if(getVariableError((char*)"mfc2Range", &mfc2Range)) return ARG_ERR;
+    if(getVariableError((char*)"exposure", &exposure)) return ARG_ERR;
+    if(getVariableError((char*)"fuelCorrection", &fuelCorrection)) return ARG_ERR;
+    int index = get_variable_index((char*)"name", 0);
+    if(index<0){
+        beep();
+        printf("Variable 'name' must be defined\n");
+        return ARG_ERR;
+    }
+    
+    //for(i=(int)strlen(name)-1; name[i] != '/' ; i--);
+    //i+=10;
+    double tFile,tData;
+    sscanf(&user_variables[index].estring[9],"%lf",&tFile);
+    printf("Time File: %lf\n",tFile);
+    
+    inputFile = fopen(fullname(filename,GET_DATA_NO_SUFFIX),"r");    // read from this file
+    
+    if(inputFile == NULL){
+        beep();
+        printf("Can't open file %s.\n",filename);
+        return FILE_ERR;
+    }
+    
+    // skip first two lines;
+    while(fgetc(inputFile) != '\n');
+    while(fgetc(inputFile) != '\n');
+    // now skip past times before when this data was taken
+    do{
+        for(l=0; (c=fgetc(inputFile)) != '\n';l++){     // read a row, replacing commas with spaces
+            if(c == ',')
+                longString[l]=' ';
+            else
+                longString[l]=c;
+        }
+        sscanf(longString,"%s\n",time );
+        //remove : from time stamps
+        for(i=0,j=0,k=0; i<(int)strlen(time); i++){
+            if(time[i] != ':'){
+                time2[j++]=time[i];  //it's a number
+            } else {
+                k++;
+            }
+            if(k==3){
+                time2[j++]='.';
+                k=0;
+            }
+        }
+        time2[j]=0;
+        sscanf(time2,"%lf",&tData);
+        //printf("Time Data: %lf\n",tData);
+        //printf("%d characters: %s %s %f.\n",i,time,time2, x);
+        fileRow++;
+    } while (tData < tFile);
+    printf("Image begins in telemetry row %d. Time: %lf\n",fileRow, tFile);
+    int numRows = exposure/8.+1;
+    printf("Integrate over %d rows.\n",numRows);
+    float *mfc1,*mfc2,*mfc3;
+    
+    mfc1 = new float[numRows];
+    mfc2 = new float[numRows];
+    mfc3 = new float[numRows];
+    
+    for(int nr = 0; nr < numRows; nr++){
+        for(l=0; (c=fgetc(inputFile)) != '\n';l++){     // read a row, replacing commas with spaces
+            if(c == ',')
+                longString[l]=' ';
+            else
+                longString[l]=c;
+            if(c==EOF)break;
+        }
+        sscanf(longString,"%s %f %f %f",time,&mfc1[nr], &mfc2[nr],&mfc3[nr]);
+        
+        mfc1[nr]*=mfc1Range/5*mfc1CorrectionFactor/tempCoefficient/600/coflowArea;
+        mfc2[nr]*=mfc2Range/5*mfc2CorrectionFactor/tempCoefficient/600/burnerArea;
+        mfc3[nr]*=mfc3Range/5*fuelCorrection/tempCoefficient/600/burnerArea;
+        //printf("Time: %s MFC voltages: %f %f %f\n",time,mfc1[nr], mfc2[nr],mfc3[nr]);
+    }
+    float coflowAveVel,fuelAveVel,n2AveVel;
+    float coflowRms = getRMS(mfc1,numRows,&coflowAveVel);
+    float n2Rms = getRMS(mfc2,numRows,&n2AveVel);
+    float fuelRms = getRMS(mfc3,numRows,&fuelAveVel);
+    user_variables[0].fvalue = coflowAveVel;
+    user_variables[0].is_float=1;
+    user_variables[1].fvalue = coflowRms/coflowAveVel*100;
+    user_variables[1].is_float=1;
+    user_variables[2].fvalue = n2AveVel;
+    user_variables[2].is_float=1;
+    user_variables[3].fvalue = n2Rms/coflowAveVel*100;
+    user_variables[3].is_float=1;
+    user_variables[4].fvalue = fuelAveVel;
+    user_variables[4].is_float=1;
+    user_variables[5].fvalue = fuelRms/coflowAveVel*100;
+    user_variables[5].is_float=1;
+    user_variables[6].ivalue = numRows;
+    user_variables[6].is_float=0;
+
+    sprintf(time,"1 %f",exposure);
+    extra_c(1,time);
+    sprintf(time,"2 %f",mfc2Range);
+    extra_c(2,time);
+    sprintf(time,"3 %f",fuelCorrection);
+    extra_c(3,time);
+    sprintf(time,"4 %f",coflowAveVel);
+    extra_c(4,time);
+    sprintf(time,"5 %f",coflowRms/coflowAveVel*100);
+    extra_c(5,time);
+    sprintf(time,"6 %f",n2AveVel);
+    extra_c(6,time);
+    sprintf(time,"7 %f",n2Rms/coflowAveVel*100);
+    extra_c(7,time);
+    sprintf(time,"8 %f",fuelAveVel);
+    extra_c(8,time);
+    sprintf(time,"9 %f",fuelRms/coflowAveVel*100);
+    extra_c(9,time);
+
+    delete[] mfc1;
+    delete[] mfc2;
+    delete[] mfc3;
+    fclose(inputFile);
+    return 0;
+}
+
+float getRMS(float dataArray[], int numPoints,float *average){
+    float sum=0.,rms=0.;
+    int i;
+    // get average
+    for(i=0; i < numPoints; i++ )
+        sum += dataArray[i];
+    *average = sum/numPoints;
+    // now get the rms fluctuation
+    for(i=0; i < numPoints; i++ )
+        rms += pow(dataArray[i]-*average,2);
+    rms = sqrt(rms/numPoints);
+    return rms;
+}
+
+int getVariableError(char* name, float* value){
+    extern Variable user_variables[];
+    
+    int index = get_variable_index(name, 0);
+    if(index<0){
+        beep();
+        printf("Variable %s must be defined\n",name);
+        return ARG_ERR;
+    }
+    *value = user_variables[index].fvalue;
+    return NO_ERR;
+}
