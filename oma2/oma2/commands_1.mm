@@ -1510,7 +1510,7 @@ int calcall_c(int n, char* args)
 
 int calc(point start,point end){
  
-    double xcom,ycom,ave,rms;		// centroid coordinates,average, and rms 
+    double xcom,ycom,ave,rms;		// centroid coordinates,average, and rms
 	int icount,nt,nc;
 	DATAWORD datval;
     DATAWORD* buffervalues = iBuffer.getvalues();
@@ -4191,19 +4191,31 @@ int im2Sequence_c(int n,char* args){
 /* ********** */
 /*
  EXTRA [index] [value]
-    Add extra information to the current image in the form of a floating point value. If no argument is given, the command lists extra values in the current image buffer. Indexing starts at 1.
+    Add extra information to the current image in the form of a floating point value. If no argument is given, the command lists extra values in the current image buffer. Indexing starts at 1. With no arguments, the extra values are put into the command_return variables. With one argument, the extra value is put into command_return_1.
  */
 
 int extra_c(int n,char* args){
     int size = iBuffer.getExtraSize();
+    extern Variable user_variables[];
+    
     if (*args == 0) {
         if ( size) {
             printf("Extra values are as follows:\n");
             float* extra = iBuffer.getextra();
-            for (int i = 0; i< size; i++){
+            for (int i = 0; i< NUM_COMMAND_RETURN_VARIABLES; i++){
                 printf("%g\n",extra[i]);
+                user_variables[i].ivalue = user_variables[i].fvalue = extra[i];
+                user_variables[i].is_float = 1;
             }
-            free(extra);
+            for (int i = NUM_COMMAND_RETURN_VARIABLES;i < size; i++){
+                printf("%g\n",extra[i]);
+                user_variables[i].ivalue = user_variables[i].fvalue = extra[i];
+                user_variables[i].is_float = 1;
+            }
+
+            //free(extra);
+            delete[] extra;
+            update_UI();
             return NO_ERR;
         } else {
             printf("No extra values are present.\n");
@@ -4211,10 +4223,26 @@ int extra_c(int n,char* args){
         }
     }
     float value;
-    sscanf(args, "%d %f)",&n,&value);
+    int nargs = sscanf(args, "%d %f)",&n,&value);
     if (--n < 0) {
         printf("Index must be > 0.\n");
         return CMND_ERR;
+    }
+    if(nargs == 1 ){
+        if(n<size){
+            float* extra = iBuffer.getextra();
+            printf("Extra value %d is %f:\n",n+1, extra[n]);
+            user_variables[0].ivalue = user_variables[0].fvalue = extra[n];
+            user_variables[0].is_float = 1;
+            //free(extra);
+            delete[] extra;
+            update_UI();
+            return NO_ERR;
+        } else {
+            beep();
+            printf("Extra value %d is not defined\n",n+1);
+            return CMND_ERR;
+        }
     }
     
     if (n < size) {
@@ -4222,6 +4250,8 @@ int extra_c(int n,char* args){
         float* extra = iBuffer.getextra();
         extra[n] = value;
         iBuffer.setExtra(extra, size);
+        //free(extra);
+        delete[] extra;
         return NO_ERR;
     }
     // need more space
@@ -4230,6 +4260,7 @@ int extra_c(int n,char* args){
     for (int i = 0; i < size; i++) {
         newextra[i] = extra[i];
     }
+    delete[] extra;
     newextra[n] = value;
     iBuffer.setExtra(newextra, n+1);
     
@@ -5252,7 +5283,7 @@ int say_c(int n,char* args)
 
 
 int getVariableError(char* name, float*);
-float getRMS(float dataArray[], int numPoints,float *average);
+float getMaxDiff(float dataArray[], int numPoints,float *average);
 /*
  mfc1Range = 20;     %SLPM N2 full scale (coflow)
  %mfc2Range = 0.1;     %SLPM N2 full scale (N2 diluent)
@@ -5279,7 +5310,7 @@ float getRMS(float dataArray[], int numPoints,float *average);
 /*
 ACMEVELOCITY telemetryFileName
  For ACME color data camera images, this returns values for the velocities of the
- coflow, N2, and fuel, along with their relative standard deviations. The data for this
+ coflow, N2, and fuel, along with their relative MAXIMUM deviations. The data for this
  is based on the timestamp in the image file name and data in the telemetry file. The command requires
  the following variables to be defined beforehand:
  mfc2Range
@@ -5287,7 +5318,6 @@ ACMEVELOCITY telemetryFileName
  exposure
  name
  */
-
 
 //the coefficient of variation (CV), also known as relative standard deviation (RSD)
 
@@ -5363,14 +5393,17 @@ int acmevelocity_c(int n, char* filename){
         //printf("%d characters: %s %s %f.\n",i,time,time2, x);
         fileRow++;
     } while (tData < tFile);
-    printf("Image begins in telemetry row %d. Time: %lf\n",fileRow, tFile);
+    printf("Image begins in telemetry row %d. Time: %lf\n",fileRow, tData);
     int numRows = exposure/8.+1;
     printf("Integrate over %d rows.\n",numRows);
-    float *mfc1,*mfc2,*mfc3;
+    float *mfc1,*mfc2,*mfc3,*pta2,*pta3;
     
     mfc1 = new float[numRows];
     mfc2 = new float[numRows];
     mfc3 = new float[numRows];
+    pta2 = new float[numRows];
+    pta3 = new float[numRows];
+    float ignore;
     
     for(int nr = 0; nr < numRows; nr++){
         for(l=0; (c=fgetc(inputFile)) != '\n';l++){     // read a row, replacing commas with spaces
@@ -5380,31 +5413,39 @@ int acmevelocity_c(int n, char* filename){
                 longString[l]=c;
             if(c==EOF)break;
         }
-        sscanf(longString,"%s %f %f %f",time,&mfc1[nr], &mfc2[nr],&mfc3[nr]);
+        sscanf(longString,"%s %f %f %f %f %f %f %f",time,&mfc1[nr], &mfc2[nr],&mfc3[nr],
+               &ignore,&ignore,&pta2[nr],&pta3[nr]);
         
         mfc1[nr]*=mfc1Range/5*mfc1CorrectionFactor/tempCoefficient/600/coflowArea;
         mfc2[nr]*=mfc2Range/5*mfc2CorrectionFactor/tempCoefficient/600/burnerArea;
         mfc3[nr]*=mfc3Range/5*fuelCorrection/tempCoefficient/600/burnerArea;
         //printf("Time: %s MFC voltages: %f %f %f\n",time,mfc1[nr], mfc2[nr],mfc3[nr]);
     }
-    float coflowAveVel,fuelAveVel,n2AveVel;
-    float coflowRms = getRMS(mfc1,numRows,&coflowAveVel);
-    float n2Rms = getRMS(mfc2,numRows,&n2AveVel);
-    float fuelRms = getRMS(mfc3,numRows,&fuelAveVel);
+    float coflowAveVel,fuelAveVel,n2AveVel,pta2Ave,pta3Ave;
+    float coflowMaxDiff = getMaxDiff(mfc1,numRows,&coflowAveVel);
+    float n2MaxDiff = getMaxDiff(mfc2,numRows,&n2AveVel);
+    float fuelMaxDiff = getMaxDiff(mfc3,numRows,&fuelAveVel);
+    ignore = getMaxDiff(pta2,numRows,&pta2Ave);
+    ignore = getMaxDiff(pta3,numRows,&pta3Ave);
+    float atm = ((pta2Ave+pta3Ave)/2. - 0.5) * 14.5038*10/4/14.69595;
+    
     user_variables[0].fvalue = coflowAveVel;
     user_variables[0].is_float=1;
-    user_variables[1].fvalue = coflowRms/coflowAveVel*100;
+    user_variables[1].fvalue = coflowMaxDiff/coflowAveVel*100;
     user_variables[1].is_float=1;
     user_variables[2].fvalue = n2AveVel;
     user_variables[2].is_float=1;
-    user_variables[3].fvalue = n2Rms/coflowAveVel*100;
+    user_variables[3].fvalue = n2MaxDiff/coflowAveVel*100;
     user_variables[3].is_float=1;
     user_variables[4].fvalue = fuelAveVel;
     user_variables[4].is_float=1;
-    user_variables[5].fvalue = fuelRms/coflowAveVel*100;
+    user_variables[5].fvalue = fuelMaxDiff/coflowAveVel*100;
     user_variables[5].is_float=1;
     user_variables[6].ivalue = numRows;
     user_variables[6].is_float=0;
+    user_variables[7].fvalue = atm;
+    user_variables[7].is_float=1;
+
 
     sprintf(time,"1 %f",exposure);
     extra_c(1,time);
@@ -5414,36 +5455,41 @@ int acmevelocity_c(int n, char* filename){
     extra_c(3,time);
     sprintf(time,"4 %f",coflowAveVel);
     extra_c(4,time);
-    sprintf(time,"5 %f",coflowRms/coflowAveVel*100);
+    sprintf(time,"5 %f",coflowMaxDiff/coflowAveVel*100);
     extra_c(5,time);
     sprintf(time,"6 %f",n2AveVel);
     extra_c(6,time);
-    sprintf(time,"7 %f",n2Rms/coflowAveVel*100);
+    sprintf(time,"7 %f",n2MaxDiff/coflowAveVel*100);
     extra_c(7,time);
     sprintf(time,"8 %f",fuelAveVel);
     extra_c(8,time);
-    sprintf(time,"9 %f",fuelRms/coflowAveVel*100);
+    sprintf(time,"9 %f",fuelMaxDiff/coflowAveVel*100);
+    extra_c(9,time);
+    sprintf(time,"10 %f",atm);
     extra_c(9,time);
 
     delete[] mfc1;
     delete[] mfc2;
     delete[] mfc3;
+    delete[] pta2;
+    delete[] pta3;
     fclose(inputFile);
     return 0;
 }
 
-float getRMS(float dataArray[], int numPoints,float *average){
-    float sum=0.,rms=0.;
+float getMaxDiff(float dataArray[], int numPoints,float *average){
+    
     int i;
     // get average
-    for(i=0; i < numPoints; i++ )
+    float max,min,sum;
+    sum = max = min = dataArray[0];
+    for(i=1; i < numPoints; i++ ){
         sum += dataArray[i];
+        if(dataArray[i] > max ) max = dataArray[i];
+        if(dataArray[i] < min ) min = dataArray[i];
+    }
     *average = sum/numPoints;
-    // now get the rms fluctuation
-    for(i=0; i < numPoints; i++ )
-        rms += pow(dataArray[i]-*average,2);
-    rms = sqrt(rms/numPoints);
-    return rms;
+    return max-min;
 }
 
 int getVariableError(char* name, float* value){

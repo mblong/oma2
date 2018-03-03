@@ -245,7 +245,7 @@ EXPOSURE exposureValue
 	Sets an exposure time to be used in generating HDR images. If no argument is given, the value of the current exposure is echoed.
 
 EXTRA [index] [value]
-    Add extra information to the current image in the form of a floating point value. If no argument is given, the command lists extra values in the current image buffer. Indexing starts at 1.
+	Add extra information to the current image in the form of a floating point value. Indexing starts at 1. If both arguments are present, the value is placed at the location specified by the index. If no argument is given, the command lists extra values in the current image buffer and puts the first ten extra values into the command_return variables. With one argument, the extra value at the specified index is put into command_return_1.
 
 FFT mode scale_factor
 	mode = 0  return the magnitude scaled by scale_factor
@@ -478,6 +478,12 @@ MULFILE <filename>
 MULTMPIMAGE name
 	Multiplies the contents of the current data buffer by the contents of the named temporary image.
 
+MYSQSERVER server userName password databaseName
+	Opens a new connection to the named MYSQL database on the specified server (e.g., cld3.eng.yale.edu) with the userName and password specified. See also SQLNEW [qtoma command]
+
+MYSQTABLE tableName
+	Creates a table named tableName on the open MYSQL server if it doesn't already exist. The table will contain a numbered imageID and imageData containing the image displayed in the current data window. In addition, any variable name beginning with "sql" will be added as a column to the table (minus the "sql"). [qtoma command]
+
 NEWWINDOW flag
 	If flag = 1 (default), a new window will be opened for each "DISPLAY" command. If flag = 0, the results of "DISPLAY" commands will be placed in the last-opened window. If no window exists, a new one will be opened. 
 
@@ -639,6 +645,18 @@ SNR gsmoothx gsmoothy aveSize
 
 SAY string
 	Say the string on the computer's speaker.
+
+SQLADD
+	Adds the current displayed image to the database table previously opened. This could be a SQLite or mySQL database.  See also MYSQSERVER and SQLNEW [qtoma command]
+
+SQLNEW databaseName tableName
+	Opens a new SQLite database file named databaseName.db and creates a table named tableNameif it doesn't already exist. If databaseName.db already exists, it is deleted and a new database started. The table will contain a numbered imageID and imageData containing the image displayed in the current data window. In addition, any variable name beginning with "sql" will be added as a column to the table (minus the "sql"). See also MYSQSERVER [qtoma command]
+
+SQLOPEN databaseName tableName
+	Opens an existing SQLite database file named databaseName.db and creates a table named tableName if it doesn't already exist. The table will contain a numbered imageID and imageData containing the image displayed in the current data window. In addition, any variable name beginning with "sql" will be added as a column to the table (minus the "sql"). [qtoma command]
+
+SQLCLOSE
+	Closes any open SQL database. [qtoma command]
 
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.
