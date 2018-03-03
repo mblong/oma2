@@ -122,6 +122,11 @@ int maskGreater_c(int,char*);
 int maskLess_c(int,char*);
 int match_c(int, char*);
 
+#ifdef Qt_UI
+int mySqServer_q(int, char*);
+int mySqTable_q(int, char*);
+#endif
+
 int newWindow_c(int,char*);
 int nextFile_c(int,char*);
 int nextPrefix_c(int,char*);
