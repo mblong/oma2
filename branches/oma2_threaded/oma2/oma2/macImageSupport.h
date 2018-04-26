@@ -15,6 +15,8 @@
 
 
 int read_jpegXXX(char* filename,int thecolor,Image* im);
+int saveJpeg(char* filename);
+int savePdf(char* filename);
 
 
 #endif

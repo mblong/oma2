@@ -79,6 +79,8 @@ int comdec(char*);
 -(void) updateVariablesWindow;
 -(void) startVariablesWindow;
 
+-(int) saveDataWindowToPdf: (char*) fileName;
+
 -(void) windowDidBecomeKey:(NSNotification *)note;
 
 @end

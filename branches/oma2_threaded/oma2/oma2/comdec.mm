@@ -147,7 +147,7 @@ ComDef   commands[] =    {
     {{"MASK<          "},	maskLess_c},
     {{"MATCH          "},	match_c},
 
-#ifdef Qt_UI
+#if defined(Qt_UI)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
     {{"MYSQSERVER     "},    mySqServer_q},
     {{"MYSQTABLE      "},    mySqTable_q},
 #endif
@@ -188,6 +188,7 @@ ComDef   commands[] =    {
     {{"SATIFF         "},	satiff_c},
     {{"SATIFFSCALED   "},	satiffscaled_c},
     {{"SAVEJPG        "},	saveJpg_c},
+    {{"SAVEPDF        "},   savePdf_c},
     {{"SIZE           "},	size_c},
     {{"SINGRID        "},	sinGrid_c},
     {{"STEMPIMAGE     "},	stemp_c},
@@ -203,7 +204,7 @@ ComDef   commands[] =    {
     {{"SHOTNOISE      "},	shotnoise_c},
     {{"SAY            "},	say_c},
 
-#ifdef Qt_UI
+#if defined(Qt_UI)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
     {{"SQLADD         "},    sqlAdd_q},
     {{"SQLOPEN        "},    sqlOpen_q},
     {{"SQLCLOSE       "},    sqlClose_q},
