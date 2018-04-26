@@ -572,6 +572,12 @@ SATIFF <filename>
 SATIFFSCALED min max <filename>
 	Convert image to 16 bit and save as a TIFF file. Uses the specified min and max for scaling rather than the min and max of the image in the buffer. Results will be between 0 - 65535. Depending on min and max, the image may be clipped or the full 16-bit dynamic range may not be used. To save as a color image, use the COLORFLAG command to set the flag appropriately.
 
+SAVEJPG <filename>
+Saves the current image bitmap to a JPG file. The current display parameters are used to create the bitmap. Include the .jpg extension in the file name.
+
+SAVEPDF <filename>
+Saves the current data window image to a PDF file. Any text labels that are displayed on the data window will be part of the pdf. Include the .pdf extension in the file name.
+
 SERCLOSE
 	Closes the serial port opened with the last "SERIAL device_name" command. This can be used if you need to talk to more than one serial device -- open device 1, send commands, close the serial port, open device 2, send commands, and so forth. Available in oma2cam.
 

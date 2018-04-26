@@ -657,6 +657,11 @@ extern oma2UIData UIData;
     //[[windowArray lastObject] showWindow:self];
 }
 
+-(int) saveDataWindowToPdf: (char*) fileName{
+    if([[windowArray lastObject] isKindOfClass:[DataWindowController class]])
+        return [[windowArray lastObject] saveToPdf:fileName];
+    return FILE_ERR;
+}
 
 -(void) eraseWindow:(int) n{
     if (n < 0) {            // erase everything

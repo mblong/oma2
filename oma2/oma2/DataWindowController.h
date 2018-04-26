@@ -40,4 +40,6 @@
 -(void) placeColLine: (int) theCol;
 -(void) updateImage;
 
+-(int) saveToPdf: (char*) fileName;
+
 @end

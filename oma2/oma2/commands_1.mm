@@ -2174,19 +2174,35 @@ int fecho_c (int n,char* args)
 }
 
 int saveJpg_c(int n, char* args){
-#ifdef MacOSX_UI
-    beep();
-    printf("Not implemented in oma2.\n");
-    return CMND_ERR;
-#endif
-#ifndef MacOSX_UI
+
     char txt[CHPERLN];
     int saveJpeg(char*);
+    if(*args == 0){
+        beep();
+        printf("Error: Must specify file name.\n");
+        return OMA_FILE;
+    }
     sscanf(args,"%s",txt);
     fullname(txt,SAVE_DATA_NO_SUFFIX);  // you should add the jpg suffix yourself
     printf("Writing JPG to file: %s\n",txt);
     return saveJpeg(txt);
-#endif
+
+    
+}
+int savePdf_c(int n, char* args){
+    
+    char txt[CHPERLN];
+    int savePdf(char*);
+    if(*args == 0){
+        beep();
+        printf("Error: Must specify file name.\n");
+        return OMA_FILE;
+    }
+    sscanf(args,"%s",txt);
+    fullname(txt,SAVE_DATA_NO_SUFFIX);  // you should add the pdf suffix yourself
+    printf("Writing PDF to file: %s\n",txt);
+    return savePdf(txt);
+    
     
 }
 

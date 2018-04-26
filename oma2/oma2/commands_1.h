@@ -122,7 +122,7 @@ int maskGreater_c(int,char*);
 int maskLess_c(int,char*);
 int match_c(int, char*);
 
-#ifdef Qt_UI
+#if defined(Qt_UI)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
 int mySqServer_q(int, char*);
 int mySqTable_q(int, char*);
 #endif
@@ -168,6 +168,7 @@ int subtmp_c(int, char*);
 int savefile_c(int,char*);
 int satiff_c(int,char*);
 int saveJpg_c(int,char*);
+int savePdf_c(int,char*);
 int satiffscaled_c(int,char*);
 int sysCommand_c(int,char*);
 int seq2hdr_c(int,char*);
@@ -177,7 +178,7 @@ int snr_c(int,char*);
 int shotnoise_c(int,char*);
 int say_c(int,char*);
 
-#ifdef Qt_UI
+#if defined(Qt_UI)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
 int sqlAdd_q(int,char*);
 int sqlNew_q(int,char*);
 int sqlOpen_q(int,char*);

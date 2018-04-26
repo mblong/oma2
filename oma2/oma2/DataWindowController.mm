@@ -229,7 +229,17 @@ extern AppController* appController;
     [[appController theWindow] sendEvent: anEvent];
 }
 
-
+-(int) saveToPdf: (char*) fileName{
+    NSImageView *view = [self imageView];
+    NSRect r = [view bounds];
+    if (view != nil) {
+        NSData *data;
+        data = [view dataWithPDFInsideRect:r];
+        NSString *theFile = [NSString stringWithCString:fileName encoding:NSASCIIStringEncoding];
+        return [data writeToFile: theFile atomically: NO];
+    }    
+    return FILE_ERR;
+}
 
 - (IBAction)copy:sender {
     
