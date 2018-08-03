@@ -757,6 +757,17 @@ void Image::abs(){
     }
 }
 
+DATAWORD Image::min()
+{
+    if(specs[HAVE_MAX] == 0) getmaxx(NO_PRINT);
+    return values[MIN];
+}
+
+DATAWORD Image::max()
+{
+    if(specs[HAVE_MAX] == 0) getmaxx(NO_PRINT);
+    return values[MAX];
+}
 
 void Image::getmaxx(char printFlag)
 {
@@ -1191,10 +1202,9 @@ void Image::crop(rect crop_rect){
     sizy = crop_rect.lr.v - crop_rect.ul.v +1;
     
     if(x0 + sizx > specs[COLS] || y0 + sizy > specs[ROWS]){
-        beep();
-        printf("Rectangle is not contained within the current image.\n");
+        //beep();
+        //printf("Rectangle is not contained within the current image.\n");
         error = SIZE_ERR;
-        //return *this;
         return;
     }
     
@@ -1202,10 +1212,9 @@ void Image::crop(rect crop_rect){
     
     if(save_rgb_rectangle){
         if( y0 + sizy*3 >= specs[ROWS] ){
-            beep();
-            printf("Can't save rectangle as RGB image -- rectangle size problem.\n");
+            //beep();
+            //printf("Can't save rectangle as RGB image -- rectangle size problem.\n");
             error = SIZE_ERR;
-            //return *this;
             return;
         } else {
             sizy *= 3;
@@ -1216,7 +1225,6 @@ void Image::crop(rect crop_rect){
     Image cropped_image(sizy,sizx);
     if (cropped_image.err()) {
         error = MEM_ERR;
-        //return *this;
         return;
     }
     
@@ -1231,8 +1239,8 @@ void Image::crop(rect crop_rect){
 		}
 	}
 
-    printf("%d x %d Image.\n",sizx,sizy);
-	printf("Current image starts at: %d\t%d\n",x0,y0);
+    //printf("%d x %d Image.\n",sizx,sizy);
+	//printf("Current image starts at: %d\t%d\n",x0,y0);
     
     cropped_image.specs[X0] = x0*specs[DX];
     cropped_image.specs[Y0] = y0*specs[DY];

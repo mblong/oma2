@@ -477,13 +477,26 @@ int compositefile_c(int n,char* args){
 /* ********** */
 
 int croprectangle_c(int n,char* args){
-    iBuffer.crop(UIData.iRect);
-    if(iBuffer.err()){
-        // crop already prints out error messages (an exception -- normally error messages are done in the command)
-        int err = iBuffer.err();
+    rect crop_rect = UIData.iRect;
+    iBuffer.crop(crop_rect);
+    int err = iBuffer.err();
+    if(err == SIZE_ERR){
+        beep();
+        printf("Rectangle size error.\n");
+        iBuffer.errclear();
+        return err;
+    }else if (err){
         iBuffer.errclear();
         return err;
     }
+        
+    int x0 = crop_rect.ul.h;
+    int y0 = crop_rect.ul.v;
+    int sizx = crop_rect.lr.h - crop_rect.ul.h +1;
+    int sizy = crop_rect.lr.v - crop_rect.ul.v +1;
+    printf("%d x %d Image.\n",sizx,sizy);
+    printf("Current image starts at: %d\t%d\n",x0,y0);
+    
     iBuffer.getmaxx(PRINT_RESULT);
     update_UI();
     return NO_ERR;
@@ -4382,7 +4395,29 @@ int maskLess_c(int n,char* args){
     return NO_ERR;
     
 }
+/* ********** */
+/*
+ NAN2ZERO
+ Set any nan values to 0.
+ 
+ */
 
+int nan2zero_c(int n,char* args){
+    float value = n;
+    sscanf(args,"%f",&value);
+    int* specs = iBuffer.getspecs();
+    for (int r = 0; r < specs[ROWS]; r++) {
+        for (int c = 0; c < specs[COLS]; c++) {
+            if (isnan(iBuffer.getpix(r, c))) iBuffer.setpix(r, c, 0.);
+        }
+    }
+    free(specs);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    
+    return NO_ERR;
+    
+}
 /* ********** */
 
 float x1_ref,y1_ref,x2_ref,y2_ref,x1_i1,x2_i1,x1_i2,x2_i2,y1_i1,y2_i1,y1_i2,y2_i2;
@@ -5294,6 +5329,79 @@ int say_c(int n,char* args)
     return NO_ERR;
 }
 
+/* ***************** */
+
+/* Scatter Plot from first and second half of current image */
+/* Size of scatter plot is specified */
+/* bin size is determined by the min and max values of each half */
+
+int scatter_c(int n, char* args)
+{
+    int sizx,sizy,binx,biny,i,j;
+    DATAWORD xmin,xmax,ymin,ymax;
+    float binsizex,binsizey,x,y;
+
+    int halfHeight = iBuffer.height()/2;
+    rect topRect={0,0,iBuffer.width()-1,halfHeight-1};
+    rect bottomRect={0,halfHeight,iBuffer.width()-1,halfHeight*2-1};
+
+    // get default values in case no arguments are given
+    sizx = 250;
+    sizy = 250;
+    
+    Image copy;
+    copy << iBuffer;
+    copy.crop(topRect);
+    xmin = copy.min();
+    xmax = copy.max();
+
+    copy << iBuffer;
+    copy.crop(bottomRect);
+    ymin = copy.min();
+    ymax = copy.max();
+    copy.free();
+
+    if( sscanf(args,"%d %d %f %f %f %f",&sizx,&sizy,&xmin,&xmax,&ymin,&ymax) != 6) {
+        printf("Using xmin xmax of %g\t%g;  ymin ymax of %g\t%g\n",xmin,xmax,ymin,ymax);
+    }
+    printf("%d x %d Scatter Plot.\n",sizx,sizy);
+    Image newIm(sizy,sizx);
+    if(newIm.err()){
+        return newIm.err();
+    }
+    newIm.zero();
+    binsizex = (xmax - xmin)/sizx;
+    binsizey = (ymax - ymin)/sizy;
+
+    if( binsizex <= 0.) {
+        binsizex = 1.0;
+        beep();
+        printf("Possible bin size error.\nX Bin size set to 1.\n");
+    }
+    if( binsizey <= 0.) {
+        binsizey = 1.0;
+        beep();
+        printf("Possible bin size error.\nY Bin size set to 1.\n");
+    }
+    
+    printf("%.2f x bin %.2f  y bin\n %d points.\n",binsizex,binsizey,halfHeight*iBuffer.width());
+    for(i=0; i <halfHeight; i++){
+        for(j=0; j<iBuffer.width();j++){
+            x = (iBuffer.getpix(i, j) - xmin)/binsizex;
+            binx = x+.5;
+            y = (iBuffer.getpix(i+halfHeight, j) - ymin)/binsizey;
+            biny = y+.5;
+            newIm.setpix(biny,binx,newIm.getpix(biny,binx)+1);
+        }
+    }
+    newIm.invert();
+    newIm.mirror();     // make so y increases from bottom to top
+    iBuffer.free();     // release the old data
+    iBuffer = newIm;   // this is the new data
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
 
 /* ************************* */
 

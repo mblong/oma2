@@ -108,6 +108,8 @@ public:
     int cols();                 ///< returns the number of columns in the current image (width)
     void setspecs(int*);        ///< sets the image specs array
     DATAWORD* getvalues();      ///< returns a copy of the image values array
+    DATAWORD min();             ///< returns the image min
+    DATAWORD max();             ///< returns the image max
     void setvalues(DATAWORD*);  ///< sets the image values array
     char* getunit_text();       ///< returns a copy of the image ruler units
     char* getComment();        ///< returns a copy of the comment buffer

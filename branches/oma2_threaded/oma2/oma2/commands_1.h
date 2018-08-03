@@ -131,6 +131,7 @@ int newWindow_c(int,char*);
 int nextFile_c(int,char*);
 int nextPrefix_c(int,char*);
 int noise_c(int, char*);
+int nan2zero_c(int,char*);
 
 int openfile_c(int,char*);
 
@@ -177,6 +178,7 @@ int subRGB_c(int,char*);
 int snr_c(int,char*);
 int shotnoise_c(int,char*);
 int say_c(int,char*);
+int scatter_c(int,char*);
 
 #if defined(Qt_UI)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
 int sqlAdd_q(int,char*);
