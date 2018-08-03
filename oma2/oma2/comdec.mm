@@ -156,6 +156,7 @@ ComDef   commands[] =    {
     {{"NEXTFILE       "},	nextFile_c},
     {{"NEXTPREFIX     "},	nextPrefix_c},
     {{"NOISE          "},	noise_c},
+    {{"NAN2ZERO       "},   nan2zero_c},
         
     {{"OPENFILE       "},	openfile_c},
         
@@ -203,6 +204,7 @@ ComDef   commands[] =    {
     {{"SNR            "},	snr_c},
     {{"SHOTNOISE      "},	shotnoise_c},
     {{"SAY            "},	say_c},
+    {{"SCATTER        "},   scatter_c},
 
 #if defined(Qt_UI)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
     {{"SQLADD         "},    sqlAdd_q},
