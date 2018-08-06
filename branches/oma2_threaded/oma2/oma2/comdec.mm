@@ -182,6 +182,7 @@ ComDef   commands[] =    {
     {{"RNDOFF         "},	roundoff_c},
     {{"RNDUP          "},	roundUp_c},
     {{"RULER          "},	ruler_c},
+    {{"REMAP          "},   remap_c},
     
     
     {{"SAVEFILE       "},	savefile_c},
