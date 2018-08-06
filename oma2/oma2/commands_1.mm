@@ -5405,6 +5405,38 @@ int scatter_c(int n, char* args)
 
 /* ************************* */
 
+/*
+REMAP Value1 Value2 [Value3]
+With two arguments, every occurence of Value1 in the current image is replaced with Value2. With three arguments, values in the range from Value1 to Value2 are set to Value3.
+*/
+
+int remap_c(int n, char* args)
+{
+    DATAWORD v1,v2,v3;
+    int narg = sscanf(args,"%f %f %f",&v1,&v2,&v3);
+    if( narg < 2) {
+        beep();
+        printf("At least two arguments are required.\n");
+        return CMND_ERR;
+    }else if (narg == 2){
+        for (int r = 0; r < iBuffer.rows(); r++) {
+            for (int c = 0; c < iBuffer.cols(); c++) {
+                if (iBuffer.getpix(r,c) == v1) iBuffer.setpix(r,c,v2);
+            }
+        }
+    }else{
+        for (int r = 0; r < iBuffer.rows(); r++) {
+            for (int c = 0; c < iBuffer.cols(); c++) {
+                if (iBuffer.getpix(r,c) >= v1 && iBuffer.getpix(r,c) <= v2) iBuffer.setpix(r,c,v3);
+            }
+        }
+    }
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
+
+/* ************************* */
 
 int getVariableError(char* name, float*);
 float getMaxDiff(float dataArray[], int numPoints,float *average);
