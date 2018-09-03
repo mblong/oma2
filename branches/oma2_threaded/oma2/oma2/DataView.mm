@@ -267,6 +267,7 @@ extern oma2UIData UIData;
             start.v = startRect.y;
             end.h = endRect.x;
             end.v = endRect.y;
+            printf("\n");
             calc(start,end);
             
             //break;    // in this implementation, this does redefine the image rectangle
