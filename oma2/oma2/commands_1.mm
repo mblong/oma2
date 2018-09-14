@@ -3238,7 +3238,7 @@ int acadd_c(int n,char* args)
     
     if(accumulator != iBuffer){
         beep();
-        printf("Accumulator is not the corret size for the current image.\n");
+        printf("Accumulator is not the correct size for the current image.\n");
         return SIZE_ERR;
     }
     accumulator + iBuffer;
@@ -3450,16 +3450,18 @@ int integrateFill(int n,char* args, int integratefill ){
     float	sum;
     int			pxstart,pxend,pystart,pyend;
     int 		i,j,xdirection,sbox=0,do_average=0;
-    float *acpoint,mx=0,mn=0;
+    float *acpoint;
     unsigned int  acsize = 0;
     
     point substart,subend;
     int* specs = iBuffer.getspecs();
+    int imageHeight = iBuffer.height();
     
     substart = UIData.iRect.ul;
     subend = UIData.iRect.lr;
     
     xdirection = n;
+    Image newImage;
     
     sscanf(args,"%d %d %d",&xdirection,&sbox,&do_average);
     
@@ -3482,15 +3484,15 @@ int integrateFill(int n,char* args, int integratefill ){
                 pxend = specs[COLS];
             if( pystart < 0 )
                 pystart = 0;
-            if( pyend > specs[ROWS])
-                pyend = specs[ROWS];
+            if( pyend > imageHeight)
+                pyend = imageHeight;
             
         }
         else {
             pxstart = 0;
             pxend = specs[COLS];
             pystart = 0;
-            pyend = specs[ROWS];
+            pyend = imageHeight;
         }
         
         acsize = specs[COLS]*sizeof(DATAWORD);
@@ -3500,35 +3502,55 @@ int integrateFill(int n,char* args, int integratefill ){
             return MEM_ERR;
         }
         
-        
         for(j=pxstart; j < pxend; j++) {
             sum = 0;
             for(i=pystart; i < pyend; i++) {
                 sum += iBuffer.getpix(i,j) ;
             }
-            if(j==pxstart)
-                mn = mx = sum;
             *(acpoint + j) = sum;
-            if( *(acpoint+j) > mx) mx = *(acpoint+j);
-            if( *(acpoint+j) < mn) mn = *(acpoint+j);
         }
         
         specs[COLS] = abs(pxend - pxstart);
         
         if(!integratefill) {
-            specs[ROWS] = 1;
-        }
-        
-        iBuffer.setspecs(specs);
-        
-        for (i=0; i<specs[ROWS]; i++) {
-            for(j=0; j < specs[COLS]; j++) {
-                if(do_average)
-                    iBuffer.setpix(i,j, *(acpoint+j+pxstart)/(pyend-pystart));
-                else
-                    iBuffer.setpix(i,j, *(acpoint+j+pxstart));
+            if(specs[IS_COLOR]){
+                specs[ROWS] = 3;
+            } else {
+                specs[ROWS] = 1;
             }
         }
+
+        newImage.setspecs(specs);
+        
+        for (i=0; i<newImage.height(); i++) {
+            for(j=0; j < specs[COLS]; j++) {
+                if(do_average)
+                    newImage.setpix(i,j, *(acpoint+j+pxstart)/(pyend-pystart));
+                else
+                    newImage.setpix(i,j, *(acpoint+j+pxstart));
+            }
+        }
+        if(specs[IS_COLOR]){
+            // we've done the red already, do the green and blue (colors 2 and 3)
+            for(int c=1; c<3; c++){
+                for(j=pxstart; j < pxend; j++) {
+                    sum = 0;
+                    for(i=pystart; i < pyend; i++) {
+                        sum += iBuffer.getpix(i+c*imageHeight,j) ;
+                    }
+                     *(acpoint + j) = sum;
+                }
+                for (i=0; i<newImage.height(); i++) {
+                    for(j=0; j < specs[COLS]; j++) {
+                        if(do_average)
+                            newImage.setpix(i+c*newImage.height(),j, *(acpoint+j+pxstart)/(pyend-pystart));
+                        else
+                            newImage.setpix(i+c*newImage.height(),j, *(acpoint+j+pxstart));
+                    }
+                }
+            }
+        }
+
     }
     else {
         if( sbox && (substart.v == subend.v) ) {
@@ -3543,8 +3565,8 @@ int integrateFill(int n,char* args, int integratefill ){
             
             if( pxstart < 0 )
                 pxstart = 0;
-            if( pxend > specs[ROWS])
-                pxend = specs[ROWS];
+            if( pxend > imageHeight)
+                pxend = imageHeight;
             if( pystart < 0 )
                 pystart = 0;
             if( pyend > specs[COLS])
@@ -3553,12 +3575,12 @@ int integrateFill(int n,char* args, int integratefill ){
         }
         else {
             pxstart = 0;
-            pxend = specs[ROWS];
+            pxend = imageHeight;
             pystart = 0;
             pyend = specs[COLS];
         }
         
-        acsize = specs[ROWS]*sizeof(DATAWORD);
+        acsize = imageHeight*sizeof(DATAWORD);
         acpoint = (float*) malloc(acsize);
         if(acpoint == 0) {
             nomemory();
@@ -3570,32 +3592,49 @@ int integrateFill(int n,char* args, int integratefill ){
             for(i=pystart; i < pyend; i++) {
                 sum += iBuffer.getpix(j,i);
             }
-            if(j==pxstart)
-                mn = mx = sum;
             *(acpoint + j) = sum;
-            if( *(acpoint+j) > mx) mx = *(acpoint+j);
-            if( *(acpoint+j) < mn) mn = *(acpoint+j);
         }
         
         specs[ROWS] = abs(pxend - pxstart);
+        if(specs[IS_COLOR]) specs[ROWS] *= 3;
         
         if(!integratefill) {
             specs[COLS] = 1;
         }
-        iBuffer.setspecs(specs);
-        
-        for (i=0; i<specs[ROWS]; i++) {
+
+        newImage.setspecs(specs);
+
+        for (i=0; i<newImage.height(); i++) {
             for(j=0; j < specs[COLS]; j++) {
                 if(do_average)
-                    iBuffer.setpix(i,j, *(acpoint+i+pxstart)/(pyend-pystart));
+                    newImage.setpix(i,j, *(acpoint+i+pxstart)/(pyend-pystart));
                 else
-                    iBuffer.setpix(i,j, *(acpoint+i+pxstart));
+                    newImage.setpix(i,j, *(acpoint+i+pxstart));
             }
         }
-        
-        
-        
+        if(specs[IS_COLOR]){
+            // we've done the red already, do the green and blue (colors 2 and 3)
+            for(int c=1; c<3; c++){
+                for(j=pxstart; j < pxend; j++) {
+                    sum = 0;
+                    for(i=pystart; i < pyend; i++) {
+                        sum += iBuffer.getpix(j+c*imageHeight,i);
+                    }
+                    *(acpoint + j) = sum;
+                }
+                for (i=0; i<newImage.height(); i++) {
+                    for(j=0; j < specs[COLS]; j++) {
+                        if(do_average)
+                            newImage.setpix(i+c*newImage.height(),j, *(acpoint+i+pxstart)/(pyend-pystart));
+                        else
+                            newImage.setpix(i+c*newImage.height(),j, *(acpoint+i+pxstart));
+                    }
+                }
+            }
+        }
     }
+    iBuffer.free();
+    iBuffer = newImage;
     free(acpoint);
     free(specs);
     iBuffer.getmaxx(PRINT_RESULT);
