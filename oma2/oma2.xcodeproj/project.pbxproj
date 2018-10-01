@@ -234,7 +234,6 @@
 		DB83FD761D4FE5DE009B3204 /* dmmalvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dmmalvar.h; sourceTree = "<group>"; };
 		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
 		DB8A888218E3297E007C79AF /* oma2cam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2cam.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB8A888318E3297F007C79AF /* oma2cam-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "oma2cam-Info.plist"; path = "/Users/mblong/oma2_trunk/oma2/oma2cam-Info.plist"; sourceTree = "<absolute>"; };
 		DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = liblabjackusb.dylib; sourceTree = "<group>"; };
 		DB8C23F718FC2BA500969763 /* labjackU3.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = labjackU3.mm; sourceTree = "<group>"; };
 		DB8C23FA18FC2FF200969763 /* u3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = u3.h; sourceTree = "<group>"; };
@@ -390,7 +389,6 @@
 				DB593A3A151B9766007CA0C3 /* box.jpg */,
 				DBF08DE2159D63980099CB4C /* c-box.jpg */,
 				DB0FC02A1519183C008A9B54 /* oma2-Info.plist */,
-				DB8A888318E3297F007C79AF /* oma2cam-Info.plist */,
 				DB0FC02B1519183C008A9B54 /* InfoPlist.strings */,
 				DB0FC02E1519183C008A9B54 /* main.m */,
 				DB0FC0301519183D008A9B54 /* oma2-Prefix.pch */,
