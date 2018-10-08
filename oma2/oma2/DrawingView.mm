@@ -48,14 +48,16 @@ extern oma2UIData UIData;
         NSPoint startPoint;
         startPoint.x = 10;
         startPoint.y = dirtyRect.size.height  - TITLEBAR_HEIGHT;
-        [label drawAtPoint:startPoint withAttributes:NULL];
+        NSDictionary *attributes = @{ NSForegroundColorAttributeName : [NSColor textColor]};
+        [label drawAtPoint:startPoint withAttributes: attributes];
+        //[label drawAtPoint:startPoint withAttributes:NULL];
         
         NSBezierPath *path = [NSBezierPath bezierPath];
         if (isColor) {
             [[NSColor redColor] setStroke];
             samplesPerPix = 3;
         } else {
-            [[NSColor blackColor] setStroke];
+            [[NSColor textColor] setStroke];
             samplesPerPix = 1;
         }
         
@@ -110,15 +112,15 @@ extern oma2UIData UIData;
             NSPoint startPoint;
             startPoint.x = 10;
             startPoint.y = dirtyRect.size.height  - TITLEBAR_HEIGHT;
-            [label drawAtPoint:startPoint withAttributes:NULL];
-            
+            NSDictionary *attributes = @{ NSForegroundColorAttributeName : [NSColor textColor]};
+            [label drawAtPoint:startPoint withAttributes: attributes];
             
             NSBezierPath *path = [NSBezierPath bezierPath];
             if (isColor) {
                 [[NSColor redColor] setStroke];
                 samplesPerPix = 3;
             } else {
-                [[NSColor blackColor] setStroke];
+                [[NSColor textColor] setStroke];
                 samplesPerPix = 1;
             }
             [path setLineWidth:1.0];
@@ -172,7 +174,7 @@ extern oma2UIData UIData;
                 [[NSColor redColor] setStroke];
                 samplesPerPix = 3;
             } else {
-                [[NSColor blackColor] setStroke];
+                [[NSColor textColor] setStroke];
                 samplesPerPix = 1;
             }
             [path setLineWidth:1.0];

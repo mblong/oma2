@@ -253,7 +253,7 @@ extern AppController* appController;
          NSMakeRange(lastReturn, self.textStorage.mutableString.length - lastReturn)];
         isErrorText = 0;
     }else{
-        [self setTextColor:[NSColor blackColor] range:
+        [self setTextColor:[NSColor textColor] range:
          NSMakeRange(lastReturn, self.textStorage.mutableString.length - lastReturn)];
     }
     lastReturn += [reply length];
