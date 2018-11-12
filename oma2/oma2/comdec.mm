@@ -36,6 +36,7 @@ ComDef   commands[] =    {
     {{"BIT16          "},	bit16_c},
     {{"BINARGUMENTS   "},	binarguments_c},
     {{"BINEXTENSION   "},	binextension_c},
+    {{"BOUNDBOX       "},   boundbox_c},
     
     {{"CALCULATE      "},	calc_cmd_c},
     {{"CALCALL        "},	calcall_c},
@@ -577,8 +578,13 @@ int comdec(char* cmnd)
         // First, check for an "=" --> means this is an assignment command
         while ( cmnd[i] != EOL  && cmnd[i]!= ';'){
             if ( cmnd[i++] == '='){
-                if(if_condition_met) do_assignment(cmnd);		// don't do assignments if an if condition is not met
-                if(exflag==0 && macflag==0) return NO_ERR;
+                if(if_condition_met){// don't do assignments if an if condition is not met
+                    //command_return = error_return = do_assignment(cmnd);
+                    // the above doesn't behave properly and in macros causes real trouble
+                    // below doesn't seem to do anything in terms of having %e return nonzero after error
+                    command_return = do_assignment(cmnd);
+                }
+                if(exflag==0 && macflag==0) return command_return;
                 assignmentDone = 1;
             }
         }
@@ -1022,7 +1028,7 @@ int do_assignment(char* cmnd)
 	//printf("%d values; %c\n",rhs_vals,exp_el[0].op_char);
 	vprint(var_index);
     update_UI();
-	return 0;
+	return NO_ERR;
 }
 
 // return the index of a variable if it is already defined

@@ -1478,6 +1478,49 @@ int clipfbottom_c(int n, char* args)
     return NO_ERR;
     
 }
+/* ********** */
+
+/* BOUNDBOX targetValue [setRectFlag]
+    Returns the bounds of a rectangle that encloses any part of the image that has a value >= targetValue. If setRectFlag is nonzero, the current rectangle will be set by the results. command_return 1-4 are set to the bounds.
+ */
+
+int boundbox_c(int n, char* args)
+{
+    point substart={iBuffer.width(),iBuffer.height()},subend={0,0};
+    DATAWORD clipval = n;
+    int setRect=0;
+    extern Variable user_variables[];
+    
+    sscanf(args,"%f %d",&clipval,&setRect);
+    
+    
+    for(int r=0; r<iBuffer.height();r++) {
+        for(int c=0; c<iBuffer.width(); c++) {
+            if( iBuffer.getpix(r,c) >= clipval){
+                if(c < substart.h ) substart.h = c;
+                if(c > subend.h ) subend.h = c;
+                if(r < substart.v ) substart.v = r;
+                if(r > subend.v ) subend.v = r;
+            };
+        }
+    }
+
+    printf("Bounding rectangle is %d %d %d %d\n",substart.h,substart.v,subend.h,subend.v);
+    user_variables[0].ivalue = substart.h;
+    user_variables[0].is_float = 0;
+    user_variables[1].ivalue = substart.v;
+    user_variables[1].is_float = 0;
+    user_variables[2].ivalue = subend.h;
+    user_variables[2].is_float = 0;
+    user_variables[3].ivalue = subend.v;
+    user_variables[3].is_float = 0;
+
+    if (setRect){
+        UIData.iRect.ul=substart;
+        UIData.iRect.lr=subend;
+    }
+    return NO_ERR;
+}
 
 /* ********** */
 

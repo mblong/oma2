@@ -30,6 +30,7 @@ int bit8_c(int,char*);
 int bit16_c(int,char*);
 int binarguments_c(int,char*);
 int binextension_c(int,char*);
+int boundbox_c(int, char*);
 
 int colorflag_c(int,char*);
 int compositefile_c(int,char*);
