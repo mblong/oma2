@@ -1153,6 +1153,9 @@ Expression_Element evaluate_string(char* ex_string)
 			}
 			exp_el[rhs_vals].ivalue = user_variables[arg_index].ivalue;
 			exp_el[rhs_vals].fvalue = user_variables[arg_index].fvalue;
+            if(user_variables[arg_index].is_float == 0){
+                exp_el[rhs_vals].fvalue = user_variables[arg_index].ivalue;
+            }
 			if(user_variables[arg_index].is_float == -1) { // this is a string variable
 				strcpy(&exp_el[rhs_vals].estring[0],&user_variables[arg_index].estring[0]); // copy the string too
 				exp_el[rhs_vals].op_char = 's';
