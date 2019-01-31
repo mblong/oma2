@@ -11,7 +11,7 @@
 
 // select cameras here
 
-#define GIGE_
+//#define GIGE_
 //#define SBIG
 //#define GPHOTO
 

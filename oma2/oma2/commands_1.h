@@ -31,6 +31,7 @@ int bit16_c(int,char*);
 int binarguments_c(int,char*);
 int binextension_c(int,char*);
 int boundbox_c(int, char*);
+int bleed_c(int, char*);
 
 int colorflag_c(int,char*);
 int compositefile_c(int,char*);
@@ -49,6 +50,7 @@ int createfile_c(int n,char* args);
 int concatfile_c(int n,char* args);
 int closefile_c(int n,char* args);
 int columns_c(int n,char* args);
+int c2rgb_c(int n,char* args);
 
 int dcrawarg_c(int,char*);
 int divfile_c(int,char*);

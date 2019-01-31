@@ -37,6 +37,7 @@ ComDef   commands[] =    {
     {{"BINARGUMENTS   "},	binarguments_c},
     {{"BINEXTENSION   "},	binextension_c},
     {{"BOUNDBOX       "},   boundbox_c},
+    {{"BLEED          "},   bleed_c},
     
     {{"CALCULATE      "},	calc_cmd_c},
     {{"CALCALL        "},	calcall_c},
@@ -57,6 +58,7 @@ ComDef   commands[] =    {
     {{"CREATEFILE     "},	createfile_c},
     {{"CONCATFILE     "},	concatfile_c},
     {{"CLOSEFILE      "},	closefile_c},
+    {{"C2RGB          "},   c2rgb_c},
     
     {{"DISPLAY        "},	display},
     {{"DMACRO         "},	defmac},

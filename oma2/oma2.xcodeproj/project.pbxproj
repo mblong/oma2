@@ -132,6 +132,7 @@
 		DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC3F1FC19129FEF00AD7850 /* VISA.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
 		DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
+		DBD2DDE821B990AC00342E26 /* oma2.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB0FC01E1519183C008A9B54 /* oma2.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
 		DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
 		DBF24A2D1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
@@ -143,7 +144,7 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		DB371F7818469FD200265D79 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
@@ -153,11 +154,21 @@
 		};
 		DB8A887D18E3297E007C79AF /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
+			buildActionMask = 12;
+			dstPath = /Applications;
+			dstSubfolderSpec = 0;
 			files = (
 				DB8A887E18E3297E007C79AF /* LibTiff_F.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBD2DDE721B9909B00342E26 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = /Applications;
+			dstSubfolderSpec = 0;
+			files = (
+				DBD2DDE821B990AC00342E26 /* oma2.app in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,6 +523,7 @@
 				DB0FC01B1519183C008A9B54 /* Frameworks */,
 				DB0FC01C1519183C008A9B54 /* Resources */,
 				DB371F7818469FD200265D79 /* CopyFiles */,
+				DBD2DDE721B9909B00342E26 /* CopyFiles */,
 			);
 			buildRules = (
 			);

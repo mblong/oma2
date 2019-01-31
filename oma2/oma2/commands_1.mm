@@ -5558,7 +5558,85 @@ int remap_c(int n, char* args)
     update_UI();
     return NO_ERR;
 }
+/* ************************* */
 
+/*
+ BLEED thresholdCount fraction
+ For correcting readout errors on a CCD detector, where intensity from one pixel bleeds into an adjacent pixel on readout. No correction is made when the value is less than thresholdCount. For a pixel with pixValue greater than thresholdCount, pixValue is increased by  (pixValue-thresholdCount)*fraction. The pixel in the next column is decreased by the same amount.
+ */
+
+int bleed_c(int n, char* args)
+{
+    DATAWORD thresholdCount,fraction,correction,pixValue;
+    int narg = sscanf(args,"%f %f",&thresholdCount,&fraction);
+    if( narg < 2) {
+        beep();
+        printf("Two arguments are required: thresholdCount fraction.\n");
+        return CMND_ERR;
+    }
+    for (int r = 0; r < iBuffer.rows(); r++) {
+        for (int c = 0; c < iBuffer.cols()-1; c++) {
+            if ((pixValue=iBuffer.getpix(r,c)) >= thresholdCount) {
+                correction=(pixValue-thresholdCount)*fraction;
+                iBuffer.setpix(r,c,pixValue+correction);
+                iBuffer.setpix(r,c+1,iBuffer.getpix(r,c+1)-correction);
+            }
+        }
+    }
+
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
+/* ************************* */
+
+/*
+ C2RGB
+ If the current image is a color image, define temporary images named r, g, and b that correspond to the red, green, and blue color channels. The current image buffer is not modified.
+ */
+
+int c2rgb_c(int n, char* args)
+{
+    
+    if(!iBuffer.isColor()){
+        beep();
+        printf("Current image is not a color image.\n");
+        return CMND_ERR;
+    }
+    // copy of the current color image
+    Image copy;
+    
+    // get each component
+    copy << iBuffer;
+    copy.rgb2color(0);
+    n = temp_image_index((char*)"r",1);
+    if(n >=0){
+        iTempImages[n] << copy;
+    } else {
+        return MEM_ERR;
+    }
+    
+    copy << iBuffer;
+    copy.rgb2color(1);
+    n = temp_image_index((char*)"g",1);
+    if(n >=0){
+        iTempImages[n] << copy;
+    } else {
+        return MEM_ERR;
+    }
+
+    copy << iBuffer;
+    copy.rgb2color(2);
+    n = temp_image_index((char*)"b",1);
+    if(n >=0){
+        iTempImages[n] << copy;
+    } else {
+        return MEM_ERR;
+    }
+
+    update_UI();
+    return NO_ERR;
+}
 /* ************************* */
 
 int getVariableError(char* name, float*);

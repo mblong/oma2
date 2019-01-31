@@ -89,6 +89,9 @@ BINEXTENSION fileExtension
 BOUNDBOX targetValue [setRectFlag]
 	Returns the bounds of a rectangle that encloses any part of the image that has a value >= targetValue. If setRectFlag is nonzero, the current rectangle will be set by the results. command_return 1-4 are set to the bounds.
 
+BLEED thresholdCount fraction
+For correcting readout errors on a CCD detector, where intensity from one pixel bleeds into an adjacent pixel on readout. No correction is made when the value is less than thresholdCount. For a pixel with pixValue greater than thresholdCount, pixValue is increased by  (pixValue-thresholdCount)*fraction. The pixel in the next column is decreased by the same amount.
+
 CALCULATE
 	Print calculations on the rectangle specified with the RECTANGLE command or with the rectangle tools. The average, rms, # of points, and the x and y "center of mass" are printed. The mean, rms, centroid_X and centroid_Y are passed to the command_return_variables.
 
@@ -157,6 +160,9 @@ CAMSETSETTING  name  new_setting_value
 
 CAMCLOSE
 	[This command is only available in oma2cam. libgphoto2 must be installed.] Disconnects from the digital camera accessed through gphoto2.
+
+C2RGB
+If the current image is a color image, define temporary images named r, g, and b that correspond to the red, green, and blue color channels. The current image buffer is not modified.
 
 DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
