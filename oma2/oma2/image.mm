@@ -63,6 +63,8 @@ FileDecoderExtensions fileDecoderExtensions[] = {
     {{".DAT"},OMA},
     {{".o2d"},OMA},
     {{".O2D"},OMA},
+    {{".CSV"},TXT},
+    {{".csv"},TXT},
     {{""},},
     
 };
@@ -202,7 +204,21 @@ Image::Image(char* filename, int kindOfName)
             return;
         }
     }
-    
+
+    for(int i=0; fileDecoderExtensions[i].ext[0]; i++ ){
+        int extLength = (int)strlen(fileDecoderExtensions[i].ext);
+        if(fileDecoderExtensions[i].decoder == TXT
+           && strncmp(&filename[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
+            if (kindOfName == LONG_NAME) {
+                error = readCsv(filename,this);
+            } else {
+                error = readCsv(fullname(filename,RAW_DATA),this);
+            }
+            if (error) windowNameMemory = 0;
+            return;
+        }
+    }
+
     /*
     // default specs set -- now decide what kind of file we are opening
     if (strncmp(&filename[nameLength-4],".nef",4) == 0 ||

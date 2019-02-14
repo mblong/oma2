@@ -203,22 +203,40 @@ int fwdatm_c(int n,char* args)
 {
     int	i,nt,nc;
     FILE *fp;
+    char fname[CHPERLN],delimiter=0;
     
-    n = 0;
-    fp = fopen(fullname(args,SAVE_DATA),"w");
+    n = sscanf(args,"%s %c",fname,&delimiter);
+    if(n==0){
+        beep();
+        printf("Need a file name.\n");
+        return CMND_ERR;
+    }
+    if(delimiter == ','){
+        fp = fopen(fullname(fname,CSV_DATA),"w");
+    } else {
+        fp = fopen(fullname(fname,SAVE_DATA),"w");
+    }
     if( fp != NULL) {
         i=0;
         int* specs = iBuffer.getspecs();
         for(nt=0; nt<specs[ROWS]; nt++){
             for(nc=0; nc<specs[COLS]; nc++){
-                fprintf(fp,"%g\t",iBuffer.getpix(nt,nc));
+                if(n==2){
+                    if(nc == specs[COLS]-1)
+                        fprintf(fp,"%g\n",iBuffer.getpix(nt,nc));
+                    else
+                        fprintf(fp,"%g%c",iBuffer.getpix(nt,nc),delimiter);
+                } else {
+                    if(nc == specs[COLS]-1)
+                        fprintf(fp,"%g\n",iBuffer.getpix(nt,nc));
+                    else
+                        fprintf(fp,"%g\t",iBuffer.getpix(nt,nc));
+                }
             }
-            fprintf(fp,"\n");
         }
         fclose(fp);
     }
     else {
-        
         beep();
         printf("Could not open file: %s\n",args);
         return FILE_ERR;
@@ -5637,6 +5655,62 @@ int c2rgb_c(int n, char* args)
     update_UI();
     return NO_ERR;
 }
+
+/* ************************* */
+
+/*
+ ABELCLEAN X
+ Try to clean up Abel inverted images.
+ Calculate average horizontal gradient magnitude
+ If a single line is more than X times greater than the average, replace it with the
+ average of the tracks above and below.
+ 
+ */
+/*
+int abelClean_c(int n, char* args)
+{
+    float overfactor = 3.0;
+    float ave = 0.,grad,imageave=0;
+    float *line_grad;
+    int nt,nc,i;
+    DATAWORD *pt;
+    
+    int narg = sscanf(args,"%f",&overfactor);
+    line_grad = new float[iBuffer.height()+iBuffer.isColor()*2*iBuffer.height()];
+    
+    for(nt=0; nt< header[NTRAK]; nt++){
+        ave = 0;
+        for(nc=1; nc<header[NCHAN]; nc++) {
+            grad = idat(nt,nc) - idat(nt,nc-1);
+            ave += grad*grad;
+        }
+        line_grad[nt] = ave/nc;
+        imageave += ave/nc;
+    }
+    imageave /= nt;
+    pt = datpt + doffset;
+    
+    for(nt=1; nt< header[NTRAK]-1; nt++){
+        if(line_grad[nt] > imageave*overfactor){
+            for(nc=0; nc<header[NCHAN]; nc++) {
+                *(pt+nc +header[NCHAN]*nt) = (idat(nt-1,nc) + idat(nt+1,nc))/2;
+            }
+        }
+    }
+    
+    free(line_grad);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+
+}
+ */
+/* ************************* */
+
+
+/* ************************* */
+
+
 /* ************************* */
 
 int getVariableError(char* name, float*);

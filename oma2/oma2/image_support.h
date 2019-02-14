@@ -7,6 +7,7 @@
 #include    "UI.h"
 #include    "image.h"
 #include    "dofft.h"
+#include <vector>
 
 enum {HOBJ_NO_DEMOSAIC=59457,HOBJ_DOC2RGB,HOBJ_BILINEAR,HOBJ_MALVAR};   // start at a funny number
 
@@ -37,7 +38,7 @@ int readHDR(char* filename,Image*);
 int loadHDR(const char*, HDRLoaderResult*);
 int readHobj(char* filename,Image*);
 int readBinary(char* filename,Image*,int,int,int,int,int,int);
-
+int readCsv(char* filename,Image*);
 
 
 #endif

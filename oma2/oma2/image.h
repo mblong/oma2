@@ -40,7 +40,7 @@ enum {NO_PRINT,PRINT_RESULT};
 enum {BILINEAR,MALVAR};
 
 // special file reader types
-enum {DCRAW,JPEG,TIFREAD,HDR,HOBJ,OMA};
+enum {DCRAW,JPEG,TIFREAD,HDR,HOBJ,OMA,TXT};
 
 
 /******************** Class Definitions ********************/
@@ -146,6 +146,7 @@ public:
     friend int readTiff(char* filename, Image*);
     friend int readHDR(char* filename, Image*);
     friend int readHobj(char* filename, Image*);
+    friend int readCsv(char* filename, Image*);
     friend void oma_write_ppm_tiff (int thecolor, Image* im);
 #ifdef GIGE_
     friend int gige(int n, char* args);

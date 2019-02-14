@@ -1073,7 +1073,64 @@ int readBinary(char* filename,Image* theImage, int bin_rows, int bin_cols,
 }
 
 /* ********** */
+int readCsv(char* filename,Image* theImage){
+    FILE *file;
+    int n,cols=0,rows=0;
+    file = fopen(filename, "rb");
+    if (!file)
+        return FILE_ERR;
+    char buffer[1024];
+    // find the number of columns by counting the commas before the first newline
+    n = (int)fread(buffer,1,sizeof(buffer),file);
+    for(int i=0; i<n; i++){
+        if(buffer[i] == ',')cols++;
+        if(buffer[i] == '\n')break;
+        if(i==n-1){
+            n = (int)fread(buffer,1,sizeof(buffer),file);
+            i=-1;
+        }
+    }
+    cols++;
+    fclose(file);
+    
+    file = fopen(filename, "r");
+    if (!file)
+        return FILE_ERR;
+    std::vector<float> imageArray;
+    int colread=0,numRead=0;
+    DATAWORD pixval;
+    // read formatted values into a vector
+    while((numRead=fscanf(file,"%f,",&pixval)) == 1){
+        colread++;
+        if(colread==cols){
+            colread=0;
+            rows++;
+        }
+        imageArray.push_back(pixval);
+    }
+    // some checking
+    if(colread !=0){
+        beep();
+        printf("Posible error is CSV file read.\n");
+    }
+    if(rows*cols < imageArray.size()){
+        beep();
+        printf("Can't make image from CSV file.\n");
+        return MEM_ERR;
+    }
+    Image newIm(rows,cols);
+    memcpy(newIm.data, &imageArray[0], imageArray.size()*sizeof(float));
+    // I assume the memory from the vector will be freed when this goes out of scope.
+    
+    theImage->free();     // release the old data
+    *theImage = newIm;   // this is the new data
+    theImage->getmaxx(PRINT_RESULT);
+    update_UI();
 
+    return NO_ERR;
+}
+
+/* ********** */
 int readHobj(char* filename,Image* theImage){
     int fd;
     extern int windowNameMemory;
