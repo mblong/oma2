@@ -94,6 +94,7 @@ ComDef   commands[] =    {
     {{"FOLD           "},	fold_g},
     {{"FINDBADPIX     "},	findbad_c},
     {{"FWDATMATLAB    "},	fwdatm_c},
+    {{"FOLD2          "},   fold_c},
         
     {{"GET            "},	getfile_c},
     {{"GETRGB         "},	getfile_c},
@@ -220,6 +221,7 @@ ComDef   commands[] =    {
     {{"TSMOOTH        "},	tsmooth_c},
     
     {{"UPREFIX        "},	uprefix_c},
+    {{"UNFOLD         "},   unfold_c},
     
     {{"VARIABLES      "},	variab},
     {{"VARCLEAR       "},	varClear},

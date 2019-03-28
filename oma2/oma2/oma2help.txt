@@ -698,6 +698,9 @@ UPREFX type
 	g   Use Get File prefix and suffix for both saving and getting files
 	d   Use Default prefix and suffix
 
+UNFOLD
+	Treat the current image as the right half of an image and "unfold" it to create a new symmetric image.
+
 VARIABLES
 	Lists currently defined variables and their values. Variables are defined using simple arithmetic expressions, such as
 	my_var = 10

@@ -235,6 +235,7 @@ int fwdatm_c(int n,char* args)
             }
         }
         fclose(fp);
+        delete[] specs;
     }
     else {
         beep();
@@ -5705,10 +5706,6 @@ int abelClean_c(int n, char* args)
 
 }
  */
-/* ************************* */
-
-
-/* ************************* */
 
 
 /* ************************* */
@@ -5935,3 +5932,162 @@ int getVariableError(char* name, float* value){
     *value = user_variables[index].fvalue;
     return NO_ERR;
 }
+
+/* ************************* */
+
+
+/*
+ FOLD fraction new_width
+ Fold an image in half vertically. It is assumed to be symmetric about some nearly verticle axis.
+ The center of symmetry is found separately for each row, except if there are dark regions at the top and bottom of the image.
+ For the dark regions, the average center of the middle part of the image is used as the center of symmetry.
+ Dark regions are rows (at the top and bottom) whose values are all less than fraction*image_max. x0,y0 and x1,y1 are coordinates of the top and bottom of the dark region, center is the average center. These are returned in command_return_1-5.
+ */
+
+int fold_c(int n, char* args){
+    DATAWORD datval,max_fraction=0.,max_val = 0.;
+    int y1,y0,sizx,sizy,new_width,center,x0,x1;
+    int nt,nc;
+    double xcom=0.,ave=0.,ave_xcom=0.;
+    
+    extern Variable user_variables[];
+
+    nc = sscanf(args,"%f %d",&max_fraction, &new_width);
+    if (nc < 2){
+        beep();
+        printf("Command format is FOLD fraction new_width\n");
+        return CMND_ERR;
+    }
+    
+    Image new_im(iBuffer.rows(),new_width);
+    if(new_im.err()){
+        beep();
+        printf("Could not create image.\n",args);
+        return new_im.err();
+    }
+    max_val = max_fraction*iBuffer.max();
+    printf("Data cutoff is at %g\n",max_val);
+    printf("max is %g\n",iBuffer.max());
+    printf("max_fract is %g\n",max_fraction);
+    
+    y1 = 0;
+    y0 = 0;
+    sizx = iBuffer.cols();
+    sizy = iBuffer.rows();
+    
+    for(nt=0; nt< sizy; nt++){
+        for(nc=0; nc<sizx; nc++) {
+            if(iBuffer.getpix(nt,nc) > max_val) break;
+        }
+        if(nc != sizx) break;
+    }
+    y0 = nt;
+    x0 = nc;
+
+    for(nt=sizy-1; nt>=0; nt--){
+        for(nc=sizx-1; nc>=0; nc--) {
+            if(iBuffer.getpix(nt,nc) > max_val) break;
+        }
+        if(nc != -1) break;
+    }
+    y1 = nt;
+    x1 = nc;
+    
+    printf("Using region between rows %d and %d\n",y0,y1);
+    sizy = y1-y0+1;
+
+    for(nt=y0; nt<= y1; nt++){
+        ave = xcom = 0.;
+        for(nc=0; nc<sizx; nc++) {
+            datval = iBuffer.getpix(nt,nc);
+            ave += datval;                    // average
+            xcom += nc * (datval);            // x center of mass -- subtract min
+            
+        }
+        ave = ave/(float)sizx;
+        
+        xcom /= sizx;
+        xcom /= (ave);
+        ave_xcom += xcom;
+        center = xcom+.5;
+        
+        for(nc=0; nc<new_width; nc++) {
+            new_im.setpix(nt,nc,(iBuffer.getpix(nt,center+nc) + iBuffer.getpix(nt,center-nc))/2.0);
+        }
+    }
+    ave_xcom /= sizy;
+    center = ave_xcom + .5;
+    
+    for(nt=0; nt< y0; nt++){
+        for(nc=0; nc<new_width; nc++) {
+            new_im.setpix(nt,nc,(iBuffer.getpix(nt,center+nc) + iBuffer.getpix(nt,center-nc))/2.0);
+        }
+    }
+    for(nt=y1+1; nt< iBuffer.rows(); nt++){
+        for(nc=0; nc<new_width; nc++) {
+            new_im.setpix(nt,nc,(iBuffer.getpix(nt,center+nc) + iBuffer.getpix(nt,center-nc))/2.0);
+        }
+    }
+
+    user_variables[0].fvalue = user_variables[0].ivalue = x0;
+    user_variables[0].is_float=0;
+    user_variables[1].fvalue = user_variables[1].ivalue = y0;
+    user_variables[1].is_float=0;
+    user_variables[2].fvalue = user_variables[2].ivalue = x1;
+    user_variables[2].is_float=0;
+    user_variables[3].fvalue = user_variables[3].ivalue = y1;
+    user_variables[3].is_float=0;
+    user_variables[4].fvalue = user_variables[4].ivalue = center;
+    user_variables[4].is_float=0;
+
+    
+    iBuffer.free();     // release the old data
+    iBuffer = new_im;   // this is the new data
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+
+}
+
+/* ************************* */
+
+
+/*
+ UNFOLD
+ Treat the current image as the right half of an image and "unfold" it to create a new symmetric image.
+ 
+ */
+
+int unfold_c(int n, char* args){
+    int colorImage=0;
+    if( iBuffer.isColor()){
+        int* theSpecs=iBuffer.getspecs();
+        theSpecs[IS_COLOR]=0;
+        iBuffer.setspecs(theSpecs);
+        delete [] theSpecs;
+        colorImage=1;
+    }
+    iBuffer.rotate(90.0);
+    Image newIm;
+    newIm << iBuffer;
+    iBuffer.invert();
+    iBuffer.mirror();
+    int w=iBuffer.width()-1,h=iBuffer.rows()-1;
+    rect cropRect={0,1,w,h};
+    iBuffer.crop(cropRect);
+    newIm.composite(iBuffer);
+    newIm.rotate(-90.);
+    
+    iBuffer.free();     // release the old data
+    iBuffer = newIm;   // this is the new data
+    if( colorImage){
+        int* theSpecs=iBuffer.getspecs();
+        theSpecs[IS_COLOR]=1;
+        iBuffer.setspecs(theSpecs);
+        delete [] theSpecs;
+    }
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    return NO_ERR;
+}
+
