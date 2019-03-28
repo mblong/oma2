@@ -33,7 +33,6 @@
 		DB238A5915A2895B00502B50 /* pal5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5415A2895B00502B50 /* pal5.jpg */; };
 		DB238A5A15A2895B00502B50 /* pal4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5515A2895B00502B50 /* pal4.jpg */; };
 		DB238A5B15A2895B00502B50 /* pal3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5615A2895B00502B50 /* pal3.jpg */; };
-		DB268239159374AC00B40AE1 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = DB268238159374AC00B40AE1 /* Notes.txt */; };
 		DB2BC300151930D7009D9AED /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
 		DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
 		DB35126018F0B8AE00202FFC /* macImageSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB35125F18F0B8AE00202FFC /* macImageSupport.mm */; };
@@ -87,7 +86,6 @@
 		DB8A886A18E3297E007C79AF /* OMApalette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */; };
 		DB8A886B18E3297E007C79AF /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
 		DB8A886C18E3297E007C79AF /* OMApalette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */; };
-		DB8A886D18E3297E007C79AF /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = DB268238159374AC00B40AE1 /* Notes.txt */; };
 		DB8A886E18E3297E007C79AF /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
 		DB8A886F18E3297E007C79AF /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
 		DB8A887018E3297E007C79AF /* ruler.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB1E9B1E15A27EA300F38CE2 /* ruler.jpg */; };
@@ -221,7 +219,6 @@
 		DB238A5415A2895B00502B50 /* pal5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal5.jpg; sourceTree = "<group>"; };
 		DB238A5515A2895B00502B50 /* pal4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal4.jpg; sourceTree = "<group>"; };
 		DB238A5615A2895B00502B50 /* pal3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pal3.jpg; sourceTree = "<group>"; };
-		DB268238159374AC00B40AE1 /* Notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Notes.txt; path = ../Notes.txt; sourceTree = "<group>"; };
 		DB2BC2FF151930D7009D9AED /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		DB2BC302151933C9009D9AED /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
 		DB2BC303151933C9009D9AED /* PreferenceController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PreferenceController.mm; sourceTree = "<group>"; };
@@ -395,7 +392,6 @@
 				DB238A4C15A2879900502B50 /* pal0.jpg */,
 				DB1E9B2115A2804C00F38CE2 /* curve.jpg */,
 				DB1E9B1E15A27EA300F38CE2 /* ruler.jpg */,
-				DB268238159374AC00B40AE1 /* Notes.txt */,
 				DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */,
 				DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */,
 				DBBD397C155AD06000D5B56B /* OMApalette.pa1 */,
@@ -604,7 +600,6 @@
 				DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */,
 				DBBD3985155ADD5100D5B56B /* OMApalette2.pa1 in Resources */,
 				DB95A94F1A2F415E00823467 /* VariablesWindow.xib in Resources */,
-				DB268239159374AC00B40AE1 /* Notes.txt in Resources */,
 				DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */,
 				DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */,
 				DB1E9B1F15A27EA300F38CE2 /* ruler.jpg in Resources */,
@@ -643,7 +638,6 @@
 				DB8A886B18E3297E007C79AF /* DrawingWindow.xib in Resources */,
 				DB8A886C18E3297E007C79AF /* OMApalette2.pa1 in Resources */,
 				DB95A9501A2F415E00823467 /* VariablesWindow.xib in Resources */,
-				DB8A886D18E3297E007C79AF /* Notes.txt in Resources */,
 				DB8A886E18E3297E007C79AF /* c-box.jpg in Resources */,
 				DB8A886F18E3297E007C79AF /* oma2Icons.icns in Resources */,
 				DB8A887018E3297E007C79AF /* ruler.jpg in Resources */,
