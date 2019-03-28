@@ -10,6 +10,7 @@
 		DB021E7B15211EFA001D1B05 /* commands_1.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7515211EFA001D1B05 /* commands_1.mm */; };
 		DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7715211EFA001D1B05 /* image_support.mm */; };
 		DB021E7D15211EFA001D1B05 /* image.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7915211EFA001D1B05 /* image.mm */; };
+		DB03625E224D009800DF7BA8 /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB03625D224D009800DF7BA8 /* ImageBitmap.mm */; };
 		DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
 		DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
 		DB0FC02F1519183C008A9B54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
@@ -65,7 +66,6 @@
 		DB8A885118E3297E007C79AF /* DrawingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD5691802050F007F8801 /* DrawingView.mm */; };
 		DB8A885218E3297E007C79AF /* DataWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB17A30B15247965004F810A /* DataWindowController.mm */; };
 		DB8A885318E3297E007C79AF /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
-		DB8A885418E3297E007C79AF /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */; };
 		DB8A885518E3297E007C79AF /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
 		DB8A885618E3297E007C79AF /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
 		DB8A885718E3297E007C79AF /* DataView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2113581540219200B23364 /* DataView.mm */; };
@@ -119,7 +119,6 @@
 		DBABD56F180208E7007F8801 /* DrawingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD56E180208E7007F8801 /* DrawingWindowController.mm */; };
 		DBAD2EFD1868975D003F9B55 /* Oma2Macro.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */; };
 		DBAEDEDD187F16FD0019677B /* LightOma2Help in Resources */ = {isa = PBXBuildFile; fileRef = DBAEDEDC187F16FD0019677B /* LightOma2Help */; };
-		DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */; };
 		DBB27B6B1867F1DF00CF6523 /* Oma2Settings.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */; };
 		DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
@@ -184,6 +183,7 @@
 		DB021E7F15214040001D1B05 /* comdec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comdec.h; sourceTree = "<group>"; };
 		DB02914918E46C1F00F497FB /* cameraSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cameraSelector.h; sourceTree = "<group>"; };
 		DB02914A18E46EAF00F497FB /* oma2cam-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "oma2cam-Prefix.pch"; sourceTree = "<group>"; };
+		DB03625D224D009800DF7BA8 /* ImageBitmap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageBitmap.mm; sourceTree = "<group>"; };
 		DB0FC01E1519183C008A9B54 /* oma2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0FC0221519183C008A9B54 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		DB0FC0251519183C008A9B54 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -266,7 +266,6 @@
 		DBABD56E180208E7007F8801 /* DrawingWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawingWindowController.mm; sourceTree = "<group>"; };
 		DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Oma2Macro.icns; sourceTree = "<group>"; };
 		DBAEDEDC187F16FD0019677B /* LightOma2Help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = LightOma2Help; sourceTree = "<group>"; };
-		DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageBitmap.mm; path = ../ImageBitmap.mm; sourceTree = "<group>"; };
 		DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Oma2Settings.icns; sourceTree = "<group>"; };
 		DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Oma2Data.icns; sourceTree = "<group>"; };
 		DBB2C37217F9A187008C03BB /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -478,7 +477,7 @@
 				DB83FD761D4FE5DE009B3204 /* dmmalvar.h */,
 				DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */,
 				DB2E76B8152611BD004B6502 /* ImageBitmap.h */,
-				DBAFD1E115260E33001CDEEA /* ImageBitmap.mm */,
+				DB03625D224D009800DF7BA8 /* ImageBitmap.mm */,
 				DBA96ABB1520C7820043754E /* oma2.h */,
 				DB021E7A15211EFA001D1B05 /* image.h */,
 				DB021E7915211EFA001D1B05 /* image.mm */,
@@ -678,12 +677,12 @@
 				DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */,
 				DB021E7D15211EFA001D1B05 /* image.mm in Sources */,
 				DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */,
+				DB03625E224D009800DF7BA8 /* ImageBitmap.mm in Sources */,
 				DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */,
 				DB83FD771D4FE5DE009B3204 /* dmmalvar.mm in Sources */,
 				DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */,
 				DB17A30C15247965004F810A /* DataWindowController.mm in Sources */,
 				DB4E036E1835272400250EA4 /* dofft.mm in Sources */,
-				DBAFD1E215260E33001CDEEA /* ImageBitmap.mm in Sources */,
 				DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */,
 				DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */,
 				DB2113591540219200B23364 /* DataView.mm in Sources */,
@@ -720,7 +719,6 @@
 				DB8A885118E3297E007C79AF /* DrawingView.mm in Sources */,
 				DB8A885218E3297E007C79AF /* DataWindowController.mm in Sources */,
 				DB8A885318E3297E007C79AF /* dofft.mm in Sources */,
-				DB8A885418E3297E007C79AF /* ImageBitmap.mm in Sources */,
 				DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */,
 				DB8A885518E3297E007C79AF /* StatusDrop.mm in Sources */,
 				DB8A885618E3297E007C79AF /* UI.mm in Sources */,
