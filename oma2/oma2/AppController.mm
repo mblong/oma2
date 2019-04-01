@@ -129,7 +129,8 @@ extern oma2UIData UIData;
     // Disable the selection of directories in the dialog.
     [openDlg setCanChooseDirectories:NO];
     [openDlg setAllowedFileTypes: [[NSArray alloc] initWithObjects:
-                                   @"dat",@"mac",@"jpg",@"tif",@"tiff",@"hdr",@"o2s", nil]];
+                                   @"dat",@"mac",@"jpg",@"tif",@"tiff",@"hdr",@"o2s", @"o2d",@"hobj",@"csv",
+                                   @"png",@"hdr",@"nef",@"cr2",@"crw",@"raw",nil]];
     
     // Display the dialog.  If the OK button was pressed,
     // process the files.
