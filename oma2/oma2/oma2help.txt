@@ -90,7 +90,7 @@ BOUNDBOX targetValue [setRectFlag]
 	Returns the bounds of a rectangle that encloses any part of the image that has a value >= targetValue. If setRectFlag is nonzero, the current rectangle will be set by the results. command_return 1-4 are set to the bounds.
 
 BLEED thresholdCount fraction
-For correcting readout errors on a CCD detector, where intensity from one pixel bleeds into an adjacent pixel on readout. No correction is made when the value is less than thresholdCount. For a pixel with pixValue greater than thresholdCount, pixValue is increased by  (pixValue-thresholdCount)*fraction. The pixel in the next column is decreased by the same amount.
+	For correcting readout errors on a CCD detector, where intensity from one pixel bleeds into an adjacent pixel on readout. No correction is made when the value is less than thresholdCount. For a pixel with pixValue greater than thresholdCount, pixValue is increased by  (pixValue-thresholdCount)*fraction. The pixel in the next column is decreased by the same amount.
 
 CALCULATE
 	Print calculations on the rectangle specified with the RECTANGLE command or with the rectangle tools. The average, rms, # of points, and the x and y "center of mass" are printed. The mean, rms, centroid_X and centroid_Y are passed to the command_return_variables.
@@ -162,7 +162,7 @@ CAMCLOSE
 	[This command is only available in oma2cam. libgphoto2 must be installed.] Disconnects from the digital camera accessed through gphoto2.
 
 C2RGB
-If the current image is a color image, define temporary images named r, g, and b that correspond to the red, green, and blue color channels. The current image buffer is not modified.
+	If the current image is a color image, define temporary images named r, g, and b that correspond to the red, green, and blue color channels. The current image buffer is not modified.
 
 DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
@@ -231,7 +231,7 @@ DOC2COLOR c1 c2 c3 c4 c5
 	c5 is 0, 1, or 2 for conversion to red, green, or blue. Pixels associated with non-selected colors have a value of 0. Doing a BLOCK 2 2 command after this command will remove the zeros. Blocking 2 by 2 on the green channel will sum the two green pixels.
 
 DISP2RGB
- Convert the display image to rgb. Use this to turn a false color intensity map into an RGB image or to modify a color image so the values follow the display settings. Returned values are integers between 0 - 255.
+	Convert the display image to rgb. Use this to turn a false color intensity map into an RGB image or to modify a color image so the values follow the display settings. Returned values are integers between 0 - 255.
 
 DOUTPUT channel state
 	Sets the specified digital output channel on a Labjack U3 to the specified state (0 or 1). Channel must be in the range 4-7. [oma2cam only]
@@ -308,7 +308,7 @@ GETFILENAMES NameFile
 	Open NameFile (uses get prefix and ".txt" as suffix), which contains the names of files or directory paths. For files, the NEXTFILE command is used to open the next file. For directory paths, the NEXTPREFIX command is used to set the "Get File" prefix to the specified path. NameFile is left open until all files have been accessed.
 
 GETMATCH parameterfile
-Load the file matching parameters contained in the text file "parameterfile". The format of the file is as follows:
+	Load the file matching parameters contained in the text file "parameterfile". The format of the file is as follows:
 x1_ref y1_ref x1_i1 y1_i1 x1_i2 y1_i2
 x2_ref y2_ref x2_i1 y2_i1 x2_i2 y2_i2
 image1_width image1_height
@@ -333,7 +333,7 @@ GMACRO <filename>
 	Loads the contents of the specified file into the current macro buffer.
 
 GAUSSIAN EdgeValue [x0 y0]
-    Generate a Gaussian distribution centered at x0, y0. If x0, and y0, are not specified, the distribution is centered. The maximum is 1. For a centered distribution, EdgeValue specifies the value of the distribution at the center edge.
+	Generate a Gaussian distribution centered at x0, y0. If x0, and y0, are not specified, the distribution is centered. The maximum is 1. For a centered distribution, EdgeValue specifies the value of the distribution at the center edge.
 	
 GREY2RGB [scaleRed scaleGreen scaleBlue]
 	Turns a single plane image into a three plane RGB image. The optional weighting factors are applied to each color plane.
@@ -382,7 +382,7 @@ HDRACADD
 	Adds the current image data buffer to the HDR accumulator buffer. Values greater than the cutoff are excluded and values are then normalized by the exposure time.
 
 HDRACCUMULATE cutoffMax cutoffMin
-Allocates and clears memory for an HDR accumulator that can be used to generate HDR images from a series of different exposures. The cuttoff value should be less than the saturation value for the detector. Values less than cutoffMin are not included; the default for cutoffMin is 0. The size of the accumulator is determined by the image size parameters when the accumulate command is first given. Be sure the exposure value for the image is set (e.g., imported from a raw file or set using the EXPOSURE command).
+	Allocates and clears memory for an HDR accumulator that can be used to generate HDR images from a series of different exposures. The cuttoff value should be less than the saturation value for the detector. Values less than cutoffMin are not included; the default for cutoffMin is 0. The size of the accumulator is determined by the image size parameters when the accumulate command is first given. Be sure the exposure value for the image is set (e.g., imported from a raw file or set using the EXPOSURE command).
 
 HDRACDELETE
 	Frees the memory associated with the HDR accumulator.
@@ -421,7 +421,7 @@ INTVARIABLE variable_name
 	Specifies that variable_name is to be used as an integer variable.
 
 IM2SEQUENCE filename frames
-    Save the current image as a sequence of images with the specified number of frames. This type of data file can be used by the SEQ2HDR command.
+	Save the current image as a sequence of images with the specified number of frames. This type of data file can be used by the SEQ2HDR command.
 
 KILLBOX [value]
 	Much like FILLBOX, this command works on the region of the image that has been specified with the RECT command or mouse. The contents of this region are set to 'value'. Default for 'value' is 0.
@@ -477,13 +477,13 @@ MAKNEW n m
 	Change the resolution of the data in the current data buffer to be n rows x m columns. Bilinear interpolation is performed.
 
 MASK> value
- Create a mask based on values in the current image greater than or equal to the specified value. Mask values are 0 or 1.
+	Create a mask based on values in the current image greater than or equal to the specified value. Mask values are 0 or 1.
 
 MASK< value
- Create a mask based on values in the current image less than the specified value. Mask values are 0 or 1.
+	Create a mask based on values in the current image less than the specified value. Mask values are 0 or 1.
 
 MATCH image2_data_file
-This command is used to create matching image pairs from images taken with different magnification, displacement, and rotation. The first image is assumed to be in the current image buffer. "image2_data_file" specifies the name of a file containing the second image. The necessary image matching parameters are stored in an ASCII text file and must be loaded with the GETMATCH command prior to executing the MATCH command. The command creates two new images and stores them in files named Match_1 and Match_2. Image 1 should be the lower resolution of the two.
+	This command is used to create matching image pairs from images taken with different magnification, displacement, and rotation. The first image is assumed to be in the current image buffer. "image2_data_file" specifies the name of a file containing the second image. The necessary image matching parameters are stored in an ASCII text file and must be loaded with the GETMATCH command prior to executing the MATCH command. The command creates two new images and stores them in files named Match_1 and Match_2. Image 1 should be the lower resolution of the two.
 
 MIRROR
 	Form a left-right mirror image operation on the data in the current data buffer.
@@ -558,7 +558,7 @@ ROTATE [value]
 	Rotates the data in the current image buffer.  If no value is specified, the image is rotated by 90 degrees. If a value is specified, the image is rotated by the specified number of degrees (this may be a real number).
 
 READBADPIX filename
- Read in bad pixel data from a text file.
+	Read in bad pixel data from a text file.
 	Format is:
 	# of bad pixels
 	detector_width	detector_height
@@ -595,10 +595,10 @@ SATIFFSCALED min max <filename>
 	Convert image to 16 bit and save as a TIFF file. Uses the specified min and max for scaling rather than the min and max of the image in the buffer. Results will be between 0 - 65535. Depending on min and max, the image may be clipped or the full 16-bit dynamic range may not be used. To save as a color image, use the COLORFLAG command to set the flag appropriately.
 
 SAVEJPG <filename>
-Saves the current image bitmap to a JPG file. The current display parameters are used to create the bitmap. Include the .jpg extension in the file name.
+	Saves the current image bitmap to a JPG file. The current display parameters are used to create the bitmap. Include the .jpg extension in the file name.
 
 SAVEPDF <filename>
-Saves the current data window image to a PDF file. Any text labels that are displayed on the data window will be part of the pdf. Include the .pdf extension in the file name.
+	Saves the current data window image to a PDF file. Any text labels that are displayed on the data window will be part of the pdf. Include the .pdf extension in the file name.
 
 SERCLOSE
 	Closes the serial port opened with the last "SERIAL device_name" command. This can be used if you need to talk to more than one serial device -- open device 1, send commands, close the serial port, open device 2, send commands, and so forth. Available in oma2cam.
@@ -660,10 +660,10 @@ SUBTMPIMAGE name
 	Subtracts the contents of the named temporary image from the data in the current buffer.
 
 SEQ2HDR filename cutoff
-    Convert a sequence of images with different exposures to an HDR image. The file contains all images and must have information on exposures stored in the EXTRA data (see the EXTRA command). This type of file can be created by GigE cameras in oma2cam or can be created using the CREATEFILE/CONCATENATEFILE/COLSEFILE commands. Note that all exposure information must be entered in the extra space before CREATEFILE is used to open the file. Image values larger thatn the cutoff value will not be included and this should be close to the detector saturation value.
+	Convert a sequence of images with different exposures to an HDR image. The file contains all images and must have information on exposures stored in the EXTRA data (see the EXTRA command). This type of file can be created by GigE cameras in oma2cam or can be created using the CREATEFILE/CONCATENATEFILE/COLSEFILE commands. Note that all exposure information must be entered in the extra space before CREATEFILE is used to open the file. Image values larger thatn the cutoff value will not be included and this should be close to the detector saturation value.
 
 SEQ2IMAGE filename
-    Open all frames of a sequence of images to a single image whose height is NFRAMES*FRAMEHEIGHT.
+	Open all frames of a sequence of images to a single image whose height is NFRAMES*FRAMEHEIGHT.
 
 SHOTNOISE seed
 	Treat the data as counts and add random root N noise to the data.
