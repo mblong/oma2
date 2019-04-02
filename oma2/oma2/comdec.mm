@@ -76,6 +76,7 @@ ComDef   commands[] =    {
     {{"DISP2RGB       "},	disp2rgb_c},
     {{"DEMOSAIC       "},	demosaic_c},
     {{"DECODEHOBJ     "},	decodeHobj_c},
+    {{"DSATURATE      "},   dsaturate_c},
     
     {{"ERASE          "},	erase},
     {{"ENDIF          "},	endifcmnd},

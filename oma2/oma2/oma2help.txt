@@ -132,10 +132,10 @@ CYL2
 	Treat the data in the current image as a half cross section of a cylindrically symmetric intensity distribution. The centerline is assumed to be along the LHS of the image. An integrated image is calculated by rotating the image  about the centerline. Does a parallel projection.
 
 CLEARBADPIX
- 	Sets pixels tagged as bad to the value of their 8 nearest neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands.
+ 	Sets pixels tagged as bad (e.g., with the FINDBADPIX or READBADPIX commands) to the value of their 8 nearest neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands. See also FINDBADPIX, CCLEARBADPIX, WRITEBADPIX, and READBADPIX.
 
 CCLEARBADPIX
-	For un-demosaiced color images, sets pixels tagged as bad to the value of their 8 nearest same-color neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands.
+	For un-demosaiced color images, sets pixels tagged as bad (e.g., with the FINDBADPIX or READBADPIX commands) to the value of their 8 nearest same-color neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands. See also FINDBADPIX, CLEARBADPIX, WRITEBADPIX, and READBADPIX.
 
 CAPTURE file_name
 	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses libgphoto2 calls to capture and download an image from a digital camera that is recognized by libgphoto2 (and supports capture).
@@ -245,6 +245,9 @@ DEMOSAIC redX redY [algorithm]
 DECODEHOBJ
 	Assume the current image has the proprietary .hobj format (from Halcon), and has not been decoded. This attempts to decode the image. See the command HOBJSETTINGS for how this decoding can be done automatically.
 
+DSATURATE [displaySaturationValue]
+	This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMaxium*displaySaturationValue. If no argument is given, the current value is printed.
+
 ERASE [n]
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.
 
@@ -296,7 +299,7 @@ FRAME NewWidth NewHeight [Value] [X0] [Y0]
 	Put a "frame" around the current image. X0 and Y0 are the coordinates of the start of the new image in the current image's coordinate system. X0 and Y0 can be positive (will crop out some of the current image) or negative (The new image will have a border with the pixels containing the Value specified). If X0 or Y0 are not integers, the routine will interpolate pixel values. Default Value is 0. Default of X0 and Y0 center the old image in the frame.
 
 FINDBADPIX Counts [TargetValue] [Passes]
-	Searches the current image buffer for pixels whose value is more than "Counts" above that of its nearest eight neighbors. Those pixels are tagged as hot pixels. If the optional TargetValue is specified,a different algorithm is used that will get values from 1 to 8 neighboring pixels that are within the specified number of counts of the target value. A reasonable TargetValue would be the average A/D offset, e.g., from a dark frame. As currently implemented, the alternate algorithm is not appropriate for raw images from a color camera.
+	Searches the current image buffer for pixels whose value is more than "Counts" above that of its nearest eight neighbors. Those pixels are tagged as hot pixels. This is best applied to a dark image. If the optional TargetValue is specified, a different algorithm is used that will get values from 1 to 8 neighboring pixels that are within the specified number of counts of the target value. A reasonable TargetValue would be the average A/D offset, e.g., from a dark frame. As currently implemented, the alternate algorithm is not appropriate for raw images from a color camera. The information is saved in an internal buffer. See also CLEARBADPIX, CCLEARBADPIX, WRITEBADPIX, and READBADPIX.
 
 FWDATMATLAB  <filename> [delimiter]
 	Writes the data in the current buffer as a text file. If no delimiter is specified, tab is used and the file will have the Save File extension. If the delimeter is "," the file gets the .csv extension. Format is a matrix of values that can be loaded directly into matlab.
@@ -558,14 +561,12 @@ ROTATE [value]
 	Rotates the data in the current image buffer.  If no value is specified, the image is rotated by 90 degrees. If a value is specified, the image is rotated by the specified number of degrees (this may be a real number).
 
 READBADPIX filename
-	Read in bad pixel data from a text file.
+	Read in bad pixel data from a text file (e.g., from a file saved with WRITEBADPIX).
 	Format is:
 	# of bad pixels
 	detector_width	detector_height
-	bad_pix1_x
-	bad_pix1_y
-	bad_pix2_x
-	bad_pix2_y
+	bad_pix1_x bad_pix1_y
+	bad_pix2_x bad_pix2_y
 	.
 	.
 	.
@@ -729,14 +730,12 @@ WARPARAMS <filename>
 	b00 b01 b10 b11
 
 WRITEBADPIX filename
-	Save bad pixel data to a text file.
+	Save bad pixel data (e.g., from FINDBADPIX or READBADPIX commands) to a text file.
 	Format is:
 	# of bad pixels
 	detector_width	detector_height
-	bad_pix1_x
-	bad_pix1_y
-	bad_pix2_x
-	bad_pix2_y
+	bad_pix1_x bad_pix1_y
+	bad_pix2_x bad_pix2_y
 	.
 	.
 	.

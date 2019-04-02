@@ -227,6 +227,7 @@ typedef struct {
     int demosaicHobjFlag;    // setting for whether or not to demosaic after decoding
     int clearHobjFlag;      // setting for whether or not to clear bad color pixels (call cclearbad_c)
  
+    float displaySaturateValue; // when Scale is selected, cmax will be data max * displaySaturateValue
     
     /*
 	settings[4] = detector;

@@ -6090,4 +6090,21 @@ int unfold_c(int n, char* args){
     update_UI();
     return NO_ERR;
 }
+/* ************************* */
 
+
+/*
+ DSATURATE [displaySaturationValue]
+    This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMaxium*displaySaturationValue. If no argument is given, the current value is printed.
+ */
+
+int dsaturate_c(int n,char* args){
+    float dSatValue=1;
+    int nargs = sscanf(args,"%f",&dSatValue);
+
+    if(nargs ==1){
+        UIData.displaySaturateValue = dSatValue;
+    }
+    printf("Display Saturation Value is %f\n",UIData.displaySaturateValue);
+    return NO_ERR;
+}

@@ -67,6 +67,7 @@ int divRGB_c(int,char*);
 int disp2rgb_c(int,char*);
 int demosaic_c(int,char*);
 int decodeHobj_c(int,char*);
+int dsaturate_c(int,char*);
 
 int echo_c(int,char*);
 int extra_c(int,char*);

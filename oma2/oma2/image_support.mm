@@ -420,6 +420,12 @@ int loadprefs(char* name)
             missingBytes -= 3*sizeof(int);
         }
 
+        if(missingBytes >= sizeof(float)){
+            // set these default values
+            UIData.displaySaturateValue = 1.0; // when Scale is selected, cmax will be data max * displaySaturateValue
+            missingBytes -= sizeof(float);
+        }
+
         return NO_ERR;
     }
     

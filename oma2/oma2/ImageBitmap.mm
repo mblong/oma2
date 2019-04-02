@@ -45,7 +45,7 @@ void ImageBitmap::operator=(Image im){
     int allocate_new=1;
 	
     if(UIData.autoscale){
-        UIData.cmax = im.values[MAX];
+        UIData.cmax = im.values[MAX]*UIData.displaySaturateValue;
         UIData.cmin = im.values[MIN];
     }
     //printf("%g %g cmin cmax\n",cmin,cmax);
