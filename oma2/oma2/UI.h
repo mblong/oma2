@@ -122,7 +122,7 @@ int pprintf(const char* format, ...);
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
 #ifndef SETTINGSFILE
-#define SETTINGSFILE "../Resources/OMA Settings"
+#define SETTINGSFILE "../Resources/OMASettings"
 #define PALETTEFILE	"../Resources/OMApalette.pa1"
 #define PALETTEFILE2 "../Resources/OMApalette2.pa1"
 #define PALETTEFILE3 "../Resources/OMApalette3.pa1"
@@ -195,7 +195,7 @@ BOOL dropped_file(char*,char*);
 
 
 #ifndef SETTINGSFILE
-#define SETTINGSFILE "./OMA Settings"
+#define SETTINGSFILE "./OMASettings"
 #define PALETTEFILE	"./OMApalette.pa1"
 #define PALETTEFILE2 "./OMApalette2.pa1"
 #define PALETTEFILE3 "./OMApalette3.pa1"
@@ -288,7 +288,7 @@ BOOL dropped_file(char*,char*);
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
 #ifndef SETTINGSFILE
-#define SETTINGSFILE "./OMA Settings"
+#define SETTINGSFILE "./OMASettings"
 #define PALETTEFILE	"./OMApalette.pa1"
 #define PALETTEFILE2 "./OMApalette2.pa1"
 #define PALETTEFILE3 "./OMApalette3.pa1"

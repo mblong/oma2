@@ -120,7 +120,49 @@ extern oma2UIData UIData;
         [variablesWindowController updateVariableList:variables.c_str()];
     }
 }
+-(void) updateStatusWindow{
+    int* specs = iBuffer.getspecs();
+    DATAWORD* values= iBuffer.getvalues();
+    
+    UIData.max = values[MAX];
+    UIData.min = values[MIN];
+    UIData.iscolor = specs[IS_COLOR];
+    UIData.rows = specs[ROWS];
+    UIData.cols = specs[COLS];
+    UIData.dx = specs[DX];
+    UIData.dy = specs[DY];
+    UIData.x0 = specs[X0];
+    UIData.y0 = specs[Y0];
+    
+    [statusController labelColorMinMax];
+    
 
+    if(UIData.autoscale){
+        [[statusController scaleState] setState:NSOnState];
+        if(UIData.displaySaturateValue == 1.0){
+            [[statusController scaleState] setTitle: @"Scale"];
+        } else {
+            [[statusController scaleState] setTitle:[NSString stringWithFormat:@"Scale*%g",UIData.displaySaturateValue]];
+        }
+    } else{
+        [[statusController scaleState] setState:NSOffState];
+        [[statusController scaleState] setTitle: @"Scale"];
+    }
+    
+    if(UIData.autoupdate)
+        [[statusController updateState] setState:NSOnState];
+    else
+        [[statusController updateState] setState:NSOffState];
+    
+    static int current_pal = -1;
+    if (current_pal != UIData.thepalette) {
+        [statusController updatePaletteBox];
+        current_pal = UIData.thepalette;
+    }
+    
+    free(specs);
+    free(values);
+}
 
 - (IBAction)openDocument:(id)sender{
     NSOpenPanel* openDlg = [NSOpenPanel openPanel];

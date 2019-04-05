@@ -204,10 +204,17 @@ StatusController *statusController;
 
 
 - (IBAction)scaleCheckbox:(id)sender {
-    if([scaleState state] )
+    if([scaleState state] ){
         UIData.autoscale = 1;
-    else
+        if(UIData.displaySaturateValue == 1.0){
+            [scaleState setTitle: @"Scale"];
+        } else {
+            [scaleState setTitle:[NSString stringWithFormat:@"Scale*%g",UIData.displaySaturateValue]];
+        }
+    }else{
         UIData.autoscale = 0;
+        [scaleState setTitle: @"Scale"];
+    }
 }
 
 - (IBAction)updateCheckbox:(id)sender {

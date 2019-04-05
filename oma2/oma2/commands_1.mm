@@ -6106,5 +6106,7 @@ int dsaturate_c(int n,char* args){
         UIData.displaySaturateValue = dSatValue;
     }
     printf("Display Saturation Value is %f\n",UIData.displaySaturateValue);
+    update_UI();
+    
     return NO_ERR;
 }

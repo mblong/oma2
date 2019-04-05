@@ -77,6 +77,7 @@ int comdec(char*);
 -(void) dataWindowClosing;
 -(void) updateDataWindow;
 -(void) updateVariablesWindow;
+-(void) updateStatusWindow;
 -(void) startVariablesWindow;
 
 -(int) saveDataWindowToPdf: (char*) fileName;

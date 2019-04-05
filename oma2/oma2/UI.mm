@@ -23,48 +23,15 @@ extern oma2UIData UIData;
 // This is a way to update user interface values after a command
 
 void update_UI(){
+        
+    if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+        [appController updateStatusWindow]; \
+    else \
+        dispatch_sync(dispatch_get_main_queue(),^{[appController updateStatusWindow];});
+
     [[appController preferenceController] fillInUIData];
-    
     [appController updateVariablesWindow];
-    
-    /*
-     
-     */
-    int* specs = iBuffer.getspecs();
-    DATAWORD* values= iBuffer.getvalues();
-    
-    UIData.max = values[MAX];
-    UIData.min = values[MIN];
-    UIData.iscolor = specs[IS_COLOR];
-    UIData.rows = specs[ROWS];
-    UIData.cols = specs[COLS];
-    UIData.dx = specs[DX];
-    UIData.dy = specs[DY];
-    UIData.x0 = specs[X0];
-    UIData.y0 = specs[Y0];
-    
-    [statusController labelColorMinMax]; 
-    
-    if(UIData.autoscale)
-        [[statusController scaleState] setState:NSOnState];
-    else
-        [[statusController scaleState] setState:NSOffState];
 
-    if(UIData.autoupdate)
-        [[statusController updateState] setState:NSOnState];
-    else
-        [[statusController updateState] setState:NSOffState];
-
-    static int current_pal = -1;
-    if (current_pal != UIData.thepalette) {
-        [statusController updatePaletteBox];
-        current_pal = UIData.thepalette;
-    }
-    
-    free(specs);
-    free(values);
-    
-    
 }
 
 BOOL dropped_file(char* extension, char* name){

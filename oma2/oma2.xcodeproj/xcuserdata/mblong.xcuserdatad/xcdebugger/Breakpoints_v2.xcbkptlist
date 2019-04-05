@@ -102,7 +102,7 @@
             startingLineNumber = "57"
             endingLineNumber = "57"
             landmarkName = "-initWithWindow:"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -221,7 +221,7 @@
             startingLineNumber = "172"
             endingLineNumber = "172"
             landmarkName = "-decreaseColorMax:"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -236,8 +236,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "185"
             endingLineNumber = "185"
-            landmarkName = "@implementation AppController"
-            landmarkType = "3">
+            landmarkName = "-openDocument:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -300,7 +300,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "192"
             endingLineNumber = "192"
-            landmarkName = "-plotRows:"
+            landmarkName = "-openDocument:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -380,8 +380,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "217"
             endingLineNumber = "217"
-            landmarkName = "-updateCheckbox:"
-            landmarkType = "5">
+            landmarkName = "-scaleCheckbox:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -891,8 +891,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1331"
             endingLineNumber = "1331"
-            landmarkName = "vprint(int index)"
-            landmarkType = "9">
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
