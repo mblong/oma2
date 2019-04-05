@@ -29,8 +29,13 @@ void update_UI(){
     else \
         dispatch_sync(dispatch_get_main_queue(),^{[appController updateStatusWindow];});
 
+    if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+        [appController updateVariablesWindow]; \
+    else \
+        dispatch_sync(dispatch_get_main_queue(),^{[appController updateVariablesWindow];});
+
     [[appController preferenceController] fillInUIData];
-    [appController updateVariablesWindow];
+    
 
 }
 
