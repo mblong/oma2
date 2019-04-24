@@ -132,6 +132,9 @@
 		DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC3F1FC19129FEF00AD7850 /* VISA.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
 		DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
+		DBD2A9412270BA380041852D /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB03625D224D009800DF7BA8 /* ImageBitmap.mm */; };
+		DBD2A9422270BA8F0041852D /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
+		DBD2A9432270BA8F0041852D /* LibTiff_F.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
 		DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
 		DBF24A2D1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
@@ -159,6 +162,17 @@
 			files = (
 				DB8A887E18E3297E007C79AF /* LibTiff_F.framework in CopyFiles */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBD2A9442270BA8F0041852D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DBD2A9432270BA8F0041852D /* LibTiff_F.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		DBD2DDE721B9909B00342E26 /* CopyFiles */ = {
@@ -308,6 +322,7 @@
 				DBBCFA3318E37FE100FEE3F6 /* libPvAPI.a in Frameworks */,
 				DB8A885A18E3297E007C79AF /* LibTiff_F.framework in Frameworks */,
 				DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */,
+				DBD2A9422270BA8F0041852D /* LibTiff_F.framework in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
 				DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */,
 				DBBCFA3218E37FE100FEE3F6 /* libImagelib.a in Frameworks */,
@@ -541,6 +556,7 @@
 				DB8A885918E3297E007C79AF /* Frameworks */,
 				DB8A885E18E3297E007C79AF /* Resources */,
 				DB8A887D18E3297E007C79AF /* CopyFiles */,
+				DBD2A9442270BA8F0041852D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -716,6 +732,7 @@
 				DB8A885018E3297E007C79AF /* dcrawx.mm in Sources */,
 				DBBCFA3418E380B000FEE3F6 /* gige.mm in Sources */,
 				DBF24A2D1D3B091700115E4E /* dmbilinear.mm in Sources */,
+				DBD2A9412270BA380041852D /* ImageBitmap.mm in Sources */,
 				DB8A885118E3297E007C79AF /* DrawingView.mm in Sources */,
 				DB8A885218E3297E007C79AF /* DataWindowController.mm in Sources */,
 				DB8A885318E3297E007C79AF /* dofft.mm in Sources */,
@@ -918,6 +935,7 @@
 					/opt/local/include,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/oma2cam-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
@@ -950,6 +968,7 @@
 					/opt/local/include,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/oma2cam-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
