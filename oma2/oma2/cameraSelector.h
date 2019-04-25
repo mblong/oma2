@@ -11,17 +11,17 @@
 
 // select cameras here
 
-//#define GIGE_
+//#define GIGE_     // issues here with current Xcode
 #define SBIG
-//#define GPHOTO
+#define GPHOTO      // requires installing gphoto2 and its libraries: e.g., brew install gphoto2
 
 // end of camera selection section
 
 // select other hardware here
 
-#define LJU3
+#define LJU3                // requires copying liblabjackusb.dydlb to /usr/local/lib or /opt/local/lib
 #define SERIAL_PORT
-//#define VISA
+//#define VISA              // no longer supported
 
 // end of select other hardware section
 

@@ -43,7 +43,6 @@
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
 		DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB57E31818F58D7900FA4D29 /* sbig.mm */; };
-		DB57E31D18F5901D00FA4D29 /* SBIGUDrv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DB6FF6FE18467EA1002D728B /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
@@ -110,6 +109,8 @@
 		DB95A94E1A2F415E00823467 /* VariablesWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB95A94B1A2F415E00823467 /* VariablesWindowController.mm */; };
 		DB95A94F1A2F415E00823467 /* VariablesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB95A94C1A2F415E00823467 /* VariablesWindow.xib */; };
 		DB95A9501A2F415E00823467 /* VariablesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB95A94C1A2F415E00823467 /* VariablesWindow.xib */; };
+		DB9A98AB22720BFC008ABA5C /* SBIGUDrv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; };
+		DB9A98AC22720BFC008ABA5C /* SBIGUDrv.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
 		DBA3B5F716FC781300B7FF27 /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
@@ -170,6 +171,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				DB9A98AC22720BFC008ABA5C /* SBIGUDrv.framework in Embed Frameworks */,
 				DBD2A9432270BA8F0041852D /* LibTiff_F.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -318,14 +320,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB57E31D18F5901D00FA4D29 /* SBIGUDrv.framework in Frameworks */,
-				DBBCFA3318E37FE100FEE3F6 /* libPvAPI.a in Frameworks */,
+				DB9A98AB22720BFC008ABA5C /* SBIGUDrv.framework in Frameworks */,
 				DB8A885A18E3297E007C79AF /* LibTiff_F.framework in Frameworks */,
 				DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */,
 				DBD2A9422270BA8F0041852D /* LibTiff_F.framework in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
 				DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */,
 				DBBCFA3218E37FE100FEE3F6 /* libImagelib.a in Frameworks */,
+				DBBCFA3318E37FE100FEE3F6 /* libPvAPI.a in Frameworks */,
 				DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -931,8 +933,9 @@
 				GCC_PREFIX_HEADER = "oma2/oma2cam-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRC_ROOT)",
 					/opt/local/include,
+					/usr/local/include,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/oma2cam-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -943,7 +946,7 @@
 					"/usr/local/lib/**",
 					"/opt/local/lib/**",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-lgphoto2";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = oma2cam;
 				WRAPPER_EXTENSION = app;
@@ -964,8 +967,9 @@
 				GCC_PREFIX_HEADER = "oma2/oma2cam-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRC_ROOT)",
 					/opt/local/include,
+					/usr/local/include,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/oma2cam-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -976,7 +980,7 @@
 					"/usr/local/lib/**",
 					"/opt/local/lib/**",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-lgphoto2";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = oma2cam;
 				WRAPPER_EXTENSION = app;
