@@ -42,6 +42,9 @@
 		DB3E355D18E6030300381607 /* serial.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3E355C18E6030300381607 /* serial.c */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
+		DB51D9DC2274CF7F00917D5C /* libPvAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DB51D9DD2274D00B00917D5C /* libPvAPI.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DB51D9DE2274D00B00917D5C /* liblabjackusb.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB57E31818F58D7900FA4D29 /* sbig.mm */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
@@ -124,8 +127,6 @@
 		DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
 		DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DBBCFA3218E37FE100FEE3F6 /* libImagelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBCFA3018E37FE100FEE3F6 /* libImagelib.a */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DBBCFA3318E37FE100FEE3F6 /* libPvAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBCFA3118E37FE100FEE3F6 /* libPvAPI.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DBBCFA3418E380B000FEE3F6 /* gige.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBBCFA2518E33D8600FEE3F6 /* gige.mm */; };
 		DBBD397D155AD06000D5B56B /* OMApalette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMApalette.pa1 */; };
 		DBBD3984155ADD5100D5B56B /* OMApalette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */; };
@@ -171,7 +172,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				DB51D9DD2274D00B00917D5C /* libPvAPI.dylib in Embed Frameworks */,
 				DB9A98AC22720BFC008ABA5C /* SBIGUDrv.framework in Embed Frameworks */,
+				DB51D9DE2274D00B00917D5C /* liblabjackusb.dylib in Embed Frameworks */,
 				DBD2A9432270BA8F0041852D /* LibTiff_F.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -246,6 +249,7 @@
 		DB4329B517EF13E900A51802 /* gluedCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gluedCommands.mm; sourceTree = "<group>"; };
 		DB4E036D1835272400250EA4 /* dofft.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dofft.mm; sourceTree = "<group>"; };
 		DB4E036F183527B200250EA4 /* dofft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dofft.h; sourceTree = "<group>"; };
+		DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPvAPI.dylib; sourceTree = "<group>"; };
 		DB52C79E17F102130048F57A /* dcrawx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dcrawx.h; sourceTree = "<group>"; };
 		DB57E31818F58D7900FA4D29 /* sbig.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = sbig.mm; sourceTree = "<group>"; };
 		DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SBIGUDrv.framework; sourceTree = "<group>"; };
@@ -288,8 +292,6 @@
 		DBBCFA2518E33D8600FEE3F6 /* gige.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gige.mm; sourceTree = "<group>"; };
 		DBBCFA2718E33E5400FEE3F6 /* ImageLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLib.h; sourceTree = "<group>"; };
 		DBBCFA2818E33E5400FEE3F6 /* PvApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvApi.h; sourceTree = "<group>"; };
-		DBBCFA3018E37FE100FEE3F6 /* libImagelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libImagelib.a; sourceTree = "<group>"; };
-		DBBCFA3118E37FE100FEE3F6 /* libPvAPI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPvAPI.a; sourceTree = "<group>"; };
 		DBBD397C155AD06000D5B56B /* OMApalette.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette.pa1; sourceTree = "<group>"; };
 		DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette3.pa1; sourceTree = "<group>"; };
 		DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette2.pa1; sourceTree = "<group>"; };
@@ -326,9 +328,8 @@
 				DBD2A9422270BA8F0041852D /* LibTiff_F.framework in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
 				DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */,
-				DBBCFA3218E37FE100FEE3F6 /* libImagelib.a in Frameworks */,
-				DBBCFA3318E37FE100FEE3F6 /* libPvAPI.a in Frameworks */,
 				DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */,
+				DB51D9DC2274CF7F00917D5C /* libPvAPI.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,9 +521,8 @@
 		DBB4233C17F9B942005BCF33 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */,
 				DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */,
-				DBBCFA3018E37FE100FEE3F6 /* libImagelib.a */,
-				DBBCFA3118E37FE100FEE3F6 /* libPvAPI.a */,
 			);
 			name = Libraries;
 			path = oma2;
