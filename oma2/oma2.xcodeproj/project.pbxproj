@@ -11,6 +11,7 @@
 		DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7715211EFA001D1B05 /* image_support.mm */; };
 		DB021E7D15211EFA001D1B05 /* image.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7915211EFA001D1B05 /* image.mm */; };
 		DB03625E224D009800DF7BA8 /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB03625D224D009800DF7BA8 /* ImageBitmap.mm */; };
+		DB03B5B9227C615000601BFC /* oma2cam.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB8A888218E3297E007C79AF /* oma2cam.app */; };
 		DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
 		DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
 		DB0FC02F1519183C008A9B54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
@@ -103,7 +104,6 @@
 		DB8A887A18E3297E007C79AF /* pal4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5515A2895B00502B50 /* pal4.jpg */; };
 		DB8A887B18E3297E007C79AF /* pal3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5615A2895B00502B50 /* pal3.jpg */; };
 		DB8A887C18E3297E007C79AF /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
-		DB8A887E18E3297E007C79AF /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB8C23F918FC2FC100969763 /* labjackU3.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB8C23F718FC2BA500969763 /* labjackU3.mm */; };
 		DB912ADB224CE81100780944 /* OMA Settings in Resources */ = {isa = PBXBuildFile; fileRef = DB912ADA224CE81100780944 /* OMA Settings */; };
 		DB912ADC224CE81100780944 /* OMA Settings in Resources */ = {isa = PBXBuildFile; fileRef = DB912ADA224CE81100780944 /* OMA Settings */; };
@@ -162,7 +162,7 @@
 			dstPath = /Applications;
 			dstSubfolderSpec = 0;
 			files = (
-				DB8A887E18E3297E007C79AF /* LibTiff_F.framework in CopyFiles */,
+				DB03B5B9227C615000601BFC /* oma2cam.app in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,8 +557,8 @@
 				DB8A884318E3297E007C79AF /* Sources */,
 				DB8A885918E3297E007C79AF /* Frameworks */,
 				DB8A885E18E3297E007C79AF /* Resources */,
-				DB8A887D18E3297E007C79AF /* CopyFiles */,
 				DBD2A9442270BA8F0041852D /* Embed Frameworks */,
+				DB8A887D18E3297E007C79AF /* CopyFiles */,
 			);
 			buildRules = (
 			);
