@@ -96,7 +96,8 @@ ComDef   commands[] =    {
     {{"FINDBADPIX     "},	findbad_c},
     {{"FWDATMATLAB    "},	fwdatm_c},
     {{"FOLD2          "},   fold_c},
-        
+    {{"FLIPPID        "},   flippid_c},
+    
     {{"GET            "},	getfile_c},
     {{"GETRGB         "},	getfile_c},
     {{"GETFILENAMES   "},	getFileNames_c},

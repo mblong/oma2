@@ -336,13 +336,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DB0FC0131519183B008A9B54 = {
+		DB03B5BA227C645900601BFC /* icons */ = {
 			isa = PBXGroup;
 			children = (
 				DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */,
 				DB9B2E43186731EC00EE4871 /* oma2Icons.icns */,
 				DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */,
 				DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */,
+			);
+			path = icons;
+			sourceTree = "<group>";
+		};
+		DB0FC0131519183B008A9B54 = {
+			isa = PBXGroup;
+			children = (
 				DB0FC0281519183C008A9B54 /* oma2 */,
 				DBB4233C17F9B942005BCF33 /* Libraries */,
 				DB0FC0211519183C008A9B54 /* Frameworks */,
@@ -389,6 +396,7 @@
 				DB42231218E3273900FA48D6 /* Hardware Related */,
 				DBA96AB81520C6AC0043754E /* UI Independent */,
 				DBA96AB21520C34F0043754E /* UI */,
+				DB03B5BA227C645900601BFC /* icons */,
 				DB0FC0291519183C008A9B54 /* Supporting Files */,
 			);
 			path = oma2;
@@ -883,13 +891,22 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/**",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
+				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = "oma2/oma2-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
+					"/usr/local/lib/**",
+				);
+				OTHER_LDFLAGS = (
+					"-lgsl",
+					"-lgslcblas",
+					"-lm",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -905,13 +922,22 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/**",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2-Prefix.pch";
+				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = "oma2/oma2-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
+					"/usr/local/lib/**",
+				);
+				OTHER_LDFLAGS = (
+					"-lgsl",
+					"-lgslcblas",
+					"-lm",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -946,7 +972,12 @@
 					"/usr/local/lib/**",
 					"/opt/local/lib/**",
 				);
-				OTHER_LDFLAGS = "-lgphoto2";
+				OTHER_LDFLAGS = (
+					"-lgphoto2",
+					"-lgsl",
+					"-lgslcblas",
+					"-lm",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = oma2cam;
 				WRAPPER_EXTENSION = app;
@@ -980,7 +1011,12 @@
 					"/usr/local/lib/**",
 					"/opt/local/lib/**",
 				);
-				OTHER_LDFLAGS = "-lgphoto2";
+				OTHER_LDFLAGS = (
+					"-lgphoto2",
+					"-lgsl",
+					"-lgslcblas",
+					"-lm",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = oma2cam;
 				WRAPPER_EXTENSION = app;

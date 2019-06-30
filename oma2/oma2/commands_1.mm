@@ -5652,7 +5652,7 @@ int c2rgb_c(int n, char* args)
     } else {
         return MEM_ERR;
     }
-
+    copy.free();
     update_UI();
     return NO_ERR;
 }
@@ -6095,13 +6095,13 @@ int unfold_c(int n, char* args){
 
 /*
  DSATURATE [displaySaturationValue]
-    This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMaxium*displaySaturationValue. If no argument is given, the current value is printed.
+ This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMaxium*displaySaturationValue. If no argument is given, the current value is printed.
  */
 
 int dsaturate_c(int n,char* args){
     float dSatValue=1;
     int nargs = sscanf(args,"%f",&dSatValue);
-
+    
     if(nargs ==1){
         UIData.displaySaturateValue = dSatValue;
     }
@@ -6110,3 +6110,440 @@ int dsaturate_c(int n,char* args){
     
     return NO_ERR;
 }
+
+/* ************************* */
+
+
+/*
+ FLIPPID Nx NcLow NcHigh Power Background
+ Perform an inverse Abel transform using the FLiPPID method. The current image must satisfy these conditions: (1) it is a right-side-up, full axisymmetric flame image with an odd number of columns. (2) The flame must be perfectly centered on the center of the image. Nx should be slightly larger than the maximum width (in pixels) of the flame. NcLow and NcHigh relate to a range of radial locations of the maximum; values of -500 and 2500, respectively seem to work for several flames I tested. Power is the power used in the fitting function, and could range from 3 - 7 or more. Higher powers seem to work better for flames with thin soot regions at the edges. Rows with maximum counts less than Background will be filled with 0. The image buffer returns the Abel inverted image. a temporary image named proj is also created -- this is the projected image created from the fitting function and can be comared with the original image to assess the quality of the fit. A lookup table is created based on the values of Nx, NcLow, NcHigh, and Power. The table is saved to a file in a folder named flippidMatrices in the path specified by the Save Data Files preference. Before calculating a new table, the program checks to see if an appropriate table already exists.
+ 
+ */
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_multimin.h>
+#include <sys/stat.h>
+
+#define MAXITERATIONS 1000
+
+typedef struct {
+    double a;
+    double b;
+    double c;
+} initialGuess;
+
+int Nx,NcLow,NcHigh,power;
+int halfWidth;
+float deltaX=.01,deltaC=.01;
+
+gsl_matrix *intFile;
+gsl_vector *rowData;
+gsl_vector *fitData;
+
+double f(double sigma, void *p);
+double iInt(double x, double b, double c);
+double pEval(double x, double a, double b, double c);
+double rEval(double x, double a, double b, double c);
+double rmsErr(double *first, double *second,int length);
+double rmsErrFit(const gsl_vector *v, void *params);
+
+struct f_params {
+    double c;
+    double x;
+    int p;
+};
+
+// function to do interpolation between grid points on integral table.
+double iInt(double x, double b, double c){
+    double u = x/b;
+    if(x < 0.) u = -x/b;
+    int i = u/deltaX;
+    int j = c/deltaC-NcLow;
+    double xi = u/deltaX - i;
+    double chi = c/deltaC -NcLow - j;
+    
+    /*
+    if( i > Nx-1) i=Nx-1;
+    if (j < 0) j=0;
+    if(j > NcHigh-NcLow-1) j=NcHigh-NcLow-1;
+    */
+    if( i > Nx || i< 0) return gsl_matrix_get(intFile,Nx+1,1);      // lower left value
+    if( j< 0 || j > NcHigh-NcLow) return gsl_matrix_get(intFile,Nx+1,1);      // lower left value
+    
+    if (u-int(u)==0.0 && c-int(c)==0.0)
+        return gsl_matrix_get(intFile,i+1,j+1);
+    
+    if (j==NcHigh-NcLow && i==Nx) return gsl_matrix_get(intFile,Nx+1,1);      // lower left value
+    
+    if (j==NcHigh-NcLow)
+        return (1-xi)*(1-chi)*gsl_matrix_get(intFile,i+1,j+1) + (xi)*(1-chi)*gsl_matrix_get(intFile,i+2,j+1);
+    
+    if( i==Nx)
+        return (1-xi)*(1-chi)*gsl_matrix_get(intFile,i+1,j+1) + (1-xi)*(chi)*gsl_matrix_get(intFile,i+1,j+2);
+    
+    return (1-xi)*(1-chi)*gsl_matrix_get(intFile,i+1,j+1) + (1-xi)*(chi)*gsl_matrix_get(intFile,i+1,j+2) + (xi)*(1-chi)*gsl_matrix_get(intFile,i+2,j+1) + xi*chi*gsl_matrix_get(intFile,i+2,j+2);
+    
+ }
+
+// function to calculate P
+double pEval(double x, double a, double b, double c){
+    return M_2_SQRTPI * a * exp(iInt(x,b,c));   // 2/root(pi)
+}
+
+// function to calculate R
+double rEval(double x, double a, double b, double c){
+    return  a / (b * M_SQRTPI) * exp(c * (x*x/(b*b)) - pow(x/b,2*power ));
+}
+// return mean square difference between elements of two arrays of specified length
+double rmsErr(double *first, double *second, int length){
+    double error = 0;
+    for(int i=0; i< length; i++){
+        error += pow(first[i] - second[i],2);
+    }
+    return error/length;
+}
+
+// function to be integrated
+double f(double sigma, void *p) {
+    f_params &params= *reinterpret_cast<f_params*>(p);
+    double sig2x2 = sigma*sigma + params.x*params.x;
+    return exp(params.c*sig2x2-pow(sig2x2,params.p));
+}
+
+// function to be minimized
+double rmsErrFit(const gsl_vector *v, void *params)
+{
+    
+    double newa = gsl_vector_get(v,0);
+    double newb = gsl_vector_get(v,1);
+    double newc = gsl_vector_get(v,2);
+    for(int c=0; c<iBuffer.width();c++ ){
+        gsl_vector_set(fitData, c, pEval(c-halfWidth, newa, newb, newc));
+    }
+    double result = rmsErr(rowData->data, fitData->data, iBuffer.width());
+    return result;
+}
+
+
+
+int flippid_c(int notUsed,char* args){
+    double background;
+    int nargs = sscanf(args,"%d %d %d %d %lf",&Nx,&NcLow,&NcHigh,&power,&background);
+    
+    if(nargs !=5){
+        beep();
+        printf("Arguments required are Nx NcLow NcHigh power background\n");
+        return CMND_ERR;
+    }
+    
+    intFile = gsl_matrix_calloc(Nx+2, NcHigh-NcLow+2);  // integral lookup table
+    rowData = gsl_vector_alloc(iBuffer.width());
+    fitData = gsl_vector_alloc(iBuffer.width());
+    double aTrial,aPrev,bTrial,bPrev,cTrial,cPrev;
+    
+    // ********** the lookup table **********
+    int r,c;
+    FILE* matFile;
+    
+    // maybe it's already been calculated
+    char fname[CHPERLN]="flippidMatrices";
+    mkdir(fullname(fname, SAVE_DATA_NO_SUFFIX),S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP|S_IXGRP);   // read/write by owner; read by group
+    sprintf(fname,"flippidMatrices/FLiPPD_Nx=%d_Nc=%dto%d_pow%d",Nx,NcLow,NcHigh,power);
+    matFile = fopen(fullname(fname,CSV_DATA),"r");
+    if( matFile ){ // file exists, read in the values
+        double value;
+        for(r=0;r<Nx+2;r++){
+            for(c=0; c<NcHigh-NcLow+1; c++){
+                fscanf(matFile,"%lf,",&value);
+                gsl_matrix_set(intFile,r,c,value);
+            }
+            fscanf(matFile,"%lf,\n",&value);
+            gsl_matrix_set(intFile,r,c,value);
+        }
+        fclose(matFile);
+    } else {
+        // nope -- have to calculate it
+        printf("Calculating lookup table...\n");
+        // set first column
+        for(r=1; r< Nx+2;r++){
+            gsl_matrix_set(intFile,r,0,r-1);
+        }
+        //set first row
+        for(c=0; c<NcHigh-NcLow+1;c++){
+            gsl_matrix_set(intFile,0,c+1,NcLow+c);
+        }
+        
+        double value,abserr,epsabs=1e-14,epsrel=1e-12;
+        f_params params;
+        params.p=power;
+        gsl_function F;
+        F.function = &f;
+        F.params = reinterpret_cast<void *>(&params);
+        gsl_integration_workspace *w = gsl_integration_workspace_alloc(500);
+        
+        for(r=0;r<Nx+1;r++){
+            params.x = deltaX*r;
+            for(c=0; c<NcHigh-NcLow+1; c++){
+                params.c=deltaC*(NcLow + c);
+                gsl_integration_qagiu(&F, 0, epsabs, epsrel, 500, w, &value, &abserr);
+                gsl_matrix_set(intFile,r+1,c+1,log(value));
+                
+            }
+        }
+        // save to a file
+        matFile = fopen(fname,"w");
+        for(r=0;r<Nx+2;r++){
+            for(c=0; c<NcHigh-NcLow+1; c++){
+                fprintf(matFile,"%.16f,",gsl_matrix_get(intFile,r,c));
+            }
+            fprintf(matFile,"%.16f,\n",gsl_matrix_get(intFile,r,c));
+        }
+        fclose(matFile);
+        gsl_integration_workspace_free(w);
+    }
+    // ********** lookup table complete ************
+    
+    // definitions for minimization
+    const gsl_multimin_fminimizer_type *T = gsl_multimin_fminimizer_nmsimplex2;
+    gsl_multimin_fminimizer *s = NULL;
+    gsl_vector * ss= gsl_vector_alloc (3), *x = gsl_vector_alloc (3);
+    gsl_multimin_function minex_func;
+    
+    minex_func.n = 3;
+    minex_func.f = rmsErrFit;
+    //minex_func.params = par;
+    
+    int status;
+    double size;
+    initialGuess* startGuess = new initialGuess[iBuffer.height()+1];
+    // end of minimization defs
+    
+    Image projection;
+    projection << iBuffer;  // this be saved as a temporary image named "proj"
+    gsl_vector *centerLine = gsl_vector_alloc(iBuffer.height());
+    int minIterations = MAXITERATIONS;
+    int maxIterations = 0;
+    int noConvergenceCount=0;
+    
+    int colors = 1;
+    if(iBuffer.isColor()) colors = 3;
+    //
+    int height = iBuffer.height();
+    
+    // *********** loop over all rows **************
+    
+    for(int color = 0; color < colors; color++){
+        if(color == 0 && colors == 3) printf("Red");
+        else if(color == 0 && colors == 1) printf("Greyscale");
+        else if(color == 1) printf("\nGreen");
+        else printf("\nBlue");
+        
+        
+        // get the center column
+        halfWidth = iBuffer.width()/2;
+        c=halfWidth+1;
+        for(r=0; r<iBuffer.height();r++ ){
+            gsl_vector_set(centerLine, r, iBuffer.getpix(r+color*height, c));
+        }
+        int zMidAll = (int)gsl_vector_max_index(centerLine);
+        // now go backwards toward the flame tip until the maximum of the row is at the center
+        for(r=zMidAll; r>=0; r--){
+            for(c=0; c<iBuffer.width();c++ )
+                gsl_vector_set(rowData, c, iBuffer.getpix(r+color*height, c));   // fill in the data for this row
+            if( abs(int(gsl_vector_max_index(rowData)) - halfWidth - 1) < 3) break; // max is within +/- 2 pix of centerline
+        }
+        zMidAll = r;
+        if(zMidAll < 0) zMidAll=0;
+        double maxCenterValue = iBuffer.getpix(zMidAll+color*height, halfWidth+1);
+        printf(" starting at row %d\n",zMidAll);
+        
+        // start loop on rows working downward from zMidAll
+        for(r = zMidAll; r<iBuffer.height();r++){
+            int halfMaxIndex;
+            for(c=0; c<iBuffer.width();c++ ){
+                gsl_vector_set(rowData, c, iBuffer.getpix(r+color*height, c));   // fill in the data for this row
+                if(r == zMidAll){
+                    if( iBuffer.getpix(r+color*height, c) > maxCenterValue/2.) halfMaxIndex=c;   // this relates to the flame width
+                }
+            }
+            if(gsl_vector_max(rowData) < background){
+                for(c=0; c<iBuffer.width();c++ ){
+                    projection.setpix(r+color*height, c, 0.);
+                    iBuffer.setpix(r+color*height, c, 0.);
+                }
+            } else {
+                
+                // first guess
+                if(r == zMidAll){
+                    startGuess[r].a = aTrial = aPrev = maxCenterValue/1.047;
+                    //startGuess[r].b = bTrial = bPrev = (Nx - iBuffer.width() + halfMaxIndex)/0.8;
+                    startGuess[r].b = bTrial = bPrev = (halfMaxIndex-iBuffer.width()/2)/0.4; // 20% wider than flame
+                    startGuess[r].c = cTrial = cPrev = 0;
+                }
+                
+                if(aPrev == 0.){
+                    gsl_vector_set(x, 0, aTrial);
+                    gsl_vector_set(x, 1, bTrial);
+                    gsl_vector_set(x, 2, cTrial);
+                } else {
+                    gsl_vector_set(x, 0, aPrev);
+                    gsl_vector_set(x, 1, bPrev);
+                    gsl_vector_set(x, 2, cPrev);
+                }
+                //printf("initial a b c %f %f %f\n",gsl_vector_get(x,0),gsl_vector_get(x,1),gsl_vector_get(x,2));
+                
+                // the minimization for this row
+                gsl_vector_set(ss, 0, 1);
+                gsl_vector_set(ss, 1, 1);
+                gsl_vector_set(ss, 2, 1);
+                
+                
+                s = gsl_multimin_fminimizer_alloc (T, 3);
+                gsl_multimin_fminimizer_set (s, &minex_func, x, ss);
+                int iter = 0;
+                do
+                {
+                    iter++;
+                    status = gsl_multimin_fminimizer_iterate(s);
+                    
+                    if (status)
+                        break;
+                    
+                    size = gsl_multimin_fminimizer_size (s);
+                    status = gsl_multimin_test_size (size, 1e-8);
+                    
+                    if (status == GSL_SUCCESS)
+                    {
+                        /*
+                         printf ("converged to minimum at\n");
+                         printf ("%5d %10.3e %10.3e %10.3e f() = %7.3f size = %.3f\n",
+                         iter,
+                         gsl_vector_get (s->x, 0),
+                         gsl_vector_get (s->x, 1),
+                         gsl_vector_get (s->x, 2),
+                         s->fval, size);
+                         */
+                    }
+                }
+                while (status == GSL_CONTINUE && iter < MAXITERATIONS);
+                
+                if(iter < minIterations) minIterations=iter;
+                if(iter > maxIterations) maxIterations=iter;
+                if(iter == MAXITERATIONS) noConvergenceCount++;
+                if(r%25 ==0)printf(".");
+                
+                startGuess[r+1].a = aPrev=gsl_vector_get(s->x, 0);
+                startGuess[r+1].b = bPrev=gsl_vector_get(s->x, 1);
+                startGuess[r+1].c = cPrev=gsl_vector_get(s->x, 2);
+                
+                for(int c=0; c<iBuffer.width();c++ ){
+                    projection.setpix(r+color*height, c, pEval(c-halfWidth, aPrev, bPrev, cPrev));
+                    if(r != zMidAll) iBuffer.setpix(r+color*height, c, rEval(c-halfWidth, aPrev, bPrev, cPrev)); // recalculate this one
+                }
+                gsl_multimin_fminimizer_free (s);
+                // done minimization of this row
+            }
+        }
+        
+        // now loop on rows working upward from zMidAll
+        for(r = zMidAll; r>=0;r--){;
+            for(c=0; c<iBuffer.width();c++ ){
+                gsl_vector_set(rowData, c, iBuffer.getpix(r+color*height, c));   // fill in the data for this row
+            }
+            if(gsl_vector_max(rowData) < background){
+                for(c=0; c<iBuffer.width();c++ ){
+                    projection.setpix(r+color*height, c, 0.);
+                    iBuffer.setpix(r+color*height, c, 0.);
+                }
+            } else {
+                
+                
+                if(aPrev == 0.){
+                    gsl_vector_set(x, 0, aTrial);
+                    gsl_vector_set(x, 1, bTrial);
+                    gsl_vector_set(x, 2, cTrial);
+                } else {
+                    gsl_vector_set(x, 0, startGuess[r+1].a);
+                    gsl_vector_set(x, 1, startGuess[r+1].b);
+                    gsl_vector_set(x, 2, startGuess[r+1].c);
+                }
+                //printf("initial a b c %f %f %f\n",gsl_vector_get(x,0),gsl_vector_get(x,1),gsl_vector_get(x,2));
+                
+                // the minimization for this row
+                gsl_vector_set(ss, 0, 1);
+                gsl_vector_set(ss, 1, 1);
+                gsl_vector_set(ss, 2, 1);
+                
+                
+                s = gsl_multimin_fminimizer_alloc (T, 3);
+                gsl_multimin_fminimizer_set (s, &minex_func, x, ss);
+                int iter = 0;
+                do
+                {
+                    iter++;
+                    status = gsl_multimin_fminimizer_iterate(s);
+                    
+                    if (status)
+                        break;
+                    
+                    size = gsl_multimin_fminimizer_size (s);
+                    status = gsl_multimin_test_size (size, 1e-8);
+                    
+                    if (status == GSL_SUCCESS)
+                    {
+                        /*
+                         printf ("converged to minimum at\n");
+                         printf ("%5d %10.3e %10.3e %10.3e f() = %7.3f size = %.3f\n",
+                         iter,
+                         gsl_vector_get (s->x, 0),
+                         gsl_vector_get (s->x, 1),
+                         gsl_vector_get (s->x, 2),
+                         s->fval, size);
+                         */
+                    }
+                }
+                while (status == GSL_CONTINUE && iter < MAXITERATIONS);
+                
+                if(iter < minIterations) minIterations=iter;
+                if(iter > maxIterations) maxIterations=iter;
+                if(iter == MAXITERATIONS) noConvergenceCount++;
+                if(r%25 ==0)printf(".");
+                
+                startGuess[r].a=gsl_vector_get(s->x, 0);
+                startGuess[r].b=gsl_vector_get(s->x, 1);
+                startGuess[r].c=gsl_vector_get(s->x, 2);
+                
+                for(int c=0; c<iBuffer.width();c++ ){
+                    projection.setpix(r+color*height, c, pEval(c-halfWidth, startGuess[r].a, startGuess[r].b, startGuess[r].c));
+                    iBuffer.setpix(r+color*height, c, rEval(c-halfWidth, startGuess[r].a, startGuess[r].b, startGuess[r].c));
+                }
+                gsl_multimin_fminimizer_free (s);
+                // done minimization of this row
+            }
+        }
+    }
+    
+    printf("\nMinimum Iterations:\t%d\nMaximum iterations:\t%d\nNot Converged:\t%d\n\n",minIterations,maxIterations,noConvergenceCount);
+    
+    gsl_matrix_free(intFile);
+    gsl_vector_free (centerLine);
+    gsl_vector_free (rowData);
+    gsl_vector_free (fitData);
+    
+    gsl_vector_free(x);
+    gsl_vector_free(ss);
+    delete[] startGuess;
+    
+    int n = temp_image_index((char*)"proj",1);
+    if(n >=0){
+        iTempImages[n] << projection;
+    } else {
+        return MEM_ERR;
+    }
+    projection.free();
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+    
+    return NO_ERR;
+}
+

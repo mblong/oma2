@@ -81,6 +81,7 @@ int ftemp_c(int, char*);
 int findbad_c(int,char*);
 int fwdatm_c(int n,char* args);
 int fold_c(int n, char* args);
+int flippid_c(int n, char* args);
 
 int getfile_c(int,char*);
 int getFileNames_c(int,char*);
