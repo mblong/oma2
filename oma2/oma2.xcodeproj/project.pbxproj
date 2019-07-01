@@ -125,6 +125,7 @@
 		DBB27B6B1867F1DF00CF6523 /* Oma2Settings.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */; };
 		DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
+		DBB65D1E22CA575A00B9C5A4 /* oma2.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB0FC01E1519183C008A9B54 /* oma2.app */; };
 		DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DBBB5AC422CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DBBB5AC522CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -173,9 +174,10 @@
 		DBCB578022CA3A4100988D83 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
+			dstPath = /Applications;
+			dstSubfolderSpec = 0;
 			files = (
+				DBB65D1E22CA575A00B9C5A4 /* oma2.app in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
