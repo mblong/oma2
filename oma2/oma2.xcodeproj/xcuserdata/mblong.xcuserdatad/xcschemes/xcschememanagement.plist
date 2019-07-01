@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>oma2 deploy.xcscheme</key>
+		<key>oma2 deploy.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
@@ -14,7 +14,7 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>oma2.xcscheme</key>
+		<key>oma2.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -24,14 +24,14 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-		<key>oma2cam.xcscheme</key>
+		<key>oma2cam.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
 			<true/>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>oma2camDeploy.xcscheme</key>
+		<key>oma2camDeploy.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
