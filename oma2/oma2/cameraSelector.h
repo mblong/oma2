@@ -20,6 +20,23 @@
      export DYLIB=liblabjackusb.dylib
      install_name_tool -id @executable_path/../Frameworks/$DYLIB $SRCROOT/oma2/$DYLIB
      #install_name_tool -change $SRCROOT/oma2/$DYLIB @executable_path/../Frameworks/$DYLIB "$TARGET_BUILD_DIR/$TARGET_NAME.app/Contents/MacOS/$PRODUCT_NAME"
+     
+     From the command line:
+     1) copy the dylib into the oma source code folder
+     2) make the oma source code folder the current directory
+     3) make sure the dylib copy has write (and execute?) access:
+        chmod a+wx libgsl*
+     4) set the name of the dylib
+        export DYLIB=libgsl.23.dylib
+     5) use install_name_tool:
+        install_name_tool -id @executable_path/../Frameworks/$DYLIB $DYLIB
+     
+     In the project settings:
+     6) add the dylib to the Libraries folder
+     7) add the dylib file to Frameworks in the appropriate Copy Files part of the Build Phases
+     8) there shouldn't be any related -lLIBNAME in the Other Linker Flags settings in the Build Settings
+     9) when committing and pushing to the repository, be sure to check the box next to the dylib file name so it gets added
+     
     */
 
     // select cameras here

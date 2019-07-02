@@ -527,7 +527,7 @@ int croprectangle_c(int n,char* args){
  
  FRAME NewWidth NewHeight [Value] [X0] [Y0]
  
- default value is 0
+ default Value is 0
  default of x0 and y0 center the old image in the frame
  
  */
@@ -560,7 +560,9 @@ int frame_c(int n, char* args)
     im.copyABD(iBuffer);
     int oldWidth = specs[COLS];
     int oldHeight = specs[ROWS];
-    specs[ROWS] = sizy;
+    int nColors = 1+iBuffer.isColor()*2;
+    int height = oldHeight/nColors;
+    specs[ROWS] = sizy*nColors;
     specs[COLS] = sizx;
     im.setspecs(specs); // this will allocate the memory
     
@@ -575,17 +577,18 @@ int frame_c(int n, char* args)
         printf("Current image starts at: %.0f\t%.0f\n",x0,y0);
     printf("Frame Value: %d\n",value);
     
-    
-    for(i=0; i<sizy; i++){
-        for(j=0; j<sizx; j++) {
-            if(i+y0<0 || i+y0 >=oldHeight ||
-               j+x0<0 || j+x0 >=oldWidth) {
-                im.setpix(i,j,value);
-            }else {
-                if(fraction)
-                    im.setpix(i,j,iBuffer.getpix(i+y0,j+x0));
-                else
-                    im.setpix(i,j,iBuffer.getpix((int)i+y0,(int)j+x0));
+    for(int c=0; c<nColors; c++){
+        for(i=0; i<sizy; i++){
+            for(j=0; j<sizx; j++) {
+                if(i+y0<0 || i+y0 >=oldHeight ||
+                   j+x0<0 || j+x0 >=oldWidth) {
+                    im.setpix(i,j+c*sizy,value);
+                }else {
+                    if(fraction)
+                        im.setpix(i+c*sizy,j,iBuffer.getpix(i+y0+c*height,j+x0));
+                    else
+                        im.setpix(i+c*sizy,j,iBuffer.getpix((int)i+y0+c*height,(int)j+x0));
+                }
             }
         }
     }
@@ -596,6 +599,34 @@ int frame_c(int n, char* args)
     update_UI();
     return 0;
     
+}
+
+/* ***************** */
+
+/*
+ 
+ FRAMECNTR CenterX HalfWidth [Y0] [Y1] [Value]
+ 
+ Put a "frame" around the current image centered on column CenterX. The new image width will be 2*HalfWidth+1. Y0 and Y1 specify where the top and bottom of the new image start. Their default values are 0 and originalImageHeight-1. If the new image is larger than the original image, data values are set to Value (default is 0).
+ 
+ */
+
+int framecntr_c(int n, char* args)
+{
+    int i,halfWidth,centerX;
+    int y0=0, y1=iBuffer.height()-1;
+    DATAWORD value = 0;
+    i = sscanf(args,"%d %d %d %d %f",&centerX,&halfWidth,&y0,&y1,&value);
+    if( i < 2) {
+        beep();
+        printf("Arguments are: CenterX HalfWidth [Y0] [Y1] [Value]\n");
+        return(CMND_ERR);
+    }
+    
+    char cmnd[128];
+    sprintf(cmnd,"%d %d %f %d %d",2*halfWidth+1,y1-y0,value,centerX-halfWidth,y0);
+
+    return frame_c(0,cmnd);
 }
 
 /* ********** */
@@ -6113,6 +6144,100 @@ int dsaturate_c(int n,char* args){
 
 /* ************************* */
 
+/*
+ GETANGLE fraction
+ Calculate the angle that the current image needs to be rotated to align the x center
+ of mass with the y axis. The entire image width is used. The start of the rectangle
+ begins where maximum along a horizontal line is greater than "fraction" of the maximum
+ and continues until the maximum along a horizontal line falls below "fraction" of the maximum
+ */
+
+int getangle_c(int n,char* args){
+    int y1,y0,sizx,sizy;
+    int nt,nc;
+    
+    double xcom=0.,ave=0.;
+    double sx,sy,sx2,sy2,sxy,slope,theta;
+    
+    DATAWORD datval,fraction=0.,maxVal = 0.;
+    
+    extern Variable user_variables[];
+    
+    
+    nc = sscanf(args,"%f",&fraction);
+    if (nc < 1){
+        beep();
+        printf("Command format is GETANGLE fraction\n");
+        return CMND_ERR;
+    }
+    DATAWORD* values = iBuffer.getvalues();
+    maxVal = fraction*values[MAX];
+    
+    printf("Data cutoff is at %g\n",maxVal);
+    y1 = 0;
+    y0 = 0;
+    sizx = iBuffer.width();
+    sizy = iBuffer.height();
+    
+    sx = sy = sx2 = sy2 = sxy = 0.;
+    
+    for(nt=0; nt< sizy; nt++){
+        for(nc=0; nc<sizx; nc++) {
+            if(iBuffer.getpix(nt,nc) > maxVal) break;
+        }
+        if(nc != sizx) break;
+    }
+    y0 = nt;
+    
+    for(nt=sizy-1; nt>=0; nt--){
+        for(nc=0; nc<sizx; nc++) {
+            if(iBuffer.getpix(nt,nc) > maxVal) break;
+        }
+        if(nc != sizx) break;
+    }
+    y1 = nt;
+    
+    printf("Using region between rows %d and %d\n",y0,y1);
+    sizy = y1-y0+1;
+    
+    for(nt=y0; nt<= y1; nt++){
+        ave = xcom = 0.;
+        for(nc=0; nc<sizx; nc++) {
+            datval = iBuffer.getpix(nt,nc);
+            ave += datval;                    // average
+            xcom += nc*datval;            // x center of mass -- subtract min
+        }
+        ave = ave/(float)sizx;
+        xcom /= sizx;
+        xcom /= (ave);
+        
+        sy += xcom;
+        sx += nt;
+        sxy += xcom*nt;
+        sy2 += xcom * xcom;
+        sx2 += nt * nt;
+        //printf("%d\t%g\n",nt,xcom);
+    }
+    
+    slope = (sizy*sxy - sx*sy)/(sizy*sx2 - sx*sx);
+    double r = (sizy*sxy -sx*sy)/sqrt((sizy*sx2-sx*sx)*(sizy*sy2-sy*sy));   // corellatiion coefficient
+    printf("Slope: %g rSquare: %g Rows: %d\n",slope,r*r, sizy);  // print r2
+    theta = atan(slope);
+    theta = -theta*180./PI;
+    printf("Angle: %f\n",theta);
+    
+    user_variables[0].fvalue = theta;
+    user_variables[0].is_float = 1;
+    user_variables[1].fvalue = xcom;
+    user_variables[1].ivalue = xcom;
+    user_variables[1].is_float = 1;
+    
+    update_UI();
+    return NO_ERR;
+}
+
+/* ************************* */
+
 
 /*
  FLIPPID Nx NcLow NcHigh Power Background
@@ -6232,7 +6357,7 @@ int flippid_c(int notUsed,char* args){
     
     if(nargs !=5){
         beep();
-        printf("Arguments required are Nx NcLow NcHigh power background\n");
+        printf("Arguments required are Nx NcLow NcHigh Power Background\n");
         return CMND_ERR;
     }
     
