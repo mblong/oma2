@@ -1227,7 +1227,7 @@ void Image::crop(rect crop_rect){
     int save_rgb_rectangle = specs[IS_COLOR];
     
     if(save_rgb_rectangle){
-        if( y0 + sizy*3 >= specs[ROWS] ){
+        if( y0 + sizy*3 > specs[ROWS] ){
             //beep();
             //printf("Can't save rectangle as RGB image -- rectangle size problem.\n");
             error = SIZE_ERR;

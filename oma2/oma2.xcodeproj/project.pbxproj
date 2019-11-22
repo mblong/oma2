@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -39,7 +39,6 @@
 		DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
 		DB35126018F0B8AE00202FFC /* macImageSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB35125F18F0B8AE00202FFC /* macImageSupport.mm */; };
 		DB35126118F0B8AE00202FFC /* macImageSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB35125F18F0B8AE00202FFC /* macImageSupport.mm */; };
-		DB371F7918469FE400265D79 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB3E355D18E6030300381607 /* serial.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3E355C18E6030300381607 /* serial.c */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
@@ -49,7 +48,8 @@
 		DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB57E31818F58D7900FA4D29 /* sbig.mm */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
-		DB6FF6FE18467EA1002D728B /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
+		DB685CE62355633600812918 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
+		DB685CE72355633600812918 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
 		DB83FD771D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
 		DB83FD781D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
 		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
@@ -72,7 +72,6 @@
 		DB8A885518E3297E007C79AF /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
 		DB8A885618E3297E007C79AF /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
 		DB8A885718E3297E007C79AF /* DataView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2113581540219200B23364 /* DataView.mm */; };
-		DB8A885A18E3297E007C79AF /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
 		DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
 		DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
 		DB8A885F18E3297E007C79AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
@@ -117,6 +116,7 @@
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
 		DBA3B5F716FC781300B7FF27 /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
 		DBA3CB871911985800AD10BC /* gpib.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA3CB851911985800AD10BC /* gpib.mm */; };
+		DBA7F676238843FD003F2608 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DBA96ABA1520C7090043754E /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
 		DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD5691802050F007F8801 /* DrawingView.mm */; };
 		DBABD56F180208E7007F8801 /* DrawingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD56E180208E7007F8801 /* DrawingWindowController.mm */; };
@@ -125,7 +125,6 @@
 		DBB27B6B1867F1DF00CF6523 /* Oma2Settings.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */; };
 		DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
-		DBB65D1E22CA575A00B9C5A4 /* oma2.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB0FC01E1519183C008A9B54 /* oma2.app */; };
 		DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DBBB5AC422CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DBBB5AC522CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -139,8 +138,6 @@
 		DBCB577E22CA389F00988D83 /* libgsl.23.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBCB577F22CA398000988D83 /* libgsl.23.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBD2A9412270BA380041852D /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB03625D224D009800DF7BA8 /* ImageBitmap.mm */; };
-		DBD2A9422270BA8F0041852D /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; };
-		DBD2A9432270BA8F0041852D /* LibTiff_F.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
 		DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
 		DBF24A2D1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
@@ -156,8 +153,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				DBA7F676238843FD003F2608 /* LibTiff_F.framework in CopyFiles */,
 				DBCB577E22CA389F00988D83 /* libgsl.23.dylib in CopyFiles */,
-				DB371F7918469FE400265D79 /* LibTiff_F.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,13 +170,12 @@
 		};
 		DBCB578022CA3A4100988D83 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = /Applications;
 			dstSubfolderSpec = 0;
 			files = (
-				DBB65D1E22CA575A00B9C5A4 /* oma2.app in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 		DBD2A9442270BA8F0041852D /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -191,7 +187,6 @@
 				DB51D9DD2274D00B00917D5C /* libPvAPI.dylib in Embed Frameworks */,
 				DB9A98AC22720BFC008ABA5C /* SBIGUDrv.framework in Embed Frameworks */,
 				DB51D9DE2274D00B00917D5C /* liblabjackusb.dylib in Embed Frameworks */,
-				DBD2A9432270BA8F0041852D /* LibTiff_F.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,8 +256,8 @@
 		DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SBIGUDrv.framework; sourceTree = "<group>"; };
 		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
 		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
+		DB685CE52355633600812918 /* LibTiff_F.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LibTiff_F.framework; sourceTree = "<group>"; };
 		DB6EDB2E1912A3C00032934F /* gpib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gpib.h; sourceTree = "<group>"; };
-		DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LibTiff_F.framework; sourceTree = "<group>"; };
 		DB6FF6FF18467F46002D728B /* tiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiff.h; sourceTree = "<group>"; };
 		DB6FF70018467F46002D728B /* tiffio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffio.h; sourceTree = "<group>"; };
 		DB6FF70118467F46002D728B /* tiffvers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffvers.h; sourceTree = "<group>"; };
@@ -319,7 +314,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB6FF6FE18467EA1002D728B /* LibTiff_F.framework in Frameworks */,
+				DB685CE62355633600812918 /* LibTiff_F.framework in Frameworks */,
 				DBBB5AC422CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */,
 				DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */,
 				DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */,
@@ -331,11 +326,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB9A98AB22720BFC008ABA5C /* SBIGUDrv.framework in Frameworks */,
-				DB8A885A18E3297E007C79AF /* LibTiff_F.framework in Frameworks */,
 				DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */,
-				DBD2A9422270BA8F0041852D /* LibTiff_F.framework in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
 				DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */,
+				DB685CE72355633600812918 /* LibTiff_F.framework in Frameworks */,
 				DBBB5AC522CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */,
 				DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */,
 				DB51D9DC2274CF7F00917D5C /* libPvAPI.dylib in Frameworks */,
@@ -389,9 +383,9 @@
 		DB0FC0241519183C008A9B54 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB685CE52355633600812918 /* LibTiff_F.framework */,
 				DBC3F1FC19129FEF00AD7850 /* VISA.framework */,
 				DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */,
-				DB6FF6FD18467EA1002D728B /* LibTiff_F.framework */,
 				DB0FC0251519183C008A9B54 /* AppKit.framework */,
 				DB0FC0261519183C008A9B54 /* CoreData.framework */,
 				DB0FC0271519183C008A9B54 /* Foundation.framework */,
@@ -593,11 +587,19 @@
 		DB0FC0151519183B008A9B54 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "Yale University";
+				TargetAttributes = {
+					DB0FC01D1519183C008A9B54 = {
+						ProvisioningStyle = Automatic;
+					};
+					DB8A884218E3297E007C79AF = {
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = DB0FC0181519183B008A9B54 /* Build configuration list for PBXProject "oma2" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -799,6 +801,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -817,7 +820,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -845,6 +852,7 @@
 					"-DMacOSX_UI",
 				);
 				SDKROOT = macosx;
+				VALIDATE_WORKSPACE_SKIPPED_SDK_FRAMEWORKS = "";
 			};
 			name = Debug;
 		};
@@ -852,6 +860,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -870,8 +879,12 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -890,6 +903,7 @@
 					"-DMacOSX_UI",
 				);
 				SDKROOT = macosx;
+				VALIDATE_WORKSPACE_SKIPPED_SDK_FRAMEWORKS = "";
 			};
 			name = Release;
 		};
@@ -897,6 +911,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "";
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -916,6 +932,7 @@
 					"$(inherited)",
 					"/usr/local/lib/**",
 					"$(PROJECT_DIR)/oma2",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
@@ -928,6 +945,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "";
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -947,6 +966,7 @@
 					"$(inherited)",
 					"/usr/local/lib/**",
 					"$(PROJECT_DIR)/oma2",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
@@ -959,6 +979,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -981,6 +1002,7 @@
 					"$(PROJECT_DIR)/oma2",
 					"/usr/local/lib/**",
 					"/opt/local/lib/**",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "-lgphoto2";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
@@ -993,6 +1015,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1015,6 +1038,7 @@
 					"$(PROJECT_DIR)/oma2",
 					"/usr/local/lib/**",
 					"/opt/local/lib/**",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "-lgphoto2";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";

@@ -546,22 +546,22 @@ int frame_c(int n, char* args)
     }
     
     int* specs = iBuffer.getspecs();
-    
-    switch(i) {
-        case 2:
-        case 3:
-            x0 = -(sizx - (float)specs[COLS])/2.;
-        case 4:
-            y0 = -(sizy - (float)specs[ROWS])/2.;
-    }
-    
-    Image im;
-    // error check?
-    im.copyABD(iBuffer);
     int oldWidth = specs[COLS];
     int oldHeight = specs[ROWS];
     int nColors = 1+iBuffer.isColor()*2;
     int height = oldHeight/nColors;
+
+    switch(i) {
+        case 2:
+        case 3:
+            x0 = -(sizx - (float)oldWidth)/2.;
+        case 4:
+            y0 = -(sizy - (float)height)/2.;
+    }
+
+    Image im;
+    // error check?
+    im.copyABD(iBuffer);
     specs[ROWS] = sizy*nColors;
     specs[COLS] = sizx;
     im.setspecs(specs); // this will allocate the memory
@@ -575,14 +575,14 @@ int frame_c(int n, char* args)
         printf("Interpolation from current image starts at: %.2f\t%.2f\n",x0,y0);
     else
         printf("Current image starts at: %.0f\t%.0f\n",x0,y0);
-    printf("Frame Value: %d\n",value);
+    printf("Frame Value: %g\n",value);
     
     for(int c=0; c<nColors; c++){
         for(i=0; i<sizy; i++){
             for(j=0; j<sizx; j++) {
                 if(i+y0<0 || i+y0 >=oldHeight ||
                    j+x0<0 || j+x0 >=oldWidth) {
-                    im.setpix(i,j+c*sizy,value);
+                    im.setpix(i+c*sizy,j,value);
                 }else {
                     if(fraction)
                         im.setpix(i+c*sizy,j,iBuffer.getpix(i+y0+c*height,j+x0));
