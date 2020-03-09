@@ -954,12 +954,12 @@ void Image::saveFile(char* name, int kindOfName){
 }
 
 void Image::resize(int newRows, int newCols){
+    
+    if(specs[IS_COLOR]){
+        newRows *= 3;
+    }
     // allocate the new image
     Image resized(newRows,newCols);
-    if(resized.err()){
-        error = resized.err();
-        return;
-    }
     resized.copyABD(*this); // get the old specs, some of which will have to be changed
     resized.specs[ROWS] = newRows;
     resized.specs[COLS] = newCols;
