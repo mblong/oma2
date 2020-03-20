@@ -14,6 +14,13 @@
 #include "commands_1.h"
 #include "comdec.h"
 
+// these definitions allow C++ functions to be called from C
+
+extern "C" void cbeep();
+extern "C" int cprintf(const char* format, ...);
+extern "C" int cpprintf(const char* format, ...);
+
+
 // do this at compile time with -DQt_UI (for example)
 //#define MacOSX_UI
 //#define Qt_UI
@@ -23,17 +30,12 @@
 #include "StatusController.h"
 #include "AppController.h"
 
-// these definitions allow C++ functions to be called from C
-
-extern "C" void cbeep();
-extern "C" int cprintf(const char* format, ...);
-extern "C" int cpprintf(const char* format, ...);
-
 // In this exceptional case, define external variable in this header file
 extern AppController *appController;
 extern StatusController *statusController;
 
 enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
+
 
 #define printf omaprintf
 /*
@@ -94,10 +96,14 @@ int pprintf(const char* format, ...);
 
 #endif
 
+
 #ifdef Qt_UI
 
 #include <QApplication>
 #include "qtoma2.h"
+#include "Hardware/cameraSelector.h"
+#include <opencv2/core.hpp>
+#include <opencv2/opencv.hpp>
 
 #define display_data displayData(args);
 #define erase_window eraseWindow(n);
@@ -204,13 +210,13 @@ BOOL dropped_file(char*,char*);
 #define HELPURL "./LightOma2Help/index.html"
 #endif
 /*
- #pragma gcc diagnostic ignored "-Wsign-compare"
- #pragma gcc diagnostic ignored "-Wwrite-strings"
- #pragma gcc diagnostic ignored "-Wunused-variable"
- #pragma gcc diagnostic ignored "-Wunused-but-set-variable"
- #pragma gcc diagnostic ignored "-Wcomment"
- #pragma gcc diagnostic ignored "-Wtype-limits"
- */
+#pragma gcc diagnostic ignored "-Wsign-compare"
+#pragma gcc diagnostic ignored "-Wwrite-strings"
+#pragma gcc diagnostic ignored "-Wunused-variable"
+#pragma gcc diagnostic ignored "-Wunused-but-set-variable"
+#pragma gcc diagnostic ignored "-Wcomment"
+#pragma gcc diagnostic ignored "-Wtype-limits"
+*/
 
 
 enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT,NEWROW,NEWCOL};

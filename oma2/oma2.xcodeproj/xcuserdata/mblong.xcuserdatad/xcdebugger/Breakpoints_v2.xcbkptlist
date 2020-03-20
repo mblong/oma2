@@ -180,7 +180,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "76"
             endingLineNumber = "76"
-            landmarkName = "dropped_file(char* extension, char* name)"
+            landmarkName = "dropped_file(extension, name)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1049,7 +1049,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "22"
             endingLineNumber = "22"
-            landmarkName = "readJpeg(char* filename,Image* im)"
+            landmarkName = "readJpeg(filename, im)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

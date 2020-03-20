@@ -30,6 +30,8 @@
 #define NUM_TEMP_IMAGES 40      // allowed temporary images
 #define NUMBERED_TEMP_IMAGES 10 // the first 10 are numbered 0-9
 
+#define NUMLABELS 6             // number of lines for image labels
+
 /* Define the indices to important locations in the header */
 
 #define NMAX    1

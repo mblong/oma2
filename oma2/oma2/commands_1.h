@@ -82,7 +82,9 @@ int ftemp_c(int, char*);
 int findbad_c(int,char*);
 int fwdatm_c(int n,char* args);
 int fold_c(int n, char* args);
-int flippid_c(int n, char* args);
+#if defined(MacOSX_UI)
+    int flippid_c(int n, char* args);
+#endif
 
 int getfile_c(int,char*);
 int getFileNames_c(int,char*);
@@ -201,6 +203,12 @@ int tsmooth_c(int,char*);
 
 int uprefix_c(int n,char* args);
 int unfold_c(int n,char* args);
+
+#if defined(Qt_UI)
+int vidAddFrame_q(int,char*);
+int vidOpenFile_q(int,char*);
+int vidCloseFile_q(int,char*);
+#endif
 
 int warpar_c(int, char*);
 int warp_c(int, char*);

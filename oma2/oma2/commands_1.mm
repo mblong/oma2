@@ -6238,6 +6238,7 @@ int getangle_c(int n,char* args){
 
 /* ************************* */
 
+#if defined(MacOSX_UI)
 
 /*
  FLIPPID Nx NcLow NcHigh Power Background
@@ -6671,4 +6672,5 @@ int flippid_c(int notUsed,char* args){
     
     return NO_ERR;
 }
+#endif
 

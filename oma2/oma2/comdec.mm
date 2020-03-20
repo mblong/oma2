@@ -97,7 +97,9 @@ ComDef   commands[] =    {
     {{"FINDBADPIX     "},	findbad_c},
     {{"FWDATMATLAB    "},	fwdatm_c},
     {{"FOLD2          "},   fold_c},
+#if defined(MacOSX_UI)
     {{"FLIPPID        "},   flippid_c},
+#endif
     
     {{"GET            "},	getfile_c},
     {{"GETRGB         "},	getfile_c},
@@ -229,6 +231,12 @@ ComDef   commands[] =    {
     
     {{"VARIABLES      "},	variab},
     {{"VARCLEAR       "},	varClear},
+
+#if defined(Qt_UI)
+    {{"VIDOPENFILE    "},	vidOpenFile_q},
+    {{"VIDADDFRAME    "},	vidAddFrame_q},
+    {{"VIDCLOSEFILE   "},	vidCloseFile_q},
+#endif
     
     {{"WRITEBADPIX    "},	writebad_c},
     {{"WARP           "},	warp_c},

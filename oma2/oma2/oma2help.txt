@@ -444,8 +444,8 @@ KWABEL n
 LIST
 	Lists the current detector parameters and log block.
 
-LABEL text_string
-	Display the text_string in the upper left of the current window.
+LABEL textString [lineNumber]
+        Display the text_string in the upper left of the current window. If textString is in quotes, the optional lineNumber (range 0-5) specifies what line the text appears on.
 
 LOG [n] [comment]
 	Adds a comment to the comment buffer at line n. If n is not specified, the comment is added to the beginning of the comment buffer. If "comment" is not present, the program prompts for additional comment lines until a null comment is entered (i.e. <CR> only). If the optional "comment" is included on the same line, the text of "comment" replaces any comment already existing at line n and no further comment lines are solicited.
@@ -726,6 +726,15 @@ VARIABLES
 
 VARCLEAR
 	Clears all user-defined variables.
+
+VIDOPENFILE framesPerSecond filename
+	Open a video file with the specified name and add the image in the last-displayed data data window to the video. The file is saved to the directory specified by Save Data Files; the extension ".avi" should be specified as part of the filename. [qtoma command]
+
+VIDADDFRAME
+	Adds the image from the last-displayed data window to the video opened with the VIDOPENFILE command. [qtoma command]
+
+VIDCLOSEFILE
+	Closes the currently open video file. This must be done after adding frames to a video. [qtoma command]
 
 WARP subpix
 	Remaps an image coordinate system using bilinear geometric warping.
