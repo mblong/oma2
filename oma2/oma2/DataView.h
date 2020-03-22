@@ -20,6 +20,8 @@
 
     DrawingWindowController *rowWindowController;
     DrawingWindowController *colWindowController;
+    
+    NSMutableArray *labelArray;
 }
 
 @property int rowLine;  // this is the window row
@@ -28,7 +30,9 @@
 @property DrawingWindowController *colWindowController;
 @property int eraseLines;
 @property NSString *minMax;
-@property NSString *theLabel;
+@property NSMutableArray *labelArray;
+
+-(void) addItem: (NSObject*) theItem;
 
 @end
 

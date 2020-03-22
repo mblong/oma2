@@ -75,7 +75,7 @@ extern AppController* appController;
     NSImage *im = [[NSImage alloc] init];
     [im addRepresentation:bitmap];
     if ( ![im isValid] ) {
-        NSLog(@"Invalid Image");
+        //NSLog(@"Invalid Image");
     }
 
     
@@ -152,7 +152,7 @@ extern AppController* appController;
     */
     
     if ( ![im isValid] ) {
-        NSLog(@"Invalid Image");
+        //NSLog(@"Invalid Image");
     }
     
     NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);

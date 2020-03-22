@@ -24,12 +24,12 @@ extern oma2UIData UIData;
 
 void update_UI(){
         
-    if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+    if([NSThread isMainThread]) \
         [appController updateStatusWindow]; \
     else \
         dispatch_sync(dispatch_get_main_queue(),^{[appController updateStatusWindow];});
 
-    if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+    if([NSThread isMainThread]) \
         [appController updateVariablesWindow]; \
     else \
         dispatch_sync(dispatch_get_main_queue(),^{[appController updateVariablesWindow];});
@@ -143,13 +143,10 @@ int cprintf(const char* format, ...)
     int return_status = NO_ERR;
     
     return_status = vsprintf(reply,format, args);
-    //[appController appendCText: reply];
-    dispatch_queue_t theQueue = dispatch_get_current_queue();
-    dispatch_queue_t mainQueue = dispatch_get_main_queue();
-    if (theQueue == mainQueue) {
+    if ([NSThread isMainThread]) {
         [appController appendCText: reply];
     } else {
-        dispatch_sync(mainQueue,^{[appController appendCText: reply];});
+        dispatch_sync(dispatch_get_main_queue(),^{[appController appendCText: reply];});
     }
     
     va_end(args);
@@ -173,13 +170,10 @@ int cpprintf(const char* format, ...)		/* priority printing! */
     int return_status = NO_ERR;
     
     return_status = vsprintf(reply,format, args);
-    //[appController appendCText: reply];
-    dispatch_queue_t theQueue = dispatch_get_current_queue();
-    dispatch_queue_t mainQueue = dispatch_get_main_queue();
-    if (theQueue == mainQueue) {
+    if ([NSThread isMainThread]) {
         [appController appendCText: reply];
     } else {
-        dispatch_sync(mainQueue,^{[appController appendCText: reply];});
+        dispatch_sync(dispatch_get_main_queue(),^{[appController appendCText: reply];});
     }
     
     va_end(args);
@@ -205,13 +199,10 @@ int omaprintf(const char* format, ...)
     int return_status = NO_ERR;
     
     return_status = vsprintf(reply,format, args);
-    //[appController appendCText: reply];
-    dispatch_queue_t theQueue = dispatch_get_current_queue();
-    dispatch_queue_t mainQueue = dispatch_get_main_queue();
-    if (theQueue == mainQueue) {
+    if ([NSThread isMainThread]) {
         [appController appendCText: reply];
     } else {
-        dispatch_sync(mainQueue,^{[appController appendCText: reply];});
+        dispatch_sync(dispatch_get_main_queue(),^{[appController appendCText: reply];});
     }
     
     va_end(args);
@@ -232,12 +223,10 @@ int pprintf(const char* format, ...)		/* priority printing! */
     
     return_status = vsprintf(reply,format, args);
     //[appController appendCText: reply];
-    dispatch_queue_t theQueue = dispatch_get_current_queue();
-    dispatch_queue_t mainQueue = dispatch_get_main_queue();
-    if (theQueue == mainQueue) {
+    if ([NSThread isMainThread]) {
         [appController appendCText: reply];
     } else {
-        dispatch_sync(mainQueue,^{[appController appendCText: reply];});
+        dispatch_sync(dispatch_get_main_queue(),^{[appController appendCText: reply];});
     }
     
     va_end(args);

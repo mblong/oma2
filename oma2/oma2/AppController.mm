@@ -535,8 +535,8 @@ extern oma2UIData UIData;
     */
 }
 
-
--(void) labelDataWindow: (char*) theLabel{
+/*
+-(void) labelDataWindow2: (char*) theLabel{
     
     NSWindow* activekey = [NSApp keyWindow];
     NSWindow* activemain = [NSApp mainWindow];
@@ -553,19 +553,63 @@ extern oma2UIData UIData;
         
         i++;
     }
-    
     if (key == -1) {
         return;
     }
-    
     if (![windowArray[key] isKindOfClass:[DataWindowController class]]){
         return; // active window wasn't a data window
     }
-    
     NSString *label = [[NSString alloc] initWithCString:theLabel encoding:NSASCIIStringEncoding];
     [[(DataWindowController*)windowArray[key] imageView ] setTheLabel:label];
     [[(DataWindowController*)windowArray[key] imageView ] display];
-
+}
+*/
+-(void) labelDataWindow: (char*) args{
+    
+    NSWindow* activekey = [NSApp keyWindow];
+    NSWindow* activemain = [NSApp mainWindow];
+    int key = -1;
+    int main = -1;
+    int i=0;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activekey) key=i;
+        i++;
+    }
+    i=0;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activemain) main=i;
+        i++;
+    }
+    if (key == -1) {
+        return;
+    }
+    if (![windowArray[key] isKindOfClass:[DataWindowController class]]){
+        return; // active window wasn't a data window
+    }
+    int line=0;
+    if(args[0] != '"'){  // doesn't start with quote, so goes in line 0
+         // a new string with the label
+         NSString *newLabel = [[NSString alloc] initWithCString:args encoding:NSASCIIStringEncoding];
+         // add the label to the appropriate DataView object
+         [[(DataWindowController*)windowArray[key] imageView ] addItem: newLabel];
+         [[(DataWindowController*)windowArray[key] imageView ] addItem: [NSNumber numberWithInt: line]];
+         [[(DataWindowController*)windowArray[key] imageView ] display];
+        return;
+    }
+    char label[PREFIX_CHPERLN];
+    for(i=1; i<PREFIX_CHPERLN && args[i] != '"' && args[i] != 0; i++){
+        label[i-1]=args[i];      // find second quote OR end of string OR end of buffer
+    }
+    if(args[i] != 0 && i != PREFIX_CHPERLN)
+        sscanf(&args[i+1],"%d",&line);
+    label[i-1]=0;
+    // a new string with the label
+    NSString *newLabel = [[NSString alloc] initWithCString:label encoding:NSASCIIStringEncoding];
+    // add the label to the appropriate DataView object
+    [[(DataWindowController*)windowArray[key] imageView ] addItem: newLabel];
+    [[(DataWindowController*)windowArray[key] imageView ] addItem: [NSNumber numberWithInt: line]];
+    [[(DataWindowController*)windowArray[key] imageView ] display];
+    return;
 }
 
 -(void) labelMinMax{
@@ -585,18 +629,15 @@ extern oma2UIData UIData;
         
         i++;
     }
-    
     if (key == -1) {
         return;
     }
-    
     if (![windowArray[key] isKindOfClass:[DataWindowController class]]){
         return; // active window wasn't a data window
     }
     NSString *label =[NSString stringWithFormat:@"%g\n%g",UIData.cmin,UIData.cmax];
     [[(DataWindowController*)windowArray[key] imageView ] setMinMax:label];
     [[(DataWindowController*)windowArray[key] imageView ] display];
-    
 }
 
 

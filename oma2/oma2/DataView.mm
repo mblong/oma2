@@ -29,7 +29,8 @@ extern oma2UIData UIData;
 @synthesize colWindowController;
 @synthesize eraseLines;
 @synthesize minMax;
-@synthesize theLabel;
+//@synthesize theLabel;
+@synthesize labelArray;
 
 
 - (void)drawRect:(NSRect)dirtyRect{
@@ -97,25 +98,33 @@ extern oma2UIData UIData;
             [path stroke];
         }
     }
-    if (theLabel) {
+
+    NSMutableDictionary *stringAttributes = [[NSMutableDictionary alloc] init];
+    [stringAttributes setValue:[NSColor grayColor] forKey:NSForegroundColorAttributeName];
+    [stringAttributes setValue:[NSFont fontWithName:@"Monaco" size:16] forKey:NSFontAttributeName];
+    
+    // loop over the numbered labels
+    for(int i=0; i<[labelArray count]; i+=2){
         NSPoint thePoint;
         thePoint.x = 10;
-        thePoint.y = dirtyRect.size.height  - 20;;
-        NSMutableDictionary *stringAttributes = [[NSMutableDictionary alloc] init];
-        [stringAttributes setValue:[NSColor grayColor] forKey:NSForegroundColorAttributeName];
-        [stringAttributes setValue:[NSFont fontWithName:@"Helvetica" size:18] forKey:NSFontAttributeName];
-        [theLabel drawAtPoint:thePoint withAttributes:stringAttributes];
+        thePoint.y = dirtyRect.size.height  - 20*([labelArray[i+1] intValue]+1);
+        [labelArray[i] drawAtPoint:thePoint withAttributes:stringAttributes];
     }
+    
     if (minMax) {
         NSPoint thePoint;
         thePoint.x = 10;
         thePoint.y = 5;
-        NSMutableDictionary *stringAttributes = [[NSMutableDictionary alloc] init];
-        [stringAttributes setValue:[NSColor grayColor] forKey:NSForegroundColorAttributeName];
-        [stringAttributes setValue:[NSFont fontWithName:@"Helvetica" size:16] forKey:NSFontAttributeName];
         [minMax drawAtPoint:thePoint withAttributes:stringAttributes];
     }
 
+}
+
+- (void) addItem: (NSObject*) theItem{
+    if(!labelArray){
+        labelArray = [[NSMutableArray alloc] init];
+    }
+    [labelArray addObject: theItem];
 }
 
 - (void) mouseDown:(NSEvent *)theEvent{

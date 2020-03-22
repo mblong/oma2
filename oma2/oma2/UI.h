@@ -64,23 +64,22 @@ enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
 
 // try this so that the command thread doesn't mess with things that need to be in the main thread
 
-#define display_data if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+#define display_data if([NSThread isMainThread]) \
 [appController showDataWindow:(char*) args]; \
 else \
 dispatch_sync(dispatch_get_main_queue(),^{[appController showDataWindow:(char*) args];});
 
-
-#define erase_window if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+#define erase_window if([NSThread isMainThread]) \
 [appController eraseWindow:(int) n]; \
 else \
 dispatch_sync(dispatch_get_main_queue(),^{[appController eraseWindow:(int) n];});
 
-#define label_data if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+#define label_data if([NSThread isMainThread]) \
 [appController labelDataWindow:(char*) args]; \
 else \
 dispatch_sync(dispatch_get_main_queue(),^{[appController labelDataWindow:(char*) args];});
 
-#define label_data_minMax if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+#define label_data_minMax if([NSThread isMainThread]) \
 [appController labelMinMax]; \
 else \
 dispatch_sync(dispatch_get_main_queue(),^{[appController labelMinMax];});

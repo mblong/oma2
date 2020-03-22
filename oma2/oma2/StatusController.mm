@@ -198,7 +198,7 @@ StatusController *statusController;
     [self setTool_selected:(int)[toolSelected selectedColumn]];
     appController.tool = tool_selected;
     UIData.toolselected = tool_selected;
-    NSLog(@" Tool number %d\n",tool_selected);
+    //NSLog(@" Tool number %d\n",tool_selected);
     
 }
 
@@ -235,6 +235,6 @@ StatusController *statusController;
     [slide_label setIntValue:[slide_val intValue]];
     MinMaxInc = [slide_val intValue];
     UIData.cminmaxinc = MinMaxInc;
-    NSLog(@"minmaxinc: %d",MinMaxInc);
+    //NSLog(@"minmaxinc: %d",MinMaxInc);
 }
 @end

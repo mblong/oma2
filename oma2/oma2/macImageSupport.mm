@@ -80,7 +80,7 @@ int saveJpeg(char* filename)
 
 int savePdf(char* filename)
 {
-    if(dispatch_get_main_queue() == dispatch_get_current_queue()) \
+    if([NSThread isMainThread]) \
         return [appController saveDataWindowToPdf:filename];  \
     else \
         dispatch_sync(dispatch_get_main_queue(),^{[appController saveDataWindowToPdf:filename];});

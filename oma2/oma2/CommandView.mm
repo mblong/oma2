@@ -99,7 +99,7 @@ extern AppController* appController;
 // somehow still doesn't work to stop macros
 - (void)complete:(id)sender{
     extern int stopMacroNow;
-    NSLog(@"Stop Macro");
+    //NSLog(@"Stop Macro");
     stopMacroNow = 1;
 }
 
@@ -115,7 +115,7 @@ extern AppController* appController;
     if([anEvent modifierFlags] & NSCommandKeyMask){
         NSString *theKey = [anEvent charactersIgnoringModifiers];
         if([theKey isEqualToString:@";"]){
-            NSLog(@"Stop Macro");
+            //NSLog(@"Stop Macro");
             stopMacroNow = 1;
             //stopmacro();
         }
