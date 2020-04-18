@@ -367,10 +367,27 @@ int binextension_c(int n,char* args)
     
     extern int bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag;
     extern char binaryExtension[];
+    extern FileDecoderExtensions fileDecoderExtensions[];
+    
+    if(args[0] == '.'){
+        beep();
+        printf("Please omit the leading '.'\n");
+        return CMND_ERR;
+    }
+    
+    for(int i=0; i<strlen(args); i++){
+         args[i] = toupper(args[i]);
+     }
     
     if( args[0] != 0){
         sscanf(args,"%s",binaryExtension);
     }
+    
+    int extLength = (int)strlen(args);
+
+    
+    strncpy(&fileDecoderExtensions[RAW_FILE_EXT_INDEX].ext[1],args,extLength);
+    
     printf("Settings for reading binary files with extension %s are:\n%d rows\n%d comumns\n%d header bytes\n%d bytes per point\n",
            binaryExtension,bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point);
     printf("%d swap bytes flag\n%d unsigned flag\n",swap_bytes_flag, unsigned_flag);
@@ -5787,7 +5804,7 @@ int acmevelocity_c(int n, char* filename){
     char longString[2048],time[32],time2[32],c;
     float exposure,mfc1Range=20,mfc2Range,mfc3Range,fuelCorrection;
     mfc1Range = 20;     //SLPM N2 full scale (coflow)
-    mfc3Range = 0.1;     //SLPM N2 full scale (fuel mixture)
+    //mfc3Range = 0.1;     //SLPM N2 full scale (fuel mixture)
     float mfc1CorrectionFactor = 0.995276533; // air from Zin spreadsheet tables
     float mfc2CorrectionFactor = 1;     // N2
     float tempCoefficient = 0.92546163; // SLPM to room temp from Zin spreadsheet tables
@@ -5799,6 +5816,7 @@ int acmevelocity_c(int n, char* filename){
     // get necessary values
     
     if(getVariableError((char*)"mfc2Range", &mfc2Range)) return ARG_ERR;
+    if(getVariableError((char*)"mfc3Range", &mfc3Range)) return ARG_ERR;
     if(getVariableError((char*)"exposure", &exposure)) return ARG_ERR;
     if(getVariableError((char*)"fuelCorrection", &fuelCorrection)) return ARG_ERR;
     int index = get_variable_index((char*)"name", 0);

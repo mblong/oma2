@@ -23,7 +23,7 @@ extern "C" int cpprintf(const char* format, ...);
 
 // do this at compile time with -DQt_UI (for example)
 //#define MacOSX_UI
-//#define Qt_UI
+//#define Qt_UI_Mac
 
 #ifdef MacOSX_UI
 
@@ -96,7 +96,7 @@ int pprintf(const char* format, ...);
 #endif
 
 
-#ifdef Qt_UI
+#ifdef Qt_UI_Mac
 
 #include <QApplication>
 #include "qtoma2.h"

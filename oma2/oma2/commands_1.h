@@ -1,5 +1,5 @@
-//#ifndef oma2_commands_1_h
-//#define oma2_commands_1_h
+#ifndef oma2_commands_1_h
+#define oma2_commands_1_h
 
 
 #include "image.h"
@@ -132,7 +132,7 @@ int maskGreater_c(int,char*);
 int maskLess_c(int,char*);
 int match_c(int, char*);
 
-#if defined(Qt_UI)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
+#if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
 int mySqServer_q(int, char*);
 int mySqTable_q(int, char*);
 #endif
@@ -191,7 +191,7 @@ int shotnoise_c(int,char*);
 int say_c(int,char*);
 int scatter_c(int,char*);
 
-#if defined(Qt_UI)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
+#if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
 int sqlAdd_q(int,char*);
 int sqlNew_q(int,char*);
 int sqlOpen_q(int,char*);
@@ -204,7 +204,7 @@ int tsmooth_c(int,char*);
 int uprefix_c(int n,char* args);
 int unfold_c(int n,char* args);
 
-#if defined(Qt_UI)
+#if defined(Qt_UI_Mac)
 int vidAddFrame_q(int,char*);
 int vidOpenFile_q(int,char*);
 int vidCloseFile_q(int,char*);
@@ -234,4 +234,4 @@ float tabfun(int,float);
 float ranfGauss();
 void decodeHobj(Image*,int,int);
 
-//#endif
+#endif

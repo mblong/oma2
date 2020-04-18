@@ -280,6 +280,9 @@ FFT mode scale_factor
 FLOATVARIABLE variable_name
 	Specifies that variable_name is to be used as a floating point variable.
 
+FLOATAUTO <flag>
+    If flag is nonzero, assignment of a variable to a floating point value will set its type to FLOAT. If flag is 0, the default INTEGER data type will be used. With no argument, the current value of the flag is echoed.
+
 FOLD fraction new_width
 	Fold an image in half vertically. It is assumed to be symmetric about some nearly verticle axis. The center of symmetry is found separately for each row, except if there are dark regions at the top and bottom of the image. For the dark regions, the average center of the middle part of the image is used as the center of symmetry. Dark regions are rows (at the top and bottom) whose values are all less than fraction*image_max. x0,y0 and x1,y1 are coordinates of the top and bottom of the dark region, center is the average center. These are returned in command_return_1-5.
 

@@ -37,37 +37,39 @@ char windowName[CHPERLN];
 char lastname[CHPERLN];
 int windowNameMemory = 0;
 
-char binaryExtension[CHPERLN] = {"raw"};
+char binaryExtension[CHPERLN] = {"RAW"};
 int bin_rows = 1024, bin_cols = 1360, bin_header = 0, binary_file_bytes_per_data_point = 2 , swap_bytes_flag = 0, unsigned_flag=0;
 
+
 FileDecoderExtensions fileDecoderExtensions[] = {
-    {{".nef"},DCRAW},
+//    {{".nef"},DCRAW},
     {{".NEF"},DCRAW},
-    {{".cr2"},DCRAW},
+//    {{".cr2"},DCRAW},
     {{".CR2"},DCRAW},
-    {{".crw"},DCRAW},
+//    {{".crw"},DCRAW},
     {{".CRW"},DCRAW},
-    {{".jpg"},JPEG},
+//    {{".jpg"},JPEG},
     {{".JPG"},JPEG},
-    {{".png"},JPEG},
+//    {{".png"},JPEG},
     {{".PNG"},JPEG},
-    {{".tif"},TIFREAD},
+//    {{".tif"},TIFREAD},
     {{".TIF"},TIFREAD},
-    {{".tiff"},TIFREAD},
+//    {{".tiff"},TIFREAD},
     {{".TIFF"},TIFREAD},
-    {{".hobj"},HOBJ},
+//   {{".hobj"},HOBJ},
     {{".HOBJ"},HOBJ},
-    {{".hdr"},HDR},
+//   {{".hdr"},HDR},
     {{".HDR"},HDR},
-    {{".dat"},OMA},
+//   {{".dat"},OMA},
     {{".DAT"},OMA},
-    {{".o2d"},OMA},
+//    {{".o2d"},OMA},
     {{".O2D"},OMA},
     {{".CSV"},TXT},
-    {{".csv"},TXT},
+//    {{".csv"},TXT},
+    {{".RAW"},RAW},
     {{""},},
-    
 };
+// if position of RAW changes, be sure to update definition of #define RAW_FILE_EXT_INDEX 24 in image.h
 
 //extern "C" int get_byte_swap_value(short);
 //extern "C" void swap_bytes_routine(char* co, int num,int nb);
@@ -120,7 +122,7 @@ Image::Image(char* filename, int kindOfName)
     TWOBYTE trailer[TRAILEN/2];
     int swap_bytes;
     int doffset=80;
-    int fd,color;
+    int fd,color,i;
     
     *this = Image();
     
@@ -128,16 +130,20 @@ Image::Image(char* filename, int kindOfName)
     strncpy(lastname, filename, CHPERLN);
     trimName(windowName);
     windowNameMemory = 2;
-    
-    int nameLength = (int)strlen(filename);
     extraSize = 0;
     // default specs set -- now decide what kind of file we are opening
     
+    // first check for non-oma files that have special routines for reading
+    // these will have a file extension specified -- the suffix will be ignored
+    char filenameCopy[CHPERLN];
+    strncpy(filenameCopy, filename, CHPERLN);
+    int nameLength = (int)strlen(filename);
+    for(i=0; i<nameLength; i++) filenameCopy[i] = toupper(filename[i]); // all uppercase for looking at extensions
     
-    for(int i=0; fileDecoderExtensions[i].ext[0]; i++ ){
+    for(i=0; fileDecoderExtensions[i].ext[0]; i++ ){
         int extLength = (int)strlen(fileDecoderExtensions[i].ext);
         if(fileDecoderExtensions[i].decoder == DCRAW
-           && strncmp(&filename[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
+           && strncmp(&filenameCopy[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
             if (kindOfName == LONG_NAME) {
                 color = dcrawGlue(filename,-1,this);
             } else {
@@ -149,10 +155,10 @@ Image::Image(char* filename, int kindOfName)
         }
     }
     
-    for(int i=0; fileDecoderExtensions[i].ext[0]; i++ ){
+    for(i=0; fileDecoderExtensions[i].ext[0]; i++ ){
         int extLength = (int)strlen(fileDecoderExtensions[i].ext);
         if(fileDecoderExtensions[i].decoder == JPEG
-           && strncmp(&filename[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
+           && strncmp(&filenameCopy[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
             if (kindOfName == LONG_NAME) {
                 error = readJpeg(filename,this);
             } else {
@@ -163,10 +169,10 @@ Image::Image(char* filename, int kindOfName)
         }
     }
 
-    for(int i=0; fileDecoderExtensions[i].ext[0]; i++ ){
+    for(i=0; fileDecoderExtensions[i].ext[0]; i++ ){
         int extLength = (int)strlen(fileDecoderExtensions[i].ext);
         if(fileDecoderExtensions[i].decoder == TIFREAD
-           && strncmp(&filename[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
+           && strncmp(&filenameCopy[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
             if (kindOfName == LONG_NAME) {
                 error = readTiff(filename,this);
             } else {
@@ -177,10 +183,10 @@ Image::Image(char* filename, int kindOfName)
         }
     }
     
-    for(int i=0; fileDecoderExtensions[i].ext[0]; i++ ){
+    for(i=0; fileDecoderExtensions[i].ext[0]; i++ ){
         int extLength = (int)strlen(fileDecoderExtensions[i].ext);
         if(fileDecoderExtensions[i].decoder == HDR
-           && strncmp(&filename[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
+           && strncmp(&filenameCopy[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
             if (kindOfName == LONG_NAME) {
                 error = readHDR(filename,this);
             } else {
@@ -191,10 +197,10 @@ Image::Image(char* filename, int kindOfName)
         }
     }
     
-    for(int i=0; fileDecoderExtensions[i].ext[0]; i++ ){
+    for(i=0; fileDecoderExtensions[i].ext[0]; i++ ){
         int extLength = (int)strlen(fileDecoderExtensions[i].ext);
         if(fileDecoderExtensions[i].decoder == HOBJ
-           && strncmp(&filename[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
+           && strncmp(&filenameCopy[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
             if (kindOfName == LONG_NAME) {
                 error = readHobj(filename,this);
             } else {
@@ -205,10 +211,10 @@ Image::Image(char* filename, int kindOfName)
         }
     }
 
-    for(int i=0; fileDecoderExtensions[i].ext[0]; i++ ){
+    for(i=0; fileDecoderExtensions[i].ext[0]; i++ ){
         int extLength = (int)strlen(fileDecoderExtensions[i].ext);
         if(fileDecoderExtensions[i].decoder == TXT
-           && strncmp(&filename[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
+           && strncmp(&filenameCopy[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
             if (kindOfName == LONG_NAME) {
                 error = readCsv(filename,this);
             } else {
@@ -219,79 +225,13 @@ Image::Image(char* filename, int kindOfName)
         }
     }
 
-    /*
-    // default specs set -- now decide what kind of file we are opening
-    if (strncmp(&filename[nameLength-4],".nef",4) == 0 ||
-        strncmp(&filename[nameLength-4],".NEF",4) == 0 ||
-        strncmp(&filename[nameLength-4],".cr2",4) == 0 ||
-        strncmp(&filename[nameLength-4],".CR2",4) == 0) {
-        if (kindOfName == LONG_NAME) {
-            color = dcrawGlue(filename,-1,this);
-        } else {
-            color = dcrawGlue(fullname(filename,RAW_DATA),-1,this);
-        }
-        if(color < 0) error = FILE_ERR;
-        if (error) windowNameMemory = 0;
-        return;
-    }
-     
-    if (strncmp(&filename[nameLength-4],".jpg",4) == 0 ||
-        strncmp(&filename[nameLength-4],".png",4) == 0 ||
-        strncmp(&filename[nameLength-4],".PNG",4) == 0 ||
-        strncmp(&filename[nameLength-4],".JPG",4) == 0) {
-        if (kindOfName == LONG_NAME) {
-            //error = read_jpeg(filename,-1,this);
-            error = readJpeg(filename,this);
-        } else {
-            //error = read_jpeg(fullname(filename,RAW_DATA),-1,this);
-            error = readJpeg(fullname(filename,RAW_DATA),this);
-        }
-        if (error) windowNameMemory = 0;
-        return;
-    }
-
-    if (strncmp(&filename[nameLength-4],".tif",4) == 0 ||
-        strncmp(&filename[nameLength-4],".TIF",4) == 0 ||
-        strncmp(&filename[nameLength-5],".tiff",5) == 0||
-        strncmp(&filename[nameLength-5],".TIFF",5) == 0) {
-        if (kindOfName == LONG_NAME) {
-            error = readTiff(filename,this);
-        } else {
-            error = readTiff(fullname(filename,RAW_DATA),this);
-        }
-        if (error) windowNameMemory = 0;
-        return;
-    }
-
-    if (strncmp(&filename[nameLength-4],".hdr",4) == 0 ||
-        strncmp(&filename[nameLength-4],".HDR",4) == 0 ) {
-        if (kindOfName == LONG_NAME) {
-            error = readHDR(filename,this);
-        } else {
-            error = readHDR(fullname(filename,RAW_DATA),this);
-        }
-        if (error) windowNameMemory = 0;
-        return;
-    }
-    
-    if (strncmp(&filename[nameLength-5],".hobj",5) == 0 ||
-        strncmp(&filename[nameLength-5],".HOBJ",5) == 0 ) {
-        if (kindOfName == LONG_NAME) {
-            error = readHobj(filename,this);
-        } else {
-            error = readHobj(fullname(filename,RAW_DATA),this);
-        }
-        if (error) windowNameMemory = 0;
-        return;
-    }
-     */
     
     // read a binary file that has an extension specified by the BINEXTENSION command
     // find the extension
-    int i;
+
     for (i=0; (filename[nameLength-i] != '.') && (i < nameLength); i++);
     i--;
-    if (strncmp(&filename[nameLength-i],binaryExtension,i) == 0 ){
+    if (strncmp(&filenameCopy[nameLength-i],binaryExtension,i) == 0 ){
         if (kindOfName == LONG_NAME) {
             error = readBinary(filename,this,bin_rows,bin_cols,bin_header,binary_file_bytes_per_data_point,swap_bytes_flag,unsigned_flag);
         } else {
@@ -300,7 +240,9 @@ Image::Image(char* filename, int kindOfName)
         if (error) windowNameMemory = 0;
         return;
     }
-
+    // end special file cases
+    
+    // if we get here, the assumption is this is oma file format, either new or old
 
     switch (kindOfName) {
         case LONG_NAME:
@@ -309,9 +251,9 @@ Image::Image(char* filename, int kindOfName)
         case SHORT_NAME:
             fd = open(fullname(filename,GET_DATA),READBINARY);
             break;
-        case HAS_SUFFIX:
-            fd = open(fullname(filename,RAW_DATA),READBINARY);    // means don't add the suffix
-            break;
+//        case HAS_SUFFIX:
+//            fd = open(fullname(filename,RAW_DATA),READBINARY);    // means don't add the suffix -- this case never happens
+//            break;
         case LEAVE_OPEN:
             fd = open(fullname(filename,GET_DATA),READBINARY);    // assume a short name
             extern int openFileFd;

@@ -43,7 +43,7 @@ BOOL dropped_file(char* extension, char* name){
     extern int windowNameMemory;
     extern char windowName[];
     extern char binaryExtension[];
-    char upperCaseBinExt[256];
+    //char upperCaseBinExt[256];
     extern FileDecoderExtensions fileDecoderExtensions[];
     
     //printf("File ext is: %s\n",extension);
@@ -51,9 +51,9 @@ BOOL dropped_file(char* extension, char* name){
     int i;
     for(i=0; i<strlen(extension); i++){
         extension[i] = toupper(extension[i]);
-        upperCaseBinExt[i] = toupper(binaryExtension[i]);
+        //upperCaseBinExt[i] = toupper(binaryExtension[i]);
     }
-    upperCaseBinExt[i]=0;
+    //upperCaseBinExt[i]=0;
     
     for(i=0; fileDecoderExtensions[i].ext[0]; i++ ){
         int extLength = (int)strlen(fileDecoderExtensions[i].ext) - 1 ;

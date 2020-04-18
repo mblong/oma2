@@ -96,6 +96,7 @@ int null(int,char*);
 int rmacro(int, char*);
 int variab(int, char*);
 int vfloat(int, char*);
+int floatAuto(int, char*);
 int vint(int, char*);
 int varClear(int, char*);
 int getsettings(int,char*);

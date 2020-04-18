@@ -1,5 +1,5 @@
 #include "image_support.h"
-#include "commands_1.h"
+
 
 extern char reply[1024];
 extern oma2UIData UIData;
@@ -86,6 +86,9 @@ void setUpUIData(){
     UIData.decodeHobjFlag = 1;     // setting for automatic decoding Halcon .hobj files
     UIData.demosaicHobjFlag = HOBJ_NO_DEMOSAIC;    // setting for whether or not to demosaic after decoding
     UIData.clearHobjFlag = 0;    // setting for whether or not to automatically clear bad pixels
+    UIData.displaySaturateValue = 1.; // when Scale is selected, cmax will be data max * displaySaturateValue
+
+    UIData.autoFloatFlag=1;
 }
 
 int two_to_four(DATAWORD* dpt, int num, TWOBYTE scale)

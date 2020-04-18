@@ -1,4 +1,5 @@
 #ifndef _OMA2_h
+#define _OMA2_h
 
 //#include <iostream>
 #include <stdio.h>
@@ -129,7 +130,7 @@ enum  {SAVE_DATA,GET_DATA,MACROS_DATA,GRAPHICS_DATA,SETTINGS_DATA,TIFF_DATA,TIF_
     #endif
 #endif
 
-#ifdef Qt_UI
+#ifdef Qt_UI_Mac
     #ifndef SETTINGSFILE
         #define SETTINGSFILE "../Resources/OMA Settings"
         #define PALETTEFILE	"../Resources/OMA palette.pa1"
@@ -196,6 +197,7 @@ typedef struct {
     int         dy;
     int         x0;
     int         y0;
+
     
     rect        iRect;              ///< The image sub-rectagle (for cropping for example).
                                     ///<   Defined in terms of upper left pt. to lower right pt.
@@ -230,6 +232,8 @@ typedef struct {
     int clearHobjFlag;      // setting for whether or not to clear bad color pixels (call cclearbad_c)
  
     float displaySaturateValue; // when Scale is selected, cmax will be data max * displaySaturateValue
+
+    int   autoFloatFlag;  // determines whether or not a variable is set to float when an assignment with a decimal point is made
     
     /*
 	settings[4] = detector;
@@ -282,6 +286,5 @@ typedef struct {
  
  */
 
-#define _OMA2_h
 #endif
 

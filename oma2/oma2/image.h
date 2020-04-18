@@ -1,14 +1,16 @@
+
 #include "oma2.h"
 #include "image_support.h"
 #include "UI.h"
 #include <math.h>
 #include "dmbilinear.h"
 #include "dmmalvar.h"
-//#include "ImageBitmap.h"
 
 
 #ifndef oma2_Image_h
 #define oma2_Image_h
+
+
 
 typedef struct{
     char ext[6];
@@ -40,7 +42,8 @@ enum {NO_PRINT,PRINT_RESULT};
 enum {BILINEAR,MALVAR};
 
 // special file reader types
-enum {DCRAW,JPEG,TIFREAD,HDR,HOBJ,OMA,TXT};
+enum {DCRAW,JPEG,TIFREAD,HDR,HOBJ,OMA,TXT,RAW};
+#define RAW_FILE_EXT_INDEX 12
 
 
 /******************** Class Definitions ********************/

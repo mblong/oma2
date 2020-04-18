@@ -1,4 +1,7 @@
 
+#ifndef gluedCommands_h
+#define gluedCommands_h
+
 
 #include "image.h"
 #include "ImageBitmap.h"
@@ -46,9 +49,6 @@ float OP0(int i,int j);
 float OP1(int i,int j);
 float OP_D(int i,int j);
 
-int fold_g(int n, char* args);
-int fold(int n, int index);
-
 int abelprep_g(int n, char* args);
 int abelprep(int n, int index);
 
@@ -56,3 +56,4 @@ int abelrect_g(int n, char* args);
 int abelrect(int n, int index);
 
 
+#endif
