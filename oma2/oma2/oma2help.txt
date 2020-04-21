@@ -287,7 +287,7 @@ FOLD fraction new_width
 	Fold an image in half vertically. It is assumed to be symmetric about some nearly verticle axis. The center of symmetry is found separately for each row, except if there are dark regions at the top and bottom of the image. For the dark regions, the average center of the middle part of the image is used as the center of symmetry. Dark regions are rows (at the top and bottom) whose values are all less than fraction*image_max. x0,y0 and x1,y1 are coordinates of the top and bottom of the dark region, center is the average center. These are returned in command_return_1-5.
 
 FTEMPIMAGE tempImage
-	Free memory associated with temporary image tempImage. tempImage must be in the range 0-9, or correspond to a named image.
+	Free memory associated with temporary image tempImage. tempImage must be in the range 0-9, or correspond to a named image. If no argument is specified, all temporary images are freed.
 
 FCLOSE
 	Closes the currently open text file (there can be only one). The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.

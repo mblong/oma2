@@ -703,6 +703,9 @@ int fill_in_command(char* dest,char* source,int val)
 	while( *(source+i) == ' ' || *(source+i) == '\t') {
 		i++;
 	}
+    for(k=0; *(source+i+k); k++){
+        if(*(source+i+k)=='\t')*(source+i+k)=' ';
+    }
     
     /*    
      if (!if_condition_met) {    // don't do this command -- just copy ';' to destination

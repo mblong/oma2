@@ -1738,9 +1738,12 @@ int calc(point start,point end){
 
 // return the index of a temporary image
 // or return -1 if there was a problem
-int temp_image_index (char* name,int define)
+int temp_image_index (char* args,int define)
 {
     int i,j;
+    char name[CHPERLN];
+    
+    sscanf(args,"%s",name); // only get the first string, not anything after a whitespace
     
     // numbered temporary image?
     if(name[0] >= '0' && name[0] <= '9'){   // this is the 0-9 naming case
@@ -1825,27 +1828,38 @@ int gtemp_c(int n, char* args)
 
 /* ********** */
 /*
- FTEMPIMAGE tempImage
- Free memory associated with temporary image tempImage.
+ FTEMPIMAGE [tempImage]
+ Free memory associated with temporary image tempImage. If no argument is specified, all temporary images are freed.
  tempImage must be in the range 0-9, or correspond to a named image.
  */
 int ftemp_c(int n, char* args)
 {
-    n = temp_image_index(args,0);
-    if(n >=0){
-        iTempImages[n].free();
-        if (n >= NUMBERED_TEMP_IMAGES) { // this one was named
-            namedTempImages[n-NUMBERED_TEMP_IMAGES].vname[0] = 0;    // get rid of this name
-            numberNamedTempImages--;
-            for(int i=n-NUMBERED_TEMP_IMAGES; i < numberNamedTempImages; i++){
-                namedTempImages[i] = namedTempImages[i+1];
-                iTempImages[i+NUMBERED_TEMP_IMAGES] = iTempImages[i+NUMBERED_TEMP_IMAGES+1];
+    if(args[0]){
+        n = temp_image_index(args,0);
+        if(n >=0){
+            iTempImages[n].free();
+            if (n >= NUMBERED_TEMP_IMAGES) { // this one was named
+                namedTempImages[n-NUMBERED_TEMP_IMAGES].vname[0] = 0;    // get rid of this name
+                numberNamedTempImages--;
+                for(int i=n-NUMBERED_TEMP_IMAGES; i < numberNamedTempImages; i++){
+                    namedTempImages[i] = namedTempImages[i+1];
+                    iTempImages[i+NUMBERED_TEMP_IMAGES] = iTempImages[i+NUMBERED_TEMP_IMAGES+1];
+                }
             }
+            update_UI();
+            return NO_ERR;
         }
+        return MEM_ERR;
+    } else {
+        // clear all images
+        for(int i=0; i<numberNamedTempImages+NUMBERED_TEMP_IMAGES; i++){
+            iTempImages[i].free();
+        }
+        numberNamedTempImages = 0;
         update_UI();
         return NO_ERR;
+        
     }
-    return MEM_ERR;
 }
 
 /* ********** */
