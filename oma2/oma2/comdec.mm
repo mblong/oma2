@@ -413,6 +413,7 @@ int comdec(char* cmnd)
     
     //extern char* exbuf[];     /* the execute buffer */
     char  txtbuf[CHPERLN];		// temp text buffer
+    char  cmndCopy[CHPERLN];		// command from macro or execute buffer
     extern int maccount,macflag,macptr,macval,macincrement;
     extern int windowNameMemory;
     //extern int exflag,exptr[],exval[];
@@ -462,8 +463,8 @@ int comdec(char* cmnd)
                     exptr[which_ex_buffer]++;
                 exptr[which_ex_buffer]++;
             }
-            
-            fill_in_command(cmnd,exbuf[which_ex_buffer]+exptr[which_ex_buffer],exval[which_ex_buffer]);
+            strncpy(cmndCopy,exbuf[which_ex_buffer]+exptr[which_ex_buffer],CHPERLN);
+            fill_in_command(cmnd,cmndCopy,exval[which_ex_buffer]);
             /* sprintf(cmnd,exbuf+exptr,exval); */
             
             while ( *(exbuf[which_ex_buffer] + ++exptr[which_ex_buffer]) ) ;	// move past the current command
@@ -508,8 +509,8 @@ int comdec(char* cmnd)
                         macptr++;
                     macptr++;
                 }
-                
-                fill_in_command(cmnd,macbuf+macptr,macval);
+                strncpy(cmndCopy,macbuf+macptr,CHPERLN);
+                fill_in_command(cmnd,cmndCopy,macval);
                 
                 /* Now have the command, echo it to terminal */
                 
@@ -703,17 +704,19 @@ int fill_in_command(char* dest,char* source,int val)
 	while( *(source+i) == ' ' || *(source+i) == '\t') {
 		i++;
 	}
+    // replace tabs with spaces for command decoding
+    l=0;
     for(k=0; *(source+i+k); k++){
         if(*(source+i+k)=='\t')*(source+i+k)=' ';
+        if(*(source+i+k)==';') l = i+k; // this will be location of the first ; in case there is a comment on this line
+    }
+    // get rid of text after the ; and spaces before it unless the ; is first
+    if(l>i){
+        *(source+l--)=EOL;  // overwrite the ;
+        while( l > i && *(source+l) == ' ')
+            *(source+l--)=EOL;  // overwrite spaces before ;
     }
     
-    /*    
-     if (!if_condition_met) {    // don't do this command -- just copy ';' to destination
-     *(dest+j++)= ';';
-     *(dest+j)= '\0';
-     return 0;
-     }
-     */	
 	while( *(source+i) != '\0' ) {
         if(*(source+i) == ';') break;
 		while( is_arg ){

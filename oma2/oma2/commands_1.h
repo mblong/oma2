@@ -196,6 +196,8 @@ int sqlAdd_q(int,char*);
 int sqlNew_q(int,char*);
 int sqlOpen_q(int,char*);
 int sqlClose_q(int,char*);
+
+int saveTiff(char*);
 #endif
 
 
