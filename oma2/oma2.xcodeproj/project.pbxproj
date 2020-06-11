@@ -11,7 +11,6 @@
 		DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7715211EFA001D1B05 /* image_support.mm */; };
 		DB021E7D15211EFA001D1B05 /* image.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7915211EFA001D1B05 /* image.mm */; };
 		DB03625E224D009800DF7BA8 /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB03625D224D009800DF7BA8 /* ImageBitmap.mm */; };
-		DB03B5B9227C615000601BFC /* oma2cam.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB8A888218E3297E007C79AF /* oma2cam.app */; };
 		DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
 		DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
 		DB0FC02F1519183C008A9B54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
@@ -43,11 +42,13 @@
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
 		DB51D9DC2274CF7F00917D5C /* libPvAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DB51D9DD2274D00B00917D5C /* libPvAPI.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		DB51D9DE2274D00B00917D5C /* liblabjackusb.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB57E31818F58D7900FA4D29 /* sbig.mm */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
+		DB629C06248E8A020035CB37 /* libgsl.23.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DB629C07248E8A020035CB37 /* libPvAPI.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DB629C08248E8A020035CB37 /* liblabjackusb.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DB629C09248E8A500035CB37 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DB685CE62355633600812918 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
 		DB685CE72355633600812918 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
 		DB83FD771D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
@@ -110,8 +111,7 @@
 		DB95A94E1A2F415E00823467 /* VariablesWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB95A94B1A2F415E00823467 /* VariablesWindowController.mm */; };
 		DB95A94F1A2F415E00823467 /* VariablesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB95A94C1A2F415E00823467 /* VariablesWindow.xib */; };
 		DB95A9501A2F415E00823467 /* VariablesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB95A94C1A2F415E00823467 /* VariablesWindow.xib */; };
-		DB9A98AB22720BFC008ABA5C /* SBIGUDrv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; };
-		DB9A98AC22720BFC008ABA5C /* SBIGUDrv.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DB9A98AB22720BFC008ABA5C /* SBIGUDrv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
 		DBA3B5F716FC781300B7FF27 /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
@@ -136,13 +136,13 @@
 		DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
 		DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
 		DBCB577E22CA389F00988D83 /* libgsl.23.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		DBCB577F22CA398000988D83 /* libgsl.23.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBD2A9412270BA380041852D /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB03625D224D009800DF7BA8 /* ImageBitmap.mm */; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
 		DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
 		DBF24A2D1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
 		DBF879C21906C13F006C5872 /* gphotoCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF879C11906C13F006C5872 /* gphotoCommands.mm */; };
 		DBF879C41906C18D006C5872 /* gphotoFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = DBF879C31906C18D006C5872 /* gphotoFunctions.c */; };
+		DBFB1C7A248FA7810083E9F6 /* SBIGUDrv.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DBFCF5EB18FC3EEF00956047 /* u3.c in Sources */ = {isa = PBXBuildFile; fileRef = DB8C23FF18FC32D500969763 /* u3.c */; };
 /* End PBXBuildFile section */
 
@@ -161,10 +161,13 @@
 		DB8A887D18E3297E007C79AF /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
-			dstPath = /Applications;
-			dstSubfolderSpec = 0;
+			dstPath = "";
+			dstSubfolderSpec = 10;
 			files = (
-				DB03B5B9227C615000601BFC /* oma2cam.app in CopyFiles */,
+				DB629C09248E8A500035CB37 /* LibTiff_F.framework in CopyFiles */,
+				DB629C06248E8A020035CB37 /* libgsl.23.dylib in CopyFiles */,
+				DB629C07248E8A020035CB37 /* libPvAPI.dylib in CopyFiles */,
+				DB629C08248E8A020035CB37 /* liblabjackusb.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,10 +186,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DBCB577F22CA398000988D83 /* libgsl.23.dylib in Embed Frameworks */,
-				DB51D9DD2274D00B00917D5C /* libPvAPI.dylib in Embed Frameworks */,
-				DB9A98AC22720BFC008ABA5C /* SBIGUDrv.framework in Embed Frameworks */,
-				DB51D9DE2274D00B00917D5C /* liblabjackusb.dylib in Embed Frameworks */,
+				DBFB1C7A248FA7810083E9F6 /* SBIGUDrv.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -206,9 +206,6 @@
 		DB03625D224D009800DF7BA8 /* ImageBitmap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageBitmap.mm; sourceTree = "<group>"; };
 		DB0FC01E1519183C008A9B54 /* oma2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0FC0221519183C008A9B54 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		DB0FC0251519183C008A9B54 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		DB0FC0261519183C008A9B54 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		DB0FC0271519183C008A9B54 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		DB0FC02A1519183C008A9B54 /* oma2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "oma2-Info.plist"; sourceTree = "<group>"; };
 		DB0FC02C1519183C008A9B54 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DB0FC02E1519183C008A9B54 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -386,9 +383,6 @@
 				DB685CE52355633600812918 /* LibTiff_F.framework */,
 				DBC3F1FC19129FEF00AD7850 /* VISA.framework */,
 				DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */,
-				DB0FC0251519183C008A9B54 /* AppKit.framework */,
-				DB0FC0261519183C008A9B54 /* CoreData.framework */,
-				DB0FC0271519183C008A9B54 /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";
@@ -992,6 +986,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1017,6 +1012,7 @@
 					"/opt/local/lib/**",
 					"$(PROJECT_DIR)",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				OTHER_LDFLAGS = "-lgphoto2";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = oma2cam;
@@ -1028,6 +1024,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1053,6 +1050,7 @@
 					"/opt/local/lib/**",
 					"$(PROJECT_DIR)",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				OTHER_LDFLAGS = "-lgphoto2";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = oma2cam;
