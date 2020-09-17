@@ -29,6 +29,7 @@ int comdec(char*);
 @class VariablesWindowController;
 @class PreferenceController;
 @class DataWindowController;
+@class DrawingWindowController;
 @class CommandView;
 
 @interface AppController : NSObject
@@ -71,6 +72,7 @@ int comdec(char*);
 
 -(void) showDataWindow:(char*) windowname;
 -(void) labelDataWindow: (char*) theLabel;
+-(void) setAlpha: (float) newAlpha;
 -(void) labelMinMax;
 
 -(void) eraseWindow:(int) n;

@@ -79,6 +79,11 @@ dispatch_sync(dispatch_get_main_queue(),^{[appController eraseWindow:(int) n];})
 else \
 dispatch_sync(dispatch_get_main_queue(),^{[appController labelDataWindow:(char*) args];});
 
+#define set_alpha if([NSThread isMainThread]) \
+[appController setAlpha:(float) newAlpha]; \
+else \
+dispatch_sync(dispatch_get_main_queue(),^{[appController setAlpha:(float) newAlpha];});
+
 #define label_data_minMax if([NSThread isMainThread]) \
 [appController labelMinMax]; \
 else \

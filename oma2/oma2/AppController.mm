@@ -14,6 +14,7 @@
 #import "StatusController.h"
 #import "ImageBitmap.h"
 #import "DataView.h"
+#import "DrawingView.h"
 #import "CommandView.h"
 
 
@@ -739,6 +740,25 @@ extern oma2UIData UIData;
     [[windowArray lastObject] updateImage];
     // this next is not needed?
     //[[windowArray lastObject] showWindow:self];
+}
+
+-(void) setAlpha: (float) newAlpha{
+   
+    NSWindow* activekey = [NSApp keyWindow];
+    int key = -1, i = 0;
+    for (id thewindowController in windowArray){
+        if( [thewindowController window ] == activekey) key=i;
+        i++;
+    }
+    if (key == -1) {
+        return;
+    }
+    if ([windowArray[key] isKindOfClass:[DataWindowController class]]){
+        [[(DataWindowController*)windowArray[key] imageView ] setAlpha: newAlpha];
+    }
+    if ([windowArray[key] isKindOfClass:[DrawingWindowController class]]){
+        [[(DrawingWindowController*)windowArray[key] drawingView ] setAlphaDraw: newAlpha];
+    }
 }
 
 -(int) saveDataWindowToPdf: (char*) fileName{

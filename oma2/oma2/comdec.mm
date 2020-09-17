@@ -217,6 +217,7 @@ ComDef   commands[] =    {
     {{"SHOTNOISE      "},	shotnoise_c},
     {{"SAY            "},	say_c},
     {{"SCATTER        "},   scatter_c},
+    {{"SETALPHA       "},   setAlpha},
 
 #if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
     {{"SQLADD         "},    sqlAdd_q},
@@ -1509,6 +1510,19 @@ int erase(int n, char* args){
     return 0;
 }
 
+// **********
+
+int setAlpha(int n, char* args){
+    float newAlpha = .5;
+    sscanf(args,"%f",&newAlpha);
+    if(newAlpha < 0 || newAlpha > 1){
+        beep();
+        printf("Alpha value must be 0 <= value <= 1\n");
+        return CMND_ERR;
+    }
+    set_alpha;
+    return NO_ERR;
+}
 
 // ********** 
 

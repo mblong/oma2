@@ -690,6 +690,9 @@ SAY string
 SCATTER [sizeX sizeY minX maxX minY maxY]
 	Create a scatter plot of sizeX by sizeY. The current image is taken as a pair of related data sets, with X values on the top half and Y values on the bottom half. Values 3-6 specify alternate min and max values for X and Y on the scatter plot. If these arguments are omitted, the min and max of each half image is used. Default size is 250 by 250 bins in X and Y.
 
+SETALPHA alphaValue
+	Sets the alpha channel of the current data window or image window to alphaValue, where 0 <= alphaValue <=1. For example, an alphaValue of .25 would result in window transparency of 75%.
+
 SQLADD
 	Adds the current displayed image to the database table previously opened. This could be a SQLite or mySQL database.  See also MYSQSERVER and SQLNEW [qtoma command]
 

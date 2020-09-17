@@ -105,6 +105,7 @@ int defmac(int,char*);
 int logg(int,char*);
 int dmnmx(int,char*);
 int labelData(int, char*);
+int setAlpha(int, char*);
 int stopOnError(int, char*);
 int imp_pause(int, char*);
 

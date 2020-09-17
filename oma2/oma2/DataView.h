@@ -33,6 +33,6 @@
 @property NSMutableArray *labelArray;
 
 -(void) addItem: (NSObject*) theItem;
-
+-(void) setAlpha: (float) newAlpha;
 @end
 

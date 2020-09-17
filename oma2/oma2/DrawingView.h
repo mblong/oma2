@@ -31,5 +31,6 @@
 @property float heightScale;
 @property float widthScale;
 
+- (void) setAlphaDraw: (float) newAlpha;
 
 @end
