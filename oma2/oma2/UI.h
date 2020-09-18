@@ -205,13 +205,13 @@ BOOL dropped_file(char*,char*);
 
 
 #ifndef SETTINGSFILE
-#define SETTINGSFILE "./OMASettings"
-#define PALETTEFILE	"./OMApalette.pa1"
-#define PALETTEFILE2 "./OMApalette2.pa1"
-#define PALETTEFILE3 "./OMApalette3.pa1"
+#define SETTINGSFILE "OMASettings"
+#define PALETTEFILE	"OMApalette.pa1"
+#define PALETTEFILE2 "OMApalette2.pa1"
+#define PALETTEFILE3 "OMApalette3.pa1"
 
-#define HELPFILE "./oma2help.txt"
-#define HELPURL "./LightOma2Help/index.html"
+#define HELPFILE "oma2help.txt"
+#define HELPURL "LightOma2Help/index.html"
 #endif
 /*
 #pragma gcc diagnostic ignored "-Wsign-compare"
