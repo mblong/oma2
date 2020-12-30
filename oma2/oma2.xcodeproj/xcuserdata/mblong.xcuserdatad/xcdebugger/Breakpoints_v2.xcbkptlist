@@ -811,24 +811,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1195"
             endingLineNumber = "1195"
-            landmarkName = "gige(int n, char* args)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E152DCB4-A4D4-49F7-957D-58E7C37B45E3"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "oma2/sbig.mm"
-            timestampString = "577885151.381044"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "545"
-            endingLineNumber = "545"
-            landmarkName = "sbig(int n, char* args)"
+            landmarkName = "gige(n, args)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

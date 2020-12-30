@@ -2780,7 +2780,7 @@ int grey2rgb_c(int n,char* args){
  */
 
 int hot_pix[NUMHOT];	// store info on hot pixels
-int neighbors[NUMHOT][8] = {0};
+int neighbors[NUMHOT][8] = {{0}};
 int num_hot = 0;
 int ccd_width = 0;
 int ccd_height = 0;
@@ -4886,7 +4886,7 @@ int match_c(int n, char* args)			/* Using the data in the current buffer as one 
      setdata(txt);
      fileflush(txt);	// for updating directory
      */
-    rect cropRect = {substart.h,substart.v,subend.h,subend.v};
+    rect cropRect = {{substart.h,substart.v},{subend.h,subend.v}};
     iBuffer.crop(cropRect);
     iBuffer.getmaxx(PRINT_RESULT);
     iBuffer.saveFile(fullname(txt,SAVE_DATA), LONG_NAME);
@@ -4928,7 +4928,7 @@ int match_c(int n, char* args)			/* Using the data in the current buffer as one 
      fileflush(txt);	// for updating directory
      */
     
-    rect cropRect2 = {substart.h,substart.v,subend.h,subend.v};
+    rect cropRect2 = {{substart.h,substart.v},{subend.h,subend.v}};
     iBuffer.crop(cropRect2);
     iBuffer.getmaxx(PRINT_RESULT);
     iBuffer.saveFile(fullname(txt,SAVE_DATA), LONG_NAME);
@@ -5533,8 +5533,8 @@ int scatter_c(int n, char* args)
     float binsizex,binsizey,x,y;
     
     int halfHeight = iBuffer.height()/2;
-    rect topRect={0,0,iBuffer.width()-1,halfHeight-1};
-    rect bottomRect={0,halfHeight,iBuffer.width()-1,halfHeight*2-1};
+    rect topRect={{0,0},{iBuffer.width()-1,halfHeight-1}};
+    rect bottomRect={{0,halfHeight},{iBuffer.width()-1,halfHeight*2-1}};
     
     // get default values in case no arguments are given
     sizx = 250;
@@ -6123,7 +6123,7 @@ int unfold_c(int n, char* args){
     iBuffer.invert();
     iBuffer.mirror();
     int w=iBuffer.width()-1,h=iBuffer.rows()-1;
-    rect cropRect={0,1,w,h};
+    rect cropRect={{0,1},{w,h}};
     iBuffer.crop(cropRect);
     newIm.composite(iBuffer);
     newIm.rotate(-90.);

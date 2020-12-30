@@ -1206,7 +1206,7 @@ int readHobj(char* filename,Image* theImage){
     if(UIData.demosaicHobjFlag !=HOBJ_NO_DEMOSAIC && UIData.decodeHobjFlag == 1){
         
         if (UIData.demosaicHobjFlag == HOBJ_DOC2RGB){
-            int bayer[2][2] = {0,1,1,2};
+            int bayer[2][2] = {{0,1},{1,2}};
             int newrow = theImage->specs[ROWS]/2;
             int newcol = theImage->specs[COLS]/2;
             int row,col;
