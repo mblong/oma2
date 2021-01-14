@@ -60,6 +60,9 @@ ComDef   commands[] =    {
     {{"CONCATFILE     "},	concatfile_c},
     {{"CLOSEFILE      "},	closefile_c},
     {{"C2RGB          "},   c2rgb_c},
+#ifdef OPENCV_ROUTINES
+    {{"CVHOUGHCIRCLES "},   cvHoughCircles_q},
+#endif
     
     {{"DISPLAY        "},	display},
     {{"DMACRO         "},	defmac},
@@ -85,6 +88,7 @@ ComDef   commands[] =    {
     {{"EXECUTE        "},	execut},
     {{"EXTRA          "},	extra_c},
     {{"EXPOSURE       "},	exposure_c},
+    {{"EXIT           "},   exit_c},
         
     {{"FLOATVARIABLE  "},	vfloat},
     {{"FCLOSE         "},	fclose_c},
@@ -105,6 +109,7 @@ ComDef   commands[] =    {
     {{"GET            "},	getfile_c},
     {{"GETRGB         "},	getfile_c},
     {{"GETFILENAMES   "},	getFileNames_c},
+    {{"GETFOLDERNAMES "},   getFolderNames_c},
     {{"GETSETTINGS    "},	getsettings},
     {{"GETFUNCTION    "},	getfun_c},
     {{"GETBINARYFILE  "},	getbin_c},
@@ -157,6 +162,7 @@ ComDef   commands[] =    {
     {{"MASK>          "},	maskGreater_c},
     {{"MASK<          "},	maskLess_c},
     {{"MATCH          "},	match_c},
+    {{"MAP            "},   map_c},
 
 #if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
     {{"MYSQSERVER     "},    mySqServer_q},
@@ -165,7 +171,7 @@ ComDef   commands[] =    {
         
     {{"NEWWINDOW      "},	newWindow_c},
     {{"NEXTFILE       "},	nextFile_c},
-    {{"NEXTPREFIX     "},	nextPrefix_c},
+    {{"NEXTFOLDER     "},	nextFolder_c},
     {{"NOISE          "},	noise_c},
     {{"NAN2ZERO       "},   nan2zero_c},
         
@@ -202,6 +208,7 @@ ComDef   commands[] =    {
     {{"SATIFFSCALED   "},	satiffscaled_c},
     {{"SAVEJPG        "},	saveJpg_c},
     {{"SAVEPDF        "},   savePdf_c},
+    {{"SAVEINT        "},   saveInt_c},
     {{"SIZE           "},	size_c},
     {{"SINGRID        "},	sinGrid_c},
     {{"STEMPIMAGE     "},	stemp_c},
@@ -219,6 +226,7 @@ ComDef   commands[] =    {
     {{"SCATTER        "},   scatter_c},
     {{"SETALPHA       "},   setAlpha},
 
+
 #if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
     {{"SQLADD         "},    sqlAdd_q},
     {{"SQLOPEN        "},    sqlOpen_q},
@@ -234,7 +242,7 @@ ComDef   commands[] =    {
     {{"VARIABLES      "},	variab},
     {{"VARCLEAR       "},	varClear},
 
-#if defined(Qt_UI_Mac)
+#if defined(Qt_UI_Mac) || defined(OPENCV_ROUTINES)
     {{"VIDOPENFILE    "},	vidOpenFile_q},
     {{"VIDADDFRAME    "},	vidAddFrame_q},
     {{"VIDCLOSEFILE   "},	vidCloseFile_q},
@@ -687,6 +695,7 @@ int fill_in_command(char* dest,char* source,int val)
 	//DateTimeRec datetime;
 	//float ave_in_rect(),rms_in_rect();
     char txt[1024] = {0};
+    time_t theTime;
     
     
     
@@ -841,13 +850,21 @@ int fill_in_command(char* dest,char* source,int val)
                     break;
 
                 case 't':
-                    time_t theTime;
                     theTime=time(NULL);
                     sprintf(dest+j,"%s",ctime(&theTime));
                     while(*(dest+j)) 
                         j++;
                     break;
                     
+                case 'k':
+                    struct tm* timeInfo;
+                    theTime=time(NULL);
+                    timeInfo = localtime (&theTime);
+                    strftime (dest+j,16,"%Y-%m-%d",timeInfo);
+                    while(*(dest+j))
+                        j++;
+                    break;
+
                 default:
                     
                     break;

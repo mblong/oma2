@@ -175,8 +175,8 @@ DMACRO [n] [command]
 	%f  last file name
 	%b  maximum value (big)
 	%l  minimum value (little)
-	%m  multiplier (the current scale factor)
 	%t  current date and time
+	%k  current date formatted as yyyy-mm-dd
 	%v  an integer value that increments by a specified amount every time it is used
 	Use the VALMAC command to specify the starting value and increment.
 	%e  the result of the last error code (0 means no error)
@@ -265,7 +265,10 @@ EXPOSURE exposureValue
 
 EXTRA [index] [value]
 	Add extra information to the current image in the form of a floating point value. Indexing starts at 1. If both arguments are present, the value is placed at the location specified by the index. If no argument is given, the command lists extra values in the current image buffer and puts the first ten extra values into the command_return variables. With one argument, the extra value at the specified index is put into command_return_1.
-
+ 
+ EXIT
+	Quit the program.
+ 
 FFT mode scale_factor
 	mode = 0  return the magnitude scaled by scale_factor
 	mode = 1  return the real part scaled by scale_factor
@@ -317,8 +320,11 @@ GET <filename>
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.
 
 GETFILENAMES NameFile
-	Open NameFile (uses get prefix and ".txt" as suffix), which contains the names of files or directory paths. For files, the NEXTFILE command is used to open the next file. For directory paths, the NEXTPREFIX command is used to set the "Get File" prefix to the specified path. NameFile is left open until all files have been accessed.
+	Open NameFile (uses GET DATA FILES prefix and ".txt" as suffix), which contains the names of files. The NEXTFILE command is used to open the next file. NameFile is left open until all files have been accessed. NameFile can be generated with a SHELL command. See also NEXTFILE command.
 
+GETFOLDERNAMES FolderFile
+	Open FolderFile (uses GET DATA FILES prefix and ".txt" as suffix), which contains the names of folders. The NEXTFOLDER command is used to read the next folder name. FolderFile is left open until all folders have been accessed. FolderFile can be generated with a SHELL command. See also NEXTFOLDER command.
+ 
 GETMATCH parameterfile
 	Load the file matching parameters contained in the text file "parameterfile". The format of the file is as follows:
 x1_ref y1_ref x1_i1 y1_i1 x1_i2 y1_i2
@@ -488,6 +494,9 @@ LN
 MACRO [n m]
 	Like "RMACRO [n m]" except that printing of intermediate output is automatically suppressed.
 
+MAP minimum maximum
+    Map the current image to have values between minimum and maximum.
+
 MAKNEW n m
 	Change the resolution of the data in the current data buffer to be n rows x m columns. Bilinear interpolation is performed.
 
@@ -519,10 +528,10 @@ NEWWINDOW flag
 	If flag = 1 (default), a new window will be opened for each "DISPLAY" command. If flag = 0, the results of "DISPLAY" commands will be placed in the last-opened window. If no window exists, a new one will be opened. 
 
 NEXTFILE [prefix]
-	Open the next file specified in the FileNames file that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. command_return_1 is the the filename without any prefix and without the extension (last 4 characters).
+	Open the next file specified in the FileNames file that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. command_return_1 is the filename without any prefix and without the extension (last 4 characters). The file name needs to include the full path to the file.
 
-NEXTPREFIX
-	Set the "Get File" prefix to be the next string specified in the FileNames file that was opened with the GetFileNames command.
+NEXTFOLDER
+	 Read the next entry in the FolderNames file that was opened with the GETFOLDERNAMES command. command_return_1 has the local folder name. Typically this would be saved to a variable (e.g., named "folder") for use in subsequent NEXTFILE commands.
 
 NOISE average rms [seed]
 	Creates a noise image with the specified average and rms. See also GNOISE.
@@ -613,6 +622,9 @@ SAVEJPG <filename>
 SAVEPDF <filename>
 	Saves the current data window image to a PDF file. Any text labels that are displayed on the data window will be part of the pdf. Include the .pdf extension in the file name.
 
+SAVEINT <FileName> [typeOfInteger]
+ Save the data to an oma2 file where the values are converted to integers. Default is typeOfInteger=16 (unsigned 16-bit integers) Other options for typeOfInteger are -16 (signed short), 8 (unsigned char), or -8 (signed char). Out of bounds values for a given type are set to the type's minimum and maximum -- this modifies the current image as well. FileName must not contain white-space characters. See also the MAP command.
+ 
 SERCLOSE
 	Closes the serial port opened with the last "SERIAL device_name" command. This can be used if you need to talk to more than one serial device -- open device 1, send commands, close the serial port, open device 2, send commands, and so forth. Available in oma2cam.
 

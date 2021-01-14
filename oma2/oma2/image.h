@@ -27,7 +27,14 @@ typedef struct{
 
 // locations within the specs array
 enum {ROWS,COLS,X0,Y0,DX,DY,LMAX,LMIN,IS_COLOR,HAVE_MAX,HAS_RULER,
-    LRMAX,LRMIN,LGMAX,LGMIN,LBMAX,LBMIN,NFRAMES};
+    LRMAX,LRMIN,LGMAX,LGMIN,LBMAX,LBMIN,NFRAMES,SAVE_FORMAT};
+
+// types if integers the data can be saved as
+enum {UNSIGNED16=59464,SIGNED16,UNSIGNED8,SIGNED8};
+
+// SAVE_FORMAT is a 2021 addition to the specs array
+// This will be used to save data in other than DATAWORD types
+// Will assume that the chances of 
 
 // locations within the values array
 enum {MIN,MAX,RMAX,RMIN,GMAX,GMIN,BMAX,BMIN,RULER_SCALE,EXPOSURE,APERTURE,ISO};
@@ -101,6 +108,7 @@ public:
     void clip(DATAWORD);        ///< set values > specifiedValue to specifiedValue
     void floor(DATAWORD);       ///< set values < specifiedValue to specifiedValue
     void saveFile(char*, int);  ///< write the Image to a file; second argument tells if name is complete or not
+    void saveFile(char*, int,int);  ///< write the Image to a file as integers; second argument tells if name is complete or not; third argument is type -- uint16 int16 char8 uchar8
     
     void copyABD(Image);        ///< copy All But Data from one image to another
     int* getspecs();            ///< returns a copy of the image specs array
@@ -121,6 +129,8 @@ public:
     
     DATAWORD getpix(int,int);     ///< get a pixel value at the specified row and column
     DATAWORD getpix(float,float); ///< get an interpoated pixel value at the specified fractional row and column
+    DATAWORD* getImageData();     ///< returns the data pointer
+    
     void setpix(int,int,DATAWORD);   ///< set a pixel value at the specified row and column
     
     void crop(rect);           ///< crop the current image or return an error if there was one

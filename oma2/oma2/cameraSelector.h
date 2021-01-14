@@ -39,6 +39,8 @@
      
     */
 
+    #define OPENCV_ROUTINES
+
     // select cameras here
 
     #define GIGE_     //
@@ -77,6 +79,7 @@
     #endif
 
     #ifdef LJU3
+        #include "u3.h"
         int connectU3(void);
     #endif
 

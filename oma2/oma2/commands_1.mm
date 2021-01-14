@@ -190,10 +190,52 @@ int power_c(int n,char* args)				// raise the data to a power
 int savefile_c(int n,char* args)
 {
     if(*args == 0){	// no file name was specified
+        beep();
+        printf(" No filename specified.\n");
         return FILE_ERR;
     } else { // otherwise, add the prefix and suffix and use the name specified
         iBuffer.saveFile(args,SHORT_NAME);
         return iBuffer.err();
+    }
+}
+
+/* ********** */
+
+/*
+SAVEINT filename [typeOfInteger]
+ Save the data to an oma2 file where the values are converted to integers. Default is typeOfInteger=16 (unsigned 16-bit integers) Other options for typeOfInteger are -16 (signed short), 8 (unsigned char), or -8 (signed char). Out of bounds values for a given type are set to the type's minimum and maximum.
+ */
+
+int saveInt_c(int n,char* args)
+{
+    char filename[CHPERLN];
+    int typeOfInt=16;
+    int narg = sscanf(args,"%s %d", filename, &typeOfInt);
+
+
+    if(narg < 1){    // no file name was specified
+        beep();
+        printf(" No filename specified.\n");
+        return FILE_ERR;
+    } else { // otherwise, add the prefix and suffix and use the name specified
+        switch (typeOfInt){
+            case 16:
+                iBuffer.saveFile(filename,SHORT_NAME,UNSIGNED16);
+                return iBuffer.err();
+            case -16:
+                iBuffer.saveFile(filename,SHORT_NAME,SIGNED16);
+                return iBuffer.err();
+            case 8:
+                iBuffer.saveFile(filename,SHORT_NAME,UNSIGNED8);
+                return iBuffer.err();
+            case -8:
+                iBuffer.saveFile(filename,SHORT_NAME,SIGNED8);
+                return iBuffer.err();
+            default:
+                beep();
+                printf("Specified integer type must be -8, 8, -16 or 16.\n");
+                return FILE_ERR;
+        }
     }
 }
 
@@ -2080,9 +2122,7 @@ int newWindow_c(int n,char* args){
 
 /*
  GETFILENAMES NameFile
- Open NameFile (currently uses macro prefix and suffix) which contains the names of files.
- The NEXTFILE command is used to open the next file. NameFile is left open until all files
- have been accessed.
+ Open NameFile (uses GET DATA FILES prefix and ".txt" as suffix), which contains the names of files. The NEXTFILE command is used to open the next file. NameFile is left open until all files have been accessed. Namefile can be generated with a SHELL command. See also NEXTTFILE command.
  */
 
 int getFileNames_c(int n,char* args)			// open a file containing file names
@@ -2104,8 +2144,31 @@ int getFileNames_c(int n,char* args)			// open a file containing file names
 /* ********** */
 
 /*
+GETFOLDERNAMES FolderFile
+ Open FolderFile (uses GET DATA FILES prefix and ".txt" as suffix), which contains the names of folders. The NEXTFOLDER command is used to read the next folder name. FolderFile is left open until all folders have been accessed. FolderFile can be generated with a SHELL command. See also NEXTFOLDER command.
+ */
+
+int getFolderNames_c(int n,char* args)            // open a file containing file names
+{
+    extern FILE* folderFilePtr;
+    
+    if( folderFilePtr != NULL) fclose(folderFilePtr);
+    
+    folderFilePtr = fopen(fullname(args,GET_FILENAMES),"r");
+    if( folderFilePtr != NULL) {
+        return NO_ERR;
+    }
+    else {
+        beep();
+        printf("Could not open %s\n",args);
+        return FILE_ERR;
+    }
+}
+/* ********** */
+
+/*
  NEXTFILE [prefix]
- Open the next file specified in the FileNames file that was opened with the GetFileNames command.
+ Open the next file specified in the NameFile that was opened with the GetFileNames command.
  If a prefix is specified, that is added to the name before trying to open the file.
  command_return_1 is the the filename without any prefix and without the extension (last 4 characters)
  */
@@ -2164,31 +2227,39 @@ int nextFile_c(int n,char* args){
 /* ********** */
 
 /*
- NEXTPREFIX
- Open the next file specified in the FileNames file that was opened with the GetFileNames command.
- If a prefix is specified, that is added to the name before trying to open the file.
- command_return_1 is the the filename without any prefix and without the extension (last 4 characters)
+ NEXTFolder
+ Read the next entry in the FolderNames file that was opened with the GETFOLDERNAMES command. command_return_1 has the local folder name. Typically this would be saved to a variable (e.g., named "folder") for use in subsequent NEXTFILE commands.
  */
-int nextPrefix_c(int n,char* args){
+int nextFolder_c(int n,char* args){
     char 	fulltxt[512];
-    extern FILE* nameFilePtr;
+    extern FILE* folderFilePtr;
+    extern Variable user_variables[];
     
-    if( nameFilePtr == NULL){
+    if( folderFilePtr == NULL){
         beep();
-        printf("No Names file is open. Use the GetFileNames command first.\n");
+        printf("No Folder file is open. Use the GetFolderNames command first.\n");
         return FILE_ERR;
     }
-    if(fscanf(nameFilePtr, "%s",fulltxt) == EOF){
+    if(fscanf(folderFilePtr, "%s",fulltxt) == EOF){
         beep();
         printf("All paths have been read.\n");
-        fclose(nameFilePtr);
-        nameFilePtr = NULL;
+        fclose(folderFilePtr);
+        folderFilePtr = NULL;
         return FILE_ERR;
     }
     
-    printf("New path is %s\n",fulltxt);
+    // return the path name  as the first  return value
     
-    strncpy(UIData.getprefixbuf, fulltxt,512);
+    user_variables[0].fvalue = user_variables[0].ivalue = 0;
+    user_variables[0].is_float = -1;
+    int length = (int)strlen(fulltxt);
+    strncpy( user_variables[0].estring,fulltxt,length);
+    user_variables[0].estring[length] = 0;   // need to end this explicitly
+    
+    printf("New path is %s\n",user_variables[0].estring);
+
+    
+    //strncpy(UIData.getprefixbuf, fulltxt,512);
     
     return NO_ERR;
     
@@ -6160,6 +6231,27 @@ int dsaturate_c(int n,char* args){
     
     return NO_ERR;
 }
+/* ************************* */
+
+
+/*
+ EXIT
+ Quit the program.
+ */
+
+int exit_c(int n,char* args){
+    char c=0;
+    savsettings(0,&c);
+    
+    // hardware dependent close operations
+#ifdef LJU3
+    extern HANDLE hDevice;
+    extern int u3_connected;
+    if(u3_connected)closeUSBConnection(hDevice);
+#endif
+
+    exit(0);
+}
 
 /* ************************* */
 
@@ -6253,6 +6345,31 @@ int getangle_c(int n,char* args){
     
     update_UI();
     return NO_ERR;
+}
+/* ************************* */
+/*
+ MAP minimum maximum
+    Map the current image to have values between minimum and maximum.
+ */
+int map_c(int n,char* args){
+    DATAWORD min,max,scale;
+    DATAWORD* values = iBuffer.getvalues();
+    if( sscanf(args,"%f %f",&min,&max) != 2){
+        beep();
+        printf("Need two values: MAP minimum maximum\n");
+    }
+    scale = (max-min)/(values[MAX]-values[MIN]);
+    iBuffer-values[MIN];
+    iBuffer*scale;
+    iBuffer+min;
+    
+    free(values);
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+
+    return NO_ERR;
+
+    
 }
 
 /* ************************* */

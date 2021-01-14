@@ -64,7 +64,7 @@ void setReturnValues(){
     values[EXPOSURE] = ExposureTime;
     iBuffer.setvalues(values);
     free(values);
-    float extraValues[4]={setpointTemp,ccdTemp,ExposureTime,Filter};
+    float extraValues[4]={setpointTemp,ccdTemp,ExposureTime,(float)Filter};
     iBuffer.setExtra(extraValues,4);
 }
 

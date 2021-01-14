@@ -28,6 +28,7 @@ char dcraw_arg[CHPERLN];
 //int newWindowFlag = 1;      // set by NEWWINDOW
 
 FILE* nameFilePtr = NULL;   // used in the GETFILENAMES and NEXTFILE commands
+FILE* folderFilePtr = NULL;   // used in the GETFOLDERNAMES and NEXTPREFIX commands
 
 char applicationPath[CHPERLN];	// this is the path to the directory that the program is running from
 char contentsPath[CHPERLN];		// this is the path to the Contents directory where things like palettes are stored
@@ -84,6 +85,7 @@ Image::Image()              // create an empty Image with default values
     specs[DX] = specs[DY] = 1;
     error = 0;
     specs[HAS_RULER]=0;
+    specs[SAVE_FORMAT]=0;
     values[RULER_SCALE]=1.;
     unit_text[0] = 0;
     is_big_endian = IS_BIG_ENDIAN;
@@ -335,10 +337,84 @@ Image::Image(char* filename, int kindOfName)
     }
     // now read the data
     if (newFormat) {
-        nr = read(fd,data,sizeof(DATAWORD)*specs[ROWS]*specs[COLS]);
-        if (nr != sizeof(DATAWORD)*specs[ROWS]*specs[COLS]) {
-            error = FILE_ERR;
+        int npts = specs[ROWS]*specs[COLS];
+        switch (specs[SAVE_FORMAT]) {
+            case UNSIGNED16:
+            {
+                unsigned short* shortData = new unsigned short[npts];
+                nr = read(fd,shortData,sizeof(unsigned short)*npts);
+                if (nr != sizeof(unsigned short)*npts) {
+                    error = FILE_ERR;
+                    delete[] shortData;
+                } else {
+                    DATAWORD* mydatpt=data;
+                    unsigned short* newdatpt=shortData;
+                    while ( mydatpt < data+npts ) {
+                        *mydatpt++ = *newdatpt++;
+                    }
+                    delete[] shortData;
+                }
+                break;
+            }
+            case SIGNED16:
+            {
+                short* shortData = new short[npts];
+                nr = read(fd,shortData,sizeof(short)*npts);
+                if (nr != sizeof(short)*npts) {
+                    error = FILE_ERR;
+                    delete[] shortData;
+                } else {
+                    DATAWORD* mydatpt=data;
+                    short* newdatpt=shortData;
+                    while ( mydatpt < data+npts ) {
+                        *mydatpt++ = *newdatpt++;
+                    }
+                    delete[] shortData;
+                }
+                break;
+            }
+            case UNSIGNED8:
+            {
+                unsigned char* shortData = new unsigned char[npts];
+                nr = read(fd,shortData,sizeof(unsigned char)*npts);
+                if (nr != sizeof(unsigned char)*npts) {
+                    error = FILE_ERR;
+                    delete[] shortData;
+                } else {
+                    DATAWORD* mydatpt=data;
+                    unsigned char* newdatpt=shortData;
+                    while ( mydatpt < data+npts ) {
+                        *mydatpt++ = *newdatpt++;
+                    }
+                    delete[] shortData;
+                }
+                break;
+            }
+            case SIGNED8:
+            {
+                char* shortData = new char[npts];
+                nr = read(fd,shortData,sizeof(char)*npts);
+                if (nr != sizeof(char)*npts) {
+                    error = FILE_ERR;
+                    delete[] shortData;
+                } else {
+                    DATAWORD* mydatpt=data;
+                    char* newdatpt=shortData;
+                    while ( mydatpt < data+npts ) {
+                        *mydatpt++ = *newdatpt++;
+                    }
+                    delete[] shortData;
+                }
+                break;
+            }
+
+            default:
+                nr = read(fd,data,sizeof(DATAWORD)*npts);
+                if (nr != sizeof(DATAWORD)*npts) {
+                    error = FILE_ERR;
+                }
         }
+        
 
         if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN){
             close(fd);
@@ -895,6 +971,192 @@ void Image::saveFile(char* name, int kindOfName){
     
 }
 
+void Image::saveFile(char* name, int kindOfName, int kindOfInt){
+    char txt[HEADLEN];
+    int nspecs = NSPECS;
+    int nvalues = NVALUES;
+    int nrulerchar = NRULERCHAR;
+    int fd;
+    int npts=specs[ROWS]*specs[COLS];
+    
+    strncpy(windowName, name, CHPERLN);
+    trimName(windowName);
+    windowNameMemory = 2;
+
+    
+    switch (kindOfName) {
+        case LONG_NAME:
+            fd = open(name,WMODE);
+            break;
+        case SHORT_NAME:
+            fd = open(fullname(name,SAVE_DATA),WMODE);
+            break;
+        case HAS_SUFFIX:
+            fd = open(fullname(name,RAW_DATA),WMODE);    // means don't add the suffix
+            break;
+        case LEAVE_OPEN:
+            fd = *(int*)name;    // assumes the argument is a valid fd; don't close the file
+            break;
+        case IS_OPEN:
+            fd = *(int*)name;    // assumes the argument is an open fd; don't write the header information
+            break;
+        default:
+            fd = -1;
+            break;
+    }
+    
+    if(fd == -1) {
+        beep();
+        error = FILE_ERR;
+        windowNameMemory = 0;
+        return;
+    }
+    bool needsUpdate=0;
+    switch (kindOfInt){
+        case UNSIGNED16:
+            // clip any out of bounds values
+            if (values[MIN] < 0.) {
+                floor(0.);
+                values[MIN] = 0;
+                needsUpdate=1;
+            }
+            if (values[MAX] > UINT16_MAX) {
+                clip(UINT16_MAX);
+                values[MAX] = UINT16_MAX;
+                needsUpdate=1;
+            }
+            specs[SAVE_FORMAT] = UNSIGNED16;
+            if (needsUpdate) update_UI();
+            break;
+        case SIGNED16:
+            // clip any out of bounds values
+            if (values[MIN] < INT16_MIN) {
+                floor(INT16_MIN);
+                values[MIN] = INT16_MIN;
+                needsUpdate=1;
+            }
+            if (values[MAX] > INT16_MAX) {
+                clip(INT16_MAX);
+                values[MAX] = INT16_MAX;
+                needsUpdate=1;
+            }
+            specs[SAVE_FORMAT] = SIGNED16;
+            if (needsUpdate) update_UI();
+            break;
+        case UNSIGNED8:
+            // clip any out of bounds values
+            if (values[MIN] < 0.) {
+                floor(0.);
+                values[MIN] = 0;
+                needsUpdate=1;
+            }
+            if (values[MAX] > UCHAR_MAX) {
+                clip(UINT16_MAX);
+                values[MAX] = UCHAR_MAX;
+                needsUpdate=1;
+            }
+            specs[SAVE_FORMAT] = UNSIGNED8;
+            if (needsUpdate) update_UI();
+            break;
+        case SIGNED8:
+            // clip any out of bounds values
+            if (values[MIN] < CHAR_MIN) {
+                floor(INT16_MIN);
+                values[MIN] = CHAR_MIN;
+                needsUpdate=1;
+            }
+            if (values[MAX] > CHAR_MAX) {
+                clip(INT16_MAX);
+                values[MAX] = CHAR_MAX;
+                needsUpdate=1;
+            }
+            specs[SAVE_FORMAT] = SIGNED8;
+            if (needsUpdate) update_UI();
+            break;
+        default:
+            beep();
+            error = FILE_ERR;
+            windowNameMemory = 0;
+            return;
+    }
+    
+    if (kindOfName != IS_OPEN) {
+        // write the header
+        strcpy(txt, OMA2_BINARY_DATA_STRING);
+        write(fd,txt,HEADLEN);   // data identifier string
+        // now write information on the sizes of fixed-length buffers (in case this changes)
+        write(fd,&nspecs,sizeof(int));
+        write(fd,&nvalues,sizeof(int));
+        write(fd,&nrulerchar,sizeof(int));
+        // now write the image data minus the pointers
+        write(fd,this,sizeof(Image)- NUM_IMAGE_PTRS*sizeof(Ptr));
+        if (commentSize) {
+            write(fd,comment,commentSize);
+        }
+        if (extraSize) {
+            write(fd,extra,extraSize*sizeof(float));
+        }
+    }
+    // now the data
+    switch (kindOfInt){
+        case UNSIGNED16:
+        {   // Note: Need the braces to limit the scope of the pointers
+            unsigned short* convertedData = new unsigned short[npts];
+            DATAWORD* mydatpt=data;
+            unsigned short* newdatpt=convertedData;
+            while ( mydatpt < data+npts ) {
+                *newdatpt++ = *mydatpt++;
+            }
+            write(fd,convertedData,sizeof(unsigned short)*npts);
+            delete[] convertedData;
+            break;
+        }
+        case SIGNED16:
+        {
+            short* convertedData = new short[npts];
+            DATAWORD* mydatpt=data;
+            short* newdatpt=convertedData;
+            while ( mydatpt < data+npts ) {
+                *newdatpt++ = *mydatpt++;
+            }
+            write(fd,convertedData,sizeof(short)*npts);
+            delete[] convertedData;
+            break;
+        }
+        case UNSIGNED8:
+        {   // Note: Need the braces to limit the scope of the pointers
+            unsigned char* convertedData = new unsigned char[npts];
+            DATAWORD* mydatpt=data;
+            unsigned char* newdatpt=convertedData;
+            while ( mydatpt < data+npts ) {
+                *newdatpt++ = *mydatpt++;
+            }
+            write(fd,convertedData,sizeof(unsigned char)*npts);
+            delete[] convertedData;
+            break;
+        }
+        case SIGNED8:
+        {
+            char* convertedData = new char[npts];
+            DATAWORD* mydatpt=data;
+            char* newdatpt=convertedData;
+            while ( mydatpt < data+npts ) {
+                *newdatpt++ = *mydatpt++;
+            }
+            write(fd,convertedData,sizeof(char)*npts);
+            delete[] convertedData;
+            break;
+        }
+    }
+
+    if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN){
+        close(fd);
+    }
+    error = NO_ERR;
+    
+}
+
+
 void Image::resize(int newRows, int newCols){
     
     if(specs[IS_COLOR]){
@@ -927,6 +1189,9 @@ void Image::resize(int newRows, int newCols){
     return;
 }
 
+DATAWORD* Image::getImageData(){                // returns a pointer to the data; use with extreme caution
+    return data;
+}
 
 DATAWORD Image::getpix(int r ,int c)   // get a pixel value at the specified row and column
 {

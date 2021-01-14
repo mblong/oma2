@@ -128,6 +128,8 @@ extern oma2UIData UIData;
 }
 
 - (void) mouseDown:(NSEvent *)theEvent{
+    extern int last_x_val,last_y_val;
+    
     // toggle alpha if right click
     /*
     if ([theEvent modifierFlags] & 1){              // need to figure out the name of this constant
@@ -190,10 +192,13 @@ extern oma2UIData UIData;
     
     [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
     [statusController labelX1:-1 Y1:-1 Z1: 0];
+    last_x_val = x;
+    last_y_val = y;
 }
 
 
 - (void) mouseDragged:(NSEvent *)theEvent{
+    extern int last_x_val,last_y_val;
     NSPoint point = [theEvent locationInWindow];
     endPoint = [self convertPoint:point fromView:nil];
     int x = endPoint.x;
@@ -212,6 +217,8 @@ extern oma2UIData UIData;
     endRect.x = x;
     endRect.y = y;
     
+    last_x_val = x;
+    last_y_val = y;
 
     if(appController.tool < SELRECT)
         [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];

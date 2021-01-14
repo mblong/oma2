@@ -25,15 +25,18 @@
 #include <stdlib.h>
 #include "labjackusb.h"
 
+
 // mbl
+#include "tiffio.h"
 /*
 typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned int uint32;
-*/
+
 #define uint8 unsigned char
 #define uint16 unsigned short
 #define uint32 unsigned int
+ */
 //mbl
 
 

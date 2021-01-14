@@ -51,6 +51,7 @@ int concatfile_c(int n,char* args);
 int closefile_c(int n,char* args);
 int columns_c(int n,char* args);
 int c2rgb_c(int n,char* args);
+int cvHoughCircles_q(int n,char* args);
 
 int dcrawarg_c(int,char*);
 int divfile_c(int,char*);
@@ -72,6 +73,7 @@ int dsaturate_c(int,char*);
 int echo_c(int,char*);
 int extra_c(int,char*);
 int exposure_c(int,char*);
+int exit_c(int,char*);
 
 int fopen_c (int,char*);
 int fclose_c (int,char*);
@@ -88,6 +90,7 @@ int fold_c(int n, char* args);
 
 int getfile_c(int,char*);
 int getFileNames_c(int,char*);
+int getFolderNames_c(int,char*);
 int getNext_c(int,char*);
 int getfun_c(int,char*);
 int gaussian_c(int,char*);
@@ -131,6 +134,7 @@ int mulRGB_c(int,char*);
 int maskGreater_c(int,char*);
 int maskLess_c(int,char*);
 int match_c(int, char*);
+int map_c(int,char*);
 
 #if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
 int mySqServer_q(int, char*);
@@ -139,7 +143,7 @@ int mySqTable_q(int, char*);
 
 int newWindow_c(int,char*);
 int nextFile_c(int,char*);
-int nextPrefix_c(int,char*);
+int nextFolder_c(int,char*);
 int noise_c(int, char*);
 int nan2zero_c(int,char*);
 
@@ -181,6 +185,7 @@ int savefile_c(int,char*);
 int satiff_c(int,char*);
 int saveJpg_c(int,char*);
 int savePdf_c(int,char*);
+int saveInt_c(int,char*);
 int satiffscaled_c(int,char*);
 int sysCommand_c(int,char*);
 int seq2hdr_c(int,char*);
@@ -190,6 +195,7 @@ int snr_c(int,char*);
 int shotnoise_c(int,char*);
 int say_c(int,char*);
 int scatter_c(int,char*);
+
 
 #if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
 int sqlAdd_q(int,char*);
@@ -206,7 +212,7 @@ int tsmooth_c(int,char*);
 int uprefix_c(int n,char* args);
 int unfold_c(int n,char* args);
 
-#if defined(Qt_UI_Mac)
+#if defined(Qt_UI_Mac) || defined(OPENCV_ROUTINES)
 int vidAddFrame_q(int,char*);
 int vidOpenFile_q(int,char*);
 int vidCloseFile_q(int,char*);
