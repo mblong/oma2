@@ -47,6 +47,20 @@ BOOL dropped_file(char* extension, char* name){
     extern FileDecoderExtensions fileDecoderExtensions[];
     
     //printf("File ext is: %s\n",extension);
+    
+    if( strlen(extension) == 0){
+        // assume this is a directory and reset the preferences accordingly.
+        strcat(name,"/");
+        printf("File prefixes set to: %s\n",name);
+        strlcpy(UIData.saveprefixbuf,name,NEW_PREFIX_CHPERLN);
+        strlcpy(UIData.getprefixbuf,name,NEW_PREFIX_CHPERLN);
+        strlcpy(UIData.graphicsprefixbuf,name,NEW_PREFIX_CHPERLN);
+        strlcat(name,"macros/",NEW_PREFIX_CHPERLN);
+        strlcpy(UIData.macroprefixbuf,name,NEW_PREFIX_CHPERLN);
+        //printf("OMA2>",name); -- this causes trouble here -- thread related I assume
+        [appController appendText: @"OMA2>"];
+        return NO;
+    }
     printf("File name is: %s\n",name);
     int i;
     for(i=0; i<strlen(extension); i++){

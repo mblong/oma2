@@ -34,7 +34,7 @@ enum {UNSIGNED16=59464,SIGNED16,UNSIGNED8,SIGNED8};
 
 // SAVE_FORMAT is a 2021 addition to the specs array
 // This will be used to save data in other than DATAWORD types
-// Will assume that the chances of 
+// Will assume that the chances of specs[SAVE_FORMAT] accidentally being one of the magic values is small
 
 // locations within the values array
 enum {MIN,MAX,RMAX,RMIN,GMAX,GMIN,BMAX,BMIN,RULER_SCALE,EXPOSURE,APERTURE,ISO};

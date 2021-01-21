@@ -51,7 +51,10 @@ int concatfile_c(int n,char* args);
 int closefile_c(int n,char* args);
 int columns_c(int n,char* args);
 int c2rgb_c(int n,char* args);
+#if defined (OPENCV_ROUTINES)
 int cvHoughCircles_q(int n,char* args);
+int cvAlign_q(int n,char* args);
+#endif
 
 int dcrawarg_c(int,char*);
 int divfile_c(int,char*);

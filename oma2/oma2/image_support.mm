@@ -298,29 +298,45 @@ char* fullname(char* fnam,int  type)
             suffixbuf = UIData.savesuffixbuf;
             
     }
-    
-    
+#if defined (MACOS_UI) || (Qt_UI_Mac)
     strlcpy(long_name,prefixbuf,NEW_PREFIX_CHPERLN);
+#else
+    strcpy(long_name,prefixbuf);
+#endif
     if (strlen(long_name) == 0) {
+#if defined (MACOS_UI) || (Qt_UI_Mac)
         strlcpy(long_name,applicationPath,NEW_PREFIX_CHPERLN);
+#else
+        strcpy(long_name,applicationPath);
+#endif
     }
     
-    
     //n = CHPERLN - strlen(prefixbuf)-1;
-    //strncat(long_name,fnam,n);		// add the middle of the file name
+    //strncat(long_name,fnam,n);        // add the middle of the file name
+#if defined (MACOS_UI) || (Qt_UI_Mac)
     strlcat(long_name,fnam,CHPERLN);
-    
+#else
+    strcat(long_name,fnam);
+#endif
     //n = CHPERLN - strlen(long_name)-1;
-    //strncat(long_name,suffixbuf,n);	// prefix buf now has entire name
+    //strncat(long_name,suffixbuf,n);    // prefix buf now has entire name
+
+#if defined (MACOS_UI) || (Qt_UI_Mac)
     strlcat(long_name,suffixbuf,CHPERLN);
-    
+#else
+    strcat(long_name,suffixbuf);
+#endif
     if( (strlen(long_name) + 8) >= CHPERLN) {
         beep();
         printf(" File Name Is Too Long!\n");
     } else  {
+#if defined (MACOS_UI) || (Qt_UI_Mac)
         strlcpy(fnam,long_name,CHPERLN);
+#else
+        strcpy(fnam,long_name);
+#endif
     }
-    
+  
     return(fnam);
 }
 

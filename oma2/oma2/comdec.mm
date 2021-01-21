@@ -62,6 +62,7 @@ ComDef   commands[] =    {
     {{"C2RGB          "},   c2rgb_c},
 #ifdef OPENCV_ROUTINES
     {{"CVHOUGHCIRCLES "},   cvHoughCircles_q},
+    {{"CVALIGN        "},   cvAlign_q},
 #endif
     
     {{"DISPLAY        "},	display},
