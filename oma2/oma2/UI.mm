@@ -49,14 +49,16 @@ BOOL dropped_file(char* extension, char* name){
     //printf("File ext is: %s\n",extension);
     
     if( strlen(extension) == 0){
+        char nameCopy[NEW_PREFIX_CHPERLN];
+        strlcpy(nameCopy,name,NEW_PREFIX_CHPERLN);
         // assume this is a directory and reset the preferences accordingly.
-        strcat(name,"/");
-        printf("File prefixes set to: %s\n",name);
-        strlcpy(UIData.saveprefixbuf,name,NEW_PREFIX_CHPERLN);
-        strlcpy(UIData.getprefixbuf,name,NEW_PREFIX_CHPERLN);
-        strlcpy(UIData.graphicsprefixbuf,name,NEW_PREFIX_CHPERLN);
-        strlcat(name,"macros/",NEW_PREFIX_CHPERLN);
-        strlcpy(UIData.macroprefixbuf,name,NEW_PREFIX_CHPERLN);
+        strlcat(nameCopy,"/",NEW_PREFIX_CHPERLN);
+        printf("File prefixes set to: %s\n",nameCopy);
+        strlcpy(UIData.saveprefixbuf,nameCopy,NEW_PREFIX_CHPERLN);
+        strlcpy(UIData.getprefixbuf,nameCopy,NEW_PREFIX_CHPERLN);
+        strlcpy(UIData.graphicsprefixbuf,nameCopy,NEW_PREFIX_CHPERLN);
+        strlcat(nameCopy,"macros/",NEW_PREFIX_CHPERLN);
+        strlcpy(UIData.macroprefixbuf,nameCopy,NEW_PREFIX_CHPERLN);
         //printf("OMA2>",name); -- this causes trouble here -- thread related I assume
         [appController appendText: @"OMA2>"];
         return NO;
