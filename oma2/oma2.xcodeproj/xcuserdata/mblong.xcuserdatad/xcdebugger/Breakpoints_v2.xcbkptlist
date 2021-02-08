@@ -88,8 +88,8 @@
             timestampString = "546458488.0090981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
             landmarkName = "-placeImage:"
             landmarkType = "7">
          </BreakpointContent>
@@ -196,8 +196,8 @@
             timestampString = "556742866.436366"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "-drawRect:"
             landmarkType = "7">
          </BreakpointContent>
@@ -214,8 +214,8 @@
             timestampString = "556742866.4364229"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
             landmarkName = "-drawRect:"
             landmarkType = "7">
          </BreakpointContent>
@@ -320,23 +320,6 @@
             startingLineNumber = "193"
             endingLineNumber = "193"
             landmarkName = "-openDocument:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B9CFF6AF-3515-435A-AFD5-469857783650"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "oma2/DataWindowController.mm"
-            timestampString = "546458488.009557"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "-windowWillClose:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -521,8 +504,8 @@
             timestampString = "583716188.1421061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "253"
-            endingLineNumber = "253"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
             landmarkName = "Image::Image(filename, kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -572,8 +555,8 @@
             timestampString = "546458488.011"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "269"
-            endingLineNumber = "269"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
             landmarkName = "DataWindowController"
             landmarkType = "3">
          </BreakpointContent>
@@ -589,8 +572,8 @@
             timestampString = "546458488.01105"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "226"
-            endingLineNumber = "226"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
             landmarkName = "-acceptsFirstResponder"
             landmarkType = "7">
          </BreakpointContent>
@@ -623,8 +606,8 @@
             timestampString = "546458488.011114"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
             landmarkName = "-placeImage:"
             landmarkType = "7">
             <Locations>
@@ -690,8 +673,8 @@
             timestampString = "546458488.01116"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "246"
-            endingLineNumber = "246"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
             landmarkName = "-copy:"
             landmarkType = "7">
          </BreakpointContent>
@@ -809,8 +792,8 @@
             timestampString = "480265679.221703"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1195"
-            endingLineNumber = "1195"
+            startingLineNumber = "1238"
+            endingLineNumber = "1238"
             landmarkName = "gige(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1047,8 +1030,8 @@
             timestampString = "583716188.144779"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "184"
-            endingLineNumber = "184"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
             landmarkName = "Image::Image(filename, kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1081,8 +1064,8 @@
             timestampString = "585138907.481694"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "6622"
-            endingLineNumber = "6622"
+            startingLineNumber = "6624"
+            endingLineNumber = "6624"
             landmarkName = "flippid_c(notUsed, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1148,8 +1131,8 @@
             filePath = "oma2/DataView.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
             landmarkName = "-drawRect:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1180,8 +1163,8 @@
             filePath = "oma2/DataView.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
             landmarkName = "-addItem:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1228,8 +1211,8 @@
             filePath = "oma2/image.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
             landmarkName = "Image::Image(filename, kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1244,8 +1227,8 @@
             filePath = "oma2/image.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
             landmarkName = "Image::Image(filename, kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1292,8 +1275,8 @@
             filePath = "oma2/DataView.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "342"
-            endingLineNumber = "342"
+            startingLineNumber = "358"
+            endingLineNumber = "358"
             landmarkName = "-rightMouseDown:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1308,8 +1291,8 @@
             filePath = "oma2/DataView.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
             landmarkName = "-mouseDown:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1340,8 +1323,8 @@
             filePath = "oma2/image.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
+            startingLineNumber = "250"
+            endingLineNumber = "250"
             landmarkName = "Image::Image(filename, kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1356,8 +1339,8 @@
             filePath = "oma2/image.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "419"
-            endingLineNumber = "419"
+            startingLineNumber = "420"
+            endingLineNumber = "420"
             landmarkName = "Image::Image(filename, kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1372,10 +1355,42 @@
             filePath = "oma2/openCVroutines.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
             landmarkName = "cvAlign_q(n, args)"
             landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9B93D268-1303-48A5-820D-ABD2CC6604FC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/openCVroutines.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "314"
+            endingLineNumber = "314"
+            landmarkName = "cvAlign_q(n, args)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BFB4EA7B-2FC3-451D-AC1E-4EF185E96113"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/DataView.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "346"
+            endingLineNumber = "346"
+            landmarkName = "-rightMouseDown:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

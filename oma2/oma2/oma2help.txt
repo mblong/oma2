@@ -164,6 +164,9 @@ CAMCLOSE
 C2RGB
 	If the current image is a color image, define temporary images named r, g, and b that correspond to the red, green, and blue color channels. The current image buffer is not modified.
 
+CVALIGN tempImageName [maxIterations terminationEpsilon warpMode]
+ Align the specified temporary image with the one in the current buffer. The default values are maxIterations=1000 terminationEpsilon=1E-6  warpMode=0 (Euclidean matching; warpMode!=0 uses Homographic matching). oma2cam command, requires opencv libraries.
+
 DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
 

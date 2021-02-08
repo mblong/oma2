@@ -91,7 +91,7 @@ void Sleep(unsigned int time)
 int GigEinitialized = 0;
 extern Image iBuffer;
 char labelBuffer[100];
-tCamera Camera;
+static tCamera Camera;
 unsigned long sbyte=0;
 
 // wait for a camera to be plugged
@@ -139,6 +139,7 @@ bool CameraStart_preview(tCamera* Camera, int* time)
 {
     unsigned long FrameSize = 0;
     char pixelformat[256];
+    tPvErr err;
     
     // Auto adjust the packet size to max supported by the network, up to a max of 8228.
     // NOTE: In Vista, if the packet size on the network card is set lower than 8228,
@@ -147,8 +148,9 @@ bool CameraStart_preview(tCamera* Camera, int* time)
     PvCaptureAdjustPacketSize(Camera->Handle,8228); //-mbl added this in (was commented out) -- seems OK
     
     // set the camera in capture mode
-	if(PvCaptureStart(Camera->Handle)){
-		printf("Couldn't start capture.\n");
+    err = PvCaptureStart(Camera->Handle);
+    if(err){
+        printf("Couldn't start capture: %d\n",err);
 		return false;
 	}
     
@@ -273,8 +275,9 @@ bool CameraStartContinuous(tCamera* Camera, int exptime, int frate, int gain, in
     PvCaptureAdjustPacketSize(Camera->Handle,8228); //-mbl added this in (was commented out) -- seems OK
     
     // set the camera in capture mode
-	if(PvCaptureStart(Camera->Handle)){
-		printf("Couldn't start capture.\n");
+    err = PvCaptureStart(Camera->Handle);
+	if(err){
+		printf("Couldn't start capture: %d\n",err);
 		return false;
 	}
     
@@ -484,11 +487,47 @@ bool CameraStart(tCamera* Camera, int* time, int* fcount, int* frate, int* gain,
     // NOTE: In Vista, if the packet size on the network card is set lower than 8228,
     //       this call may break the network card's driver. See release notes.
     //
-    PvCaptureAdjustPacketSize(Camera->Handle,8228); //-mbl added this in (was commented out) -- seems OK
+    PvCaptureAdjustPacketSize(Camera->Handle,1500); //-mbl added this in (was commented out) -- seems OK
     
     // set the camera in capture mode
-	if(PvCaptureStart(Camera->Handle)){
-		printf("Couldn't start capture.\n");
+    err = PvCaptureStart(Camera->Handle);
+    
+    if(err == ePvErrUnplugged){
+        GigEinitialized=0;
+        printf("Unplugged error.\n");
+        CameraUnsetup(Camera, 1);
+        PvUnInitialize();
+        return false;
+    }/*
+        // initialise the Prosilica API
+        if((err = PvInitialize())){
+            printf("failed to initialise the API\n");
+            return -1;
+        }
+    
+        memset(&Camera,0,sizeof(tCamera));    // just sets this to zero
+        
+        // wait for a camera to be plugged
+        WaitForCamera();
+        
+        // get a camera from the list
+        if(!CameraGet(&Camera)){
+            printf("failed to find a camera\n");
+            PvUnInitialize();
+            return -1;
+        }
+        
+        // setup the camera
+        if(!CameraSetup(&Camera)){
+            printf("failed to setup the camera\n");
+            return -1;
+        }
+
+        
+    }
+     */
+    if(err){
+        printf("Couldn't start capture: %d\n",err);
 		return false;
 	}
     
@@ -1083,6 +1122,10 @@ int gige(int n, char* args)
 		if( exptime <= 10) exptime = 10;
         if( exptime > 60000000) exptime = 60000000;
         printf(" Exposure set to %d us\n",exptime);
+        DATAWORD* values=iBuffer.getvalues();
+        values[EXPOSURE]=(float)exptime/1.0e6;
+        iBuffer.setvalues(values);
+        delete [] values;
         return NO_ERR;
     }
     else if ( strncmp(args,"gain",3) == 0){

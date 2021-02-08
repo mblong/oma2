@@ -58,31 +58,10 @@ extern AppController* appController;
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    //[[self window] setTitle:windowName];
+    [imageView setDegrees:0];
+    [imageView setZoom:1.0];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-/*    
-    [[self window] setTitle:windowName];
-
-    NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
-                                initWithBitmapDataPlanes: iBitmap.getpixdatap() 
-                                pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
-                                bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar:NO
-                                colorSpaceName:NSCalibratedRGBColorSpace 
-                                bytesPerRow: 4*iBitmap.getwidth()  
-                                bitsPerPixel: 32];
-    
-    NSImage *im = [[NSImage alloc] init];
-    [im addRepresentation:bitmap];
-    if ( ![im isValid] ) {
-        //NSLog(@"Invalid Image");
-    }
-
-    
-    [imageView setImage:im];
-    [imageView setImageScaling:NSImageScaleAxesIndependently];
-    [imageView setNeedsDisplay:YES];
-*/    
 
 }
 
@@ -142,7 +121,7 @@ extern AppController* appController;
     [im addRepresentation:bitmap];
     
     //[im compositeToPoint:NSZeroPoint operation:NSCompositeDestinationOver];
-    [im drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeDestinationOver fraction:1];
+    [im drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositingOperationDestinationOver fraction:1];
     
     /*
     NSData* tifdata = [im TIFFRepresentation];
@@ -155,9 +134,10 @@ extern AppController* appController;
         //NSLog(@"Invalid Image");
     }
     
-    NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
-    [imageView setFrame:rect];
-    [imageView setImageScaling:NSScaleToFit];
+    //NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
+    //NSRect newRect = self.window.contentView.visibleRect;
+    //[imageView setFrame:rect];
+    [imageView setImageScaling:NSImageScaleAxesIndependently];
     [imageView setImage:im];
     [imageView setRowLine: -1];
     [imageView setColLine: -1];
@@ -171,6 +151,7 @@ extern AppController* appController;
 
 -(void) updateImage{
     // this is called when redisplaying the current image from events in the status window
+    
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
                                 initWithBitmapDataPlanes: nil
                                 pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
@@ -192,18 +173,17 @@ extern AppController* appController;
         intensity = new unsigned char[intensitySize];
     }
     memcpy(intensity,iBitmap.getintensitydata(),intensitySize);
-
-    //bitmap = [bitmap  bitmapImageRepByRetaggingWithColorSpace:[NSColorSpace genericRGBColorSpace]];
     
     NSImage *im = [[NSImage alloc] init];
     [im addRepresentation:bitmap];
     
-    //[im compositeToPoint:NSZeroPoint operation:NSCompositeDestinationOver];
-    [im drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeDestinationOver fraction:1];
     
-    NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
-    [imageView setFrame:rect];
-    [imageView setImageScaling:NSScaleToFit];
+    //NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
+    //[im drawAtPoint:NSZeroPoint fromRect:rect operation:NSCompositingOperationDestinationOver fraction:1];
+    //[imageView setFrame:rect];
+    [imageView setFrame:self.window.contentView.visibleRect];
+    
+    [imageView setImageScaling:NSImageScaleAxesIndependently];
     [imageView setImage:im];
 
     [imageView display];

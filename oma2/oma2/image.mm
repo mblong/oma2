@@ -49,6 +49,7 @@ FileDecoderExtensions fileDecoderExtensions[] = {
     {{".CR2"},DCRAW},
 //    {{".crw"},DCRAW},
     {{".CRW"},DCRAW},
+    {{".DNG"},DCRAW},
 //    {{".jpg"},JPEG},
     {{".JPG"},JPEG},
 //    {{".png"},JPEG},

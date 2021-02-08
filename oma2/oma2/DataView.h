@@ -17,6 +17,8 @@
     int rowLine;
     int colLine;
     int eraseLines;
+    int degrees;
+    float zoom;
 
     DrawingWindowController *rowWindowController;
     DrawingWindowController *colWindowController;
@@ -31,6 +33,8 @@
 @property int eraseLines;
 @property NSString *minMax;
 @property NSMutableArray *labelArray;
+@property int degrees;
+@property float zoom;
 
 -(void) addItem: (NSObject*) theItem;
 -(void) setAlpha: (float) newAlpha;

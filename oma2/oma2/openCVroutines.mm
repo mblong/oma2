@@ -94,9 +94,9 @@ int cvHoughCircles_q(int n,char* args){
     
     unsigned char* bits= new unsigned char[iBuffer.height()* iBuffer.width()];
     unsigned char* byteptr=bits;
-    DATAWORD* dataptr;
+    DATAWORD* dataPtr;
     int cannyThreshold=30, accumulatorThreshold=10,maxRadius=20;
-    dataptr=iBuffer.getImageData();
+    dataPtr=iBuffer.getImageData();
     
     int narg = sscanf(args,"%d %d %d",&cannyThreshold, &accumulatorThreshold,&maxRadius);
     /*
@@ -110,7 +110,7 @@ int cvHoughCircles_q(int n,char* args){
     // need checking for bounds of current image, make sure it is monochrome
     
     for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
-        *byteptr++ = *dataptr++;
+        *byteptr++ = *dataPtr++;
     }
     
     frame=Mat(iBuffer.height(), iBuffer.width(), CV_8UC1, bits);
@@ -133,9 +133,9 @@ int cvHoughCircles_q(int n,char* args){
     printf("%d circles processed.\n",circles.size());
     
     byteptr=bits;
-    dataptr=iBuffer.getImageData();
+    dataPtr=iBuffer.getImageData();
     for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
-        *dataptr++ = *byteptr++;
+        *dataPtr++ = *byteptr++;
     }
     delete[] bits;
     iBuffer.getmaxx(PRINT_RESULT);
@@ -143,27 +143,36 @@ int cvHoughCircles_q(int n,char* args){
     return NO_ERR;
 
 }
-
+/*
+CVALIGN tempImageName [maxIterations terminationEpsilon warpMode]
+ Align the specified temporary image with the one in the current buffer. The default values are maxIterations=1000 terminationEpsilon=1E-6  warpMode=0 (Euclidean matching; warpMode!=0 uses Homographic matching).
+ 
+*/
 int cvAlign_q(int n,char* args){
     
     using namespace cv;
     
-    unsigned char* bits= new unsigned char[iBuffer.height()* iBuffer.width()];
-    unsigned char* byteptr=bits;
     char tempImageName[128];
-    DATAWORD* dataptr = iBuffer.getImageData();
+    DATAWORD* dataPtr = iBuffer.getImageData();
     // Specify the number of iterations.
-    int number_of_iterations = 5000;
+    int number_of_iterations = 1000;
     // Specify the threshold of the increment
     // in the correlation coefficient between two iterations
-    double termination_eps = 1e-10;
+    double termination_eps = 1e-6;
+    // Define the motion model
+    int warp_mode = MOTION_EUCLIDEAN;
+    int mode=0;
     
     extern Image  iTempImages[];
     
-    sscanf(args,"%s %i %lf",tempImageName, &number_of_iterations, &termination_eps);
-        
-    // need checking for bounds of current image, make sure it is monochrome
-    
+    int nargs=sscanf(args,"%s %d %lf %d",tempImageName, &number_of_iterations, &termination_eps, &mode);
+    if(nargs < 1){
+        beep();
+        printf("Must specify temp image.\n");
+        return CMND_ERR;
+    }
+
+    // is tempImage valid?
     n = temp_image_index(tempImageName,0);
     if(n >=0){
         if( iTempImages[n].isEmpty()){
@@ -171,7 +180,11 @@ int cvAlign_q(int n,char* args){
             printf("Temporary image is not defined.\n");
             return MEM_ERR;
         }
-    } else return MEM_ERR;
+    } else{
+        beep();
+        printf("Temporary image is not valid.\n");
+        return MEM_ERR;
+    }
     // checking for images the same size
     
     if(iBuffer != iTempImages[n]){
@@ -180,31 +193,72 @@ int cvAlign_q(int n,char* args){
         return MEM_ERR;
     }
     
+    if(mode){
+        warp_mode = MOTION_HOMOGRAPHY;
+        printf("Align %s to the current image with Max Iterations: %d, Epsilon: %g, using Homographic Match.\n",
+               tempImageName,number_of_iterations,termination_eps);
+
+    } else {
+        warp_mode = MOTION_EUCLIDEAN;
+        printf("Align %s to the current image with Max Iterations: %d, Epsilon: %g, using Euclidean Match.\n",
+               tempImageName,number_of_iterations,termination_eps);
+
+    }
+    
+    // need isColor case
+    bool colorImage=false;
+    if(iBuffer.isColor()){
+        colorImage=true;
+        rgb2grey_c(0, nil);     // iBuffer is now greyscale
+    }
+    // image1
+    unsigned char* bits= new unsigned char[iBuffer.height()* iBuffer.width()];
+    unsigned char* byteptr=bits;
+    
+    DATAWORD* values = iBuffer.getvalues();
+    DATAWORD scale = 255./(values[MAX]-values[MIN]),minval=values[MIN];
+    free(values);
+
+    for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){     // map image1 (iBuffer) to 8 bit and convert to uint8
+        *byteptr++ = ((*dataPtr++)-minval)*scale;
+    }
+    Mat im1 = Mat(iBuffer.height(), iBuffer.width(), CV_8UC1, bits);    // this 8-bit version of image1 will be used for alignment
+
+    // image2
     Image original;
     original<<iTempImages[n];
-
     
-    // need checking for bounds of temp image, make sure it is monochrome
-    
-    for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
-        *byteptr++ = *dataptr++;
-    }
-    Mat im1 = Mat(iBuffer.height(), iBuffer.width(), CV_8UC1, bits);
-
     unsigned char* bits2= new unsigned char[iBuffer.height()* iBuffer.width()];
-    dataptr = iTempImages[n].getImageData();
+    
+    if(colorImage){
+        iBuffer.free();             // copy the temp image to iBuffer an make monochrome
+        iBuffer<<iTempImages[n];
+        rgb2grey_c(0, nil);
+        dataPtr = iBuffer.getImageData();
+        values = iBuffer.getvalues();
+        scale = 255./(values[MAX]-values[MIN]);
+        minval=values[MIN];
+    } else{
+        dataPtr = iTempImages[n].getImageData();
+        values = iTempImages[n].getvalues();
+        scale = 255./(values[MAX]-values[MIN]);
+        minval=values[MIN];
+    }
+     
     byteptr = bits2;
-    for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
-        *byteptr++ = *dataptr++;
+    free(values);
+    
+    for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){     // map image2 (the temp image) to 8 bit and convert to uint8
+        *byteptr++ = ((*dataPtr++)-minval)*scale;
     }
 
-    Mat im2 = Mat(iBuffer.height(), iBuffer.width(), CV_8UC1, bits2);
-    Mat im2_original = Mat(iBuffer.height(), iBuffer.width(), CV_32FC1, original.getImageData());
+    Mat im2 = Mat(iBuffer.height(), iBuffer.width(), CV_8UC1, bits2);   // this 8-bit version of image2 will be used for alignment
+    DATAWORD* bgrArray;
+    Mat im2_original;
+    Mat im2_aligned;
+    DATAWORD* bluePtr;
+    DATAWORD* greenPtr;
 
-    // Define the motion model
-    //const int warp_mode = MOTION_EUCLIDEAN;
-    const int warp_mode = MOTION_HOMOGRAPHY;
-    
     // Set a 2x3 or 3x3 warp matrix depending on the motion model.
     Mat warp_matrix;
     
@@ -218,7 +272,7 @@ int cvAlign_q(int n,char* args){
     TermCriteria criteria (TermCriteria::COUNT+TermCriteria::EPS, number_of_iterations, termination_eps);
     
     // Run the ECC algorithm. The results are stored in warp_matrix.
-    findTransformECC(
+    double cc = findTransformECC(
                      im1,
                      im2,
                      warp_matrix,
@@ -226,31 +280,81 @@ int cvAlign_q(int n,char* args){
                      criteria
                      );
     
-    // Storage for warped image.
-    Mat im2_aligned = Mat(iBuffer.height(), iBuffer.width(), CV_32FC1);
+    if(cc==-1.){
+        beep();
+        printf("Error aligning images.\n");
+        delete[] bits;
+        delete[] bits2;
+        return CMND_ERR;
+    } else {
+        pprintf("Transform returned %g.\n",cc);
+    }
+
     
+    if(colorImage){
+        // need a BGR array for this
+        int size=iBuffer.height()*iBuffer.width();
+        bgrArray=new DATAWORD[size*3];
+        DATAWORD* bgrPtr=bgrArray;
+        dataPtr = original.getImageData();
+        bluePtr=dataPtr+2*size;
+        greenPtr=dataPtr+size;
+        for(int i=0; i<size; i++){     // map image2 (the temp image) to 8 bit and convert to uint8
+            *bgrPtr++ = *bluePtr++;
+            *bgrPtr++ = *greenPtr++;
+            *bgrPtr++ = *dataPtr++;
+        }
+        im2_original = Mat(iBuffer.height(), iBuffer.width(), CV_32FC3, bgrArray);
+    } else {
+        im2_original = Mat(iBuffer.height(), iBuffer.width(), CV_32FC1, original.getImageData());
+    }
+    
+    
+    // Storage for warped image.
+    if(colorImage){
+        im2_aligned = Mat(iBuffer.height(), iBuffer.width(), CV_32FC3);
+    } else {
+        im2_aligned = Mat(iBuffer.height(), iBuffer.width(), CV_32FC1);
+    }
     if (warp_mode != MOTION_HOMOGRAPHY)
         // Use warpAffine for Translation, Euclidean and Affine
-        warpAffine(im2, im2_aligned, warp_matrix, im1.size(), INTER_LINEAR + WARP_INVERSE_MAP);
+        warpAffine(im2_original, im2_aligned, warp_matrix, im1.size(), INTER_LINEAR + WARP_INVERSE_MAP);
     else
         // Use warpPerspective for Homography
         warpPerspective (im2_original, im2_aligned, warp_matrix, im1.size(),INTER_LINEAR + WARP_INVERSE_MAP);
     
-    Image newIm(im2_aligned.rows,im2_aligned.cols);
-    if(newIm.err()){
-        return newIm.err();
-    }
-    dataptr = newIm.getImageData();
-    DATAWORD* resultptr = (DATAWORD*) im2_aligned.ptr();
-    for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
-        *dataptr++ = *resultptr++;
-    }
+    Image newIm;
 
+    DATAWORD* resultPtr = (DATAWORD*) im2_aligned.ptr();
+    if(colorImage){
+        newIm=Image(im2_aligned.rows*3,im2_aligned.cols);
+        dataPtr = newIm.getImageData();
+        delete[] bgrArray;
+        int size=iBuffer.height()*iBuffer.width();
+        bluePtr=dataPtr+2*size;
+        greenPtr=dataPtr+size;
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
+            *bluePtr++ = *resultPtr++;
+            *greenPtr++ = *resultPtr++;
+            *dataPtr++ = *resultPtr++;
+        }
+        int* specs= newIm.getspecs();
+        specs[IS_COLOR]= 1;
+        newIm.setspecs(specs);
+        free(specs);
+    } else {
+        newIm=Image(im2_aligned.rows,im2_aligned.cols);
+        dataPtr = newIm.getImageData();
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
+            *dataPtr++ = *resultPtr++;
+        }
+    }
     
     iBuffer.free();
     iBuffer=newIm;
     iBuffer.getmaxx(PRINT_RESULT);
     delete[] bits;
+    delete[] bits2;
     update_UI();
     return NO_ERR;
 }

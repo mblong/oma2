@@ -31,6 +31,8 @@ extern oma2UIData UIData;
 @synthesize minMax;
 //@synthesize theLabel;
 @synthesize labelArray;
+@synthesize degrees;
+@synthesize zoom;
 
 
 - (void)drawRect:(NSRect)dirtyRect{
@@ -339,6 +341,20 @@ extern oma2UIData UIData;
 }
 
 - (void) rightMouseDown:(NSEvent *)theEvent{
+    
+    NSUInteger flags = theEvent.modifierFlags;
+    if( flags & NSEventModifierFlagCommand){
+        if(degrees != 0){
+            char args[128];
+            sprintf(args,"%d",degrees);
+            rotate_c(degrees,args);
+            printf("Current image rotated by %d degrees.\nOMA2>",degrees);
+            sprintf(args,"Rotated: %d degrees",degrees);
+            display(0,args);
+            return;
+        }
+    }
+    
     if ([[theEvent window] alphaValue] == 1.0)
         [[theEvent window] setAlphaValue:UIData.alphaValue];
     else
@@ -347,6 +363,97 @@ extern oma2UIData UIData;
 
 - (void) setAlpha: (float) newAlpha{
     [[self window] setAlphaValue:newAlpha];
+    
+}
+
+- (void) scrollWheel: (NSEvent *)theEvent{
+    
+    NSUInteger flags = theEvent.modifierFlags;
+    if( flags & NSEventModifierFlagCommand){
+        
+        degrees=0; // clear rotation if we are zooming
+        
+        if( [theEvent scrollingDeltaY] >0)
+            zoom*=1.05;
+        else
+            zoom/=1.05;
+
+        NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
+                                    initWithBitmapDataPlanes: nil
+                                    pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
+                                    bitsPerSample: 8 samplesPerPixel: 3 hasAlpha: NO isPlanar:NO
+                                    colorSpaceName:NSDeviceRGBColorSpace
+                                    bytesPerRow: 3*iBitmap.getwidth()
+                                    bitsPerPixel: 24];
+        
+        memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*3);
+
+        NSImage *image = [[NSImage alloc] init];
+        [image addRepresentation:bitmap];
+        
+        float zx,zy,wx,hy;
+        
+        wx = self.window.contentView.visibleRect.size.width;
+        hy = self.window.contentView.visibleRect.size.height;
+        zx = (1.-zoom)*wx;
+        zy = (1.-zoom)*hy;
+        //printf("zoom: %f\n",zoom);
+        NSRect newRect = NSMakeRect(zx*startPoint.x/iBitmap.getwidth(),zy*(1.-startPoint.y/iBitmap.getheight()), wx-zx,hy-zy);
+        
+        [self setFrame:newRect];       // this is a must
+        //[self setImageScaling:NSImageScaleNone];
+        //[self setImageScaling:NSImageScaleProportionallyUpOrDown];
+        [self setImageScaling:NSImageScaleAxesIndependently];
+        [self setImage:image];
+        [self display];
+        return;
+    }
+    
+    zoom=1.0;     // clear zoom if we are rotating
+    
+    if( [theEvent scrollingDeltaY] >0)
+        degrees--;
+    else
+        degrees++;
+    
+    NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
+                                initWithBitmapDataPlanes: nil
+                                pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
+                                bitsPerSample: 8 samplesPerPixel: 3 hasAlpha: NO isPlanar:NO
+                                colorSpaceName:NSDeviceRGBColorSpace
+                                bytesPerRow: 3*iBitmap.getwidth()
+                                bitsPerPixel: 24];
+    
+    memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*3);
+
+    NSImage *image = [[NSImage alloc] init];
+
+    CIImage *ciImage = [[CIImage alloc] initWithBitmapImageRep:bitmap];
+    CGFloat angle = degrees * M_PI / 180.0, dx,dy,dx1,dy1;
+    
+    // rotated image sizes
+    dx1 = (self.window.contentLayoutRect.size.width * fabs(cos(angle)) + self.window.contentLayoutRect.size.height * fabs(sin(angle)))/2;
+    dy1 = (self.window.contentLayoutRect.size.width * fabs(sin(angle)) + self.window.contentLayoutRect.size.height * fabs(cos(angle)))/2;
+    // sizes of original bitmap image
+    dx = iBitmap.getwidth()/2;
+    dy = iBitmap.getheight()/2;
+
+    NSRect newRect = NSMakeRect(0,0, dx1*2,dy1*2);
+    
+    CGAffineTransform transform = CGAffineTransformMakeTranslation(dx,dy);
+    transform = CGAffineTransformRotate(transform, angle);
+    transform = CGAffineTransformTranslate(transform,-dx,-dy);
+    
+    CIImage *output = [ciImage imageByApplyingTransform:transform];
+
+    [image addRepresentation:[NSCIImageRep imageRepWithCIImage:output]];
+    
+    [self setFrame:newRect];       // this is a must
+    [self setImageScaling:NSImageScaleAxesIndependently];
+    [self setImage:image];
+
+    [self display];
+
     
 }
 

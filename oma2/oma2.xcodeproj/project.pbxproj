@@ -137,6 +137,7 @@
 		DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
 		DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
 		DBCB577E22CA389F00988D83 /* libgsl.23.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DBD0B8D825C7114700CD40C3 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD0B8D725C7114700CD40C3 /* CoreImage.framework */; };
 		DBD2A9412270BA380041852D /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB03625D224D009800DF7BA8 /* ImageBitmap.mm */; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
 		DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
@@ -301,6 +302,7 @@
 		DBC8157E153DCD54002BEFD4 /* StatusDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusDrop.h; sourceTree = "<group>"; };
 		DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatusDrop.mm; sourceTree = "<group>"; };
 		DBC81582153DFBB7002BEFD4 /* UI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UI.mm; sourceTree = "<group>"; };
+		DBD0B8D725C7114700CD40C3 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		DBF08DE2159D63980099CB4C /* c-box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "c-box.jpg"; sourceTree = "<group>"; };
 		DBF24A2A1D3B091700115E4E /* dmbilinear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dmbilinear.h; sourceTree = "<group>"; };
 		DBF24A2B1D3B091700115E4E /* dmbilinear.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dmbilinear.mm; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBD0B8D825C7114700CD40C3 /* CoreImage.framework in Frameworks */,
 				DB9A98AB22720BFC008ABA5C /* SBIGUDrv.framework in Frameworks */,
 				DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
@@ -373,6 +376,7 @@
 		DB0FC0211519183C008A9B54 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBD0B8D725C7114700CD40C3 /* CoreImage.framework */,
 				DBB2C37217F9A187008C03BB /* ImageIO.framework */,
 				DB0FC0221519183C008A9B54 /* Cocoa.framework */,
 				DB0FC0241519183C008A9B54 /* Other Frameworks */,

@@ -6353,11 +6353,13 @@ int getangle_c(int n,char* args){
  */
 int map_c(int n,char* args){
     DATAWORD min,max,scale;
-    DATAWORD* values = iBuffer.getvalues();
+    
     if( sscanf(args,"%f %f",&min,&max) != 2){
         beep();
         printf("Need two values: MAP minimum maximum\n");
+        return CMND_ERR;
     }
+    DATAWORD* values = iBuffer.getvalues();
     scale = (max-min)/(values[MAX]-values[MIN]);
     iBuffer-values[MIN];
     iBuffer*scale;
