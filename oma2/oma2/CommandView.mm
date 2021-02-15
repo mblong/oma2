@@ -112,12 +112,20 @@ extern AppController* appController;
     NSUInteger text_len = [[[self textStorage] string] length];
     [self setSelectedRange:(NSRange){text_len, 0}];
     
-    if([anEvent modifierFlags] & NSCommandKeyMask){
+    if([anEvent modifierFlags] & NSEventModifierFlagCommand){
         NSString *theKey = [anEvent charactersIgnoringModifiers];
         if([theKey isEqualToString:@";"]){
             //NSLog(@"Stop Macro");
             stopMacroNow = 1;
             //stopmacro();
+        }
+        if([theKey isEqualToString:@"k"]){
+            // clear the command window
+            [[[self textStorage] mutableString] setString:(@"")];
+            lastReturn=0;
+            oma2Command[0]=0;
+            printf("OMA2>");
+            //[super keyDown:anEvent];
         }
         return;
     }

@@ -121,7 +121,7 @@ extern AppController* appController;
     [im addRepresentation:bitmap];
     
     //[im compositeToPoint:NSZeroPoint operation:NSCompositeDestinationOver];
-    [im drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositingOperationDestinationOver fraction:1];
+    //[im drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositingOperationDestinationOver fraction:1];
     
     /*
     NSData* tifdata = [im TIFFRepresentation];

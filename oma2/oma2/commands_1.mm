@@ -2167,14 +2167,17 @@ int getFolderNames_c(int n,char* args)            // open a file containing file
 /* ********** */
 
 /*
- NEXTFILE [prefix]
+ NEXTFILE [prefix] [shortNameLength]
  Open the next file specified in the NameFile that was opened with the GetFileNames command.
  If a prefix is specified, that is added to the name before trying to open the file.
- command_return_1 is the the filename without any prefix and without the extension (last 4 characters)
+ The prefix must be specified in order to set a shortNameLength.
+ command_return_1 is the filename without any prefix and without the extension (last 4 characters)
+ command_return_2 is the last shortNameLength characters of the filename (default is 10)
  */
 int nextFile_c(int n,char* args){
     char 	txt[256];          // read the filename in here initially
     char 	fulltxt[512];
+    int shortNameLength=10;
     extern Variable user_variables[];
     extern FILE* nameFilePtr;
     
@@ -2191,8 +2194,7 @@ int nextFile_c(int n,char* args){
         return FILE_ERR;
     }
     
-    // return the file name without the extension as the first  return value
-    
+    // return the last file name without the extension as the first  return value
     user_variables[0].fvalue = user_variables[0].ivalue = 0;
     user_variables[0].is_float = -1;
     int length = (int)strlen(txt);
@@ -2201,15 +2203,23 @@ int nextFile_c(int n,char* args){
     user_variables[0].estring[length] = 0;   // need to end this explicitly
     
     printf("%s\n",user_variables[0].estring);
-    
-    if(*args)
-        strcpy(fulltxt, args);
-    else
-        fulltxt[0]=0;
+
+    int narg = sscanf(args,"%s %d",fulltxt,&shortNameLength);
+
+    if(narg<1) fulltxt[0]=0;
     n = (int)strlen(fulltxt);
-    
+
     strcpy(&fulltxt[n], txt);
     printf("%s\n",fulltxt);
+
+    // return the last shortNameLength characters of the file name without the extension as the second return value
+    user_variables[1].fvalue = user_variables[0].ivalue = 0;
+    user_variables[1].is_float = -1;
+    length = (int)strlen(txt);
+    while(txt[length] != '.' && length > 0) length--;
+    strncpy( user_variables[1].estring,&txt[length-shortNameLength],shortNameLength);
+    user_variables[1].estring[shortNameLength+1] = 0;   // need to end this explicitly
+
     
     Image new_im(fulltxt,LONG_NAME);
     if(new_im.err()){

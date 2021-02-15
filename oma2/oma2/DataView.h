@@ -32,6 +32,7 @@
 @property DrawingWindowController *colWindowController;
 @property int eraseLines;
 @property NSString *minMax;
+@property NSString *minMax2;
 @property NSMutableArray *labelArray;
 @property int degrees;
 @property float zoom;

@@ -636,8 +636,10 @@ extern oma2UIData UIData;
     if (![windowArray[key] isKindOfClass:[DataWindowController class]]){
         return; // active window wasn't a data window
     }
-    NSString *label =[NSString stringWithFormat:@"%g\n%g",UIData.cmin,UIData.cmax];
+    NSString *label =[NSString stringWithFormat:@"%g",UIData.cmin];
+    NSString *label2 =[NSString stringWithFormat:@"%g",UIData.cmax];
     [[(DataWindowController*)windowArray[key] imageView ] setMinMax:label];
+    [[(DataWindowController*)windowArray[key] imageView ] setMinMax2:label2];
     [[(DataWindowController*)windowArray[key] imageView ] display];
 }
 

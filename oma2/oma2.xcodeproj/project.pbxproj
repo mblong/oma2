@@ -53,6 +53,7 @@
 		DB685CE72355633600812918 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
 		DB83FD771D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
 		DB83FD781D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
+		DB85D3E925D48BEC00EFD8E7 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD0B8D725C7114700CD40C3 /* CoreImage.framework */; };
 		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
 		DB8A884418E3297E007C79AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
 		DB8A884518E3297E007C79AF /* oma2AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */; };
@@ -316,6 +317,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB85D3E925D48BEC00EFD8E7 /* CoreImage.framework in Frameworks */,
 				DB685CE62355633600812918 /* LibTiff_F.framework in Frameworks */,
 				DBBB5AC422CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */,
 				DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */,

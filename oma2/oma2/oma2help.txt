@@ -529,9 +529,9 @@ MYSQTABLE tableName
 
 NEWWINDOW flag
 	If flag = 1 (default), a new window will be opened for each "DISPLAY" command. If flag = 0, the results of "DISPLAY" commands will be placed in the last-opened window. If no window exists, a new one will be opened. 
-
-NEXTFILE [prefix]
-	Open the next file specified in the FileNames file that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. command_return_1 is the filename without any prefix and without the extension (last 4 characters). The file name needs to include the full path to the file.
+ 
+ NEXTFILE [prefix] [shortNameLength]
+	Open the next file specified in the FileNames file that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. The file name needs to include the full path to the file. command_return_1 is the filename without any prefix and without the extension. command_return_2 is the last shortNameLength characters of the filename (default is 10). The prefix must be specified in order to set a shortNameLength.
 
 NEXTFOLDER
 	 Read the next entry in the FolderNames file that was opened with the GETFOLDERNAMES command. command_return_1 has the local folder name. Typically this would be saved to a variable (e.g., named "folder") for use in subsequent NEXTFILE commands.

@@ -29,6 +29,7 @@ extern oma2UIData UIData;
 @synthesize colWindowController;
 @synthesize eraseLines;
 @synthesize minMax;
+@synthesize minMax2;
 //@synthesize theLabel;
 @synthesize labelArray;
 @synthesize degrees;
@@ -102,22 +103,27 @@ extern oma2UIData UIData;
     }
 
     NSMutableDictionary *stringAttributes = [[NSMutableDictionary alloc] init];
-    [stringAttributes setValue:[NSColor grayColor] forKey:NSForegroundColorAttributeName];
+    [stringAttributes setValue:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
+    [stringAttributes setValue:[NSColor whiteColor] forKey:NSBackgroundColorAttributeName];
     [stringAttributes setValue:[NSFont fontWithName:@"Monaco" size:16] forKey:NSFontAttributeName];
+    
     
     // loop over the numbered labels
     for(int i=0; i<[labelArray count]; i+=2){
         NSPoint thePoint;
         thePoint.x = 10;
-        thePoint.y = dirtyRect.size.height  - 20*([labelArray[i+1] intValue]+1);
+        //thePoint.y = dirtyRect.size.height  - 20*([labelArray[i+1] intValue]+1);
+        thePoint.y = self.window.contentView.visibleRect.size.height - 20*([labelArray[i+1] intValue]+1);
         [labelArray[i] drawAtPoint:thePoint withAttributes:stringAttributes];
     }
     
     if (minMax) {
         NSPoint thePoint;
         thePoint.x = 10;
-        thePoint.y = 5;
+        thePoint.y = 25;
         [minMax drawAtPoint:thePoint withAttributes:stringAttributes];
+        thePoint.y = 5;
+        [minMax2 drawAtPoint:thePoint withAttributes:stringAttributes];
     }
 
 }
@@ -416,6 +422,11 @@ extern oma2UIData UIData;
     else
         degrees++;
     
+    CGFloat angle = degrees * M_PI / 180.0, dx,dy,dx1,dy1;
+
+    // uses the data in the current image buffer
+    // should really be sure that this only applies to the window associated with iBuffer
+    
     NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
                                 initWithBitmapDataPlanes: nil
                                 pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
@@ -425,18 +436,29 @@ extern oma2UIData UIData;
                                 bitsPerPixel: 24];
     
     memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*3);
+    CIImage *ciImage = [[CIImage alloc] initWithBitmapImageRep:bitmap];
+    // sizes of original bitmap image
+    dx = iBitmap.getwidth()/2;
+    dy = iBitmap.getheight()/2;
+
 
     NSImage *image = [[NSImage alloc] init];
-
-    CIImage *ciImage = [[CIImage alloc] initWithBitmapImageRep:bitmap];
-    CGFloat angle = degrees * M_PI / 180.0, dx,dy,dx1,dy1;
+    
+    /*
+    // this attempt to use the image asociated with this window didn't work properly
+    image = [self image];
+    NSData* tiffData = [image TIFFRepresentation];
+    NSBitmapImageRep* bitmap2;
+    bitmap2 = [NSBitmapImageRep imageRepWithData:tiffData];
+    CIImage *ciImage = [[CIImage alloc] initWithBitmapImageRep:bitmap2];
+    dx = self.window.contentLayoutRect.size.width/2;
+    dy = self.window.contentLayoutRect.size.height/2;
+    */
     
     // rotated image sizes
     dx1 = (self.window.contentLayoutRect.size.width * fabs(cos(angle)) + self.window.contentLayoutRect.size.height * fabs(sin(angle)))/2;
     dy1 = (self.window.contentLayoutRect.size.width * fabs(sin(angle)) + self.window.contentLayoutRect.size.height * fabs(cos(angle)))/2;
-    // sizes of original bitmap image
-    dx = iBitmap.getwidth()/2;
-    dy = iBitmap.getheight()/2;
+    
 
     NSRect newRect = NSMakeRect(0,0, dx1*2,dy1*2);
     
