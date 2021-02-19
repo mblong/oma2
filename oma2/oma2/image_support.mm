@@ -1159,6 +1159,7 @@ int readCsv(char* filename,Image* theImage){
 int readHobj(char* filename,Image* theImage){
     int fd;
     extern int windowNameMemory;
+    extern int bayer;
     char buffer[256];
     char* pointer;
 
@@ -1217,7 +1218,10 @@ int readHobj(char* filename,Image* theImage){
         decodeHobj(theImage, theImage->width(), theImage->height());
     }
     
-    if(UIData.clearHobjFlag !=0 && UIData.decodeHobjFlag == 1) colorClearBad(theImage);
+    if(UIData.clearHobjFlag !=0 && UIData.decodeHobjFlag == 1){
+        bayer=1;
+        clearbad_c(0, (char*)"");
+    }
         
     if(UIData.demosaicHobjFlag !=HOBJ_NO_DEMOSAIC && UIData.decodeHobjFlag == 1){
         

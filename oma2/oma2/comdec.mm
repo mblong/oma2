@@ -39,6 +39,7 @@ ComDef   commands[] =    {
     {{"BINEXTENSION   "},	binextension_c},
     {{"BOUNDBOX       "},   boundbox_c},
     {{"BLEED          "},   bleed_c},
+    {{"BAYERFLAG      "},   bayerFlag_c},
     
     {{"CALCULATE      "},	calc_cmd_c},
     {{"CALCALL        "},	calcall_c},

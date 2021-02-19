@@ -92,6 +92,9 @@ BOUNDBOX targetValue [setRectFlag]
 BLEED thresholdCount fraction
 	For correcting readout errors on a CCD detector, where intensity from one pixel bleeds into an adjacent pixel on readout. No correction is made when the value is less than thresholdCount. For a pixel with pixValue greater than thresholdCount, pixValue is increased by  (pixValue-thresholdCount)*fraction. The pixel in the next column is decreased by the same amount.
 
+ BAYERFLAG [bayerFlagValue]
+	Sets the value of the bayerFlag, which indicates if the FINDBAD command should treat the image as an undemosaiced color image. If no argument is given, the current state of the bayerFlag is printed. See also FINDBAD.
+	
 CALCULATE
 	Print calculations on the rectangle specified with the RECTANGLE command or with the rectangle tools. The average, rms, # of points, and the x and y "center of mass" are printed. The mean, rms, centroid_X and centroid_Y are passed to the command_return_variables.
 
@@ -132,10 +135,10 @@ CYL2
 	Treat the data in the current image as a half cross section of a cylindrically symmetric intensity distribution. The centerline is assumed to be along the LHS of the image. An integrated image is calculated by rotating the image  about the centerline. Does a parallel projection.
 
 CLEARBADPIX
- 	Sets pixels tagged as bad (e.g., with the FINDBADPIX or READBADPIX commands) to the value of their 8 nearest neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands. See also FINDBADPIX, CCLEARBADPIX, WRITEBADPIX, and READBADPIX.
+ 	Sets pixels tagged as bad (e.g., with the FINDBADPIX or READBADPIX commands) to the average value of their 8 nearest same-color neighbors (or to the average of between one and eight nearest same-color neighbors if the alternate FINDBAD algorithm is used). This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands. See also BAYERFLAG, FINDBADPIX, WRITEBADPIX, and READBADPIX.
 
 CCLEARBADPIX
-	For un-demosaiced color images, sets pixels tagged as bad (e.g., with the FINDBADPIX or READBADPIX commands) to the value of their 8 nearest same-color neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands. See also FINDBADPIX, CLEARBADPIX, WRITEBADPIX, and READBADPIX.
+	This command is depricated. Use CLEARBADPIX with BAYERFLAG set to 1 instead. This will not handle bad pixel data from the alternate algorithm properly. [Old description: For un-demosaiced color images, sets pixels tagged as bad (e.g., with the FINDBADPIX or READBADPIX commands) to the value of their 8 nearest same-color neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands.] See also FINDBADPIX, CLEARBADPIX, WRITEBADPIX, and READBADPIX.
 
 CAPTURE file_name
 	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses libgphoto2 calls to capture and download an image from a digital camera that is recognized by libgphoto2 (and supports capture).
@@ -311,7 +314,7 @@ FRAMECNTR CenterX HalfWidth [Y0] [Y1] [Value]
 Put a "frame" around the current image centered on column CenterX. The new image width will be 2*HalfWidth+1. Y0 and Y1 specify where the top and bottom of the new image start. Their default values are 0 and originalImageHeight-1. If the new image is larger than the original image, data values are set to Value (default is 0).
 
 FINDBADPIX Counts [TargetValue] [Passes]
-	Searches the current image buffer for pixels whose value is more than "Counts" above that of its nearest eight neighbors. Those pixels are tagged as hot pixels. This is best applied to a dark image. If the optional TargetValue is specified, a different algorithm is used that will get values from 1 to 8 neighboring pixels that are within the specified number of counts of the target value. A reasonable TargetValue would be the average A/D offset, e.g., from a dark frame. As currently implemented, the alternate algorithm is not appropriate for raw images from a color camera. The information is saved in an internal buffer. See also CLEARBADPIX, CCLEARBADPIX, WRITEBADPIX, and READBADPIX.
+	Searches the current image buffer for pixels whose value is more than "Counts" above that of its nearest eight neighbors. Those pixels are tagged as hot pixels. This is best applied to a dark image. If the optional TargetValue is specified, a different algorithm is used that will get values from 1 to 8 neighboring pixels that are within the specified number of counts of the target value. A reasonable TargetValue would be the average A/D offset, e.g., from a dark frame. For the alternate algorithm, the state of the BAYERFLAG is checked to determine if the image is color or not. The information is saved in an internal buffer. See also BAYERFLAG, CLEARBADPIX, WRITEBADPIX, and READBADPIX.
 
 FWDATMATLAB  <filename> [delimiter]
 	Writes the data in the current buffer as a text file. If no delimiter is specified, tab is used and the file will have the Save File extension. If the delimeter is "," the file gets the .csv extension. Format is a matrix of values that can be loaded directly into matlab.

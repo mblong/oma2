@@ -39,7 +39,9 @@
      
     */
 
+    // these can be installed with homebrew
     #define OPENCV_ROUTINES
+    #define USE_LIBRAW
 
     // select cameras here
 

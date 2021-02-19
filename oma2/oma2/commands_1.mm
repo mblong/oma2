@@ -2849,14 +2849,36 @@ int grey2rgb_c(int n,char* args){
 }
 
 /* ********** */
+
+/*
+ BAYERFLAG [bayerFlagValue]
+ 
+ Sets the value of the bayerFlag, which indicates if the FINDBAD command should treat the image as an undemosaiced color image. If no argument is given, the current state of the bayerFlag is printed. See also FINDBAD.
+ 
+ */
+
+int bayerFlag_c(int n, char* args){
+    extern int bayer;
+    if(args[0] != 0){
+        if(n)
+            bayer=1;
+        else
+            bayer=0;
+    }
+    printf("Bayer Flag is %d.\n",bayer);
+    return NO_ERR;
+}
+
+
+/* ********** */
 /*
  FINDBAD Counts [TargetValue] [Passes]
  
- Searches the current image buffer for pixels whose value is more than "Counts" above that of it's
+ Searches the current image buffer for pixels whose value is more than "Counts" above that of its
  nearest eight neighbors. Those pixels are tagged as hot pixels. If the optional TargetValue is specified,
  a different algorithm is used that will get values from 1 to 8 neighboring pixels that are within the specified
  number of counts of the target value. A reasonable Target Value would be the average A/D offset, e.g., from a dark frame.
- As currently implemented, the alternate algorithm is not appropriate for raw images from a color camera.
+ For the alternate algorithm, the state of the BAYERFLAG is checked to determine if the image is color or not.
  
  */
 
@@ -2864,7 +2886,8 @@ int hot_pix[NUMHOT];	// store info on hot pixels
 int neighbors[NUMHOT][8] = {{0}};
 int num_hot = 0;
 int ccd_width = 0;
-int ccd_height = 0;
+int ccd_height = 0;     // this is set to -value of the target-value algorithm is incoked
+int bayer=1;            // determines if we look at next neighbors or next neighbors - 2 for color images
 
 int findbad_c(int n, char* args){
     int i,j,target=0,passes = 1;
@@ -2875,12 +2898,14 @@ int findbad_c(int n, char* args){
     ccd_height = specs[ROWS];
     int narg = sscanf(args,"%d %d %d",&n,&target,&passes);
     if( n == 0) n = 200;		// a reasonable default value
+    int neighborDistance=1;
+    if(bayer) neighborDistance = 2;
     if(narg == 1){
         for(i=0; i< specs[ROWS]; i++){
             for(j = 0; j< specs[COLS]; j++) {
-                ave_val = ( iBuffer.getpix(i-1,j-1) + iBuffer.getpix(i-1,j) + iBuffer.getpix(i-1,j+1) +
-                           iBuffer.getpix(i,j-1)                            + iBuffer.getpix(i,j+1) +
-                           iBuffer.getpix(i+1,j-1)  + iBuffer.getpix(i+1,j) + iBuffer.getpix(i+1,j+1) ) / 8;
+                ave_val = ( iBuffer.getpix(i-neighborDistance,j-neighborDistance) + iBuffer.getpix(i-neighborDistance,j) + iBuffer.getpix(i-neighborDistance,j+neighborDistance) +
+                            iBuffer.getpix(i,j-neighborDistance)                                                         + iBuffer.getpix(i,j+neighborDistance) +
+                            iBuffer.getpix(i+neighborDistance,j-neighborDistance) + iBuffer.getpix(i+neighborDistance,j) + iBuffer.getpix(i+neighborDistance,j+neighborDistance) ) / 8;
                 if( iBuffer.getpix(i,j) - ave_val > n ){
                     if(num_hot < NUMHOT){
                         hot_pix[num_hot++] = i*specs[COLS] + j;
@@ -2898,42 +2923,42 @@ int findbad_c(int n, char* args){
         free(specs);
         return NO_ERR;
     }
-    // Alternate algorithm, with target value specified, this will call clearbad routine
+    // Alternate algorithm, with target value specified, this will call clearbad routine after each pass
     for (int p=0; p<passes;p++) {
         for(i=0; i< specs[ROWS]; i++){
             for(j = 0; j< specs[COLS]; j++) {
                 int usefulNeighbors = 0;
                 if( fabs(iBuffer.getpix(i,j) - target) >= n ){ // we have a hot one
                     hot_pix[num_hot] = i*specs[COLS] + j;
-                    if (fabs(iBuffer.getpix(i-1,j-1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i-neighborDistance,j-neighborDistance) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 1;
                         usefulNeighbors++;
                     }
-                    if (fabs(iBuffer.getpix(i-1,j) - target) < n) {
+                    if (fabs(iBuffer.getpix(i-neighborDistance,j) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 2;
                         usefulNeighbors++;
                     }
-                    if (fabs(iBuffer.getpix(i-1,j+1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i-neighborDistance,j+neighborDistance) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 3;
                         usefulNeighbors++;
                     }
-                    if (fabs(iBuffer.getpix(i,j-1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i,j-neighborDistance) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 4;
                         usefulNeighbors++;
                     }
-                    if (fabs(iBuffer.getpix(i,j+1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i,j+neighborDistance) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 5;
                         usefulNeighbors++;
                     }
-                    if (fabs(iBuffer.getpix(i+1,j-1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i+neighborDistance,j-neighborDistance) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 6;
                         usefulNeighbors++;
                     }
-                    if (fabs(iBuffer.getpix(i+1,j) - target) < n) {
+                    if (fabs(iBuffer.getpix(i+neighborDistance,j) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 7;
                         usefulNeighbors++;
                     }
-                    if (fabs(iBuffer.getpix(i+1,j+1) - target) < n) {
+                    if (fabs(iBuffer.getpix(i+neighborDistance,j+neighborDistance) - target) < n) {
                         neighbors[num_hot][usefulNeighbors] = 8;
                         usefulNeighbors++;
                     }
@@ -3050,17 +3075,19 @@ int clearbad_c(int n, char* args)
     DATAWORD new_val;
     
     int* specs = iBuffer.getspecs();
-    
-    if(ccd_height > 0){
+    int neighborDistance=1;
+    if(bayer) neighborDistance = 2;
+    if(ccd_height > 0){     // bad pixels were found without specifying a target value -- blindly consider nearest neighbors
+        printf("Using eight nearest neighbors.\n");
         for(k=0; k<num_hot; k++){
             i = hot_pix[k]/ccd_width;
             j = hot_pix[k] - i*ccd_width - specs[X0];
             i -= specs[Y0];
             //printf(" %d %d\n",j,i);
             if(i < specs[ROWS] && j < specs[COLS] && i >= 0 && j >= 0) {
-                new_val = ( iBuffer.getpix(i-1,j-1) + iBuffer.getpix(i-1,j) + iBuffer.getpix(i-1,j+1) +
-                           iBuffer.getpix(i,j-1)                            + iBuffer.getpix(i,j+1) +
-                           iBuffer.getpix(i+1,j-1)  + iBuffer.getpix(i+1,j) + iBuffer.getpix(i+1,j+1) ) / 8;
+                new_val = ( iBuffer.getpix(i-neighborDistance,j-neighborDistance) + iBuffer.getpix(i-neighborDistance,j) + iBuffer.getpix(i-neighborDistance,j+neighborDistance) +
+                            iBuffer.getpix(i,j-neighborDistance)                                                         + iBuffer.getpix(i,j+neighborDistance) +
+                            iBuffer.getpix(i+neighborDistance,j-neighborDistance) + iBuffer.getpix(i+neighborDistance,j) + iBuffer.getpix(i+neighborDistance,j+neighborDistance) ) / 8;
                 iBuffer.setpix(i,j, new_val);
             }
         }
@@ -3069,6 +3096,8 @@ int clearbad_c(int n, char* args)
         update_UI();
         return NO_ERR;
     }
+    // a target value was specified -- only consider certain neighbors
+    printf("Using selected neighbors.\n");
     for(k=0; k<num_hot; k++){
         i = hot_pix[k]/ccd_width;
         j = hot_pix[k] - i*ccd_width - specs[X0];
@@ -3081,35 +3110,35 @@ int clearbad_c(int n, char* args)
                 
                 switch (neighbors[k][usefulNeighbors]) {
                     case 1:
-                        new_val += iBuffer.getpix(i-1,j-1);
+                        new_val += iBuffer.getpix(i-neighborDistance,j-neighborDistance);
                         usefulNeighbors++;
                         break;
                     case 2:
-                        new_val += iBuffer.getpix(i-1,j);
+                        new_val += iBuffer.getpix(i-neighborDistance,j);
                         usefulNeighbors++;
                         break;
                     case 3:
-                        new_val += iBuffer.getpix(i-1,j+1);
+                        new_val += iBuffer.getpix(i-neighborDistance,j+neighborDistance);
                         usefulNeighbors++;
                         break;
                     case 4:
-                        new_val += iBuffer.getpix(i,j-1);
+                        new_val += iBuffer.getpix(i,j-neighborDistance);
                         usefulNeighbors++;
                         break;
                     case 5:
-                        new_val += iBuffer.getpix(i,j+1);
+                        new_val += iBuffer.getpix(i,j+neighborDistance);
                         usefulNeighbors++;
                         break;
                     case 6:
-                        new_val += iBuffer.getpix(i+1,j-1);
+                        new_val += iBuffer.getpix(i+neighborDistance,j-neighborDistance);
                         usefulNeighbors++;
                         break;
                     case 7:
-                        new_val += iBuffer.getpix(i+1,j);
+                        new_val += iBuffer.getpix(i+neighborDistance,j);
                         usefulNeighbors++;
                         break;
                     case 8:
-                        new_val += iBuffer.getpix(i+1,j+1);
+                        new_val += iBuffer.getpix(i+neighborDistance,j+neighborDistance);
                         usefulNeighbors++;
                         break;
                         
@@ -3122,10 +3151,7 @@ int clearbad_c(int n, char* args)
                 new_val /= usefulNeighbors;
                 iBuffer.setpix(i,j, new_val);
             }
-            
         }
-        
-        
     }
     free(specs);
     if (strncmp(args, "NoPrint", 7)== 0) {
@@ -3143,6 +3169,9 @@ int cclearbad_c(int n, char* args){
     int row,col,k;
     DATAWORD new_val;
     int* specs = iBuffer.getspecs();
+    
+    beep();
+    printf("This command is depricated -- it won't handle bad pixel data from the alternate algorithm.\nUse CLEARBAD with BAYERFLAG 1 instead for this case.\n");
     
     for(k=0; k<num_hot; k++){
         row = hot_pix[k]/ccd_width;

@@ -32,6 +32,7 @@ int binarguments_c(int,char*);
 int binextension_c(int,char*);
 int boundbox_c(int, char*);
 int bleed_c(int, char*);
+int bayerFlag_c(int, char*);
 
 int colorflag_c(int,char*);
 int compositefile_c(int,char*);
