@@ -167,8 +167,8 @@ CAMCLOSE
 C2RGB
 	If the current image is a color image, define temporary images named r, g, and b that correspond to the red, green, and blue color channels. The current image buffer is not modified.
 
-CVALIGN tempImageName [maxIterations terminationEpsilon warpMode]
- Align the specified temporary image with the one in the current buffer. The default values are maxIterations=1000 terminationEpsilon=1E-6  warpMode=0 (Euclidean matching; warpMode!=0 uses Homographic matching). oma2cam command, requires opencv libraries.
+CVALIGN tempImageName [maxIterations terminationEpsilon warpMode floorValue]
+ Align the specified temporary image with the one in the current buffer. The default values are maxIterations=1000 terminationEpsilon=1E-6  warpMode=0 (Euclidean matching; warpMode!=0 uses Homographic matching). If the optional floorValue is specified, the images used for finding the mapping will have values < floorValue set to floorValue and the new minimum set to zero. The floorValue does not change the temporary image and the returned image does not have its floor reset. oma2cam command -- requires opencv libraries.
 
 DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
@@ -574,6 +574,9 @@ RGB2GREEN
 
 RGB2BLUE
 	Get the blue channel of the current color image.
+
+RGB2GREY
+	Turn the current color image to a single-plane grey-scale image by summing the RGB channels.
 
 RGB2COLOR colorNumber
 	Get the red, green, or blue channel of the current color image for colorNumber = 1, 2, or 3.

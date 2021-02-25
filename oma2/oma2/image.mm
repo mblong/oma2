@@ -150,7 +150,8 @@ Image::Image(char* filename, int kindOfName)
             if (kindOfName == LONG_NAME) {
                 color = dcrawGlue(filename,-1,this);
             } else {
-                color = dcrawGlue(fullname(filename,RAW_DATA),-1,this);
+                fullname(filename,RAW_DATA);
+                color = dcrawGlue(filename,-1,this);
             }
             if(color < 0) error = FILE_ERR;
             if (error) windowNameMemory = 0;

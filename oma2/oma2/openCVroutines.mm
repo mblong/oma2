@@ -144,8 +144,8 @@ int cvHoughCircles_q(int n,char* args){
 
 }
 /*
-CVALIGN tempImageName [maxIterations terminationEpsilon warpMode]
- Align the specified temporary image with the one in the current buffer. The default values are maxIterations=1000 terminationEpsilon=1E-6  warpMode=0 (Euclidean matching; warpMode!=0 uses Homographic matching).
+CVALIGN tempImageName [maxIterations terminationEpsilon warpMode floorValue]
+ Align the specified temporary image with the one in the current buffer. The default values are maxIterations=1000 terminationEpsilon=1E-6  warpMode=0 (Euclidean matching; warpMode!=0 uses Homographic matching). If the optional floorValue is specified, the images used for finding the mapping will have values < floorValue set to floorValue and the new minimum set to zero.
  
 */
 int cvAlign_q(int n,char* args){
@@ -162,10 +162,11 @@ int cvAlign_q(int n,char* args){
     // Define the motion model
     int warp_mode = MOTION_EUCLIDEAN;
     int mode=0;
-    
+    DATAWORD floorValue;
+    extern Variable user_variables[];
     extern Image  iTempImages[];
     
-    int nargs=sscanf(args,"%s %d %lf %d",tempImageName, &number_of_iterations, &termination_eps, &mode);
+    int nargs=sscanf(args,"%s %d %lf %d %f",tempImageName, &number_of_iterations, &termination_eps, &mode,&floorValue);
     if(nargs < 1){
         beep();
         printf("Must specify temp image.\n");
@@ -216,12 +217,22 @@ int cvAlign_q(int n,char* args){
     unsigned char* byteptr=bits;
     
     DATAWORD* values = iBuffer.getvalues();
-    DATAWORD scale = 255./(values[MAX]-values[MIN]),minval=values[MIN];
+    DATAWORD scale = 255./(values[MAX]-values[MIN]);
+    DATAWORD minval=values[MIN];
+    if(nargs == 5){
+        scale = 255./(values[MAX]-floorValue);
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){     // map image1 (iBuffer) to 8 bit and convert to uint8
+            if(*dataPtr < floorValue) *dataPtr = floorValue;
+            *byteptr++ = ((*dataPtr++)-floorValue)*scale;
+        }
+    } else {
+        floorValue=minval;
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){     // map image1 (iBuffer) to 8 bit and convert to uint8
+            *byteptr++ = ((*dataPtr++)-floorValue)*scale;
+        }
+    }
     free(values);
 
-    for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){     // map image1 (iBuffer) to 8 bit and convert to uint8
-        *byteptr++ = ((*dataPtr++)-minval)*scale;
-    }
     Mat im1 = Mat(iBuffer.height(), iBuffer.width(), CV_8UC1, bits);    // this 8-bit version of image1 will be used for alignment
 
     // image2
@@ -229,29 +240,34 @@ int cvAlign_q(int n,char* args){
     original<<iTempImages[n];
     
     unsigned char* bits2= new unsigned char[iBuffer.height()* iBuffer.width()];
+    byteptr = bits2;
     
     if(colorImage){
-        iBuffer.free();             // copy the temp image to iBuffer an make monochrome
+        iBuffer.free();             // copy the temp image to iBuffer and make monochrome
         iBuffer<<iTempImages[n];
         rgb2grey_c(0, nil);
         dataPtr = iBuffer.getImageData();
         values = iBuffer.getvalues();
-        scale = 255./(values[MAX]-values[MIN]);
-        minval=values[MIN];
     } else{
         dataPtr = iTempImages[n].getImageData();
         values = iTempImages[n].getvalues();
-        scale = 255./(values[MAX]-values[MIN]);
-        minval=values[MIN];
     }
-     
-    byteptr = bits2;
+    scale = 255./(values[MAX]-values[MIN]);
+    minval=values[MIN];
+    if(nargs == 5){
+        scale = 255./(values[MAX]-floorValue);
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){     // map image2 (the temp image) to 8 bit and convert to uint8
+            if(*dataPtr < floorValue) *dataPtr = floorValue;
+            *byteptr++ = ((*dataPtr++)-floorValue)*scale;
+        }
+    } else {
+        floorValue=minval;
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){     // map image2 (the temp image) to 8 bit and convert to uint8
+            *byteptr++ = ((*dataPtr++)-floorValue)*scale;
+        }
+    }
     free(values);
     
-    for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){     // map image2 (the temp image) to 8 bit and convert to uint8
-        *byteptr++ = ((*dataPtr++)-minval)*scale;
-    }
-
     Mat im2 = Mat(iBuffer.height(), iBuffer.width(), CV_8UC1, bits2);   // this 8-bit version of image2 will be used for alignment
     DATAWORD* bgrArray;
     Mat im2_original;
@@ -272,14 +288,29 @@ int cvAlign_q(int n,char* args){
     TermCriteria criteria (TermCriteria::COUNT+TermCriteria::EPS, number_of_iterations, termination_eps);
     
     // Run the ECC algorithm. The results are stored in warp_matrix.
-    double cc = findTransformECC(
+    double cc;
+    try {
+    cc = findTransformECC(
                      im1,
                      im2,
                      warp_matrix,
                      warp_mode,
                      criteria
                      );
-    
+    }
+    catch( cv::Exception& e )
+    {
+        beep();
+        const char* err_msg = e.what();
+        printf("exception caught: %s\n",err_msg);
+        delete[] bits;
+        delete[] bits2;
+        return CMND_ERR;
+    }
+    user_variables[0].ivalue = user_variables[0].fvalue = cc;
+    user_variables[0].is_float = 1;
+
+
     if(cc==-1.){
         beep();
         printf("Error aligning images.\n");
@@ -289,6 +320,7 @@ int cvAlign_q(int n,char* args){
     } else {
         pprintf("Transform returned %g.\n",cc);
     }
+    
 
     
     if(colorImage){

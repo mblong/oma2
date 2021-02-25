@@ -9144,25 +9144,27 @@ int dcrawGlue(char* name, int thecolor, Image* im){
 int dcrawGlue(char* name, int thecolor, Image* im){
     int i=0, j, ret, verbose=0;
     char outfn[1024],thumbfn[1024];
+    char* bayerColor;
     unsigned short* rawPtr;
     int* specs;
-    DATAWORD* pt;
+    DATAWORD *pt,*values;
     char log[MBUFLEN]="";
     int logLength=0;
     // Creation of image processing object
-    LibRaw RawProcessor;
+    LibRaw *RawProcessor = new LibRaw;
+    //LibRaw RawProcessor;
     // The date in TIFF is written in the local format; let us specify the timezone for compatibility with dcraw
     putenv ((char*)"TZ=UTC");
     // Let us define variables for convenient access to fields of RawProcessor
-#define P1 RawProcessor.imgdata.idata
-#define S RawProcessor.imgdata.sizes
-#define C RawProcessor.imgdata.color
-#define T RawProcessor.imgdata.thumbnail
-#define P2 RawProcessor.imgdata.other
+#define P1 RawProcessor->imgdata.idata
+#define S RawProcessor->imgdata.sizes
+#define C RawProcessor->imgdata.color
+#define T RawProcessor->imgdata.thumbnail
+#define P2 RawProcessor->imgdata.other
 //#define OUT RawProcessor.imgdata.params
     //OUT.output_tiff = 1; // Let us output TIFF
     // Let us open the file
-    if( (ret = RawProcessor.open_file(name)) != LIBRAW_SUCCESS)
+    if( (ret = RawProcessor->open_file(name)) != LIBRAW_SUCCESS)
     {
         printf("Cannot open %s: %s\n",name,libraw_strerror(ret));
         // recycle() is needed only if we want to free the resources right now.
@@ -9174,44 +9176,55 @@ int dcrawGlue(char* name, int thecolor, Image* im){
     
 
     // Let us unpack the image
-    if( (ret = RawProcessor.unpack() ) != LIBRAW_SUCCESS)
+    if( (ret = RawProcessor->unpack() ) != LIBRAW_SUCCESS)
     {
         fprintf(stderr,"Cannot unpack %s: %s\n",name,libraw_strerror(ret));
         if(LIBRAW_FATAL_ERROR(ret))
             goto end;
         // if there has been a non-fatal error, we will try to continue
     }
-    //P1.filters
-    printf("width: %d height: %d\n",RawProcessor.imgdata.sizes.iwidth, RawProcessor.imgdata.sizes.iheight);
-    printf("colors: %d\n",RawProcessor.imgdata.idata.colors);
-    printf("camera: %s %s\n",RawProcessor.imgdata.idata.make,RawProcessor.imgdata.idata.model);
-    printf("filter: %s\n",RawProcessor.imgdata.idata.cdesc);
-    printf("pitch: %d \n",RawProcessor.imgdata.sizes.raw_pitch);
+    bayerColor = RawProcessor->imgdata.idata.cdesc;
+    printf("width: %d height: %d\n",RawProcessor->imgdata.sizes.iwidth, RawProcessor->imgdata.sizes.iheight);
+    printf("colors: %d\n",RawProcessor->imgdata.idata.colors);
+    printf("camera: %s %s\n",RawProcessor->imgdata.idata.make,RawProcessor->imgdata.idata.model);
+    printf("filter: %s\n",bayerColor);
+    if(RawProcessor->imgdata.idata.colors == 3){
+        printf("Bayer ordering is: %c%c%c%c\n",
+               bayerColor[RawProcessor->COLOR(0,0)],bayerColor[RawProcessor->COLOR(0,1)],
+               bayerColor[RawProcessor->COLOR(1,0)],bayerColor[RawProcessor->COLOR(1,1)]);
+    }
+    printf("pitch: %d \n",RawProcessor->imgdata.sizes.raw_pitch);
     printf("White balance as shot: %.3f %.3f %.3f %.3f\n", C.cam_mul[0]/C.cam_mul[1],1.0,C.cam_mul[2]/C.cam_mul[1],C.cam_mul[3]/C.cam_mul[1]);
     printf("ISO: %.1f Exposure: %f Aperture: %.1f\n",P2.iso_speed, P2.shutter,P2.aperture);
-    sprintf(log,"width: %d height: %d colors: %d\ncamera: %s %s\nfilter: %s pitch: %d\nWhite balance as shot: %.3f %.3f %.3f %.3f\nISO: %.1f Exposure: %f Aperture: %.1f\n",S.iwidth,S.iheight,P1.colors,P1.make,P1.model,P1.cdesc,S.raw_pitch,C.cam_mul[0]/C.cam_mul[1],1.0,C.cam_mul[2]/C.cam_mul[1],C.cam_mul[3]/C.cam_mul[1],P2.iso_speed, P2.shutter,P2.aperture);
+    sprintf(log,"width: %d height: %d colors: %d\ncamera: %s %s\nfilter: %s pitch: %d\nBayer ordering is: %c%c%c%c\nWhite balance as shot: %.3f %.3f %.3f %.3f\nISO: %.1f Exposure: %f Aperture: %.1f\n",
+            S.iwidth,S.iheight,P1.colors,P1.make,P1.model,P1.cdesc,S.raw_pitch,
+            bayerColor[RawProcessor->COLOR(0,0)],bayerColor[RawProcessor->COLOR(0,1)],
+            bayerColor[RawProcessor->COLOR(1,0)],bayerColor[RawProcessor->COLOR(1,1)],
+            C.cam_mul[0]/C.cam_mul[1],1.0,C.cam_mul[2]/C.cam_mul[1],C.cam_mul[3]/C.cam_mul[1],P2.iso_speed, P2.shutter,P2.aperture);
     logLength=(int)strlen(log);
     for(i=0;i<logLength;i++) if(log[i]=='\n') log[i]=0;
     log[logLength]=0;
     
-    if(RawProcessor.imgdata.rawdata.raw_image){
+    if(RawProcessor->imgdata.rawdata.raw_image){
         specs = im->getspecs();
-        specs[COLS] = RawProcessor.imgdata.sizes.iwidth;
-        
-        specs[ROWS] = RawProcessor.imgdata.sizes.iheight;
-        
+        values = im->getvalues();
+        specs[COLS] = RawProcessor->imgdata.sizes.iwidth;
+        specs[ROWS] = RawProcessor->imgdata.sizes.iheight;
         specs[DX] = specs[DY] = 1;
         specs[X0] = specs[Y0] = 0;
         specs[IS_COLOR] = 0;
         im->setComment(log,logLength+1);
+        values[EXPOSURE] = P2.shutter;
+        values[APERTURE] = P2.aperture;
+        values[ISO] = P2.iso_speed;
         
         // this will allocate memory
         im->setspecs(specs);
         free(specs);
         pt = im->getImageData();
-        for(i=0; i<RawProcessor.imgdata.sizes.iheight;i++){
-            rawPtr = &RawProcessor.imgdata.rawdata.raw_image[i * RawProcessor.imgdata.sizes.raw_pitch / 2];
-            for(j=0; j<RawProcessor.imgdata.sizes.iwidth;j++){
+        for(i=0; i<RawProcessor->imgdata.sizes.iheight;i++){
+            rawPtr = &RawProcessor->imgdata.rawdata.raw_image[i * RawProcessor->imgdata.sizes.raw_pitch / 2];
+            for(j=0; j<RawProcessor->imgdata.sizes.iwidth;j++){
                 *pt++=*rawPtr++;
             }
         }
@@ -9239,8 +9252,8 @@ int dcrawGlue(char* name, int thecolor, Image* im){
     }
     */
     // Data unpacking
-    
-    ret = RawProcessor.dcraw_process();
+    /*
+    ret = RawProcessor->dcraw_process();
     if(LIBRAW_SUCCESS != ret ) // error at the previous step
     {
         fprintf(stderr,"Cannot do postprocessing on %s: %s\n",name,libraw_strerror(ret));
@@ -9255,14 +9268,14 @@ int dcrawGlue(char* name, int thecolor, Image* im){
             //fprintf(stderr,"Cannot write %s: error %d\n",outfn,ret);
          
     }
-     
+     */
     // we don't evoke recycle() or call the destructor; C++ will do everything for us
     
-    RawProcessor.recycle();
+    RawProcessor->recycle();
     return 0;
 end:
     // got here after an error
-    RawProcessor.recycle();
+    RawProcessor->recycle();
     return 1;
 }
 #endif

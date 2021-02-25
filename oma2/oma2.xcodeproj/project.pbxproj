@@ -1050,7 +1050,7 @@
 					"-lopencv_video",
 					"-lopencv_videoio",
 					"-lopencv_imgproc",
-					"-lraw",
+					"-lraw_r",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = oma2cam;
@@ -1102,7 +1102,7 @@
 					"-lopencv_video",
 					"-lopencv_videoio",
 					"-lopencv_imgproc",
-					"-lraw",
+					"-lraw_r",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = oma2cam;

@@ -504,8 +504,8 @@
             timestampString = "583716188.1421061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "254"
-            endingLineNumber = "254"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
             landmarkName = "Image::Image(filename, kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1006,7 +1006,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "7EBC20FB-8394-446D-B418-EA4CAE223A77"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/macImageSupport.mm"
@@ -1030,8 +1030,8 @@
             timestampString = "583716188.144779"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
             landmarkName = "Image::Image(filename, kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1040,7 +1040,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "A8BAC86E-50DE-4B16-96D9-7DD1D693A4CB"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/comdec.mm"
@@ -1108,7 +1108,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "CED363D2-B9EF-4327-8F93-049956996DC0"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "oma2/commands_1.mm"
@@ -1211,8 +1211,8 @@
             filePath = "oma2/image.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "234"
-            endingLineNumber = "234"
+            startingLineNumber = "235"
+            endingLineNumber = "235"
             landmarkName = "Image::Image(filename, kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1323,8 +1323,8 @@
             filePath = "oma2/image.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "250"
-            endingLineNumber = "250"
+            startingLineNumber = "251"
+            endingLineNumber = "251"
             landmarkName = "Image::Image(filename, kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1339,8 +1339,8 @@
             filePath = "oma2/image.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
+            startingLineNumber = "421"
+            endingLineNumber = "421"
             landmarkName = "Image::Image(filename, kindOfName)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1355,8 +1355,8 @@
             filePath = "oma2/openCVroutines.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
             landmarkName = "cvAlign_q(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1371,8 +1371,8 @@
             filePath = "oma2/openCVroutines.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
+            startingLineNumber = "346"
+            endingLineNumber = "346"
             landmarkName = "cvAlign_q(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1435,10 +1435,42 @@
             filePath = "oma2/image.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1348"
-            endingLineNumber = "1348"
+            startingLineNumber = "1349"
+            endingLineNumber = "1349"
             landmarkName = "Image::setComment(buffer, n)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6A5F7E6A-331D-42FA-B890-1710D1734326"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/image.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "Image::Image(filename, kindOfName)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F4A9C24B-A7D6-42E8-A0D2-DCA34C0D24A3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/openCVroutines.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "310"
+            endingLineNumber = "310"
+            landmarkName = "cvAlign_q(n, args)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
