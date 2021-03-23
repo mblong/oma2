@@ -27,17 +27,22 @@ typedef struct{
 
 // locations within the specs array
 enum {ROWS,COLS,X0,Y0,DX,DY,LMAX,LMIN,IS_COLOR,HAVE_MAX,HAS_RULER,
-    LRMAX,LRMIN,LGMAX,LGMIN,LBMAX,LBMIN,NFRAMES,SAVE_FORMAT};
+    LRMAX,LRMIN,LGMAX,LGMIN,LBMAX,LBMIN,NFRAMES,SAVE_FORMAT,CAMERA,BLACK_OFFSET};
 
 // types if integers the data can be saved as
 enum {UNSIGNED16=59464,SIGNED16,UNSIGNED8,SIGNED8};
+
+// types of cameras oma2 will recognize
+
+enum {SBIG_CAM=59801,GIGE_BW,GIGE_COLOR,GENERIC_GPHOTO,NIKON,CANON};
 
 // SAVE_FORMAT is a 2021 addition to the specs array
 // This will be used to save data in other than DATAWORD types
 // Will assume that the chances of specs[SAVE_FORMAT] accidentally being one of the magic values is small
 
 // locations within the values array
-enum {MIN,MAX,RMAX,RMIN,GMAX,GMIN,BMAX,BMIN,RULER_SCALE,EXPOSURE,APERTURE,ISO};
+enum {MIN,MAX,RMAX,RMIN,GMAX,GMIN,BMAX,BMIN,RULER_SCALE,EXPOSURE,APERTURE,ISO,
+    RED_MULT,GREEN_MULT,BLUE_MULT };
 
 // Image error codes and command return codes
 enum {NO_ERR,SIZE_ERR,FILE_ERR,MEM_ERR,ARG_ERR,CMND_ERR,HARD_ERR,GET_MACRO_LINE,GET_COMMENT_LINE};
@@ -166,6 +171,7 @@ public:
 #endif
     // Special friends that need to go fast
     friend  int dofft(int,char*);
+    friend  int xcorrelate(int,char*);
     friend  int warp_c(int,char*);
     friend class ImageBitmap;
     friend void BilinearDemosaic(float *Output, const float *Input, int Width, int Height,

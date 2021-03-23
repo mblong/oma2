@@ -9142,14 +9142,17 @@ int dcrawGlue(char* name, int thecolor, Image* im){
 #else
 
 int dcrawGlue(char* name, int thecolor, Image* im){
+    extern Variable user_variables[];
     int i=0, j, ret, verbose=0;
-    char outfn[1024],thumbfn[1024];
+    //char outfn[1024],thumbfn[1024];
     char* bayerColor;
     unsigned short* rawPtr;
     int* specs;
     DATAWORD *pt,*values;
     char log[MBUFLEN]="";
     int logLength=0;
+    float redMult,greenMult,blueMult;
+    int black;
     // Creation of image processing object
     LibRaw *RawProcessor = new LibRaw;
     //LibRaw RawProcessor;
@@ -9183,9 +9186,13 @@ int dcrawGlue(char* name, int thecolor, Image* im){
             goto end;
         // if there has been a non-fatal error, we will try to continue
     }
+    redMult=C.cam_mul[0]/C.cam_mul[1];
+    greenMult=1.0;
+    blueMult=C.cam_mul[2]/C.cam_mul[1];
+    black = C.black;
     bayerColor = RawProcessor->imgdata.idata.cdesc;
     printf("width: %d height: %d\n",RawProcessor->imgdata.sizes.iwidth, RawProcessor->imgdata.sizes.iheight);
-    printf("colors: %d\n",RawProcessor->imgdata.idata.colors);
+    printf("colors: %d black: %d\n",RawProcessor->imgdata.idata.colors,black);
     printf("camera: %s %s\n",RawProcessor->imgdata.idata.make,RawProcessor->imgdata.idata.model);
     printf("filter: %s\n",bayerColor);
     if(RawProcessor->imgdata.idata.colors == 3){
@@ -9194,13 +9201,13 @@ int dcrawGlue(char* name, int thecolor, Image* im){
                bayerColor[RawProcessor->COLOR(1,0)],bayerColor[RawProcessor->COLOR(1,1)]);
     }
     printf("pitch: %d \n",RawProcessor->imgdata.sizes.raw_pitch);
-    printf("White balance as shot: %.3f %.3f %.3f %.3f\n", C.cam_mul[0]/C.cam_mul[1],1.0,C.cam_mul[2]/C.cam_mul[1],C.cam_mul[3]/C.cam_mul[1]);
+    printf("White balance as shot: %.3f %.3f %.3f %.3f\n", redMult,greenMult,blueMult,C.cam_mul[3]/C.cam_mul[1]);
     printf("ISO: %.1f Exposure: %f Aperture: %.1f\n",P2.iso_speed, P2.shutter,P2.aperture);
-    sprintf(log,"width: %d height: %d colors: %d\ncamera: %s %s\nfilter: %s pitch: %d\nBayer ordering is: %c%c%c%c\nWhite balance as shot: %.3f %.3f %.3f %.3f\nISO: %.1f Exposure: %f Aperture: %.1f\n",
-            S.iwidth,S.iheight,P1.colors,P1.make,P1.model,P1.cdesc,S.raw_pitch,
+    sprintf(log,"width: %d height: %d colors: %d black: %d\ncamera: %s %s\nfilter: %s pitch: %d\nBayer ordering is: %c%c%c%c\nWhite balance as shot: %.3f %.3f %.3f %.3f\nISO: %.1f Exposure: %f Aperture: %.1f\n",
+            S.iwidth,S.iheight,P1.colors,black,P1.make,P1.model,P1.cdesc,S.raw_pitch,
             bayerColor[RawProcessor->COLOR(0,0)],bayerColor[RawProcessor->COLOR(0,1)],
             bayerColor[RawProcessor->COLOR(1,0)],bayerColor[RawProcessor->COLOR(1,1)],
-            C.cam_mul[0]/C.cam_mul[1],1.0,C.cam_mul[2]/C.cam_mul[1],C.cam_mul[3]/C.cam_mul[1],P2.iso_speed, P2.shutter,P2.aperture);
+            redMult,greenMult,blueMult,C.cam_mul[3]/C.cam_mul[1],P2.iso_speed, P2.shutter,P2.aperture);
     logLength=(int)strlen(log);
     for(i=0;i<logLength;i++) if(log[i]=='\n') log[i]=0;
     log[logLength]=0;
@@ -9213,17 +9220,31 @@ int dcrawGlue(char* name, int thecolor, Image* im){
         specs[DX] = specs[DY] = 1;
         specs[X0] = specs[Y0] = 0;
         specs[IS_COLOR] = 0;
+        specs[BLACK_OFFSET] = black;
         im->setComment(log,logLength+1);
         values[EXPOSURE] = P2.shutter;
         values[APERTURE] = P2.aperture;
         values[ISO] = P2.iso_speed;
-        
+        values[RED_MULT] = redMult;
+        values[GREEN_MULT] = greenMult;
+        values[BLUE_MULT] = blueMult;
+        user_variables[0].ivalue = user_variables[0].fvalue = redMult;
+        user_variables[0].is_float = 1;
+        user_variables[1].ivalue = user_variables[1].fvalue = greenMult;
+        user_variables[1].is_float = 1;
+        user_variables[2].ivalue = user_variables[2].fvalue = blueMult;
+        user_variables[2].is_float = 1;
+        user_variables[3].ivalue = user_variables[3].fvalue = black;
+        user_variables[3].is_float = 0;
+
         // this will allocate memory
         im->setspecs(specs);
         free(specs);
         pt = im->getImageData();
         for(i=0; i<RawProcessor->imgdata.sizes.iheight;i++){
-            rawPtr = &RawProcessor->imgdata.rawdata.raw_image[i * RawProcessor->imgdata.sizes.raw_pitch / 2];
+            rawPtr = &RawProcessor->imgdata.rawdata.raw_image[i * RawProcessor->imgdata.sizes.raw_pitch / 2
+                     + RawProcessor->imgdata.sizes.left_margin
+                     + RawProcessor->imgdata.sizes.top_margin * RawProcessor->imgdata.sizes.raw_pitch / 2];
             for(j=0; j<RawProcessor->imgdata.sizes.iwidth;j++){
                 *pt++=*rawPtr++;
             }

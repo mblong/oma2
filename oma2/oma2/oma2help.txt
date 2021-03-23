@@ -791,6 +791,9 @@ WAITHI Channel
 X0 n
 	Specifies that the detector is to be read out starting at column n.
 
+ XCORRELATE tempImage
+    Calculate the magnitude of the cross correlation between the current image and the specified temporary image. Image sizes must be a power of two. command_return_1 and command_return_2 are the (integer) row and column offsets of the two images, determined from the peak of the cross correlation.
+
 Y0 n
 	Specifies that the detector is to be read out starting at row n.
 

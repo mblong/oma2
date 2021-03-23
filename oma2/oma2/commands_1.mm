@@ -639,7 +639,7 @@ int frame_c(int n, char* args)
     for(int c=0; c<nColors; c++){
         for(i=0; i<sizy; i++){
             for(j=0; j<sizx; j++) {
-                if(i+y0<0 || i+y0 >=oldHeight ||
+                if(i+y0<0 || i+y0 >=oldHeight/nColors ||
                    j+x0<0 || j+x0 >=oldWidth) {
                     im.setpix(i+c*sizy,j,value);
                 }else {

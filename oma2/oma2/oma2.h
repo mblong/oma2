@@ -235,6 +235,10 @@ typedef struct {
 
     int   autoFloatFlag;  // determines whether or not a variable is set to float when an assignment with a decimal point is made
     
+    float redGamma;
+    float greenGamma;
+    float blueGamma;
+    
     /*
 	settings[4] = detector;
 	settings[8] = showselection;

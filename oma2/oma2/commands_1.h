@@ -227,6 +227,7 @@ int warp_c(int, char*);
 int writebad_c(int,char*);
 
 int x0_c(int n,char* args);
+
 int y0_c(int n,char* args);
 
 // Others

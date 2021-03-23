@@ -23,6 +23,10 @@
 		DB16CA3A1826960F002588F4 /* CommandView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB16CA391826960F002588F4 /* CommandView.mm */; };
 		DB17A3051524754A004F810A /* DataWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB17A3041524754A004F810A /* DataWindow.xib */; };
 		DB17A30C15247965004F810A /* DataWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB17A30B15247965004F810A /* DataWindowController.mm */; };
+		DB1DC8282601424D00C5A72C /* ColorImageOptionsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB1DC8262601424D00C5A72C /* ColorImageOptionsController.mm */; };
+		DB1DC8292601424D00C5A72C /* ColorImageOptionsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB1DC8262601424D00C5A72C /* ColorImageOptionsController.mm */; };
+		DB1DC82A2601424D00C5A72C /* ColorImageOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB1DC8272601424D00C5A72C /* ColorImageOptions.xib */; };
+		DB1DC82B2601424D00C5A72C /* ColorImageOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB1DC8272601424D00C5A72C /* ColorImageOptions.xib */; };
 		DB1E9B1F15A27EA300F38CE2 /* ruler.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB1E9B1E15A27EA300F38CE2 /* ruler.jpg */; };
 		DB1E9B2215A2804C00F38CE2 /* curve.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB1E9B2115A2804C00F38CE2 /* curve.jpg */; };
 		DB2113591540219200B23364 /* DataView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2113581540219200B23364 /* DataView.mm */; };
@@ -227,6 +231,9 @@
 		DB17A3041524754A004F810A /* DataWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DataWindow.xib; sourceTree = "<group>"; };
 		DB17A30A15247965004F810A /* DataWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataWindowController.h; sourceTree = "<group>"; };
 		DB17A30B15247965004F810A /* DataWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DataWindowController.mm; sourceTree = "<group>"; };
+		DB1DC8252601424D00C5A72C /* ColorImageOptionsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorImageOptionsController.h; sourceTree = "<group>"; };
+		DB1DC8262601424D00C5A72C /* ColorImageOptionsController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ColorImageOptionsController.mm; sourceTree = "<group>"; };
+		DB1DC8272601424D00C5A72C /* ColorImageOptions.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorImageOptions.xib; sourceTree = "<group>"; };
 		DB1E9B1E15A27EA300F38CE2 /* ruler.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ruler.jpg; sourceTree = "<group>"; };
 		DB1E9B2115A2804C00F38CE2 /* curve.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = curve.jpg; sourceTree = "<group>"; };
 		DB2113571540219200B23364 /* DataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataView.h; sourceTree = "<group>"; };
@@ -499,6 +506,9 @@
 				DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */,
 				DB35126218F0BACF00202FFC /* macImageSupport.h */,
 				DB35125F18F0B8AE00202FFC /* macImageSupport.mm */,
+				DB1DC8252601424D00C5A72C /* ColorImageOptionsController.h */,
+				DB1DC8262601424D00C5A72C /* ColorImageOptionsController.mm */,
+				DB1DC8272601424D00C5A72C /* ColorImageOptions.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -629,6 +639,7 @@
 			files = (
 				DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */,
 				DB0FC0331519183D008A9B54 /* Credits.rtf in Resources */,
+				DB1DC82A2601424D00C5A72C /* ColorImageOptions.xib in Resources */,
 				DB0FC0391519183D008A9B54 /* MainMenu.xib in Resources */,
 				DB0FC047151918F0008A9B54 /* Status.xib in Resources */,
 				DB2BC300151930D7009D9AED /* Preferences.xib in Resources */,
@@ -667,6 +678,7 @@
 			files = (
 				DB8A885F18E3297E007C79AF /* InfoPlist.strings in Resources */,
 				DB8A886018E3297E007C79AF /* Credits.rtf in Resources */,
+				DB1DC82B2601424D00C5A72C /* ColorImageOptions.xib in Resources */,
 				DB8A886118E3297E007C79AF /* MainMenu.xib in Resources */,
 				DB8A886218E3297E007C79AF /* Status.xib in Resources */,
 				DB8A886318E3297E007C79AF /* Preferences.xib in Resources */,
@@ -723,6 +735,7 @@
 				DB03625E224D009800DF7BA8 /* ImageBitmap.mm in Sources */,
 				DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */,
 				DB83FD771D4FE5DE009B3204 /* dmmalvar.mm in Sources */,
+				DB1DC8282601424D00C5A72C /* ColorImageOptionsController.mm in Sources */,
 				DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */,
 				DB17A30C15247965004F810A /* DataWindowController.mm in Sources */,
 				DB4E036E1835272400250EA4 /* dofft.mm in Sources */,
@@ -757,6 +770,7 @@
 				DB8A884D18E3297E007C79AF /* gluedCommands.mm in Sources */,
 				DB8A884E18E3297E007C79AF /* image_support.mm in Sources */,
 				DB8A884F18E3297E007C79AF /* image.mm in Sources */,
+				DB1DC8292601424D00C5A72C /* ColorImageOptionsController.mm in Sources */,
 				DB8A885018E3297E007C79AF /* dcrawx.mm in Sources */,
 				DBBCFA3418E380B000FEE3F6 /* gige.mm in Sources */,
 				DBF24A2D1D3B091700115E4E /* dmbilinear.mm in Sources */,

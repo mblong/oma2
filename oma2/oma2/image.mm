@@ -50,6 +50,7 @@ FileDecoderExtensions fileDecoderExtensions[] = {
     {{".CRW"},DCRAW},
     {{".JPG"},JPEG},
     {{".DNG"},JPEG},
+    {{".HIF"},JPEG},
     {{".HEIF"},JPEG},
     {{".HEIC"},JPEG},
 //    {{".png"},JPEG},

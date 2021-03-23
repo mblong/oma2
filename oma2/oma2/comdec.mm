@@ -255,6 +255,7 @@ ComDef   commands[] =    {
     {{"WARPARAM       "},	warpar_c},
     
     {{"X0             "},	x0_c},
+    {{"XCORRELATE     "},   xcorrelate},
     
     {{"Y0             "},	y0_c},
     

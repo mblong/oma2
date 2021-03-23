@@ -14,6 +14,8 @@
 
 
 int dofft(int n,char* args);
+int xcorrelate(int,char*);
+
 int is_power_2(int i);
 
 int FASTF(float xreal[],float ximag[], int *isize);

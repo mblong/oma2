@@ -31,6 +31,7 @@ int comdec(char*);
 @class DataWindowController;
 @class DrawingWindowController;
 @class CommandView;
+@class ColorImageOptionsController;
 
 @interface AppController : NSObject
 {
@@ -50,6 +51,7 @@ int comdec(char*);
 
 @property (strong) VariablesWindowController *variablesWindowController;
 @property (strong) PreferenceController *preferenceController;
+@property (strong) ColorImageOptionsController *colorImageOptionsController;
 @property (strong) IBOutlet CommandView *theCommands;
 @property (strong) IBOutlet NSWindow *theWindow;
 @property int tool;     // the tool selected in the status window, used in DataView

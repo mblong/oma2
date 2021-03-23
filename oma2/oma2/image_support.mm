@@ -76,6 +76,10 @@ void setUpUIData(){
     UIData.g_scale = 1.;
     UIData.b_scale = 1.;
     
+    UIData.redGamma = 1.;
+    UIData.greenGamma = 1.;
+    UIData.blueGamma = 1.;
+    
     UIData.alphaValue = 0.5;
     
     UIData.highlightSaturated = 0;

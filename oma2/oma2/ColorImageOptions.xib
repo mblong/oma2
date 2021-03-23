@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ColorImageOptionsController">
+            <connections>
+                <outlet property="blueGammaLabel" destination="kVB-hb-kpn" id="a4g-R1-RDD"/>
+                <outlet property="blueGammaSlideValue" destination="eZ3-Nk-OzP" id="mWK-oY-SOE"/>
+                <outlet property="blueMultiplierLabel" destination="Zt7-pH-KFw" id="ZGd-Sy-dHy"/>
+                <outlet property="blueSlideValue" destination="cA1-e7-gZ3" id="kbt-Fo-qeS"/>
+                <outlet property="greenGammaLabel" destination="hWr-7b-Dz0" id="lxU-1u-NV7"/>
+                <outlet property="greenGammaSlideValue" destination="NPD-ac-Czj" id="aIc-ZC-OPP"/>
+                <outlet property="greenMultiplierLabel" destination="WK2-U8-90B" id="2UI-nV-I57"/>
+                <outlet property="greenSlideValue" destination="Zhx-JN-Q1f" id="dLa-c5-pui"/>
+                <outlet property="lockGammaValue" destination="Dp7-qq-kaF" id="8NN-CM-yc3"/>
+                <outlet property="redGammaLabel" destination="89a-UF-uG7" id="5Ih-jD-m9f"/>
+                <outlet property="redGammaSlideValue" destination="jyl-0P-E55" id="Zus-4M-8fb"/>
+                <outlet property="redMultiplierLabel" destination="Kde-7X-PA5" id="FE6-42-vaH"/>
+                <outlet property="redSlideValue" destination="b6l-LH-zp3" id="lkJ-pT-IbY"/>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Color Image Options" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="1172" y="0.0" width="246" height="354"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="2135"/>
+            <view key="contentView" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="0.0" width="246" height="354"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <box fixedFrame="YES" title="Red Multiplier: 1.0" translatesAutoresizingMaskIntoConstraints="NO" id="Kde-7X-PA5">
+                        <rect key="frame" x="-3" y="302" width="252" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="Jo1-xO-OL6">
+                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b6l-LH-zp3">
+                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="j3Q-Ep-uDl">
+                                        <connections>
+                                            <action selector="setRedMultiplier:" target="-2" id="4sb-0Q-TVV"/>
+                                        </connections>
+                                    </sliderCell>
+                                </slider>
+                            </subviews>
+                        </view>
+                    </box>
+                    <box fixedFrame="YES" title="Green Multiplier: 1.0" translatesAutoresizingMaskIntoConstraints="NO" id="WK2-U8-90B">
+                        <rect key="frame" x="-3" y="254" width="252" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="axy-yu-3yp">
+                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zhx-JN-Q1f">
+                                    <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="dNm-jB-T7f"/>
+                                    <connections>
+                                        <action selector="setGreenMultiplier:" target="-2" id="KrF-Jy-BJ9"/>
+                                    </connections>
+                                </slider>
+                            </subviews>
+                        </view>
+                    </box>
+                    <box fixedFrame="YES" title="Blue Multiplier: 1.0" translatesAutoresizingMaskIntoConstraints="NO" id="Zt7-pH-KFw">
+                        <rect key="frame" x="-3" y="206" width="252" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="MqZ-4a-wkC">
+                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cA1-e7-gZ3">
+                                    <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="vtf-kV-Esj"/>
+                                    <connections>
+                                        <action selector="setBlueMultiplier:" target="-2" id="h3D-37-rNG"/>
+                                    </connections>
+                                </slider>
+                            </subviews>
+                        </view>
+                    </box>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bc4-KJ-XGh">
+                        <rect key="frame" x="183" y="179" width="58" height="27"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ag0-ei-9Wc">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="smallSystem"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="resetRGBmultipliers:" target="-2" id="8P3-fG-X8g"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dp7-qq-kaF">
+                        <rect key="frame" x="188" y="5" width="46" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Lock" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="uSq-hj-i6n">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="smallSystem"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="lockGammas:" target="-2" id="gER-qN-04p"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="byv-KS-uD8">
+                        <rect key="frame" x="0.0" y="179" width="96" height="27"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Multiply RGB" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZKp-tt-Uqn">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="smallSystem"/>
+                            <connections>
+                                <action selector="multiplyRGB:" target="-2" id="uWV-g2-eEg"/>
+                            </connections>
+                        </buttonCell>
+                    </button>
+                    <box fixedFrame="YES" title="Blue Gamma: 1.0" translatesAutoresizingMaskIntoConstraints="NO" id="kVB-hb-kpn">
+                        <rect key="frame" x="-3" y="20" width="252" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="II7-5R-7G5">
+                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eZ3-Nk-OzP">
+                                    <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="rVs-rU-tyu"/>
+                                    <connections>
+                                        <action selector="setBlueGamma:" target="-2" id="iKg-WC-r7B"/>
+                                    </connections>
+                                </slider>
+                            </subviews>
+                        </view>
+                    </box>
+                    <box fixedFrame="YES" title="Red Gamma: 1.0" translatesAutoresizingMaskIntoConstraints="NO" id="89a-UF-uG7">
+                        <rect key="frame" x="-3" y="116" width="252" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="Cuk-Xc-Ttz">
+                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jyl-0P-E55">
+                                    <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="ZUg-vG-AlY"/>
+                                    <connections>
+                                        <action selector="setRedGamma:" target="-2" id="pYo-js-793"/>
+                                    </connections>
+                                </slider>
+                            </subviews>
+                        </view>
+                    </box>
+                    <box fixedFrame="YES" title="Green Gamma: 1.0" translatesAutoresizingMaskIntoConstraints="NO" id="hWr-7b-Dz0">
+                        <rect key="frame" x="-3" y="68" width="252" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="GYY-mi-TNO">
+                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NPD-ac-Czj">
+                                    <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="n4l-qS-Ybb"/>
+                                    <connections>
+                                        <action selector="setGreenGamma:" target="-2" id="cBR-48-4nM"/>
+                                    </connections>
+                                </slider>
+                            </subviews>
+                        </view>
+                    </box>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Va-6Q-Aba">
+                        <rect key="frame" x="0.0" y="-3" width="102" height="27"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Apply Gamma" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="3tG-lA-ppg">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="smallSystem"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="applyGamma:" target="-2" id="UZX-bR-1er"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="77" y="239"/>
+        </window>
+        <box title="Blue Multiplier: 1.0" id="RfC-Md-mAw">
+            <rect key="frame" x="0.0" y="0.0" width="252" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <view key="contentView" id="ajM-eC-DmF">
+                <rect key="frame" x="3" y="3" width="246" height="26"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yfz-b3-Wi5">
+                        <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="KzC-kx-zif"/>
+                        <connections>
+                            <action selector="setBlueMultiplier:" target="-2" id="7TI-Ih-cGl"/>
+                        </connections>
+                    </slider>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="77" y="277"/>
+        </box>
+    </objects>
+</document>

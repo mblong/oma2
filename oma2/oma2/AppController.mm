@@ -16,7 +16,7 @@
 #import "DataView.h"
 #import "DrawingView.h"
 #import "CommandView.h"
-
+#import "ColorImageOptionsController.h"
 
 AppController   *appController;
 extern ImageBitmap iBitmap;
@@ -30,6 +30,7 @@ extern oma2UIData UIData;
 @synthesize tool;
 @synthesize preferenceController;
 @synthesize variablesWindowController;
+@synthesize colorImageOptionsController;
 @synthesize windowArray;
 //@synthesize last_return;
 
@@ -96,6 +97,13 @@ extern oma2UIData UIData;
     variables = getTempImagesString(variables);
 
     [variablesWindowController updateVariableList:variables.c_str()];
+}
+- (IBAction)showColorImageOptionsWindow:(id)sender {
+    if(!colorImageOptionsController){
+        colorImageOptionsController = [[ColorImageOptionsController alloc] initWithWindowNibName:@"ColorImageOptions"];
+    }
+    [colorImageOptionsController showWindow:self];
+
 }
 
 -(void) startVariablesWindow{

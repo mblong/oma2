@@ -8,6 +8,7 @@
 #include "ImageBitmap.h"
 
 ImageBitmap iBitmap;    // a global -- the bitmap for the iBuffer image
+
 extern oma2UIData  UIData;
 RGBColor color[256][8];
 
@@ -92,20 +93,56 @@ void ImageBitmap::operator=(Image im){
         pt_green = im.data + nchan*ntrack/3;
         pt_blue =  pt_green + nchan*ntrack/3;
         int k=0;
+        float r,g,b;
         
+        /*
+         if (r_gamma != 1.) {
+         r = *(point+k)/rmax;
+         *(ptr+n+1) = scale_pixval(rmax*r_scale*powf(r,1./r_gamma));
+         } else {
+         *(ptr+n+1) = scale_pixval(*(point+k)*r_scale);
+         }
+         
+         */
+        int saturated;
+        float rExp=1./UIData.redGamma;
+        float gExp=1./UIData.greenGamma;
+        float bExp=1./UIData.blueGamma;
+        float rmax=im.values[RMAX];
+        float gmax=im.values[GMAX];
+        float bmax=im.values[BMAX];
         
         for(i=0; i < ntrack/3; i++){
             for(j=0; j < nchan; j++){
-                int saturated = 0;
-                pindx = scale_pixval(*(im.data+k)*UIData.r_scale);
+                saturated = 0;
+                
+                if(UIData.redGamma != 1.){
+                    r = *(im.data+k)/rmax;
+                    pindx = scale_pixval(rmax*UIData.r_scale*pow(r,rExp));
+                }else{
+                    pindx = scale_pixval(*(im.data+k)*UIData.r_scale);
+                }
                 if(pindx == NCOLORS-1) saturated = 1;
                 *(pixdata+n++) = pindx;
                 *(intensity+m++) =pindx;
-                pindx = scale_pixval(*(pt_green+k)*UIData.g_scale);
+                
+                if(UIData.greenGamma != 1.){
+                    g = *(pt_green+k)/gmax;
+                    pindx = scale_pixval(gmax*UIData.g_scale*pow(g,gExp));
+                }else{
+                    pindx = scale_pixval(*(pt_green+k)*UIData.g_scale);
+                }
                 if(pindx == NCOLORS-1) saturated = 1;
                 *(pixdata+n++) = pindx;
                 *(intensity+m++) =pindx;
-                pindx = scale_pixval(*(pt_blue+k++)*UIData.b_scale);
+                
+                
+                if(UIData.blueGamma != 1.){
+                    b = *(pt_blue+k++)/bmax;
+                    pindx = scale_pixval(bmax*UIData.b_scale*pow(b,bExp));
+                }else{
+                    pindx = scale_pixval(*(pt_blue+k++)*UIData.b_scale);
+                }
                 if(pindx == NCOLORS-1) saturated = 1;
                 *(pixdata+n++) = pindx;
                 *(intensity+m++) =pindx;
@@ -116,7 +153,6 @@ void ImageBitmap::operator=(Image im){
                     *(pixdata+n-1)= UIData.highlightSaturatedBlue;
                     
                 }
-                
             }
         }
     } else {
