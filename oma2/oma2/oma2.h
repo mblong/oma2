@@ -239,17 +239,12 @@ typedef struct {
     float greenGamma;
     float blueGamma;
     
-    /*
-	settings[4] = detector;
-	settings[8] = showselection;
-	settings[9] = docalcs;
-	
-	settings[11] = dlen;
-	settings[12] = dhi;
-	settings[13] = c_font;
-	settings[14] = s_font;
-	settings[15] = showruler;
-    */
+    float windowScaleFactor;
+    
+    int demosaic;
+    int subtractBlack;
+    int applyWhiteBalance;
+    float applyGamma;
 
     
     

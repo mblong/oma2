@@ -675,8 +675,8 @@ extern oma2UIData UIData;
     // window_placement needs to have the right position and size
     
     // this is for possibly scaling down images that won't fit on screen
-    int windowHeight = iBitmap.getheight()*windowScaleFactor;
-    int windowWidth = iBitmap.getwidth()*windowScaleFactor;
+    int windowHeight = iBitmap.getheight()*UIData.windowScaleFactor;
+    int windowWidth = iBitmap.getwidth()*UIData.windowScaleFactor;
     float scaleWidth = (float)windowWidth/(float)screenRect.size.width;
     // leave a little space at the bottom of the sreen
     float scaleHeight = (float)windowHeight/(float)(screenRect.size.height-2*TITLEBAR_HEIGHT);

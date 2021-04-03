@@ -62,9 +62,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zhx-JN-Q1f">
-                                    <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="dNm-jB-T7f"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="dNm-jB-T7f"/>
                                     <connections>
                                         <action selector="setGreenMultiplier:" target="-2" id="KrF-Jy-BJ9"/>
                                     </connections>
@@ -80,9 +80,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cA1-e7-gZ3">
-                                    <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="vtf-kV-Esj"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="vtf-kV-Esj"/>
                                     <connections>
                                         <action selector="setBlueMultiplier:" target="-2" id="h3D-37-rNG"/>
                                     </connections>
@@ -131,9 +131,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eZ3-Nk-OzP">
-                                    <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="rVs-rU-tyu"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="rVs-rU-tyu"/>
                                     <connections>
                                         <action selector="setBlueGamma:" target="-2" id="iKg-WC-r7B"/>
                                     </connections>
@@ -149,9 +149,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jyl-0P-E55">
-                                    <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="ZUg-vG-AlY"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="ZUg-vG-AlY"/>
                                     <connections>
                                         <action selector="setRedGamma:" target="-2" id="pYo-js-793"/>
                                     </connections>
@@ -167,9 +167,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NPD-ac-Czj">
-                                    <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="n4l-qS-Ybb"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="n4l-qS-Ybb"/>
                                     <connections>
                                         <action selector="setGreenGamma:" target="-2" id="cBR-48-4nM"/>
                                     </connections>
@@ -186,6 +186,17 @@
                         </buttonCell>
                         <connections>
                             <action selector="applyGamma:" target="-2" id="UZX-bR-1er"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J7j-6W-pwr">
+                        <rect key="frame" x="117" y="-3" width="58" height="27"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rwj-dn-qCF">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="smallSystem"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="resetGamma:" target="-2" id="w6B-kO-KEO"/>
                         </connections>
                     </button>
                 </subviews>

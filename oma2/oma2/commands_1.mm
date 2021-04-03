@@ -4104,18 +4104,18 @@ int y0_c(int n,char* args)
 /* ********** */
 
 int pixSize_c(int n,char* args){
-    extern float windowScaleFactor;
+    //extern float windowScaleFactor;
     if(*args == 0){
-        printf("Pixel scaling is %.2f\n",windowScaleFactor);
+        printf("Pixel scaling is %.2f\n",UIData.windowScaleFactor);
         return NO_ERR;
     }
-    int narg = (sscanf(args,"%f",&windowScaleFactor));
-    if(narg != 1 )windowScaleFactor = 1.;
-    if (windowScaleFactor == 0.) {
-        windowScaleFactor = 1.;
+    int narg = (sscanf(args,"%f",&UIData.windowScaleFactor));
+    if(narg != 1 )UIData.windowScaleFactor = 1.;
+    if (UIData.windowScaleFactor == 0.) {
+        UIData.windowScaleFactor = 1.;
     }
-    if (windowScaleFactor < 0.) {
-        windowScaleFactor = -1./windowScaleFactor;
+    if (UIData.windowScaleFactor < 0.) {
+        UIData.windowScaleFactor = -1./UIData.windowScaleFactor;
     }
     return NO_ERR;
 }
@@ -5496,6 +5496,54 @@ int demosaic_c(int n,char* args){
     
     return NO_ERR;
 }
+/*----------------------------------------------------------------*/
+
+/* RAWPARAMS [demosaic subtractBlack applyWhiteBalance, applyGamma]
+    Controlls whether or not additional processing is done when the libRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, all four arguments must be specified and corrections will be done according to the specified values. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing.
+ */
+
+int rawparams_c(int n,char* args){
+    int a,b,c;
+    float d;
+    n = sscanf(args,"%d %d %d %f",&a,&b,&c,&d);
+    switch(n){
+        case -1:
+            printf("Raw decoding parameters are demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %f\n",
+                   UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma  );
+            return NO_ERR;
+        case 1:
+            if(a){
+                UIData.demosaic=1;
+                UIData.subtractBlack=2;
+                UIData.applyWhiteBalance=1;
+                UIData.applyGamma=2.2;
+                printf("Raw decoding parameters set to demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %f\n",
+                       UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma);
+                return NO_ERR;
+            } else {
+                UIData.demosaic=0;
+                UIData.subtractBlack=0;
+                UIData.applyWhiteBalance=0;
+                UIData.applyGamma=1.0;
+                printf("Raw decoding parameters set to demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %f\n",
+                       UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma);
+                return NO_ERR;
+                
+            }
+        case 4:
+            UIData.demosaic=a;
+            UIData.subtractBlack=b;
+            UIData.applyWhiteBalance=c;
+            UIData.applyGamma=d;
+            printf("Raw decoding parameters set to demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %d\n",
+                   UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma);
+            return NO_ERR;
+    }
+    beep();
+    printf("Must have 0, 1, or 4 arguments.\n");
+    return CMND_ERR;
+}
+
 
 /* ************************* */
 

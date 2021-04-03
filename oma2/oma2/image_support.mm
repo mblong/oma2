@@ -93,6 +93,15 @@ void setUpUIData(){
     UIData.displaySaturateValue = 1.; // when Scale is selected, cmax will be data max * displaySaturateValue
 
     UIData.autoFloatFlag=1;
+    
+    UIData.windowScaleFactor=1.;
+ 
+    UIData.demosaic=0;
+    UIData.subtractBlack=0;
+    UIData.applyWhiteBalance=0;
+    UIData.applyGamma=1.0;
+
+    
 }
 
 int two_to_four(DATAWORD* dpt, int num, TWOBYTE scale)
@@ -447,6 +456,34 @@ int loadprefs(char* name)
             // set these default values
             UIData.displaySaturateValue = 1.0; // when Scale is selected, cmax will be data max * displaySaturateValue
             missingBytes -= sizeof(float);
+        }
+        
+        if(missingBytes >= sizeof(int)){
+            // set these default values
+            UIData.autoFloatFlag = 1; // determines whether or not a variable is set to float when an assignment with a decimal point is made
+            missingBytes -= sizeof(int);
+        }
+        if(missingBytes >= 3*sizeof(float)){
+            // set these default values
+            UIData.redGamma = 1.;
+            UIData.greenGamma = 1.;
+            UIData.blueGamma = 1.;
+            missingBytes -= 3*sizeof(float);
+        }
+
+        if(missingBytes >= sizeof(float)){
+            // set these default values
+            UIData.windowScaleFactor = 1.;
+             missingBytes -= sizeof(float);
+        }
+
+        if(missingBytes >= 3*sizeof(int)+sizeof(float)){
+            // set these default values
+            UIData.demosaic=0;
+            UIData.subtractBlack=0;
+            UIData.applyWhiteBalance=0;
+            UIData.applyGamma=0;
+             missingBytes -= 3*sizeof(int)+sizeof(float);
         }
 
         return NO_ERR;

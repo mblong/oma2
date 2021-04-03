@@ -18,6 +18,36 @@ extern AppController *appController;
 
 - (void)windowDidLoad {
     [super windowDidLoad];
+    [_redGammaSlideValue setFloatValue: 2*log(UIData.redGamma)/log(CSF)];
+    [_greenGammaSlideValue setFloatValue: 2*log(UIData.greenGamma)/log(CSF)];
+    [_blueGammaSlideValue setFloatValue: 2*log(UIData.blueGamma)/log(CSF)];
+    [_redGammaLabel setTitle:
+     [NSString stringWithFormat: @"Red Gamma: %.2f",UIData.redGamma]];
+    [_redGammaLabel display];
+    [_greenGammaLabel setTitle:
+     [NSString stringWithFormat: @"Green Gamma: %.2f",UIData.greenGamma]];
+    [_greenGammaLabel display];
+    [_blueGammaLabel setTitle:
+     [NSString stringWithFormat: @"Blue Gamma: %.2f",UIData.blueGamma]];
+    [_blueGammaLabel display];
+
+    [_redSlideValue setFloatValue: 2*log(UIData.r_scale)/log(CSF)];
+    [_greenSlideValue setFloatValue: 2*log(UIData.g_scale)/log(CSF)];
+    [_blueSlideValue setFloatValue: 2*log(UIData.b_scale)/log(CSF)];
+    
+    [_redMultiplierLabel setTitle:
+     [NSString stringWithFormat: @"Blue Multiplier: %.2f",UIData.r_scale]];
+    [_redMultiplierLabel display];
+    [_greenMultiplierLabel setTitle:
+     [NSString stringWithFormat: @"Blue Multiplier: %.2f",UIData.g_scale]];
+    [_greenMultiplierLabel display];
+    [_blueMultiplierLabel setTitle:
+     [NSString stringWithFormat: @"Blue Multiplier: %.2f",UIData.b_scale]];
+    [_blueMultiplierLabel display];
+
+
+
+
     
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
@@ -187,6 +217,30 @@ extern AppController *appController;
     
 }
 - (IBAction)applyGamma:(id)sender {
+    char values[128];
+    sprintf(values,"%f %f %f", 1./UIData.redGamma,1./UIData.greenGamma,1./UIData.blueGamma );
+    powRGB_c(0, values);
+    [self resetGamma:sender];
+}
+- (IBAction)resetGamma:(id)sender {
+    [_redGammaSlideValue setFloatValue: 0.0];
+    UIData.redGamma = 1.0;
+    [_greenGammaSlideValue setFloatValue: 0.0];
+    UIData.greenGamma = 1.0;
+    [_blueGammaSlideValue setFloatValue: 0.0];
+    UIData.blueGamma = 1.0;
+    
+    [_redGammaLabel setTitle:
+     [NSString stringWithFormat: @"Red Gamma: %.2f",UIData.redGamma]];
+    [_redGammaLabel display];
+    [_greenGammaLabel setTitle:
+     [NSString stringWithFormat: @"Green Gamma: %.2f",UIData.greenGamma]];
+    [_greenGammaLabel display];
+    [_blueGammaLabel setTitle:
+     [NSString stringWithFormat: @"Blue Gamma: %.2f",UIData.blueGamma]];
+    [_blueGammaLabel display];
+
+    [appController updateDataWindow];
 }
 
 @end

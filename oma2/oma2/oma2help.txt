@@ -613,6 +613,9 @@ RULER [numpix] [numunits] [unit name]
 REMAP Value1 Value2 [Value3]
 	With two arguments, every occurence of Value1 in the current image is replaced with Value2. With three arguments, values in the range from Value1 to Value2 are set to Value3.
 
+RAWPARAMS [demosaic subtractBlack applyWhiteBalance, applyGamma]
+    Controlls whether or not additional processing is done when the libRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, all four arguments must be specified and corrections will be done according to the specified values. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing.
+
 SAVEFILE <filename>
 	Saves the current data buffer to the specified file.
 

@@ -176,6 +176,7 @@ int roundoff_c(int,char*);
 int rows_c(int,char*);
 int ruler_c(int, char*);
 int remap_c(int, char*);
+int rawparams_c(int,char*);
 
 int setcminmax_c(int,char*);
 int size_c(int,char*);
