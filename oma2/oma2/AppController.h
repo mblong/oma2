@@ -80,6 +80,7 @@ int comdec(char*);
 -(void) eraseWindow:(int) n;
 -(void) dataWindowClosing;
 -(void) updateDataWindow;
+-(void) updateModifiedDataWindow;
 -(void) updateVariablesWindow;
 -(void) updateStatusWindow;
 -(void) startVariablesWindow;

@@ -8770,7 +8770,7 @@ int dcrawGlue(char* name, int thecolor, Image* im){
 }
 // -- oma
 
- */
+ 
 // -- oma
 #else
 extern oma2UIData UIData;

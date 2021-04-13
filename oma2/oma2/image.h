@@ -103,6 +103,8 @@ public:
     
     int width();                ///< image width
     int height();               ///< image height -- for color images this is pixHeight/3
+    int rows();                 ///< returns the number of rows in the current image (height)
+    int cols();                 ///< returns the number of columns in the current image (width)
     
     int err();                  ///< return the error code (= 0 if no error)
     void errclear();            ///< clear the image error code
@@ -120,9 +122,7 @@ public:
     float* getextra();          ///< returns a copy of the extra data array
     void setExtra(float*,int);  ///< Loads the extra buffer with the specified number of floating point values
     int getExtraSize();         ///< returns the size of the extra data array
-    int rows();                 ///< returns the number of rows in the current image (height)
-    int cols();                 ///< returns the number of columns in the current image (width)
-    void setspecs(int*);        ///< sets the image specs array
+     void setspecs(int*);        ///< sets the image specs array
     DATAWORD* getvalues();      ///< returns a copy of the image values array
     DATAWORD min();             ///< returns the image min
     DATAWORD max();             ///< returns the image max

@@ -36,19 +36,15 @@ extern AppController *appController;
     [_blueSlideValue setFloatValue: 2*log(UIData.b_scale)/log(CSF)];
     
     [_redMultiplierLabel setTitle:
-     [NSString stringWithFormat: @"Blue Multiplier: %.2f",UIData.r_scale]];
+     [NSString stringWithFormat: @"Red Multiplier: %.2f",UIData.r_scale]];
     [_redMultiplierLabel display];
     [_greenMultiplierLabel setTitle:
-     [NSString stringWithFormat: @"Blue Multiplier: %.2f",UIData.g_scale]];
+     [NSString stringWithFormat: @"Green Multiplier: %.2f",UIData.g_scale]];
     [_greenMultiplierLabel display];
     [_blueMultiplierLabel setTitle:
      [NSString stringWithFormat: @"Blue Multiplier: %.2f",UIData.b_scale]];
     [_blueMultiplierLabel display];
 
-
-
-
-    
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
@@ -67,10 +63,10 @@ extern AppController *appController;
     UIData.b_scale = 1.0;
     
     [_redMultiplierLabel setTitle:
-     [NSString stringWithFormat: @"Blue Multiplier: %.2f",UIData.r_scale]];
+     [NSString stringWithFormat: @"Red Multiplier: %.2f",UIData.r_scale]];
     [_redMultiplierLabel display];
     [_greenMultiplierLabel setTitle:
-     [NSString stringWithFormat: @"Blue Multiplier: %.2f",UIData.g_scale]];
+     [NSString stringWithFormat: @"Green Multiplier: %.2f",UIData.g_scale]];
     [_greenMultiplierLabel display];
     [_blueMultiplierLabel setTitle:
      [NSString stringWithFormat: @"Blue Multiplier: %.2f",UIData.b_scale]];

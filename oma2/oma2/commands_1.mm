@@ -947,6 +947,163 @@ int rgb2color_c(int n,char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
+/*
+ RGB2HSV
+    Convert the current color image to HSV, scaled from 0-255.
+ */
+// https://www.rapidtables.com/convert/color/rgb-to-hsv.html
+
+int rgb2hsv_c(int n,char* args){
+    if(!iBuffer.isColor()){
+        beep();
+        printf("Current image is not color.\n");
+        return CMND_ERR;
+    }
+    DATAWORD max,min,r,g,b,cmin,cmax,diff,h,s,v;
+    int width = iBuffer.width();
+    int height = iBuffer.height();
+    max = iBuffer.max();
+    min = iBuffer.min();
+    //float* values=iBuffer.getvalues();
+    
+    Image hsvImage(iBuffer.rows(),iBuffer.cols());
+    hsvImage.copyABD(iBuffer);
+     for (int i=0; i<height;i++){
+        for (int j=0; j<width;j++){
+            // map to [0,1]
+            r=(iBuffer.getpix(i,j)-min)/max;
+            g=(iBuffer.getpix(i+height,j)-min)/max;
+            b=(iBuffer.getpix(i+2*height,j)-min)/max;
+            cmax=MAX(r,MAX(g,b));
+            cmin=MIN(r,MIN(g,b));
+            diff=cmax-cmin;
+            if(cmax == cmin )
+                h=0.;
+            else if(cmax == r)
+                //h = fmod((60 * ((g - b) / diff) + 360), 360.);
+                h = 60. * fmod((g - b) / diff + 6. , 6.);
+            else if (cmax == g)
+                //h = fmod((60 * ((b - r) / diff) + 120), 360.);
+                h = 60. * ((b - r) / diff + 2.);
+            else
+                //h = fmod((60 * ((r - g) / diff) + 240), 360.);
+                h = 60. * ((r - g) / diff + 4.);
+            if (cmax == 0)
+                s = 0;
+            else
+                s = (diff / cmax) * 255;
+            v = cmax * 255;
+            hsvImage.setpix(i, j, h*255./360.);
+            hsvImage.setpix(i+height, j, s);
+            hsvImage.setpix(i+2*height, j, v);
+        }
+    }
+    iBuffer.free();     // release the old data
+    iBuffer = hsvImage;   // this is the new data
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+
+    return NO_ERR;
+}
+
+/*
+ HSV2RGB
+    Convert the current HSV image to RGB, scaled from 0-255.
+ */
+// https://www.rapidtables.com/convert/color/rgb-to-hsv.html
+
+int hsv2rgb_c(int n,char* args){
+    if(!iBuffer.isColor()){
+        beep();
+        printf("Current image is not three-component.\n");
+        return CMND_ERR;
+    }
+    DATAWORD c,x,m,r,g,b,h,s,v;
+    int width = iBuffer.width();
+    int height = iBuffer.height();
+    
+    Image rgbImage(iBuffer.rows(),iBuffer.cols());
+    rgbImage.copyABD(iBuffer);
+     for (int i=0; i<height;i++){
+        for (int j=0; j<width;j++){
+            h=iBuffer.getpix(i,j)*360./255.;
+            s=iBuffer.getpix(i+height,j)/255.;
+            v=iBuffer.getpix(i+2*height,j)/255.;
+            c=v*s;
+            x=c*(1. - fabs(fmod(h/60.,2.) - 1.));
+            m=v-c;
+            if(h < 60.){
+                r = c;
+                g = x;
+                b = 0;
+            } else if (h < 120.){
+                r = x;
+                g = c;
+                b = 0;
+            } else if (h < 180.){
+                r = 0;
+                g = c;
+                b = x;
+            }  else if (h < 240.){
+                r = 0;
+                g = x;
+                b = c;
+            }  else if (h < 300.){
+                r = x;
+                g = 0;
+                b = c;
+            }  else {
+                r = c;
+                g = 0;
+                b = x;
+            }
+            rgbImage.setpix(i, j, (r+m)*255.);
+            rgbImage.setpix(i+height, j, (g+m)*255.);
+            rgbImage.setpix(i+2*height, j, (b+m)*255.);
+        }
+    }
+    iBuffer.free();     // release the old data
+    iBuffer = rgbImage;   // this is the new data
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+
+    return NO_ERR;
+}
+
+/*
+ BITMAP2RGB
+    Convert the current bitmap image to an RGB color image. This will result in 8-bit integer data as the current image.
+ */
+
+int bitmap2rgb_c(int n,char* args){
+    if(iBitmap.getwidth() == 0 || iBitmap.getheight() == 0){
+        beep();
+        printf("There is no valid bitmap to convert.\n");
+        return CMND_ERR;
+    }
+    
+    Image rgbImage(iBitmap.getheight()*3,iBitmap.getwidth());
+    iBuffer.free();     // release the old data
+    iBuffer = rgbImage;
+    int width = iBuffer.width();
+    int height = iBuffer.height()/3;
+    unsigned char* bitmap = iBitmap.getpixdata();
+
+     for (int i=0; i<height;i++){
+        for (int j=0; j<width;j++){
+            iBuffer.setpix(i, j, *bitmap++);
+            iBuffer.setpix(i+height, j, *bitmap++);
+            iBuffer.setpix(i+2*height, j, *bitmap++);
+        }
+    }
+    colorflag_c(1, (char*)"1" );
+    iBuffer.getmaxx(PRINT_RESULT);
+    update_UI();
+
+    return NO_ERR;
+}
 
 /* ********** */
 

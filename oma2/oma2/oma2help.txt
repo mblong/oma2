@@ -94,6 +94,9 @@ BLEED thresholdCount fraction
 
  BAYERFLAG [bayerFlagValue]
 	Sets the value of the bayerFlag, which indicates if the FINDBAD command should treat the image as an undemosaiced color image. If no argument is given, the current state of the bayerFlag is printed. See also FINDBAD.
+
+ BITMAP2RGB
+    Convert the current bitmap image to an RGB color image. This will result in 8-bit integer data as the current image.
 	
 CALCULATE
 	Print calculations on the rectangle specified with the RECTANGLE command or with the rectangle tools. The average, rms, # of points, and the x and y "center of mass" are printed. The mean, rms, centroid_X and centroid_Y are passed to the command_return_variables.
@@ -169,7 +172,10 @@ C2RGB
 
 CVALIGN tempImageName [maxIterations terminationEpsilon warpMode floorValue]
  Align the specified temporary image with the one in the current buffer. The default values are maxIterations=1000 terminationEpsilon=1E-6  warpMode=0 (Euclidean matching; warpMode!=0 uses Homographic matching). If the optional floorValue is specified, the images used for finding the mapping will have values < floorValue set to floorValue and the new minimum set to zero. The floorValue does not change the temporary image and the returned image does not have its floor reset. oma2cam command -- requires opencv libraries.
-
+ 
+CVDENOISE h_luminance h_color [search_window_size block_size]
+ Use the opencv fastNlMeansDenoisingColored function to denoise the current image. The 8-bit data in the current display window is used as input so the result will also be 8-bit data scaled from 0 - 255. oma2cam command -- requires opencv libraries.
+ 
 DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
 
@@ -423,6 +429,9 @@ HDRNUMGET
 HOBJSETTINGS <decodeFlag> <demosaicSetting> <clearBadPixelsFlag>
 	With no arguments, this command gives information on how .hobj files will be read in. If arguments are given, the decodeFlag, demosaicSetting, and clearBadPixelsFlag are specified. A nonzero decodeFlag will cause automatic decoding of .hobj files when they are read in. The demosaicSetting has the following values/meanings: 0 = no demosaicing done (appropriate for monochrome images); 1 = treat as a color image and demosaic using DOC2RGB 0 1 1 2; 2 = treat as a color image and demosaic using the bilinear algorithm with the red pixel at 0,0; 3 = treat as a color image and demosaic using the Malvar algorithm with the red pixel at 0,0. If the clearBadPixelsFlag is set, bad pixels previously specified with FINDBAD or READBAD will be set to the average of their eight nearest neighbors (of the same color -- assumes this is a raw color image).
 
+ HSV2RGB
+    Convert the current HSV image to RGB. If the HSV image is in the range 0-255, the RGB image will also be in the range 0-255. All calculations are done in floating point.
+
 IF condition
 	If condition evaluates to a non-zero value, the commands following the IF are executed. However, if the condition is zero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators < (less than), > (greater than), others to come....
 
@@ -580,6 +589,9 @@ RGB2GREY
 
 RGB2COLOR colorNumber
 	Get the red, green, or blue channel of the current color image for colorNumber = 1, 2, or 3.
+
+ RGB2HSV
+    Convert the current color image to HSV, scaled from 0-255 (floating point). Ordering is HSV rather than RGB. Use the *RGB command to change various components.
 
 RMACRO [n m]
 	Starts executing commands in the macro buffer with %d being replaced first by value n. Subsequently, n is incremented by the amount specified in the INCMACRO command (default is 1). If the new numeric value is equal to m, the macro will be executed again. Menu items can be selected and the appropriate commands executed during macros. Commands typed during the execution of a macro will be echoed to the terminal but not performed. To stop a macro during execution type "cmd ." (hold down the apple key and type ".")

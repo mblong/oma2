@@ -752,6 +752,15 @@ extern oma2UIData UIData;
     //[[windowArray lastObject] showWindow:self];
 }
 
+-(void) updateModifiedDataWindow{
+    // call this as needed when redisplaying the current image from events in the status window
+    //iBitmap = iBuffer;
+    [[windowArray lastObject] updateImage];
+    // this next is not needed?
+    //[[windowArray lastObject] showWindow:self];
+}
+
+
 -(void) setAlpha: (float) newAlpha{
    
     NSWindow* activekey = [NSApp keyWindow];

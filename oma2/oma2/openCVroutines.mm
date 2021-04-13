@@ -391,4 +391,37 @@ int cvAlign_q(int n,char* args){
     return NO_ERR;
 }
 
+/*
+CVDENOISE h_luminance h_color [search_window_size block_size]
+ Use the opencv fastNlMeansDenoisingColored function to denoise the current image. The 8-bit data in the current display window is used as input so the result will also be 8-bit data scaled from 0 - 255.
+ 
+*/
+int cvDenoise_q(int n,char* args){
+    using namespace cv;
+    
+    int searchSize=21;
+    int blockSize=7;
+    float hColor=3,hLuminance=3;
+    Mat src;
+    
+    int nargs=sscanf(args,"%f %f %d %d",&hLuminance, &hColor, &searchSize, &blockSize);
+    if(nargs < 2){
+        beep();
+        printf("Must specify hLuminance and hColor.\n");
+        return CMND_ERR;
+    }
+    
+    src = Mat(iBitmap.getheight(), iBitmap.getwidth(), CV_8UC3, iBitmap.getpixdata());
+    // cvtColor(frame, frame, COLOR_RGB2BGR);   // not needed?
+    
+    fastNlMeansDenoisingColored(src,src,hLuminance,hColor,blockSize,searchSize);
+
+    //[appController updateModifiedDataWindow];
+    bitmap2rgb_c(0,(char*)null);
+    
+    
+    return NO_ERR;
+}
+
+
 #endif

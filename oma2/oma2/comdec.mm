@@ -40,6 +40,8 @@ ComDef   commands[] =    {
     {{"BOUNDBOX       "},   boundbox_c},
     {{"BLEED          "},   bleed_c},
     {{"BAYERFLAG      "},   bayerFlag_c},
+    {{"BITMAP2RGB     "},   bitmap2rgb_c},
+    
     
     {{"CALCULATE      "},	calc_cmd_c},
     {{"CALCALL        "},	calcall_c},
@@ -64,6 +66,7 @@ ComDef   commands[] =    {
 #ifdef OPENCV_ROUTINES
     {{"CVHOUGHCIRCLES "},   cvHoughCircles_q},
     {{"CVALIGN        "},   cvAlign_q},
+    {{"CVDENOISE      "},   cvDenoise_q},
 #endif
     
     {{"DISPLAY        "},	display},
@@ -133,6 +136,7 @@ ComDef   commands[] =    {
     {{"HDRACGET       "},	hdrAcget_c},
     {{"HDRNUMGET      "},	hdrNumget_c},
     {{"HOBJSETTINGS   "},	hobjSettings_c},
+    {{"HSV2RGB        "},   hsv2rgb_c},
     
     {{"IF             "},	ifcmnd},
     {{"IFNOT          "},	ifnotcmnd},
@@ -203,6 +207,7 @@ ComDef   commands[] =    {
     {{"RULER          "},	ruler_c},
     {{"REMAP          "},   remap_c},
     {{"RAWPARAMS      "},   rawparams_c},
+    {{"RGB2HSV        "},   rgb2hsv_c},
     
     
     

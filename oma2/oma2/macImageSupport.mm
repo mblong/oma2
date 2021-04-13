@@ -99,3 +99,12 @@ int savePdf(char* filename)
  NSUInteger numberOfBitsPerPixel = CGImageGetBitsPerPixel(imageRef);
  NSLog(@"Number Of Bits Per Pixel %lu", (unsigned long)numberOfBitsPerPixel);
  */
+
+int currentImageIsData(){
+    
+    return 0;
+}
+
+void updateCurrentDataWindow(){
+    
+}
