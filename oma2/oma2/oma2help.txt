@@ -116,8 +116,8 @@ CLIPFBOTTOM clip_fraction
 CLIPFRACTION fraction
 	Clip data at a fraction of the maximum value. Fraction is a real argument.
 
-CROP
-	Use the current rectangle to crop the image in the buffer.
+CROP [x0 y0 x1 y1]
+     With no arguments, use the current rectangle to crop the image in the buffer. If four arguments are given, the current rectangele is redefined and used for cropping. The command history buffer includes the rectangle bounds in either case.
 
 COLUMNS n
 	Resets the number of columns in the current image to n.
@@ -506,6 +506,9 @@ LTEMPIMAGE
 LN
 	Returns the natural log of the current image.
 
+LAST Ncommands
+    Print the last Ncommands out to the terminal. Could be used to save interactive commands to a macro. The LAST command is not saved to the command history buffer.
+
 MACRO [n m]
 	Like "RMACRO [n m]" except that printing of intermediate output is automatically suppressed.
 
@@ -728,6 +731,9 @@ SCATTER [sizeX sizeY minX maxX minY maxY]
 
 SETALPHA alphaValue
 	Sets the alpha channel of the current data window or image window to alphaValue, where 0 <= alphaValue <=1. For example, an alphaValue of .25 would result in window transparency of 75%.
+
+ SATURATE factor
+    Increase the color saturation by the specified factor.
 
 SQLADD
 	Adds the current displayed image to the database table previously opened. This could be a SQLite or mySQL database.  See also MYSQSERVER and SQLNEW [qtoma command]

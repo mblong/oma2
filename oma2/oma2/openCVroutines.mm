@@ -23,6 +23,8 @@ static bool videoOpened = 0;
 
 extern ImageBitmap iBitmap;
 
+extern int printMax;
+
 int vidAddFrame_q(int n,char* args){
     using namespace cv;
 
@@ -138,7 +140,7 @@ int cvHoughCircles_q(int n,char* args){
         *dataPtr++ = *byteptr++;
     }
     delete[] bits;
-    iBuffer.getmaxx(PRINT_RESULT);
+    iBuffer.getmaxx(printMax);
     update_UI();
     return NO_ERR;
 
@@ -384,7 +386,7 @@ int cvAlign_q(int n,char* args){
     
     iBuffer.free();
     iBuffer=newIm;
-    iBuffer.getmaxx(PRINT_RESULT);
+    iBuffer.getmaxx(printMax);
     delete[] bits;
     delete[] bits2;
     update_UI();

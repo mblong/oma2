@@ -8863,14 +8863,14 @@ int dcrawGlue(char* name, int thecolor, Image* im){
         values[RED_MULT] = redMult;
         values[GREEN_MULT] = greenMult;
         values[BLUE_MULT] = blueMult;
-        user_variables[0].ivalue = user_variables[0].fvalue = redMult;
-        user_variables[0].is_float = 1;
-        user_variables[1].ivalue = user_variables[1].fvalue = greenMult;
-        user_variables[1].is_float = 1;
-        user_variables[2].ivalue = user_variables[2].fvalue = blueMult;
+        user_variables[2].ivalue = user_variables[2].fvalue = redMult;
         user_variables[2].is_float = 1;
-        user_variables[3].ivalue = user_variables[3].fvalue = black;
-        user_variables[3].is_float = 0;
+        user_variables[3].ivalue = user_variables[3].fvalue = greenMult;
+        user_variables[3].is_float = 1;
+        user_variables[4].ivalue = user_variables[4].fvalue = blueMult;
+        user_variables[4].is_float = 1;
+        user_variables[5].ivalue = user_variables[5].fvalue = black;
+        user_variables[5].is_float = 0;
 
         // this will allocate memory
         im->setspecs(specs);

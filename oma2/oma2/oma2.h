@@ -33,6 +33,8 @@
 
 #define NUMLABELS 6             // number of lines for image labels
 
+#define HISTORY_BUFFER_SIZE 50000
+
 /* Define the indices to important locations in the header */
 
 #define NMAX    1

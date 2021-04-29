@@ -3,6 +3,7 @@
 
 extern char reply[1024];
 extern oma2UIData UIData;
+extern int printMax;
 
 /*
  These are general purpose C functions that may be used anywhere.
@@ -431,7 +432,7 @@ int loadprefs(char* name)
         thespecs[IS_COLOR] = UIData.iscolor;
         thespecs[Y0] = UIData.y0;
         iBuffer.setspecs(thespecs);
-        //iBuffer.getmaxx(PRINT_RESULT);
+        //iBuffer.getmaxx(printMax);
         
         free(thespecs);
         long missingBytes = nbytes - HEADLEN - actualCount;
@@ -1131,7 +1132,7 @@ int readBinary(char* filename,Image* theImage, int bin_rows, int bin_cols,
     //iBuffer.free();     // release the old data
     *theImage = newImage;   // this is the new data
     
-    theImage->getmaxx(PRINT_RESULT);
+    theImage->getmaxx(printMax);
     update_UI();
     
     return NO_ERR;
@@ -1190,7 +1191,7 @@ int readCsv(char* filename,Image* theImage){
     
     theImage->free();     // release the old data
     *theImage = newIm;   // this is the new data
-    theImage->getmaxx(PRINT_RESULT);
+    theImage->getmaxx(printMax);
     update_UI();
 
     return NO_ERR;
@@ -1322,7 +1323,7 @@ int readHobj(char* filename,Image* theImage){
             
     }
             
-    theImage->getmaxx(PRINT_RESULT);
+    theImage->getmaxx(printMax);
     update_UI();
     
     

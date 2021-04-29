@@ -13,6 +13,7 @@ extern oma2UIData UIData;
 extern Image  iTempImages[];
 extern int numberNamedTempImages;
 extern Variable namedTempImages[];
+extern int printMax;
 
 
 // Globals used by commands in the old oma
@@ -462,7 +463,7 @@ int block_g(int n,char* args){
         err = block( n, index);
     
     moveOMAtoOMA2();
-    iBuffer.getmaxx(PRINT_RESULT);
+    iBuffer.getmaxx(printMax);
     update_UI();
     return err;
 }
@@ -667,7 +668,7 @@ int cyl2_g(int n,char* args){
     err = Cyl2( n, index);
     
     moveOMAtoOMA2();
-    iBuffer.getmaxx(PRINT_RESULT);
+    iBuffer.getmaxx(printMax);
     update_UI();
     return err;
 }
@@ -756,7 +757,7 @@ int kwabel_g(int n, char* args){
     err = kwabel(n);
     
     moveOMAtoOMA2();
-    iBuffer.getmaxx(PRINT_RESULT);
+    iBuffer.getmaxx(printMax);
     update_UI();
     return err;
 
@@ -864,7 +865,7 @@ int abelinv_g(int n, char* args){
     err = abelinv(n,index);
     
     moveOMAtoOMA2();
-    iBuffer.getmaxx(PRINT_RESULT);
+    iBuffer.getmaxx(printMax);
     update_UI();
     return err;
 
@@ -1015,7 +1016,7 @@ int abelprep_g(int n, char* args){
     err = abelprep(n,index);
     
     moveOMAtoOMA2();
-    iBuffer.getmaxx(PRINT_RESULT);
+    iBuffer.getmaxx(printMax);
     update_UI();
     return err;
 }
@@ -1107,7 +1108,7 @@ int abelrect_g(int n, char* args){
     err = abelrect(n,index);
     
     moveOMAtoOMA2();
-    iBuffer.getmaxx(PRINT_RESULT);
+    iBuffer.getmaxx(printMax);
     update_UI();
     return err;
 }

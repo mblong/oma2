@@ -93,6 +93,7 @@ extern Image iBuffer;
 char labelBuffer[100];
 static tCamera Camera;
 unsigned long sbyte=0;
+extern int printMax;
 
 // wait for a camera to be plugged
 void WaitForCamera()
@@ -1305,7 +1306,7 @@ int gige(int n, char* args)
                     }
                     
                     if (fixBad) clearbad_c(0,(char*)"NoPrint");
-                    if(i==0) iBuffer.getmaxx(PRINT_RESULT);
+                    if(i==0) iBuffer.getmaxx(printMax);
                     display(0,(char*)"GigE");
                     if(label ) labelData(0,labelBuffer);
                     
@@ -1349,7 +1350,7 @@ int gige(int n, char* args)
                 if (fixBad) {
                     clearbad_c(0,(char*)"");
                 } else {
-                    iBuffer.getmaxx(PRINT_RESULT);
+                    iBuffer.getmaxx(printMax);
                 }
                 display(0,(char*)"GigE");
                 
@@ -1444,7 +1445,7 @@ int gige(int n, char* args)
             }
 
             
-            iBuffer.getmaxx(PRINT_RESULT);
+            iBuffer.getmaxx(printMax);
             UIData.newwindowflag = save_new_status;
             
             
@@ -1531,7 +1532,7 @@ int gige(int n, char* args)
             PvCaptureEnd(Camera.Handle);
             CameraUnsetup(&Camera, 1);
             
-            iBuffer.getmaxx(PRINT_RESULT);
+            iBuffer.getmaxx(printMax);
             UIData.newwindowflag = save_new_status;
             
             closefile_c(0,0);
@@ -1593,7 +1594,7 @@ int gige(int n, char* args)
             PvCaptureEnd(Camera.Handle);
             CameraUnsetup(&Camera, 1);
             
-            iBuffer.getmaxx(PRINT_RESULT);
+            iBuffer.getmaxx(printMax);
             UIData.newwindowflag = save_new_status;
             
             closefile_c(0,0);

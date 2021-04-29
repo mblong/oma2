@@ -15,7 +15,8 @@
 extern char    reply[1024];   // buffer for sending messages to be typed out by the user interface
 extern Image   iBuffer;       // the image buffer
 extern ImageBitmap iBitmap;   // the bitmap buffer
-extern oma2UIData UIData; 
+extern oma2UIData UIData;
+extern int printMax;
 
 
 // update the User Interface
@@ -83,7 +84,7 @@ BOOL dropped_file(char* extension, char* name){
             }
             iBuffer.free();     // release the old data
             iBuffer = new_im;   // this is the new data
-            iBuffer.getmaxx(PRINT_RESULT);
+            iBuffer.getmaxx(printMax);
             update_UI();
             
             display(0,(char*)"");

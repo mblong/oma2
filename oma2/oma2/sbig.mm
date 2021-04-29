@@ -28,7 +28,7 @@ int linked = 0;
 
 typedef short PAR_ERROR_;
 
-
+extern int printMax;
 
 unsigned short DegreesCToAD(float degC, MY_LOGICAL ccd);
 float ADToDegreesC(unsigned short ad, MY_LOGICAL ccd);
@@ -663,7 +663,7 @@ int sbig(int n, char* args)
         
         SetBin = 0;
         
-        iBuffer.getmaxx(PRINT_RESULT);
+        iBuffer.getmaxx(printMax);
         display(0,(char*)"SBIG");
         
         setReturnValues();

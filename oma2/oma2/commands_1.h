@@ -131,6 +131,7 @@ int list_c(int,char*);
 int ltemp_c(int,char*);
 int lookup_c(int,char*);
 int ln_c(int,char*);
+int last_c(int,char*);
 
 int minus_c(int,char*);
 int mirror_c(int,char*);
@@ -204,6 +205,7 @@ int snr_c(int,char*);
 int shotnoise_c(int,char*);
 int say_c(int,char*);
 int scatter_c(int,char*);
+int saturate_c(int,char*);
 
 
 #if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)

@@ -41,6 +41,8 @@ int windowNameMemory = 0;
 char binaryExtension[CHPERLN] = {"RAW"};
 int bin_rows = 1024, bin_cols = 1360, bin_header = 0, binary_file_bytes_per_data_point = 2 , swap_bytes_flag = 0, unsigned_flag=0;
 
+int printMax = PRINT_RESULT;
+
 
 FileDecoderExtensions fileDecoderExtensions[] = {
 //    {{".nef"},DCRAW},
