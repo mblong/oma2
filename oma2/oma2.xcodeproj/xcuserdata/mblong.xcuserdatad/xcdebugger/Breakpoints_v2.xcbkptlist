@@ -232,8 +232,8 @@
             timestampString = "418756405.49829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
             landmarkName = "-decreaseColorMax:"
             landmarkType = "7">
          </BreakpointContent>
@@ -334,8 +334,8 @@
             timestampString = "583521730.5576299"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "437"
-            endingLineNumber = "437"
+            startingLineNumber = "443"
+            endingLineNumber = "443"
             landmarkName = "loadprefs(name)"
             landmarkType = "9">
          </BreakpointContent>
@@ -351,8 +351,8 @@
             timestampString = "583521730.557723"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "389"
-            endingLineNumber = "389"
+            startingLineNumber = "395"
+            endingLineNumber = "395"
             landmarkName = "loadprefs(name)"
             landmarkType = "9">
          </BreakpointContent>
@@ -368,8 +368,8 @@
             timestampString = "583521730.557789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "640"
-            endingLineNumber = "640"
+            startingLineNumber = "653"
+            endingLineNumber = "653"
             landmarkName = "loadprefs(name)"
             landmarkType = "9">
          </BreakpointContent>
@@ -385,8 +385,8 @@
             timestampString = "418756405.49829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
+            startingLineNumber = "238"
+            endingLineNumber = "238"
             landmarkName = "-scaleCheckbox:"
             landmarkType = "7">
          </BreakpointContent>
@@ -690,8 +690,8 @@
             timestampString = "440105931.503331"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
             landmarkName = "-saveNewSettings:"
             landmarkType = "7">
          </BreakpointContent>
@@ -724,8 +724,8 @@
             timestampString = "440105931.503331"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "-windowDidLoad"
             landmarkType = "7">
          </BreakpointContent>
@@ -741,8 +741,8 @@
             timestampString = "583521730.558725"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "775"
-            endingLineNumber = "775"
+            startingLineNumber = "822"
+            endingLineNumber = "822"
             landmarkName = "unknown"
             landmarkType = "0">
          </BreakpointContent>
@@ -1064,8 +1064,8 @@
             timestampString = "585138907.481694"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "6995"
-            endingLineNumber = "6995"
+            startingLineNumber = "6999"
+            endingLineNumber = "6999"
             landmarkName = "flippid_c(notUsed, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1147,8 +1147,8 @@
             filePath = "oma2/AppController.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "571"
-            endingLineNumber = "571"
+            startingLineNumber = "582"
+            endingLineNumber = "582"
             landmarkName = "AppController"
             landmarkType = "3">
          </BreakpointContent>
@@ -1179,8 +1179,8 @@
             filePath = "oma2/AppController.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "598"
-            endingLineNumber = "598"
+            startingLineNumber = "609"
+            endingLineNumber = "609"
             landmarkName = "-labelDataWindow:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1195,8 +1195,8 @@
             filePath = "oma2/image_support.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1025"
-            endingLineNumber = "1025"
+            startingLineNumber = "1072"
+            endingLineNumber = "1072"
             landmarkName = "readBinary(filename, theImage, bin_rows, bin_cols, bin_header, binary_file_bytes_per_data_point, swap_bytes_flag, unsigned_flag)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1583,6 +1583,22 @@
             endingLineNumber = "584"
             landmarkName = "croprectangle_c(n, args)"
             landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "76ACB2D3-635A-43F7-A704-98D9D6DB1AA2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/PreferenceController.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
+            landmarkName = "-theColorSet:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

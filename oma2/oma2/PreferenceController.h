@@ -10,6 +10,9 @@
 #import "image_support.h"
 #import "oma2.h"
 
+extern RGBColor color[256][8];  // the eight color palttes
+extern unsigned char customPalette[];
+
 @interface PreferenceController : NSWindowController{
     NSTextField *__weak savePrefix;
     NSTextField *__weak getPrefix;
@@ -24,6 +27,15 @@
     NSTextField *__weak transparencyValue;
     
     NSString *sometext;
+    
+    // for the Palette tab
+    
+    int colorIndex;
+    int lastIndex;
+    unsigned char originalPalette[768];
+    
+    
+    
 }
 
 - (IBAction)saveNewSettings:(id)sender;
@@ -58,6 +70,19 @@
 - (IBAction)highlightColorSet:(id)sender;
 
 - (void) fillInUIData;
+
+// Things in the Pallete tab
+@property (weak) IBOutlet NSImageView *prefixPaletteImage;
+
+@property (weak) IBOutlet NSSlider *colorIndexValue;
+@property (weak) IBOutlet NSImageView *palleteImage;
+@property (weak) IBOutlet NSColorWell *theColor;
+
+@property (weak) IBOutlet NSTextField *pixLabel;
+@property (weak) IBOutlet NSSlider *sliderValue;
+
+
+- (void) updatePaletteImage;
 
 
 @end

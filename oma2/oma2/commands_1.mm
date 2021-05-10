@@ -6557,18 +6557,22 @@ int unfold_c(int n, char* args){
 
 
 /*
- DSATURATE [displaySaturationValue]
- This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMaxium*displaySaturationValue. If no argument is given, the current value is printed.
+ DSATURATE [displaySaturationValue displayFloorValue]
+ This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMax-dataRange*( 1-displaySaturateValue). If a displayFloorValue is specified, the Color Min value used will be the dataMinimum + dataRange*displayFloorValue. If no argument is given, the current values are printed. If displaySaturateValue = 1.0 and no second argument is given, displayFloorValue is set to 0.0.
  */
 
 int dsaturate_c(int n,char* args){
-    float dSatValue=1;
-    int nargs = sscanf(args,"%f",&dSatValue);
+    float dSatValue=1,dFloorValue=1;
+    int nargs = sscanf(args,"%f %f",&dSatValue,&dFloorValue);
     
-    if(nargs ==1){
+    if(nargs == 1){
         UIData.displaySaturateValue = dSatValue;
+        if (dSatValue == 1.0)dFloorValue=0.0;
+    } else if(nargs == 2){
+        UIData.displaySaturateValue = dSatValue;
+        UIData.displayFloorValue = dFloorValue;
     }
-    printf("Display Saturation Value is %f\n",UIData.displaySaturateValue);
+    printf("Display Saturation Value is %f\nDisplay Floor Value is %f\n",UIData.displaySaturateValue,UIData.displayFloorValue);
     update_UI();
     
     return NO_ERR;

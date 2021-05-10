@@ -257,8 +257,8 @@ DEMOSAIC redX redY [algorithm]
 DECODEHOBJ
 	Assume the current image has the proprietary .hobj format (from Halcon), and has not been decoded. This attempts to decode the image. See the command HOBJSETTINGS for how this decoding can be done automatically.
 
-DSATURATE [displaySaturationValue]
-	This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMaxium*displaySaturationValue. If no argument is given, the current value is printed.
+DSATURATE [displaySaturationValue displayFloorValue]
+	This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMax-dataRange*( 1-displaySaturateValue). If a displayFloorValue is specified, the Color Min value used will be the dataMinimum + dataRange*displayFloorValue. If no argument is given, the current values are printed. If displaySaturateValue = 1.0 and no second argument is given, displayFloorValue is set to 0.0.
 
 ERASE [n]
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.

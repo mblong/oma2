@@ -56,6 +56,7 @@ enum {CROSS,SELRECT,CALCRECT,RULER,LINEPLOT};
 #define PALETTEFILE	"Contents/Resources/OMApalette.pa1"
 #define PALETTEFILE2 "Contents/Resources/OMApalette2.pa1"
 #define PALETTEFILE3 "Contents/Resources/OMApalette3.pa1"
+#define CUSTOMPALETTE "Contents/Resources/customPalette.pa1"
 
 #define HELPFILE "Contents/Resources/oma2help.txt"
 #define HELPURL "Contents/Resources/LightOma2Help/index.html"
@@ -136,6 +137,7 @@ int pprintf(const char* format, ...);
 #define PALETTEFILE	"../Resources/OMApalette.pa1"
 #define PALETTEFILE2 "../Resources/OMApalette2.pa1"
 #define PALETTEFILE3 "../Resources/OMApalette3.pa1"
+#define CUSTOMPALETTE "../Resources/customPalette.pa1"
 
 #define HELPFILE "../Resources/oma2help.txt"
 #define HELPURL "../Resources/LightOma2Help/index.html"
@@ -209,6 +211,7 @@ BOOL dropped_file(char*,char*);
 #define PALETTEFILE	"OMApalette.pa1"
 #define PALETTEFILE2 "OMApalette2.pa1"
 #define PALETTEFILE3 "OMApalette3.pa1"
+#define CUSTOMPALETTE "customPalette.pa1"
 
 #define HELPFILE "oma2help.txt"
 #define HELPURL "LightOma2Help/index.html"

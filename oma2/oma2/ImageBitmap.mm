@@ -11,6 +11,7 @@ ImageBitmap iBitmap;    // a global -- the bitmap for the iBuffer image
 
 extern oma2UIData  UIData;
 RGBColor color[256][8];
+unsigned char customPalette[768];
 
 
 ImageBitmap::ImageBitmap(){
@@ -46,8 +47,8 @@ void ImageBitmap::operator=(Image im){
     int allocate_new=1;
 	
     if(UIData.autoscale){
-        UIData.cmax = im.values[MAX]*UIData.displaySaturateValue;
-        UIData.cmin = im.values[MIN];
+        UIData.cmax = im.values[MAX] - (im.values[MAX]-im.values[MIN])*(1.0 - UIData.displaySaturateValue);
+        UIData.cmin = im.values[MIN] + (im.values[MAX]-im.values[MIN])*UIData.displayFloorValue;
     }
     //printf("%g %g cmin cmax\n",cmin,cmax);
     

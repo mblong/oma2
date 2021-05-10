@@ -140,7 +140,15 @@ BOOL dropped_file(char* extension, char* name){
         [[NSApplication sharedApplication] activateIgnoringOtherApps : YES];    // make oma active
         if (err == NO_ERR) return YES;
     }
-    
+    if(strcmp(extension, "PA1")==0){
+        printf("Loading Custom Palette...\n");
+        int err = getpalettefile(name);
+        update_UI();
+        [appController appendText: @"OMA2>"];
+        [[NSApplication sharedApplication] activateIgnoringOtherApps : YES];    // make oma active
+        if (err == NO_ERR) return YES;
+    }
+
     return NO;
 }
 

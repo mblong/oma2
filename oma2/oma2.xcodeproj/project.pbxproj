@@ -42,6 +42,8 @@
 		DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
 		DB35126018F0B8AE00202FFC /* macImageSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB35125F18F0B8AE00202FFC /* macImageSupport.mm */; };
 		DB35126118F0B8AE00202FFC /* macImageSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB35125F18F0B8AE00202FFC /* macImageSupport.mm */; };
+		DB387CA426497024004CE8BD /* customPalette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DB387CA326497024004CE8BD /* customPalette.pa1 */; };
+		DB387CA526497024004CE8BD /* customPalette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DB387CA326497024004CE8BD /* customPalette.pa1 */; };
 		DB3E355D18E6030300381607 /* serial.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3E355C18E6030300381607 /* serial.c */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
@@ -252,6 +254,7 @@
 		DB2E76B8152611BD004B6502 /* ImageBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBitmap.h; sourceTree = "<group>"; };
 		DB35125F18F0B8AE00202FFC /* macImageSupport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = macImageSupport.mm; sourceTree = "<group>"; };
 		DB35126218F0BACF00202FFC /* macImageSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macImageSupport.h; sourceTree = "<group>"; };
+		DB387CA326497024004CE8BD /* customPalette.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = customPalette.pa1; sourceTree = "<group>"; };
 		DB3E355C18E6030300381607 /* serial.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = serial.c; sourceTree = "<group>"; };
 		DB4329B417EF13E900A51802 /* gluedCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gluedCommands.h; sourceTree = "<group>"; };
 		DB4329B517EF13E900A51802 /* gluedCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gluedCommands.mm; sourceTree = "<group>"; };
@@ -433,6 +436,7 @@
 				DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */,
 				DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */,
 				DBBD397C155AD06000D5B56B /* OMApalette.pa1 */,
+				DB387CA326497024004CE8BD /* customPalette.pa1 */,
 				DB593A36151B8B19007CA0C3 /* plus.jpg */,
 				DB593A3A151B9766007CA0C3 /* box.jpg */,
 				DBF08DE2159D63980099CB4C /* c-box.jpg */,
@@ -653,6 +657,7 @@
 				DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */,
 				DBBD3985155ADD5100D5B56B /* OMApalette2.pa1 in Resources */,
 				DB95A94F1A2F415E00823467 /* VariablesWindow.xib in Resources */,
+				DB387CA426497024004CE8BD /* customPalette.pa1 in Resources */,
 				DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */,
 				DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */,
 				DB1E9B1F15A27EA300F38CE2 /* ruler.jpg in Resources */,
@@ -692,6 +697,7 @@
 				DB8A886B18E3297E007C79AF /* DrawingWindow.xib in Resources */,
 				DB8A886C18E3297E007C79AF /* OMApalette2.pa1 in Resources */,
 				DB95A9501A2F415E00823467 /* VariablesWindow.xib in Resources */,
+				DB387CA526497024004CE8BD /* customPalette.pa1 in Resources */,
 				DB8A886E18E3297E007C79AF /* c-box.jpg in Resources */,
 				DB8A886F18E3297E007C79AF /* oma2Icons.icns in Resources */,
 				DB8A887018E3297E007C79AF /* ruler.jpg in Resources */,

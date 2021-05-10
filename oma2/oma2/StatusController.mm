@@ -85,9 +85,30 @@ StatusController *statusController;
 }
 
 - (void) updatePaletteBox{
+    extern RGBColor color[256][8];
+    unsigned char customPalette[768];
+    for(int i=0; i< 256; i++){
+        customPalette[i*3]=color[i][UIData.thepalette].red;
+        customPalette[i*3+1]=color[i][UIData.thepalette].green;
+        customPalette[i*3+2]=color[i][UIData.thepalette].blue;
+    }
+
+    NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
+                                //initWithBitmapDataPlanes: iBitmap.getpixdatap()
+                                initWithBitmapDataPlanes: nil
+                                pixelsWide: 256 pixelsHigh: 1
+                                bitsPerSample: 8 samplesPerPixel: 3 hasAlpha: NO isPlanar:NO
+                                colorSpaceName:NSDeviceRGBColorSpace
+                                bytesPerRow: 3*256
+                                bitsPerPixel: 24];
     
-    [PaletteBox setImage:[NSImage imageNamed:
-                          [NSString stringWithFormat:@"pal%d.jpg",UIData.thepalette]]];
+    memcpy([bitmap  bitmapData], customPalette, 256*3);
+    NSImage* im = [[NSImage alloc] initWithSize:NSMakeSize(256, 1)];
+    [im addRepresentation:bitmap];
+
+
+    [PaletteBox setImageScaling:NSImageScaleAxesIndependently];
+    [PaletteBox setImage:im];
 }
 
 - (void) labelColorMinMax{
@@ -206,10 +227,10 @@ StatusController *statusController;
 - (IBAction)scaleCheckbox:(id)sender {
     if([scaleState state] ){
         UIData.autoscale = 1;
-        if(UIData.displaySaturateValue == 1.0){
-            [scaleState setTitle: @"Scale"];
+        if(UIData.displaySaturateValue == 1.0 && UIData.displayFloorValue == 0.0){
+            [[statusController scaleState] setTitle: @"Scale"];
         } else {
-            [scaleState setTitle:[NSString stringWithFormat:@"Scale*%g",UIData.displaySaturateValue]];
+            [[statusController scaleState] setTitle:[NSString stringWithFormat:@"Mx/Mn %g/%g",UIData.displaySaturateValue,UIData.displayFloorValue]];
         }
     }else{
         UIData.autoscale = 0;

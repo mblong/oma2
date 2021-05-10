@@ -148,10 +148,10 @@ extern oma2UIData UIData;
 
     if(UIData.autoscale){
         [[statusController scaleState] setState:NSOnState];
-        if(UIData.displaySaturateValue == 1.0){
+        if(UIData.displaySaturateValue == 1.0 && UIData.displayFloorValue == 0.0){
             [[statusController scaleState] setTitle: @"Scale"];
         } else {
-            [[statusController scaleState] setTitle:[NSString stringWithFormat:@"Scale*%g",UIData.displaySaturateValue]];
+            [[statusController scaleState] setTitle:[NSString stringWithFormat:@"Mx/Mn %g/%g",UIData.displaySaturateValue,UIData.displayFloorValue]];
         }
     } else{
         [[statusController scaleState] setState:NSOffState];
@@ -163,11 +163,11 @@ extern oma2UIData UIData;
     else
         [[statusController updateState] setState:NSOffState];
     
-    static int current_pal = -1;
-    if (current_pal != UIData.thepalette) {
+    //static int current_pal = -1;
+   // if (current_pal != UIData.thepalette ) {
         [statusController updatePaletteBox];
-        current_pal = UIData.thepalette;
-    }
+        //current_pal = UIData.thepalette;
+    //}
     
     free(specs);
     free(values);
@@ -181,11 +181,11 @@ extern oma2UIData UIData;
     [openDlg setCanChooseDirectories:NO];
     [openDlg setAllowedFileTypes: [[NSArray alloc] initWithObjects:
                                    @"dat",@"mac",@"jpg",@"tif",@"tiff",@"hdr",@"o2s", @"o2d",@"hobj",@"csv",
-                                   @"png",@"hdr",@"nef",@"cr2",@"crw",@"raw",nil]];
+                                   @"png",@"hdr",@"nef",@"cr2",@"cr3",@"crw",@"pa1",@"raw",nil]];
     
     // Display the dialog.  If the OK button was pressed,
     // process the files.
-    if ( [openDlg runModal] == NSOKButton )
+    if ( [openDlg runModal] == NSModalResponseOK )
     {
         // Get an array containing the full filenames of all
         // files and directories selected.
@@ -210,10 +210,10 @@ extern oma2UIData UIData;
 - (IBAction)saveData:(id)sender{
     
     NSSavePanel*    panel = [NSSavePanel savePanel];
-    [panel setNameFieldStringValue:@"OMA2 Data.dat"];
+    [panel setNameFieldStringValue:@"OMA2 Data.o2d"];
     
     int result	= (int)[panel runModal];
-    if (result == NSOKButton) {
+    if (result == NSModalResponseOK) {
          NSString  *name = [[panel URL] path];
         const char* cname = [name cStringUsingEncoding:NSASCIIStringEncoding];
         iBuffer.saveFile((char*)cname,LONG_NAME);
@@ -226,10 +226,21 @@ extern oma2UIData UIData;
     [panel setNameFieldStringValue:@"OMA2 Settings.o2s"];
     
     int result	= (int)[panel runModal];
-    if (result == NSOKButton) {
+    if (result == NSModalResponseOK) {
         NSString  *name = [[panel URL] path];
         const char* cname = [name cStringUsingEncoding:NSASCIIStringEncoding];
         saveprefs((char*)cname);
+    }
+}
+- (IBAction)saveCustomPalette:(id)sender {
+    NSSavePanel*    panel = [NSSavePanel savePanel];
+    [panel setNameFieldStringValue:@"customPalette.pa1"];
+    
+    int result    = (int)[panel runModal];
+    if (result == NSModalResponseOK) {
+        NSString  *name = [[panel URL] path];
+        const char* cname = [name cStringUsingEncoding:NSASCIIStringEncoding];
+        savepalettefile((char*)cname);
     }
 }
 

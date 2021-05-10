@@ -233,7 +233,7 @@ typedef struct {
     int demosaicHobjFlag;    // setting for whether or not to demosaic after decoding
     int clearHobjFlag;      // setting for whether or not to clear bad color pixels (call cclearbad_c)
  
-    float displaySaturateValue; // when Scale is selected, cmax will be data max * displaySaturateValue
+    float displaySaturateValue; // when Scale is selected, cmax will be dataMax-dataRange*( 1-displaySaturateValue)
 
     int   autoFloatFlag;  // determines whether or not a variable is set to float when an assignment with a decimal point is made
     
@@ -247,6 +247,8 @@ typedef struct {
     int subtractBlack;
     int applyWhiteBalance;
     float applyGamma;
+    
+    float displayFloorValue; // when Scale is selected, cmin will be dataMin + dataRange * displayFloorValue
 
     
     
