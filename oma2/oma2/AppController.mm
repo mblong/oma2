@@ -168,6 +168,7 @@ extern oma2UIData UIData;
         [statusController updatePaletteBox];
         //current_pal = UIData.thepalette;
     //}
+    [statusController setMinMaxInc: UIData.cminmaxinc];
     
     free(specs);
     free(values);

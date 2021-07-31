@@ -91,6 +91,12 @@ int vidCloseFile_q(int n,char* args){
 }
 
 
+/*
+CVHOUGHCIRCLES [cannyThreshold accumulatorThreshold maxRadius]
+ Works on monochrome images. Default values are 30 10 20 for cannyThreshold accumulatorThreshold maxRadius. Map the monochrome image to 0-255 first.
+ 
+*/
+
 int cvHoughCircles_q(int n,char* args){
     using namespace cv;
     

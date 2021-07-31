@@ -175,6 +175,9 @@ CVALIGN tempImageName [maxIterations terminationEpsilon warpMode floorValue]
  
 CVDENOISE h_luminance h_color [search_window_size block_size]
  Use the opencv fastNlMeansDenoisingColored function to denoise the current image. The 8-bit data in the current display window is used as input so the result will also be 8-bit data scaled from 0 - 255. oma2cam command -- requires opencv libraries.
+
+CVHOUGHCIRCLES [cannyThreshold accumulatorThreshold maxRadius]
+  Use the opencv HoughCircles to detect circles in an image. Works on monochrome images. Default values are 30 10 20 for cannyThreshold accumulatorThreshold maxRadius. Map the monochrome image to 0-255 first. Output shows detected circles.
  
 DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
@@ -328,6 +331,9 @@ FWDATMATLAB  <filename> [delimiter]
 FLIPPID Nx NcLow NcHigh Power Background
 	Perform an inverse Abel transform using the FLiPPID method. The current image must satisfy these conditions: (1) it is a right-side-up, full axisymmetric flame image with an odd number of columns. (2) The flame must be perfectly centered on the center of the image. Nx should be slightly larger than the maximum width (in pixels) of the flame. NcLow and NcHigh relate to a range of radial locations of the maximum; values of -500 and 2500, respectively seem to work for several flames I tested. Power is the power used in the fitting function, and could range from 3 - 7 or more. Higher powers seem to work better for flames with thin soot regions at the edges. Rows with maximum counts less than Background will be filled with 0. The image buffer returns the Abel inverted image. A temporary image named proj is also created -- this is the projected image created from the fitting function and can be comared with the original image to assess the quality of the fit. A lookup table is created based on the values of Nx, NcLow, NcHigh, and Power. The table is saved to a file in a folder named flippidMatrices in the path specified by the Save Data Files preference. Before calculating a new table, the program checks to see if an appropriate table already exists.
 
+FILTER n
+    Apply the specified filter matrix to the current image. Filters (rectangular matrices) are numbered 0 - 9 and are loaded using the GETFILTER command.
+
 GET <filename>
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.
 
@@ -382,6 +388,9 @@ GTEMPIMAGE name
 
 GETNEXT
 	Get the next image from the file opened with the OPENFILE command. If no additional image data is available, the open file is closed.
+
+GETFILTER n filename
+     Read in a tabulated filter matrix and store it as filter n, where in is in the range 0-9. These are used with the FILTER command. The format for tabulated filter matrices requires delimited text files, with the last element of a row terminated with a newline character. It must be a rectangular matrix with all elements specified. The number of rows and columns must be odd.
 
 GIGE command
 	Available in oma2cam. Commands are as follows:
@@ -545,8 +554,9 @@ MYSQTABLE tableName
 NEWWINDOW flag
 	If flag = 1 (default), a new window will be opened for each "DISPLAY" command. If flag = 0, the results of "DISPLAY" commands will be placed in the last-opened window. If no window exists, a new one will be opened. 
  
- NEXTFILE [prefix] [shortNameLength]
-	Open the next file specified in the FileNames file that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. The file name needs to include the full path to the file. command_return_1 is the filename without any prefix and without the extension. command_return_2 is the last shortNameLength characters of the filename (default is 10). The prefix must be specified in order to set a shortNameLength.
+NEXTFILE [prefix] [shortNameLength]
+  Open the next file specified in the NameFile that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. A leading ; in the filename list indicates that file should be skipped. The prefix must be specified in order to set a shortNameLength. command_return_1 is the filename without any prefix and without the extension (last 4 characters). command_return_2 is the last shortNameLength characters of the filename (default is 10).
+
 
 NEXTFOLDER
 	 Read the next entry in the FolderNames file that was opened with the GETFOLDERNAMES command. command_return_1 has the local folder name. Typically this would be saved to a variable (e.g., named "folder") for use in subsequent NEXTFILE commands.
@@ -628,8 +638,8 @@ RULER [numpix] [numunits] [unit name]
 REMAP Value1 Value2 [Value3]
 	With two arguments, every occurence of Value1 in the current image is replaced with Value2. With three arguments, values in the range from Value1 to Value2 are set to Value3.
 
-RAWPARAMS [demosaic subtractBlack applyWhiteBalance, applyGamma]
-    Controlls whether or not additional processing is done when the libRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, all four arguments must be specified and corrections will be done according to the specified values. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing.
+RAWPARAMS [demosaic subtractBlack applyWhiteBalance applyGamma clearBad]
+    Controlls whether or not additional processing is done when the libRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, at least four arguments must be specified and corrections will be done according to the specified values. subtractBlack = 1 will just subtract the raw image black value and may have negative values; subtractBlack = 2 will set the floor to 0. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing. clearBad is float; 0 means no clearing bad pixels, 1 means use the existing bad pixels data, any other value is used as the argument to the FINDBADPIX command.
 
 SAVEFILE <filename>
 	Saves the current data buffer to the specified file.

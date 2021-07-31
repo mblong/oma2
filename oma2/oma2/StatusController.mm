@@ -72,7 +72,7 @@ StatusController *statusController;
 }
 
 - (void) awakeFromNib{
-    [self setMinMaxInc:4];
+    [self setMinMaxInc:5];
    
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",1000.]];
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",0.]];
@@ -162,7 +162,7 @@ StatusController *statusController;
 
 
 - (IBAction)decreaseColorMin:(id)sender {
-    UIData.cmin -= MinMaxInc/100.0*(UIData.max - UIData.min);
+    UIData.cmin -= UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
     if(UIData.autoupdate){
         int saveAuatoscale = UIData.autoscale;
@@ -173,7 +173,7 @@ StatusController *statusController;
 }
 
 - (IBAction)increaseColorMin:(id)sender {
-    UIData.cmin += MinMaxInc/100.0*(UIData.max - UIData.min);
+    UIData.cmin += UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
     if(UIData.autoupdate) {
         int saveAuatoscale = UIData.autoscale;
@@ -184,7 +184,7 @@ StatusController *statusController;
 }
 
 - (IBAction)decreaseColorMax:(id)sender {
-    UIData.cmax -= MinMaxInc/100.0*(UIData.max - UIData.min);
+    UIData.cmax -= UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
     if(UIData.autoupdate) {
         int saveAuatoscale = UIData.autoscale;
@@ -198,7 +198,7 @@ StatusController *statusController;
 }
 
 - (IBAction)increaseColorMax:(id)sender {
-    UIData.cmax += MinMaxInc/100.0*(UIData.max - UIData.min);
+    UIData.cmax += UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
     if(UIData.autoupdate) {
         int saveAuatoscale = UIData.autoscale;

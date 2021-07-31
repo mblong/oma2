@@ -97,6 +97,8 @@ Image::Image()              // create an empty Image with default values
     comment = NULL;
     extraSize = 0;
     extra = NULL;
+    for(int i=0; i < NVALUES; i++)
+        values[i]=NAN;
 }
 
 
@@ -1193,6 +1195,51 @@ void Image::resize(int newRows, int newCols){
     *this = resized;
     
     return;
+}
+
+void Image::filter(int rows,int cols,float* filter){
+    // allocate the new image
+    Image filtered(specs[ROWS],specs[COLS]);
+    filtered.zero();
+    filtered.copyABD(*this); // copy the old specs
+    
+    int dx,dxs,dy,dys,nt,nc,i,j,m;
+    DATAWORD sum;
+     dx = (cols-1)/2;
+     dxs = -dx;
+     
+     dy = (rows-1)/2;
+     dys = -dy;
+               
+     // Set loop limit so only have to do "<", not "<="
+     dx=dx+1;
+     dy=dy+1;
+          
+     for(nt=dy; nt<specs[ROWS]-dy; nt++) {
+         for(nc=dx; nc<specs[COLS]-dx;nc++){
+             sum = 0;
+ /*            for(i=dxs; i<dx; i++) {
+                 for(j=dys; j<dy; j++) {
+                     m = (j - dys)*(dx - dxs) + (i - dxs);
+                     sum += *(data+(nt+j)*specs[COLS] + nc+i)*filter[m];
+                 }
+             }
+  */
+             m=0;
+             for(j=dys; j<dy; j++) {
+                 for(i=dxs; i<dx; i++) {
+                 
+                     //m = (j - dys)*(dx - dxs) + (i - dxs);
+                     sum += *(data+(nt+j)*specs[COLS] + nc+i)*filter[m++];
+                 }
+             }
+             *(filtered.data+nt*specs[COLS] + nc) = sum;
+         }
+     }
+    filtered.specs[HAVE_MAX]=0;
+    free();
+    *this = filtered;
+
 }
 
 DATAWORD* Image::getImageData(){                // returns a pointer to the data; use with extreme caution

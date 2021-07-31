@@ -8874,6 +8874,7 @@ int dcrawGlue(char* name, int thecolor, Image* im){
 
         // this will allocate memory
         im->setspecs(specs);
+        im->setvalues(values);
         
         pt = im->getImageData();
         for(i=0; i<RawProcessor->imgdata.sizes.iheight;i++){
@@ -8882,6 +8883,23 @@ int dcrawGlue(char* name, int thecolor, Image* im){
                      + RawProcessor->imgdata.sizes.top_margin * RawProcessor->imgdata.sizes.raw_pitch / 2];
             for(j=0; j<RawProcessor->imgdata.sizes.iwidth;j++){
                 *pt++=*rawPtr++;
+            }
+        }
+        if(UIData.clearBad != 0.0){
+            extern int ccd_width, ccd_height, num_hot;
+            
+;
+            if(UIData.clearBad != 1.0){
+                num_hot = 0;
+                ccd_width = specs[COLS];
+                ccd_height = specs[ROWS];
+                simpleFindBad(specs[ROWS], specs[COLS], 2, UIData.clearBad, im);
+            }
+            if(ccd_height > 0){
+                simpleClearBad(ccd_width, specs[ROWS], specs[COLS], 2, 0, 0, im);
+            } else {
+                beep();
+                printf("Targeted bad pixel data not supported here.\n");
             }
         }
         if(UIData.demosaic){

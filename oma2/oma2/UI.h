@@ -115,6 +115,7 @@ int pprintf(const char* format, ...);
 #define label_data labelData(args);
 #define label_data_minMax labelDataMinMax();
 #define checkEvents QCoreApplication::processEvents();
+#define set_alpha setWindowAlpha(newAlpha);
 
 #define pprintf omaprintf
 #define printf omaprintf
@@ -172,6 +173,7 @@ void eraseWindow(int);
 void labelDataMinMax();
 void labelData(char*);
 BOOL dropped_file(char*,char*);
+void setWindowAlpha(float);
 
 #endif
 
@@ -190,6 +192,7 @@ BOOL dropped_file(char*,char*);
 #define label_data labelData(args);
 #define label_data_minMax labelDataMinMax();
 #define checkEvents QCoreApplication::processEvents();
+#define set_alpha setWindowAlpha(newAlpha);
 
 #define pprintf omaprintf
 #define printf omaprintf
@@ -256,6 +259,7 @@ void eraseWindow(int);
 void labelDataMinMax();
 void labelData(char*);
 BOOL dropped_file(char*,char*);
+void setWindowAlpha(float);
 
 #endif
 
@@ -271,6 +275,7 @@ BOOL dropped_file(char*,char*);
 #define label_data labelData(args);
 #define label_data_minMax labelDataMinMax();
 #define checkEvents QCoreApplication::processEvents();
+#define set_alpha setWindowAlpha(newAlpha);
 
 #define pprintf omaprintf
 #define printf omaprintf
@@ -337,7 +342,7 @@ void eraseWindow(int);
 void labelDataMinMax();
 void labelData(char*);
 BOOL dropped_file(char*,char*);
-
+void setWindowAlpha(float);
 
 #endif
 

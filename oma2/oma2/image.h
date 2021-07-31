@@ -141,6 +141,8 @@ public:
     void crop(rect);           ///< crop the current image or return an error if there was one
     void rotate(float);        ///< rotate the current image or return an error if there was one
     
+    void filter(int,int,float*);        ///< apply 2D filter with specified rows, columns, and data
+    
     void invert();             ///< invert the current image
     void mirror();             ///< mirror the current image
     

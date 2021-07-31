@@ -1321,6 +1321,27 @@ int smooth_c(int n,char* args){
 }
 
 /* ********** */
+/* FILTER n
+    Apply the specified filter matrix to the current image. Filters (rectangular matrices) are numbered 0 - 9 and are loaded using the GETFILTER command.
+ */
+
+int filter_c(int n, char* args)
+{
+    extern float* filter[];
+    extern int filterSize[10][2];
+    
+    if(n < 0 || n > 9 || filter[n]==0){
+        beep();
+        printf("No valid filter: %d\n", n);
+        return CMND_ERR;
+    }
+    iBuffer.filter(filterSize[n][0],filterSize[n][1],filter[n]);
+    iBuffer.getmaxx(printMax);
+    update_UI();
+    return iBuffer.err();
+}
+
+/* ********** */
 
 int gsmooth_c(int n, char* args)
 //  Gaussian Smoothing of the Data
@@ -1398,12 +1419,21 @@ int gsmooth_c(int n, char* args)
     for(nt=0; nt<specs[ROWS]; nt++) {
         for(nc=0; nc<specs[COLS];nc++){
             sum = 0;
+            m=0;
+            for(j=dys; j<dy; j++) {
+                for(i=dxs; i<dx; i++) {
+                    //m = (j - dys)*(dx - dxs) + (i - dxs);
+                    sum += iBuffer.getpix(nt+j,nc+i)*mask[m++];
+                }
+            }
+/*
             for(i=dxs; i<dx; i++) {
                 for(j=dys; j<dy; j++) {
                     m = (j - dys)*(dx - dxs) + (i - dxs);
                     sum += iBuffer.getpix(nt+j,nc+i)*mask[m];
                 }
             }
+ */
             smoothed.setpix(nt,nc,sum/norm);
         }
     }
@@ -2418,12 +2448,7 @@ int getFolderNames_c(int n,char* args)            // open a file containing file
 
 /*
  NEXTFILE [prefix] [shortNameLength]
- Open the next file specified in the NameFile that was opened with the GetFileNames command.
- If a prefix is specified, that is added to the name before trying to open the file.
- The prefix must be specified in order to set a shortNameLength.
- command_return_1 is the filename without any prefix and without the extension (last 4 characters)
- command_return_2 is the last shortNameLength characters of the filename (default is 10)
- */
+   Open the next file specified in the NameFile that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. A leading ; in the filename list indicates that file should be skipped. The prefix must be specified in order to set a shortNameLength. command_return_1 is the filename without any prefix and without the extension (last 4 characters). command_return_2 is the last shortNameLength characters of the filename (default is 10). */
 int nextFile_c(int n,char* args){
     char 	txt[256];          // read the filename in here initially
     char 	fulltxt[512];
@@ -2442,6 +2467,17 @@ int nextFile_c(int n,char* args){
         fclose(nameFilePtr);
         nameFilePtr = NULL;
         return FILE_ERR;
+    }
+    
+    while (txt[0] == ';')  {
+        // a leading ; indicates this file should be skipped -- read the next name in the file
+        if(fscanf(nameFilePtr, "%s",txt) == EOF){
+            beep();
+            printf("All files have been read.\n");
+            fclose(nameFilePtr);
+            nameFilePtr = NULL;
+            return FILE_ERR;
+        }
     }
     
     // return the last file name without the extension as the first  return value
@@ -3141,12 +3177,11 @@ int hot_pix[NUMHOT];	// store info on hot pixels
 int neighbors[NUMHOT][8] = {{0}};
 int num_hot = 0;
 int ccd_width = 0;
-int ccd_height = 0;     // this is set to -value of the target-value algorithm is incoked
+int ccd_height = 0;     // this is set to -value of the target-value algorithm is invoked
 int bayer=1;            // determines if we look at next neighbors or next neighbors - 2 for color images
 
 int findbad_c(int n, char* args){
     int i,j,target=0,passes = 1;
-    DATAWORD ave_val;
     num_hot = 0;
     int* specs = iBuffer.getspecs();
     ccd_width = specs[COLS];
@@ -3156,21 +3191,7 @@ int findbad_c(int n, char* args){
     int neighborDistance=1;
     if(bayer) neighborDistance = 2;
     if(narg == 1){
-        for(i=0; i< specs[ROWS]; i++){
-            for(j = 0; j< specs[COLS]; j++) {
-                ave_val = ( iBuffer.getpix(i-neighborDistance,j-neighborDistance) + iBuffer.getpix(i-neighborDistance,j) + iBuffer.getpix(i-neighborDistance,j+neighborDistance) +
-                            iBuffer.getpix(i,j-neighborDistance)                                                         + iBuffer.getpix(i,j+neighborDistance) +
-                            iBuffer.getpix(i+neighborDistance,j-neighborDistance) + iBuffer.getpix(i+neighborDistance,j) + iBuffer.getpix(i+neighborDistance,j+neighborDistance) ) / 8;
-                if( iBuffer.getpix(i,j) - ave_val > n ){
-                    if(num_hot < NUMHOT){
-                        hot_pix[num_hot++] = i*specs[COLS] + j;
-                        if(num_hot <= 10) printf(" %d\t%d\n",j,i);
-                    }
-                }
-            }
-        }
-        printf("%d hot pixels found\n",num_hot);
-        if(num_hot > 10) printf("First 10 printed\n");
+        simpleFindBad(specs[ROWS], specs[COLS], neighborDistance, n, &iBuffer);
         if(specs[X0] != 0 || specs[Y0] != 0){
             beep();
             printf("Warning! FINDBAD is designed to operate on a full frame.\n");
@@ -3226,7 +3247,7 @@ int findbad_c(int n, char* args){
             }
             
         }
-        if(ccd_height > 0) ccd_height = -ccd_height;
+        if(ccd_height > 0) ccd_height = -ccd_height;    // indicates a targeted value search
         
         printf("%d hot pixels found on pass %d\n",num_hot,p+1);
         clearbad_c(0,(char*)"");
@@ -3234,9 +3255,30 @@ int findbad_c(int n, char* args){
     
     free(specs);
     return NO_ERR;
-    
-    
 }
+
+void simpleFindBad(int rows, int cols, int neighborDistance, int n, Image *image){
+    DATAWORD ave_val;
+    ccd_width = cols;
+    ccd_height = rows;
+
+    for(int i=0; i< rows; i++){
+        for(int j = 0; j< cols; j++) {
+            ave_val = ( image->getpix(i-neighborDistance,j-neighborDistance) + image->getpix(i-neighborDistance,j) + image->getpix(i-neighborDistance,j+neighborDistance) +
+                        image->getpix(i,j-neighborDistance)                                                         + image->getpix(i,j+neighborDistance) +
+                        image->getpix(i+neighborDistance,j-neighborDistance) + image->getpix(i+neighborDistance,j) + image->getpix(i+neighborDistance,j+neighborDistance) ) / 8;
+            if( image->getpix(i,j) - ave_val > n ){
+                if(num_hot < NUMHOT){
+                    hot_pix[num_hot++] = i*cols + j;
+                    if(num_hot <= 10) printf(" %d\t%d\n",j,i);
+                }
+            }
+        }
+    }
+    printf("%d hot pixels found\n",num_hot);
+    if(num_hot > 10) printf("First 10 printed\n");
+}
+
 /*
  READBAD filename
  Read in bad pixel data from a text file.
@@ -3329,23 +3371,17 @@ int clearbad_c(int n, char* args)
     int i,j,k;
     DATAWORD new_val;
     
+    if(num_hot == 0){
+        beep();
+        printf("No bad pixels have been found. User FINDBADPIX or READBADPIX.\n");
+        return CMND_ERR;
+    }
+    
     int* specs = iBuffer.getspecs();
     int neighborDistance=1;
     if(bayer) neighborDistance = 2;
     if(ccd_height > 0){     // bad pixels were found without specifying a target value -- blindly consider nearest neighbors
-        printf("Using eight nearest neighbors.\n");
-        for(k=0; k<num_hot; k++){
-            i = hot_pix[k]/ccd_width;
-            j = hot_pix[k] - i*ccd_width - specs[X0];
-            i -= specs[Y0];
-            //printf(" %d %d\n",j,i);
-            if(i < specs[ROWS] && j < specs[COLS] && i >= 0 && j >= 0) {
-                new_val = ( iBuffer.getpix(i-neighborDistance,j-neighborDistance) + iBuffer.getpix(i-neighborDistance,j) + iBuffer.getpix(i-neighborDistance,j+neighborDistance) +
-                            iBuffer.getpix(i,j-neighborDistance)                                                         + iBuffer.getpix(i,j+neighborDistance) +
-                            iBuffer.getpix(i+neighborDistance,j-neighborDistance) + iBuffer.getpix(i+neighborDistance,j) + iBuffer.getpix(i+neighborDistance,j+neighborDistance) ) / 8;
-                iBuffer.setpix(i,j, new_val);
-            }
-        }
+        simpleClearBad(ccd_width,specs[ROWS], specs[COLS], neighborDistance, specs[X0], specs[Y0], &iBuffer);
         free(specs);
         iBuffer.getmaxx(printMax);
         update_UI();
@@ -3419,6 +3455,24 @@ int clearbad_c(int n, char* args)
     return NO_ERR;
 }
 
+void simpleClearBad(int ccd_width,int rows, int cols, int neighborDistance, int x0, int y0, Image *image) {
+    int i,j,k;
+    DATAWORD new_val;
+    printf("Using eight nearest neighbors.\n");
+    for(k=0; k<num_hot; k++){
+        i = hot_pix[k]/ccd_width;
+        j = hot_pix[k] - i*ccd_width - x0;
+        i -= y0;
+        //printf(" %d %d\n",j,i);
+        if(i < rows && j < cols && i >= 0 && j >= 0) {
+            new_val = ( image->getpix(i-neighborDistance,j-neighborDistance) + image->getpix(i-neighborDistance,j) + image->getpix(i-neighborDistance,j+neighborDistance) +
+                        image->getpix(i,j-neighborDistance)                                                         + image->getpix(i,j+neighborDistance) +
+                        image->getpix(i+neighborDistance,j-neighborDistance) + image->getpix(i+neighborDistance,j) + image->getpix(i+neighborDistance,j+neighborDistance) ) / 8;
+            image->setpix(i,j, new_val);
+        }
+    }
+}
+
 /* ********** */
 int cclearbad_c(int n, char* args){
     int row,col,k;
@@ -3469,16 +3523,100 @@ void colorClearBad(Image* image){
 
 /* ********** */
 /*
+ GETFILTER n filename
+     Read in a tabulated filter matrix and store it as filter n, where in is in the range 0-9. These are used with the FILTER command. The format for tabulated filter matrices requires delimited text files, with the last element of a row terminated with a newline character. It must be a rectangular matrix with all elements specified. The number of rows and columns must be odd.
+     
+ */
+
+float* filter[10] = {0,0,0,0,0,0,0,0,0,0};        // have a maximum of 10 filters
+int filterSize[10][2] = {0*20};                   // the number of rows and columns for each filter
+#define MAXFILTERSIZE 15
+
+int getfilter_c(int n,char* args)
+{
+    int    i,j,k=0;
+    
+    FILE *fp;
+    
+    if( n<0 || n>9){
+        beep();
+        printf("Filter matrices must be numbered 0-9.\n");
+        return CMND_ERR;
+    }
+    
+    while(args[k] != ' ' && args[k] != EOL) k++;    // skip over the first argument, assume there is one space before
+                                                    // the file name
+    
+    fp = fopen(fullname(&args[++k],GET_DATA),"r");
+    if( fp != NULL) {
+        // first time through, just get filter sizes
+        float value;
+        char c;
+        for(i=0; i < MAXFILTERSIZE; i++ ){
+            fscanf(fp,"%f%c", &value,&c);
+            if(c == '\n') break;
+        }
+        if(i==MAXFILTERSIZE){
+            beep();
+            printf("Error: Maximum filter size is %d\n",MAXFILTERSIZE);
+            fclose(fp);
+            return FILE_ERR;
+        }
+        filterSize[n][1]=i+1;   // this is the number of columns;
+        // now count rows
+        for(i=1; i < MAXFILTERSIZE; i++ ){
+            for(j=0; j< filterSize[n][1]; j++){
+                fscanf(fp,"%f", &value);
+            }
+            if( fscanf(fp,"%f", &value) == EOF) break;
+        }
+        fclose(fp);
+        if(i==MAXFILTERSIZE){
+            beep();
+            printf("Error: Maximum filter size is %d\n",MAXFILTERSIZE);
+            fclose(fp);
+            return FILE_ERR;
+        }
+
+        filterSize[n][0]=i+1;   // number of rows
+        
+        printf("Filter is %d rows by %d columns\n",filterSize[n][0],filterSize[n][1]);
+    } else {
+        beep();
+        printf("Could not open file: %s\n",&args[k]);
+        return FILE_ERR;
+    }
+    // now know the sizes, allocate space and read in the filter
+    
+    fp = fopen(&args[k],"r");
+    if( fp != NULL) {
+        if(filter[n] !=0) free(filter[n]);
+        filter[n] = (float*) malloc(filterSize[n][0]*filterSize[n][1]*sizeof(float));
+        for(i=0; i< filterSize[n][0]*filterSize[n][1]; i++){
+            fscanf(fp,"%f", filter[n]+i);
+        }
+    }  else {
+        beep();
+        printf("Could not open file on second pass: %s\n",&args[k]);
+        return FILE_ERR;
+    }
+    
+    return NO_ERR;
+}
+
+
+/* ********** */
+/*
  GETFUNCTION n filename
- Read in a tabulated function to be used by tabfun routine
- n is function number to be defined
- filename is file containing y=f(x) data pairs, preceeded by number of table entries
- Assumptions for tabulated functions:
- File format:
- first number is integer with the number of pairs to follow
- pairs are float with x followed by f(x) on the same line
- x values are ordered smallest to largest
- y = f(x) is single valued
+     Read in a tabulated function to be used by the LOOKUP command. n is the function
+      number to be defined. filename is file containing y=f(x) data pairs, preceeded by
+      number of table entries.
+     Assumptions for tabulated functions:
+     File format:
+     first number is integer with the number of pairs to follow
+     pairs are float with x followed by f(x) on the same line
+     x values are ordered smallest to largest
+     y = f(x) is single valued
  */
 
 float* xptr[10] = {0,0,0,0,0,0,0,0,0,0};		// have a maximum of 10 functions
@@ -5753,18 +5891,19 @@ int demosaic_c(int n,char* args){
 }
 /*----------------------------------------------------------------*/
 
-/* RAWPARAMS [demosaic subtractBlack applyWhiteBalance, applyGamma]
-    Controlls whether or not additional processing is done when the libRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, all four arguments must be specified and corrections will be done according to the specified values. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing.
+/* RAWPARAMS [demosaic subtractBlack applyWhiteBalance applyGamma clearBad]
+    Controlls whether or not additional processing is done when the libRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, at least four arguments must be specified and corrections will be done according to the specified values. subtractBlack = 1 will just subtract the raw image black value and may have negative values; subtractBlack = 2 will set the floor to 0. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing. clearBad is float; 0 means no clearing bad pixels, 1 means use the existing bad pixels data, any other value is used as the argument to the FINDBADPIX command.
  */
 
 int rawparams_c(int n,char* args){
+    extern int num_hot;
     int a,b,c;
-    float d;
-    n = sscanf(args,"%d %d %d %f",&a,&b,&c,&d);
+    float d,e;
+    n = sscanf(args,"%d %d %d %f %f",&a,&b,&c,&d,&e);
     switch(n){
         case -1:
-            printf("Raw decoding parameters are demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %f\n",
-                   UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma  );
+            printf("Raw decoding parameters are demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %f clearBad: %g\n",
+                   UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma,UIData.clearBad );
             return NO_ERR;
         case 1:
             if(a){
@@ -5772,30 +5911,37 @@ int rawparams_c(int n,char* args){
                 UIData.subtractBlack=2;
                 UIData.applyWhiteBalance=1;
                 UIData.applyGamma=2.2;
-                printf("Raw decoding parameters set to demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %f\n",
-                       UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma);
+                if(num_hot > 0)
+                    UIData.clearBad=1.0;
+                else
+                    UIData.clearBad=500;
+                printf("Raw decoding parameters set to demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %f clearBad: %g\n",
+                       UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma, UIData.clearBad);
                 return NO_ERR;
             } else {
                 UIData.demosaic=0;
                 UIData.subtractBlack=0;
                 UIData.applyWhiteBalance=0;
                 UIData.applyGamma=1.0;
-                printf("Raw decoding parameters set to demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %f\n",
-                       UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma);
+                UIData.clearBad=0;
+                printf("Raw decoding parameters set to demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %f clearBad: %g\n",
+                       UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma, UIData.clearBad);
                 return NO_ERR;
-                
             }
         case 4:
+            e = 0;
+        case 5:
             UIData.demosaic=a;
             UIData.subtractBlack=b;
             UIData.applyWhiteBalance=c;
             UIData.applyGamma=d;
-            printf("Raw decoding parameters set to demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %d\n",
-                   UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma);
+            UIData.clearBad=e;
+            printf("Raw decoding parameters set to demosaicFlag: %d subtractBlack: %d applyWhiteBalance: %d applyGamma: %f clearBad: %g\n",
+                   UIData.demosaic,UIData.subtractBlack,UIData.applyWhiteBalance, UIData.applyGamma, UIData.clearBad);
             return NO_ERR;
     }
     beep();
-    printf("Must have 0, 1, or 4 arguments.\n");
+    printf("Must have 0, 1, or 4 or 5 arguments.\n");
     return CMND_ERR;
 }
 
@@ -6562,12 +6708,12 @@ int unfold_c(int n, char* args){
  */
 
 int dsaturate_c(int n,char* args){
-    float dSatValue=1,dFloorValue=1;
+    float dSatValue=1,dFloorValue=0;
     int nargs = sscanf(args,"%f %f",&dSatValue,&dFloorValue);
     
     if(nargs == 1){
         UIData.displaySaturateValue = dSatValue;
-        if (dSatValue == 1.0)dFloorValue=0.0;
+        if (dSatValue == 1.0)UIData.displayFloorValue=0.0;
     } else if(nargs == 2){
         UIData.displaySaturateValue = dSatValue;
         UIData.displayFloorValue = dFloorValue;
@@ -6768,6 +6914,7 @@ int last_c(int n,char* args){
  Perform an inverse Abel transform using the FLiPPID method. The current image must satisfy these conditions: (1) it is a right-side-up, full axisymmetric flame image with an odd number of columns. (2) The flame must be perfectly centered on the center of the image. Nx should be slightly larger than the maximum width (in pixels) of the flame. NcLow and NcHigh relate to a range of radial locations of the maximum; values of -500 and 2500, respectively seem to work for several flames I tested. Power is the power used in the fitting function, and could range from 3 - 7 or more. Higher powers seem to work better for flames with thin soot regions at the edges. Rows with maximum counts less than Background will be filled with 0. The image buffer returns the Abel inverted image. a temporary image named proj is also created -- this is the projected image created from the fitting function and can be comared with the original image to assess the quality of the fit. A lookup table is created based on the values of Nx, NcLow, NcHigh, and Power. The table is saved to a file in a folder named flippidMatrices in the path specified by the Save Data Files preference. Before calculating a new table, the program checks to see if an appropriate table already exists.
  
  */
+
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_multimin.h>

@@ -107,6 +107,7 @@ void setUpUIData(){
     UIData.subtractBlack=0;
     UIData.applyWhiteBalance=0;
     UIData.applyGamma=1.0;
+    UIData.clearBad=0.0;
 
     
 }
@@ -485,7 +486,7 @@ int loadprefs(char* name)
         }
 
         if(missingBytes >= 3*sizeof(int)+sizeof(float)){
-            // set these default values
+            // set these default values for the RAW command
             UIData.demosaic=0;
             UIData.subtractBlack=0;
             UIData.applyWhiteBalance=0;
@@ -496,6 +497,12 @@ int loadprefs(char* name)
         if(missingBytes >= sizeof(float)){
             // set these default values
             UIData.displayFloorValue = 0.0; // when Scale is selected, cmax will be dataMin + dataRange * displayFloorValue
+            missingBytes -= sizeof(float);
+        }
+
+        if(missingBytes >= sizeof(float)){
+            // set these default values
+            UIData.clearBad = 0.0; // another argument for the RAW command
             missingBytes -= sizeof(float);
         }
 

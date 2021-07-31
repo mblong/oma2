@@ -243,14 +243,14 @@ typedef struct {
     
     float windowScaleFactor;
     
-    int demosaic;
+    int demosaic;           // arguments in the RAW command
     int subtractBlack;
     int applyWhiteBalance;
     float applyGamma;
     
     float displayFloorValue; // when Scale is selected, cmin will be dataMin + dataRange * displayFloorValue
 
-    
+    float clearBad; // another argument in the RAW command
     
 }oma2UIData;
 

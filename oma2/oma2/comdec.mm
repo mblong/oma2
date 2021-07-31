@@ -107,6 +107,7 @@ ComDef   commands[] =    {
     {{"FINDBADPIX     "},	findbad_c},
     {{"FWDATMATLAB    "},	fwdatm_c},
     {{"FLOATAUTO      "},   floatAuto},
+    {{"FILTER         "},   filter_c},
 #if defined(MacOSX_UI)
     {{"FLIPPID        "},   flippid_c},
 #endif
@@ -117,6 +118,7 @@ ComDef   commands[] =    {
     {{"GETFOLDERNAMES "},   getFolderNames_c},
     {{"GETSETTINGS    "},	getsettings},
     {{"GETFUNCTION    "},	getfun_c},
+    {{"GETFILTER      "},   getfilter_c},
     {{"GETBINARYFILE  "},	getbin_c},
     {{"GETANGLE       "},   getangle_c},
     {{"GMACRO         "},	gmacro_c},

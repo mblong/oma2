@@ -90,6 +90,7 @@ int ftemp_c(int, char*);
 int findbad_c(int,char*);
 int fwdatm_c(int n,char* args);
 int fold_c(int n, char* args);
+int filter_c(int n, char* args);
 #if defined(MacOSX_UI)
     int flippid_c(int n, char* args);
 #endif
@@ -109,6 +110,7 @@ int getmatch_c(int, char*);
 int gnoise_c(int, char*);
 int getbin_c(int,char*);
 int getangle_c(int,char*);
+int getfilter_c(int,char*);
 
 int hdrAccumulate_c(int,char*);
 int hdrAcadd_c(int,char*);
@@ -253,5 +255,8 @@ float tabfun(int,float);
 
 float ranfGauss();
 void decodeHobj(Image*,int,int);
+
+void simpleFindBad(int rows, int cols, int neighborDistance, int n, Image *image);
+void simpleClearBad(int ccd_width,int rows, int cols, int neighborDistance, int x0, int y0, Image *image);
 
 #endif
