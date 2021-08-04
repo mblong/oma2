@@ -178,6 +178,17 @@ CVDENOISE h_luminance h_color [search_window_size block_size]
 
 CVHOUGHCIRCLES [cannyThreshold accumulatorThreshold maxRadius]
   Use the opencv HoughCircles to detect circles in an image. Works on monochrome images. Default values are 30 10 20 for cannyThreshold accumulatorThreshold maxRadius. Map the monochrome image to 0-255 first. Output shows detected circles.
+
+CANON command arguments
+	[Only available in oma2cam; requires Canon EDSDK framework]
+    Command to control Canon camera
+    Available commands are as follows:
+    SHOOt filename -- take a picture and save the result to the specified file
+    LOADResult loadResultFlag -- if the flag is nonzero, the file read from the camera is opened (default is true)
+    DISPlayResult displayResultFlag -- if the flag is nonzero, the current image is displayed (default is true)
+    Notes:
+    Only the first four characters of a command are matched in decoding the command.
+    If a single argument is given, that is interpreted as the filename for the SHOOT command.
  
 DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
@@ -276,7 +287,7 @@ EXECUTE <filename>
 	Reads OMA commands stored in the specified file into a special execute buffer and then performs those commands. Unlike macros, these should not contain dummy numerical arguments (%d).
 
 EXPOSURE exposureValue
-	Sets an exposure time to be used in generating HDR images. If no argument is given, the value of the current exposure is echoed.
+	Sets an exposure time to be used in generating HDR images. If no argument is given, the value of the current exposure is echoed and command_return_1 returns the value.
 
 EXTRA [index] [value]
 	Add extra information to the current image in the form of a floating point value. Indexing starts at 1. If both arguments are present, the value is placed at the location specified by the index. If no argument is given, the command lists extra values in the current image buffer and puts the first ten extra values into the command_return variables. With one argument, the extra value at the specified index is put into command_return_1.
@@ -314,7 +325,7 @@ FECHO string
 	Writes the string to the file opened with FOPEN. A newLine is added after the string unless the string ends in ..., in which case no newLine is added. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.
 
 FOPEN <filename>
-	Open a text file with the name <filename> for I/O. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.
+	Open a text file with the name <filename> for I/O. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro. <filename> should specify the extension (e.g., .txt or .csv).
 
 FRAME NewWidth NewHeight [Value] [X0] [Y0]
 	Put a "frame" around the current image. X0 and Y0 are the coordinates of the start of the new image in the current image's coordinate system. X0 and Y0 can be positive (will crop out some of the current image) or negative (The new image will have a border with the pixels containing the Value specified). If X0 or Y0 are not integers, the routine will interpolate pixel values. Default Value is 0. Default of X0 and Y0 center the old image in the frame.

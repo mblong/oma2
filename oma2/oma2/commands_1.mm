@@ -2678,7 +2678,7 @@ char    *fptr_name;
 int fopen_c (int n,char* args)
 {
     
-    fptr_name = fullname(args,CSV_DATA);
+    fptr_name = fullname(args,RAW_DATA);
     fptr_local = fopen(fptr_name,"w");
     if( fptr_local != NULL) {
         //settext(args);      /* text file type */
@@ -4037,6 +4037,15 @@ int hdrNumget_c(int n,char* args){
     update_UI();
     return iBuffer.err();
 }
+
+/* ********** */
+
+/*
+ EXPOSURE exposureValue
+     Sets an exposure time to be used in generating HDR images. If no argument is given,
+      the value of the current exposure is echoed and command_return_1 returns the value.
+
+ */
 
 int exposure_c(int n,char* args){
     extern Variable user_variables[];

@@ -1232,7 +1232,7 @@ int readCsv(char* filename,Image* theImage){
     // some checking
     if(colread !=0){
         beep();
-        printf("Posible error is CSV file read.\n");
+        printf("Posible error in CSV file read.\n");
     }
     if(rows*cols < imageArray.size()){
         beep();

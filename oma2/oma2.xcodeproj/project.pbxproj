@@ -153,6 +153,9 @@
 		DBF879C41906C18D006C5872 /* gphotoFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = DBF879C31906C18D006C5872 /* gphotoFunctions.c */; };
 		DBFB1C7A248FA7810083E9F6 /* SBIGUDrv.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DBFCF5EB18FC3EEF00956047 /* u3.c in Sources */ = {isa = PBXBuildFile; fileRef = DB8C23FF18FC32D500969763 /* u3.c */; };
+		DBFEFA0126B5EEAB002873C8 /* canonCamera.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBFEFA0026B5EEAB002873C8 /* canonCamera.mm */; };
+		DBFEFA0426B5F144002873C8 /* EDSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBFEFA0226B5F119002873C8 /* EDSDK.framework */; };
+		DBFEFA0526B5F144002873C8 /* EDSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DBFEFA0226B5F119002873C8 /* EDSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -195,6 +198,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				DBFEFA0526B5F144002873C8 /* EDSDK.framework in Embed Frameworks */,
 				DBFB1C7A248FA7810083E9F6 /* SBIGUDrv.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -320,6 +324,9 @@
 		DBF879C11906C13F006C5872 /* gphotoCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gphotoCommands.mm; sourceTree = "<group>"; };
 		DBF879C31906C18D006C5872 /* gphotoFunctions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gphotoFunctions.c; sourceTree = "<group>"; };
 		DBF879C51906C6FC006C5872 /* gphotoFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gphotoFunctions.h; sourceTree = "<group>"; };
+		DBFEFA0026B5EEAB002873C8 /* canonCamera.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = canonCamera.mm; sourceTree = "<group>"; };
+		DBFEFA0226B5F119002873C8 /* EDSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EDSDK.framework; path = EDSDK/Framework/EDSDK.framework; sourceTree = "<group>"; };
+		DBFEFA0726B5F506002873C8 /* canonCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = canonCamera.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -341,6 +348,7 @@
 			files = (
 				DBD0B8D825C7114700CD40C3 /* CoreImage.framework in Frameworks */,
 				DB9A98AB22720BFC008ABA5C /* SBIGUDrv.framework in Frameworks */,
+				DBFEFA0426B5F144002873C8 /* EDSDK.framework in Frameworks */,
 				DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
 				DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */,
@@ -399,6 +407,7 @@
 		DB0FC0241519183C008A9B54 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBFEFA0226B5F119002873C8 /* EDSDK.framework */,
 				DB685CE52355633600812918 /* LibTiff_F.framework */,
 				DBC3F1FC19129FEF00AD7850 /* VISA.framework */,
 				DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */,
@@ -465,12 +474,14 @@
 				DBF879C31906C18D006C5872 /* gphotoFunctions.c */,
 				DBF879C51906C6FC006C5872 /* gphotoFunctions.h */,
 				DB57E31818F58D7900FA4D29 /* sbig.mm */,
+				DB8C23FA18FC2FF200969763 /* u3.h */,
 				DB8C23F718FC2BA500969763 /* labjackU3.mm */,
 				DB8C23FF18FC32D500969763 /* u3.c */,
 				DB8C23FB18FC302F00969763 /* labjackusb.h */,
-				DB8C23FA18FC2FF200969763 /* u3.h */,
-				DBB15EF025A78014000437AA /* openCVroutines.mm */,
 				DBB15EF125A78014000437AA /* openCVroutines.h */,
+				DBB15EF025A78014000437AA /* openCVroutines.mm */,
+				DBFEFA0726B5F506002873C8 /* canonCamera.h */,
+				DBFEFA0026B5EEAB002873C8 /* canonCamera.mm */,
 			);
 			name = "Hardware Related";
 			sourceTree = "<group>";
@@ -767,6 +778,7 @@
 				DB8A884918E3297E007C79AF /* AppController.mm in Sources */,
 				DB3E355D18E6030300381607 /* serial.c in Sources */,
 				DB95A94E1A2F415E00823467 /* VariablesWindowController.mm in Sources */,
+				DBFEFA0126B5EEAB002873C8 /* canonCamera.mm in Sources */,
 				DB8A884A18E3297E007C79AF /* PreferenceController.mm in Sources */,
 				DB8C23F918FC2FC100969763 /* labjackU3.mm in Sources */,
 				DB8A884B18E3297E007C79AF /* comdec.mm in Sources */,
@@ -1039,6 +1051,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/**",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/EDSDK/Framework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2cam-Prefix.pch";
@@ -1091,6 +1104,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/**",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/EDSDK/Framework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "oma2/oma2cam-Prefix.pch";

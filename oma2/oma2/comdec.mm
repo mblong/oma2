@@ -287,6 +287,11 @@ ComDef   hardwareCommands[] =    {
     {{"ASK            "},	ask},			/*  @gpib.c */
 #endif
 
+#ifdef CANON_
+    {{"CANON          "},    canon},            /*  @canonCamera.mm */
+#endif
+
+    
 #ifdef GPHOTO
     {{"CAPTURE        "},	capture},
     {{"CAMLISTSETTINGS"},	camlistsettings},

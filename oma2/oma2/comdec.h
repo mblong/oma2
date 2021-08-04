@@ -28,6 +28,11 @@
 int andor(int, char*);
 #endif
 
+#ifdef CANON_
+int canon(int, char*);
+#endif
+
+
 #ifdef SBIG
 int sbig(int,char*);
 #endif
