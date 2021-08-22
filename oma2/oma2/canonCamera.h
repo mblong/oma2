@@ -23,5 +23,12 @@
 #include "stdio.h"
 
 int canon( int,char*);
+EdsError downloadImage(EdsDirectoryItemRef directoryItem);
+static EdsError EDSCALLBACK handleStateEvent (EdsStateEvent event,EdsUInt32 parameter,EdsVoid * context);
+static EdsError EDSCALLBACK handleObjectEvent( EdsObjectEvent event,EdsBaseRef object,EdsVoid * context);
+static EdsError EDSCALLBACK handlePropertyEvent (EdsPropertyEvent event,EdsPropertyID property,EdsUInt32 inParam, EdsVoid * context);
+EdsError setupCamera();
+EdsError closeCamera();
+
 
 #endif /* canonCamera_h */

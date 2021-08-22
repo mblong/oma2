@@ -31,6 +31,7 @@ ComDef   commands[] =    {
     {{"ACGET          "},   acget_c},
     {{"ABSOLUTE       "},   absolute_c},
     {{"ACMEVELOCITY   "},   acmevelocity_c},
+    {{"ASPECT         "},   aspect_c},
 
     {{"BLOCK          "},	block_g},
     {{"BIT8           "},	bit8_c},
@@ -260,6 +261,7 @@ ComDef   commands[] =    {
     {{"VIDADDFRAME    "},	vidAddFrame_q},
     {{"VIDCLOSEFILE   "},	vidCloseFile_q},
 #endif
+    {{"VALUES         "},    values_c},
     
     {{"WRITEBADPIX    "},	writebad_c},
     {{"WARP           "},	warp_c},

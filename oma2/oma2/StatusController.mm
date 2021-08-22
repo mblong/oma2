@@ -163,6 +163,12 @@ StatusController *statusController;
 
 - (IBAction)decreaseColorMin:(id)sender {
     UIData.cmin -= UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
+    
+    UIData.displayFloorValue -= UIData.cminmaxinc/100.0;
+    NSMutableString *str = [NSMutableString stringWithFormat:@"Mx/Mn %.2g/%.2g",UIData.displaySaturateValue,UIData.displayFloorValue];
+    [str setString: [str stringByReplacingOccurrencesOfString:@"0." withString:@"."]];
+    [[statusController scaleState] setTitle:str];
+
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
     if(UIData.autoupdate){
         int saveAuatoscale = UIData.autoscale;
@@ -174,6 +180,12 @@ StatusController *statusController;
 
 - (IBAction)increaseColorMin:(id)sender {
     UIData.cmin += UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
+    
+    UIData.displayFloorValue += UIData.cminmaxinc/100.0;
+    NSMutableString *str = [NSMutableString stringWithFormat:@"Mx/Mn %.2g/%.2g",UIData.displaySaturateValue,UIData.displayFloorValue];
+    [str setString: [str stringByReplacingOccurrencesOfString:@"0." withString:@"."]];
+    [[statusController scaleState] setTitle:str];
+
     [ColorMinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
     if(UIData.autoupdate) {
         int saveAuatoscale = UIData.autoscale;
@@ -185,6 +197,12 @@ StatusController *statusController;
 
 - (IBAction)decreaseColorMax:(id)sender {
     UIData.cmax -= UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
+    
+    UIData.displaySaturateValue -= UIData.cminmaxinc/100.0;
+    NSMutableString *str = [NSMutableString stringWithFormat:@"Mx/Mn %.2g/%.2g",UIData.displaySaturateValue,UIData.displayFloorValue];
+    [str setString: [str stringByReplacingOccurrencesOfString:@"0." withString:@"."]];
+    [[statusController scaleState] setTitle:str];
+    
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
     if(UIData.autoupdate) {
         int saveAuatoscale = UIData.autoscale;
@@ -199,6 +217,12 @@ StatusController *statusController;
 
 - (IBAction)increaseColorMax:(id)sender {
     UIData.cmax += UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
+    
+    UIData.displaySaturateValue += UIData.cminmaxinc/100.0;
+    NSMutableString *str = [NSMutableString stringWithFormat:@"Mx/Mn %.2g/%.2g",UIData.displaySaturateValue,UIData.displayFloorValue];
+    [str setString: [str stringByReplacingOccurrencesOfString:@"0." withString:@"."]];
+    [[statusController scaleState] setTitle:str];
+
     [ColorMaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
     if(UIData.autoupdate) {
         int saveAuatoscale = UIData.autoscale;
@@ -230,7 +254,9 @@ StatusController *statusController;
         if(UIData.displaySaturateValue == 1.0 && UIData.displayFloorValue == 0.0){
             [[statusController scaleState] setTitle: @"Scale"];
         } else {
-            [[statusController scaleState] setTitle:[NSString stringWithFormat:@"Mx/Mn %g/%g",UIData.displaySaturateValue,UIData.displayFloorValue]];
+            NSMutableString *str = [NSMutableString stringWithFormat:@"Mx/Mn %.2g/%.2g",UIData.displaySaturateValue,UIData.displayFloorValue];
+            [str setString: [str stringByReplacingOccurrencesOfString:@"0." withString:@"."]];
+            [[statusController scaleState] setTitle:str];
         }
     }else{
         UIData.autoscale = 0;

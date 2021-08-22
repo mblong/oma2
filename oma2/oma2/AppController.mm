@@ -151,7 +151,9 @@ extern oma2UIData UIData;
         if(UIData.displaySaturateValue == 1.0 && UIData.displayFloorValue == 0.0){
             [[statusController scaleState] setTitle: @"Scale"];
         } else {
-            [[statusController scaleState] setTitle:[NSString stringWithFormat:@"Mx/Mn %g/%g",UIData.displaySaturateValue,UIData.displayFloorValue]];
+            NSMutableString *str = [NSMutableString stringWithFormat:@"Mx/Mn %.2g/%.2g",UIData.displaySaturateValue,UIData.displayFloorValue];
+            [str setString: [str stringByReplacingOccurrencesOfString:@"0." withString:@"."]];
+            [[statusController scaleState] setTitle:str];
         }
     } else{
         [[statusController scaleState] setState:NSOffState];

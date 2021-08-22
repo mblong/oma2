@@ -25,6 +25,7 @@ int acadd_c(int,char*);
 int addRGB_c(int,char*);
 int absolute_c(int,char*);
 int acmevelocity_c(int,char*);
+int aspect_c(int, char*);
 
 int bit8_c(int,char*);
 int bit16_c(int,char*);
@@ -230,6 +231,7 @@ int vidAddFrame_q(int,char*);
 int vidOpenFile_q(int,char*);
 int vidCloseFile_q(int,char*);
 #endif
+int values_c(int, char*);
 
 int warpar_c(int, char*);
 int warp_c(int, char*);

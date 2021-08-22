@@ -628,6 +628,38 @@ int croprectangle_c(int n,char* args){
 
 /* ***************** */
 
+/*
+ 
+ ASPECT Width Height
+ 
+ Crop the image to have the specified aspect ratio. Default is 16 9.
+ 
+ */
+
+int aspect_c(int n, char* args)
+{
+    float width=16,height=9,aspect;
+    int newWidth,newHeight;
+    aspect=(float)iBuffer.width()/iBuffer.height();
+    
+    sscanf(args,"%f %f",&width,&height);
+    if(width/height >= aspect){ // new aspect is greater than old
+        newWidth=iBuffer.width();
+        newHeight = height/width*newWidth;
+        if((newHeight-iBuffer.height())&1) newHeight--;  // needs to match even/odd of original
+    } else {
+        newHeight=iBuffer.height();
+        newWidth = width/height*newHeight;
+        if((newWidth-iBuffer.width())&1) newWidth--;  // needs to match even/odd of original
+    }
+    sprintf(args,"%d %d",newWidth,newHeight);
+    frame_c(0,args);
+
+    return NO_ERR;
+}
+
+/* ***************** */
+
 /* Put a "frame" around the current image -- making it a new size
  
  FRAME NewWidth NewHeight [Value] [X0] [Y0]
@@ -962,6 +994,8 @@ int rgb2grey_c(int n,char* args){
         iBuffer.errclear();
         return err;
     }
+    imGreen.free();
+    imBlue.free();
     iBuffer.getmaxx(printMax);
     update_UI();
     return NO_ERR;
@@ -1451,10 +1485,6 @@ int gsmooth_c(int n, char* args)
 //***************************************************************//
 int tsmooth_c(int n, char* args)
 {
-    Image Im_Result;
-    Image Im_dimX;
-    Image Im_dimY;
-    
     int nc, nt;
     int i,j,count;
     float sum;
@@ -4037,6 +4067,42 @@ int hdrNumget_c(int n,char* args){
     update_UI();
     return iBuffer.err();
 }
+/* ********** */
+
+/*
+ VALUES [valueNumber]
+     Get the specified value for the current image and return it in command_return_1. With no arguments, all current values are listed.
+
+ */
+
+int values_c(int n,char* args){
+    extern Variable user_variables[];
+    DATAWORD* values = iBuffer.getvalues();
+    int number;
+    float value;
+    if(sscanf(args,"%d",&number) == 1){
+        if(number<0 || number>NVALUES){
+            beep();
+            printf("Value numbers must be between 0 - %d\n",NVALUES-1);
+            free(values);
+            return CMND_ERR;
+        }
+        value = values[number];
+        user_variables[0].ivalue = user_variables[0].fvalue = value;
+        user_variables[0].is_float = 1;
+        printf("Values[%d]: %g\n",number,value);
+
+    } else {
+        char names[16][16] = {"MIN","MAX","RMAX","RMIN","GMAX","GMIN","BMAX","BMIN","RULER_SCALE","EXPOSURE","APERTURE","ISO","RED_MULT","GREEN_MULT","BLUE_MULT" };
+        for(int i=0; i<NVALUES;i++){
+            printf("%d: %s: %g\n",i,&names[i][0],values[i]);
+        }
+    }
+    
+    free(values);
+    update_UI();
+    return NO_ERR;
+}
 
 /* ********** */
 
@@ -4055,10 +4121,10 @@ int exposure_c(int n,char* args){
         values[EXPOSURE] = exp;
         iBuffer.setvalues(values);
     } else {
-        printf("Exposure: %f\n",values[EXPOSURE]);
+        printf("Exposure: %g\n",values[EXPOSURE]);
     }
     
-    user_variables[0].fvalue = values[EXPOSURE];
+    user_variables[0].ivalue = user_variables[0].fvalue = values[EXPOSURE];
     user_variables[0].is_float = 1;
     free(values);
     update_UI();

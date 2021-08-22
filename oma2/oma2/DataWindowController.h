@@ -15,7 +15,7 @@
 @interface DataWindowController : NSWindowController
 {
     NSString    *windowName;
-    DataView    *__weak imageView;
+    DataView    *__strong imageView;
     int         hasRowPlot;
     int         hasColPlot;
     int         thePalette;
@@ -26,7 +26,7 @@
 }
 
 @property (copy) NSString *windowName;
-@property __weak IBOutlet DataView *imageView;      // what's the difference between weak and strong here?
+@property __strong IBOutlet DataView *imageView;      // what's the difference between weak and strong here?
 @property NSRect windowRect;
 @property int    hasRowPlot;
 @property int    hasColPlot;

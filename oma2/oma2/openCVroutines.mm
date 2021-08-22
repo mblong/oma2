@@ -389,7 +389,12 @@ int cvAlign_q(int n,char* args){
             *dataPtr++ = *resultPtr++;
         }
     }
+    im1.release();
+    im2.release();
+    im2_original.release();
+    im2_aligned.release();
     
+    original.free();
     iBuffer.free();
     iBuffer=newIm;
     iBuffer.getmaxx(printMax);

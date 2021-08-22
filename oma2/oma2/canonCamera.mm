@@ -24,11 +24,6 @@ extern Image iBuffer;
 extern int printMax;
 extern Variable user_variables[];
 
-EdsError downloadImage(EdsDirectoryItemRef directoryItem);
-EdsError EDSCALLBACK handleStateEvent (EdsStateEvent event,EdsUInt32 parameter,EdsVoid * context);
-EdsError EDSCALLBACK handleObjectEvent( EdsObjectEvent event,EdsBaseRef object,EdsVoid * context);
-EdsError EDSCALLBACK handlePropertyEvent (EdsPropertyEvent event,EdsPropertyID property,EdsUInt32 inParam, EdsVoid * context);
-EdsError setupCamera();
 
 /*
  CANON command arguments
@@ -38,7 +33,7 @@ EdsError setupCamera();
     LOADResult loadResultFlag -- if the flag is nonzero, the file read from the camera is opened (default is true)
     DISPlayResult displayResultFlag -- if the flag is nonzero, the current image is displayed (default is true)
     Notes:
-    Only the first foar characters of a command are matche3d in decoding the command.
+    Only the first four characters of a command are matched in decoding the command.
     If a single argument is given, that is interpreted as the filename for the SHOOT command.
  */
 
@@ -84,20 +79,63 @@ int canon(int n,char* args){
                 return CMND_ERR;
             }
         case 1:
-            strcpy(filename, args); // arguments as typed
-            break;
-        default:
-            beep();
-            printf("Unrecognized CANON command.\n");
-            return CMND_ERR;
+            if(strncmp(args,"OPEN",4) == 0){
+                error=setupCamera();
+                //error = EdsOpenSession(_camera);
+                if(error){
+                    beep();
+                    printf("Error on setup: %x\n",error);
+                    closeCamera();
+                }
+                return error;
+            } else if(strncmp(args,"CLOS",4) == 0){
+                return closeCamera();
+            } else {
+                strcpy(filename, args); // arguments as typed
+                break;
+            }
     }
     
-    error=setupCamera();
+    if(!_isSDKLoaded)
+        error=setupCamera();
     if(error){
         beep();
-        printf("Error on setup: %d\n",error);
+        printf("Error on setup: %x\n",error);
+        closeCamera();
         return error;
     }
+    // from OpenSessionCommand ****************
+    
+    //The communication with the _camera begins
+    error = EdsOpenSession(_camera);
+
+    //Preservation ahead is set to PC
+    //if(error == EDS_ERR_OK){
+        error = EdsSetPropertyData(_camera, kEdsPropID_SaveTo, 0, sizeof(saveTo) , &saveTo);
+    printf("Error setProp: %x\n",error);
+    //}
+    
+    if(error == EDS_ERR_OK){
+        EdsCapacity capacity = {0x7FFFFFFF, 0x1000, 1};
+        error = EdsSetCapacity(_camera, capacity);
+    }
+    
+    //Notification of error
+    if(error != EDS_ERR_OK){
+        /*
+         number = [[NSNumber alloc] initWithInt: error];
+         event = [[CameraEvent alloc] init:@"error" withArg: number];
+         [_model notifyObservers:event];
+         [event release];
+         [number release];
+         */
+        beep();
+        printf("error: %x\n",error);
+        return error;
+    }
+    
+
+
         
     // from TakePictureCommand ****************
 
@@ -111,54 +149,45 @@ int canon(int n,char* args){
         if(error == EDS_ERR_DEVICE_BUSY){
             beep();
             printf("EDS_ERR_DEVICE_BUSY\n");
+            closeCamera();
             return error;
         }
         beep();
-        printf("Error after shutter press: %d\n",error);
+        printf("Error after shutter press: %x\n",error);
+        closeCamera();
         return error;
         
     }
     
     // wait for the image to be saved to a file
+    //CFRunLoopRunInMode(kCFRunLoopDefaultMode, 30, false);
     while(!pictureReceived){
         CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, false);
         [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
     }
+    error = EdsCloseSession(_camera);
+    closeCamera();
 
-    if (error == EDS_ERR_OK){
-        error = EdsCloseSession(_camera);
+    if(loadResult){
+        // read in the image
+        Image new_im(filename,LONG_NAME);
+        if(new_im.err()){
+            beep();
+            printf("Could not load %s\n",filename);
+            return new_im.err();
+        }
+        iBuffer.free();     // release the old data
+        iBuffer = new_im;   // this is the new data
+        iBuffer.getmaxx(printMax);
+        update_UI();
     }
-    
-    // Release _camera
-    if(_camera != NULL){
-        EdsRelease(_camera);
-    }
-    
-    // Terminate SDK
-    EdsTerminateSDK();
-    
-    // read in the image
-    Image new_im(filename,LONG_NAME);
-    if(new_im.err()){
-        beep();
-        printf("Could not load %s\n",filename);
-        return new_im.err();
-    }
-    iBuffer.free();     // release the old data
-    iBuffer = new_im;   // this is the new data
-    iBuffer.getmaxx(printMax);
-    update_UI();
-
     // and display
-    display(0,args);
+    if(displayResult) display(0,args);
     
-
     return NO_ERR;
 }
 
-
-
-EdsError EDSCALLBACK handleObjectEvent( EdsObjectEvent event,EdsBaseRef object,EdsVoid * context)
+static EdsError EDSCALLBACK handleObjectEvent( EdsObjectEvent event,EdsBaseRef object,EdsVoid * context)
 {
     EdsError err=EDS_ERR_OK;
     
@@ -178,12 +207,12 @@ EdsError EDSCALLBACK handleObjectEvent( EdsObjectEvent event,EdsBaseRef object,E
     return err;
 }
 
-EdsError EDSCALLBACK handlePropertyEvent (EdsPropertyEvent event,EdsPropertyID     property,EdsUInt32 inParam, EdsVoid * context)
+static EdsError EDSCALLBACK handlePropertyEvent (EdsPropertyEvent event,EdsPropertyID     property,EdsUInt32 inParam, EdsVoid * context)
 {
     return EDS_ERR_OK;
 }
 
-EdsError EDSCALLBACK handleStateEvent (EdsStateEvent event,EdsUInt32 parameter,EdsVoid * context)
+static EdsError EDSCALLBACK handleStateEvent (EdsStateEvent event,EdsUInt32 parameter,EdsVoid * context)
 {
     return EDS_ERR_OK;
 }
@@ -234,6 +263,22 @@ EdsError downloadImage(EdsDirectoryItemRef directoryItem)
     return err;
 }
 
+EdsError closeCamera(){
+    EdsError error=EDS_ERR_OK;
+    
+    // Release _camera
+    if(_camera != NULL){
+        EdsRelease(_camera);
+    }
+    
+    // Terminate SDK
+
+
+    EdsTerminateSDK();
+    _isSDKLoaded=false;
+    return error;
+}
+
 EdsError setupCamera(){
     EdsError error = EDS_ERR_OK;
     // Initialization of SDK
@@ -252,6 +297,7 @@ EdsError setupCamera(){
             error = EDS_ERR_DEVICE_NOT_FOUND;
             beep();
             printf("EDS_ERR_DEVICE_NOT_FOUND\n");
+            return closeCamera();
         }
     }
     
@@ -267,7 +313,7 @@ EdsError setupCamera(){
             error = EDS_ERR_DEVICE_NOT_FOUND;
             beep();
             printf("EDS_ERR_DEVICE_NOT_FOUND\n");
-            return error;
+            return closeCamera();
         }
     }
     
@@ -283,12 +329,6 @@ EdsError setupCamera(){
     //Release _camera list
     EdsRelease(cameraList);
     
-    // from OpenSessionCommand ****************
-    
-    
-    //The communication with the _camera begins
-    error = EdsOpenSession(_camera);
-    
     // Set event handler
     if(error == EDS_ERR_OK)
         error = EdsSetObjectEventHandler(_camera, kEdsObjectEvent_All,handleObjectEvent, NULL);
@@ -296,31 +336,10 @@ EdsError setupCamera(){
         error = EdsSetPropertyEventHandler(_camera, kEdsPropertyEvent_All,handlePropertyEvent, NULL);
     if(error == EDS_ERR_OK)
         error = EdsSetCameraStateEventHandler(_camera, kEdsStateEvent_All,handleStateEvent, NULL);
+
     
-    //Preservation ahead is set to PC
-    if(error == EDS_ERR_OK){
-        error = EdsSetPropertyData(_camera, kEdsPropID_SaveTo, 0, sizeof(saveTo) , &saveTo);
-    }
     
-    if(error == EDS_ERR_OK){
-        EdsCapacity capacity = {0x7FFFFFFF, 0x1000, 1};
-        error = EdsSetCapacity(_camera, capacity);
-    }
-    
-    //Notification of error
-    if(error != EDS_ERR_OK){
-        /*
-         number = [[NSNumber alloc] initWithInt: error];
-         event = [[CameraEvent alloc] init:@"error" withArg: number];
-         [_model notifyObservers:event];
-         [event release];
-         [number release];
-         */
-        beep();
-        printf("error: %d\n",error);
-        return error;
-    }
-    
+ 
     return error;
 }
 

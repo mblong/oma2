@@ -71,6 +71,9 @@ ACMEVELOCITY telemetryFileName
 	exposure
 	name
 
+ASPECT [Width] [Height]
+	Crop the image to have the specified aspect ratio. Default is 16 9.
+	
 BLOCK n [m]
 	Group the image data into n x m blocks (rows x cols). This command reduces the size of the data buffer. The values are summed, pending implementation of the BLKAVE command. If the image is flagged as color, the three color planes are treated separately.
 
@@ -804,6 +807,9 @@ VIDADDFRAME
 
 VIDCLOSEFILE
 	Closes the currently open video file. This must be done after adding frames to a video. [qtoma command]
+
+VALUES [valueNumber]
+     Get the specified value for the current image and return it in command_return_1. With no arguments, all current values are listed.
 
 WARP subpix
 	Remaps an image coordinate system using bilinear geometric warping.
