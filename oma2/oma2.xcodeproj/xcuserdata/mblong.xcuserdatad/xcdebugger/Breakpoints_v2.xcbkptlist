@@ -402,8 +402,8 @@
             timestampString = "585138907.4785089"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "319"
-            endingLineNumber = "319"
+            startingLineNumber = "324"
+            endingLineNumber = "324"
             landmarkName = "unknown"
             landmarkType = "0">
          </BreakpointContent>
@@ -419,8 +419,8 @@
             timestampString = "585138907.479048"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "329"
-            endingLineNumber = "329"
+            startingLineNumber = "334"
+            endingLineNumber = "334"
             landmarkName = "unknown"
             landmarkType = "0">
          </BreakpointContent>
@@ -436,8 +436,8 @@
             timestampString = "585138907.479381"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "474"
-            endingLineNumber = "474"
+            startingLineNumber = "479"
+            endingLineNumber = "479"
             landmarkName = "comdec(cmnd)"
             landmarkType = "9">
          </BreakpointContent>
@@ -453,8 +453,8 @@
             timestampString = "585138907.479695"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "483"
-            endingLineNumber = "483"
+            startingLineNumber = "488"
+            endingLineNumber = "488"
             landmarkName = "comdec(cmnd)"
             landmarkType = "9">
          </BreakpointContent>
@@ -521,8 +521,8 @@
             timestampString = "585138907.4801151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2454"
-            endingLineNumber = "2454"
+            startingLineNumber = "2459"
+            endingLineNumber = "2459"
             landmarkName = "loopbreak(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -538,8 +538,8 @@
             timestampString = "585138907.480392"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2460"
-            endingLineNumber = "2460"
+            startingLineNumber = "2465"
+            endingLineNumber = "2465"
             landmarkName = "loopbreak(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -826,8 +826,8 @@
             timestampString = "585138907.480792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3065"
-            endingLineNumber = "3065"
+            startingLineNumber = "3124"
+            endingLineNumber = "3124"
             landmarkName = "bit16_c(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -843,8 +843,8 @@
             timestampString = "585138907.480842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3945"
-            endingLineNumber = "3945"
+            startingLineNumber = "4004"
+            endingLineNumber = "4004"
             landmarkName = "hdrAccumulate_c(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -860,8 +860,8 @@
             timestampString = "585138907.480901"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4729"
-            endingLineNumber = "4729"
+            startingLineNumber = "4795"
+            endingLineNumber = "4795"
             landmarkName = "doc2rgb_c(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -877,8 +877,8 @@
             timestampString = "585138907.48096"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4715"
-            endingLineNumber = "4715"
+            startingLineNumber = "4781"
+            endingLineNumber = "4781"
             landmarkName = "doc2rgb_c(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -911,8 +911,8 @@
             timestampString = "585138907.481038"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1375"
-            endingLineNumber = "1375"
+            startingLineNumber = "1380"
+            endingLineNumber = "1380"
             landmarkName = "evaluate(start, end)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1047,8 +1047,8 @@
             timestampString = "585138907.4813859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1338"
-            endingLineNumber = "1338"
+            startingLineNumber = "1343"
+            endingLineNumber = "1343"
             landmarkName = "evaluate(start, end)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1064,8 +1064,8 @@
             timestampString = "585138907.481694"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "7221"
-            endingLineNumber = "7221"
+            startingLineNumber = "7454"
+            endingLineNumber = "7454"
             landmarkName = "flippid_c(notUsed, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1307,8 +1307,8 @@
             filePath = "oma2/openCVroutines.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "cvHoughCircles_q(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1355,8 +1355,8 @@
             filePath = "oma2/openCVroutines.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
             landmarkName = "cvAlign_q(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1371,8 +1371,8 @@
             filePath = "oma2/openCVroutines.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "354"
-            endingLineNumber = "354"
+            startingLineNumber = "430"
+            endingLineNumber = "430"
             landmarkName = "cvAlign_q(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1419,8 +1419,8 @@
             filePath = "oma2/comdec.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1717"
-            endingLineNumber = "1717"
+            startingLineNumber = "1722"
+            endingLineNumber = "1722"
             landmarkName = "logg(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1467,8 +1467,8 @@
             filePath = "oma2/openCVroutines.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "318"
-            endingLineNumber = "318"
+            startingLineNumber = "394"
+            endingLineNumber = "394"
             landmarkName = "cvAlign_q(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1515,8 +1515,8 @@
             filePath = "oma2/commands_1.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5979"
-            endingLineNumber = "5979"
+            startingLineNumber = "6204"
+            endingLineNumber = "6204"
             landmarkName = "rawparams_c(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1531,8 +1531,8 @@
             filePath = "oma2/commands_1.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5928"
-            endingLineNumber = "5928"
+            startingLineNumber = "6153"
+            endingLineNumber = "6153"
             landmarkName = "demosaic_c(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1547,8 +1547,8 @@
             filePath = "oma2/commands_1.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2485"
-            endingLineNumber = "2485"
+            startingLineNumber = "2544"
+            endingLineNumber = "2544"
             landmarkName = "nextFile_c(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1611,8 +1611,8 @@
             filePath = "oma2/commands_1.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "6789"
-            endingLineNumber = "6789"
+            startingLineNumber = "7015"
+            endingLineNumber = "7015"
             landmarkName = "dsaturate_c(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1659,8 +1659,8 @@
             filePath = "oma2/canonCamera.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
             landmarkName = "downloadImage(directoryItem)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1675,9 +1675,89 @@
             filePath = "oma2/canonCamera.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
+            startingLineNumber = "200"
+            endingLineNumber = "200"
             landmarkName = "handleObjectEvent(event, object, context)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "124BE5DE-E2CB-4061-B4E5-B2EEE9D4F079"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/commands_1.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1453"
+            endingLineNumber = "1453"
+            landmarkName = "gsmooth_c(n, args)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0CB6E70D-D27B-4CB8-8435-9C7D7D066964"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/commands_1.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1609"
+            endingLineNumber = "1609"
+            landmarkName = "blink_c(n, args)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "892267F9-F3AC-4399-A687-414481271700"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/commands_1.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1573"
+            endingLineNumber = "1573"
+            landmarkName = "blink_c(n, args)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "503838A7-6BC5-42FA-B5BA-6AF9723734CB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/commands_1.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "5741"
+            endingLineNumber = "5741"
+            landmarkName = "warp_c(n, args)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "07EB16B8-63E2-484B-BBD7-108DA9782AB6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/commands_1.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "5746"
+            endingLineNumber = "5746"
+            landmarkName = "warp_c(n, args)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

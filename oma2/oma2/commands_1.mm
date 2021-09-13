@@ -1558,6 +1558,65 @@ int tsmooth_c(int n, char* args)
 
 /* ********** */
 
+/*
+BLINK [ticks first last]
+ Blink comparitor between images stored as numbered temporary images (allowed range is 0-9). ticks specifies the delay, in ticks, between display of subsequent images. If more than two images are compared, display ordering is first - last - first. Default values are 6, 0, and 1 for ticks, first, and last. Type <return> to end the BLINK sequence. On completion, the image buffer will contain the last temporary image in the sequence.
+ 
+*/
+
+int blinkIsActive=0;
+
+int blink_c(int n, char* args)
+{
+    int ticks=6, first=0, last=1;
+    int i;
+    int currentWindowFlag;
+    
+    sscanf(args,"%d %d %d",&ticks, &first, &last);
+    if(first >= last || first<0 || first > 8 || last > 9 || ticks < 0){
+        beep();
+        printf("Invalid arguments.");
+        return CMND_ERR;
+    }
+
+    for(i=first; i<=last; i++){
+        if(iTempImages[i].isEmpty()){
+            beep();
+            printf("Temp image %d is empty.\n",i);
+            return CMND_ERR;
+        }
+    }
+    printf("Type <return> to end BLINK.\n");
+    currentWindowFlag = UIData.newwindowflag;
+    UIData.newwindowflag = 0;
+    blinkIsActive=1;
+    
+    while(blinkIsActive){
+        for(i=first; i<=last; i++){
+            iBuffer << iTempImages[i];
+            display(0,(char*)"Blink");
+            delay_c(ticks,NULL);
+        }
+        // if we are doing more that two images, reverse directions
+        if(last-first > 1){
+            for(i=last; i>=first; i--){
+                iBuffer << iTempImages[i];
+                display(0,(char*)"Blink");
+                delay_c(ticks,NULL);
+            }
+        }
+    }
+    blinkIsActive=0;
+    iBuffer << iTempImages[last];
+    display(0,(char*)"Blink");
+    UIData.newwindowflag = currentWindowFlag;
+    
+    return NO_ERR;
+}
+
+
+/* ********** */
+
 int diffy_c(int n,char* args )				/* differentiate the data in the y direction  -- central difference */
 {
     int* bufferspecs = iBuffer.getspecs();
@@ -4070,35 +4129,42 @@ int hdrNumget_c(int n,char* args){
 /* ********** */
 
 /*
- VALUES [valueNumber]
-     Get the specified value for the current image and return it in command_return_1. With no arguments, all current values are listed.
+ VALUES [valueNumber] [value]
+     With one argument, get the specified value for the current image and return it in command_return_1. With two arguments, set the specified value number to the specified value. With no arguments, all current values are listed.
 
  */
 
 int values_c(int n,char* args){
     extern Variable user_variables[];
     DATAWORD* values = iBuffer.getvalues();
-    int number;
+    int number=0;
     float value;
-    if(sscanf(args,"%d",&number) == 1){
-        if(number<0 || number>NVALUES){
-            beep();
-            printf("Value numbers must be between 0 - %d\n",NVALUES-1);
-            free(values);
-            return CMND_ERR;
-        }
-        value = values[number];
-        user_variables[0].ivalue = user_variables[0].fvalue = value;
-        user_variables[0].is_float = 1;
-        printf("Values[%d]: %g\n",number,value);
-
-    } else {
-        char names[16][16] = {"MIN","MAX","RMAX","RMIN","GMAX","GMIN","BMAX","BMIN","RULER_SCALE","EXPOSURE","APERTURE","ISO","RED_MULT","GREEN_MULT","BLUE_MULT" };
-        for(int i=0; i<NVALUES;i++){
-            printf("%d: %s: %g\n",i,&names[i][0],values[i]);
-        }
+    int nargs=sscanf(args,"%d %f",&number, &value);
+    if(number<0 || number>NVALUES){
+        beep();
+        printf("Value numbers must be between 0 - %d\n",NVALUES-1);
+        free(values);
+        return CMND_ERR;
     }
-    
+    switch (nargs){
+        case 1:
+            value = values[number];
+            user_variables[0].ivalue = user_variables[0].fvalue = value;
+            user_variables[0].is_float = 1;
+            printf("Values[%d]: %g\n",number,value);
+            break;
+        case 2:
+            values[number]=value;
+            printf("Values[%d] set to %g\n",number,value);
+            iBuffer.setvalues(values);
+            break;
+        default:
+            char names[16][16] = {"MIN","MAX","RMAX","RMIN","GMAX","GMIN","BMAX","BMIN","RULER_SCALE","EXPOSURE","APERTURE","ISO","RED_MULT","GREEN_MULT","BLUE_MULT" };
+            for(int i=0; i<NVALUES;i++){
+                printf("%d: %s: %g\n",i,&names[i][0],values[i]);
+            }
+    }
+
     free(values);
     update_UI();
     return NO_ERR;
@@ -5659,6 +5725,7 @@ int warp_c(int n,char* args)
         printf("Could not create warped image.\n");
         return warpedImage.err();
     }
+    warpedImage.zero();
     datp2 = warpedImage.data;
     
     /*
@@ -5726,6 +5793,164 @@ float ywarp(float x, float y)
 {
     float yi;
     yi = b00 + b01*x + b10*y + b11 * x * y;
+    return yi;
+}
+/* ********** */
+
+
+/*
+DISTORT [k1 subpix x0 y0]
+    Perform radially symetric image distortion and remapping accorting to:
+    x’ =  (x-x0)(1+k1*r^2);
+    y’ =  (y-y0)(1+k1*r^2);
+    x0 and y0 specify the center about which the radius is calculated and, by default, is at the center of the image. k1 specifies the amount of image distortion -- negative values correspond to a barrel distortion and positive values, a pincusion distortion. The default value is k1 = -0.15. subpix specifies the sub-pixel sampling used in the mapping -- default is 0.1, which would sub-sample each pixel 100 times.
+ */
+// barrel or pincussion distortion
+float distortX0, distortY0, distortK1;
+
+int distort_c(int n,char* args)
+{
+    int i,j,chan2,track2,ix,iy;
+    DATAWORD *datp2;
+    float xi,yi,x,y;
+    float xmax,xmin,ymax,ymin,fx,fy,pixval,subpix=0.1;
+    
+    extern int    dlen,dhi;
+        
+    xmax = ymax = 0;
+    xmin = dlen;
+    ymin = dhi;
+    distortX0=iBuffer.width()/2.;
+    distortY0=iBuffer.height()/2.;
+    distortK1= -.15;
+    
+    
+    if(*args) sscanf(args,"%f %f %f %f",&distortK1, &subpix, &distortX0, &distortY0);
+    distortK1 /= pow(iBuffer.width()/2.,2);
+    
+    printf("Subpixel resolution: %.2f\n", subpix);
+    // get the size of the new image
+    // look along top row
+    y = 0;
+    for(x=0; x<iBuffer.width(); x+= subpix){
+        xi = xDistort(x,y);
+        yi = yDistort(x,y);
+        if(xi > xmax) xmax = xi;
+        if(xi < xmin) xmin = xi;
+        if(yi > ymax) ymax = yi;
+        if(yi < ymin) ymin = yi;
+        
+    }
+    // look along bottom row
+    y = iBuffer.height()-1;
+    for(x=0; x<iBuffer.width(); x+= subpix){
+        xi = xDistort(x,y);
+        yi = yDistort(x,y);
+        if(xi > xmax) xmax = xi;
+        if(xi < xmin) xmin = xi;
+        if(yi > ymax) ymax = yi;
+        if(yi < ymin) ymin = yi;
+        
+    }
+    // look along left column
+    x = 0;
+    for(y=0; y<iBuffer.height(); y+= subpix){
+        xi = xDistort(x,y);
+        yi = yDistort(x,y);
+        if(xi > xmax) xmax = xi;
+        if(xi < xmin) xmin = xi;
+        if(yi > ymax) ymax = yi;
+        if(yi < ymin) ymin = yi;
+        
+    }
+    // look along right column
+    x = iBuffer.width()-1;
+    for(y=0; y<iBuffer.height(); y+= subpix){
+        xi = xDistort(x,y);
+        yi = yDistort(x,y);
+        if(xi > xmax) xmax = xi;
+        if(xi < xmin) xmin = xi;
+        if(yi > ymax) ymax = yi;
+        if(yi < ymin) ymin = yi;
+        
+    }
+    xmin -= 1.;
+    xmax += 1.;
+    ymin -= 1.;
+    ymax += 1.;
+    printf("xmin: %.2f  xmax: %.2f\n", xmin,xmax);
+    printf("ymin: %.2f  ymax: %.2f\n", ymin,ymax);
+    
+    track2 = ymax - ymin + 1.5;
+    chan2 = xmax - xmin + 1.5;
+
+    Image warpedImage;
+    warpedImage.copyABD(iBuffer);
+    warpedImage.resize(track2,chan2);
+    
+    if (warpedImage.err()) {
+        beep();
+        printf("Could not create warped image.\n");
+        return warpedImage.err();
+    }
+    warpedImage.zero();
+    datp2 = warpedImage.getImageData();
+    
+    n=1;
+    for( y=0; y<iBuffer.height(); y = subpix*n++) {
+        int m=1;
+        j = y;
+        for( x=0; x<iBuffer.width(); x = subpix*m++) {
+            i = x;
+            pixval = iBuffer.getpix(j,i);  //idat(j,i);
+            xi = xDistort(x,y);
+            yi = yDistort(x,y);
+            ix = xi;
+            iy = yi;
+            //coordinates of pixel in the new image
+            // remap origin to 0,0
+            xi -= xmin;
+            yi -= ymin;
+            ix = xi;
+            iy = yi;
+
+            // the fractions
+            fx = xi - ix;
+            fy = yi - iy;
+ 
+            //put the intensity from this pixel into the (up to 4) pixels that this pixel covers
+            *(datp2+ix+iy*chan2) += pixval * (1.0 - fx) * (1.0 - fy);
+            if(ix+1 < chan2 && iy+1 < track2){
+                // pixel to the right
+                *(datp2+ix+1+iy*chan2) += pixval * (fx) * (1.0 - fy);
+                // pixel above
+                *(datp2+ix+(iy+1)*chan2) += pixval * (1.0 - fx) * (fy);
+                // pixel diagonally across
+                *(datp2+ix+1+(iy+1)*chan2) += pixval * (fx) * (fy);
+            }
+        }
+    }
+    iBuffer.free();
+    iBuffer =  warpedImage;
+    iBuffer.getmaxx(printMax);
+    update_UI();
+    
+    return NO_ERR;
+}
+
+
+float xDistort(float x, float y)
+{
+    float xi,r2;
+    r2 = (x-distortX0)*(x-distortX0)+(y-distortY0)*(y-distortY0);
+    xi = (x-distortX0)*(1+distortK1*r2);
+    return xi;
+}
+float yDistort(float x, float y)
+{
+    float yi,r2;
+    r2 = (x-distortX0)*(x-distortX0)+(y-distortY0)*(y-distortY0);
+    yi = (y-distortY0)*(1+distortK1*r2);
     return yi;
 }
 
@@ -6779,12 +7004,13 @@ int unfold_c(int n, char* args){
 
 /*
  DSATURATE [displaySaturationValue displayFloorValue]
- This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMax-dataRange*( 1-displaySaturateValue). If a displayFloorValue is specified, the Color Min value used will be the dataMinimum + dataRange*displayFloorValue. If no argument is given, the current values are printed. If displaySaturateValue = 1.0 and no second argument is given, displayFloorValue is set to 0.0.
+ This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMax-dataRange*( 1-displaySaturateValue). If a displayFloorValue is specified, the Color Min value used will be the dataMinimum + dataRange*displayFloorValue. If no argument is given, the current values are printed. If displaySaturateValue = 1.0 and no second argument is given, displayFloorValue is set to 0.0. command_return_1, 2, 3, and 4 are set to displaySaturationValue, displayFloorValue, cmax, and cmin.
  */
 
 int dsaturate_c(int n,char* args){
     float dSatValue=1,dFloorValue=0;
     int nargs = sscanf(args,"%f %f",&dSatValue,&dFloorValue);
+    extern Variable user_variables[];
     
     if(nargs == 1){
         UIData.displaySaturateValue = dSatValue;
@@ -6794,6 +7020,13 @@ int dsaturate_c(int n,char* args){
         UIData.displayFloorValue = dFloorValue;
     }
     printf("Display Saturation Value is %f\nDisplay Floor Value is %f\n",UIData.displaySaturateValue,UIData.displayFloorValue);
+    user_variables[0].fvalue=UIData.displaySaturateValue;
+    user_variables[1].fvalue=UIData.displayFloorValue;
+    user_variables[2].fvalue= iBuffer.max() - (iBuffer.max()-iBuffer.min())*(1.0 - UIData.displaySaturateValue);
+    user_variables[3].fvalue= iBuffer.min() + (iBuffer.max()-iBuffer.min())*UIData.displayFloorValue;
+
+    user_variables[0].is_float = user_variables[1].is_float = user_variables[2].is_float = user_variables[3].is_float = 1;
+    
     update_UI();
     
     return NO_ERR;

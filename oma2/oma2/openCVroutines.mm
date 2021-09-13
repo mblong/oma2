@@ -97,6 +97,8 @@ CVHOUGHCIRCLES [cannyThreshold accumulatorThreshold maxRadius]
  
 */
 
+std::vector<cv::Vec3f> circles;
+
 int cvHoughCircles_q(int n,char* args){
     using namespace cv;
     
@@ -106,14 +108,9 @@ int cvHoughCircles_q(int n,char* args){
     int cannyThreshold=30, accumulatorThreshold=10,maxRadius=20;
     dataPtr=iBuffer.getImageData();
     
+    if(!circles.empty()) circles.erase(circles.begin(), circles.end());
+    
     int narg = sscanf(args,"%d %d %d",&cannyThreshold, &accumulatorThreshold,&maxRadius);
-    /*
-     if(narg !=2){
-        beep();
-        printf("Two arguments needed: framesPerSecond filename\n");
-        return CMND_ERR;
-    }
-     */
     
     // need checking for bounds of current image, make sure it is monochrome
     
@@ -122,7 +119,7 @@ int cvHoughCircles_q(int n,char* args){
     }
     
     frame=Mat(iBuffer.height(), iBuffer.width(), CV_8UC1, bits);
-    std::vector<Vec3f> circles;
+    
     HoughCircles(frame, circles, HOUGH_GRADIENT, 1,
                 frame.rows/256,  // change this value to detect circles with different distances to each other
                  cannyThreshold, accumulatorThreshold, 1, maxRadius // change the last two parameters
@@ -151,6 +148,85 @@ int cvHoughCircles_q(int n,char* args){
     return NO_ERR;
 
 }
+
+/*
+FILLCIRCLES [extraRadiusAll extraRadiusEdge excludeRadius]
+ Tries to correct coma. Using the circles found with the CVHOUGHCIRCLES command, this finds the intensity within each circle and then redistributes that intesity into a Gaussian distribution centered on the circle. extraRadiusAll adds a percentage radius to each circle (e.g., 0.1 makes each circle's radius 10% larger); extraRadiusEdge adds an increasing percentage radius to circles depending on how far the circle is from the image center; excludeRadius excludes circles within the specified radius of the image center.
+ 
+*/
+
+
+int fillCircles_q(int n,char* args){
+    if(circles.empty()) {
+        beep();
+        printf("No circles have been found -- use CVHOUGHCIRCLES first");
+        return CMND_ERR;
+    }
+    
+    
+    
+    float extraRadiusAll=0., extraRadiusEdge=0.2,excludeRadius=.2;
+    int width = iBuffer.width(), height = iBuffer.height(),j,k,m;
+    float maxImageDimension = width;
+    float *mask,norm;
+    DATAWORD sum;
+    
+    sscanf(args,"%f %f %f",&extraRadiusAll, &extraRadiusEdge, &excludeRadius);
+    
+    if(height > width) maxImageDimension = height;
+    
+    float distanceFromCenter;
+    for( size_t i = 0; i < circles.size(); i++ ){
+        cv::Vec3i cInt;
+        cv::Vec3f c = circles[i];
+        distanceFromCenter = sqrt(pow(c[0]-width/2,2)+pow(c[1]-height/2,2));
+        if(distanceFromCenter/maxImageDimension < excludeRadius) continue;
+        // use this radius
+        c[2]=c[2]*(1.+extraRadiusAll)*(1.+distanceFromCenter/maxImageDimension*extraRadiusEdge);
+        for(j=0; j<3; j++) cInt[j]=round(c[j]);
+        
+        
+        // get a (now gaussian) mask for intensity weighting
+        mask = (float*) malloc(pow(cInt[2]*2+1,2) * sizeof(float));
+        norm = 0;
+        m=0;
+        float sigx = c[2]/2.;
+        for(k=-cInt[2]; k<=cInt[2]; k++) {
+            for(j=-cInt[2]; j<=cInt[2]; j++) {
+                //m=(j + cInt[2])*(cInt[2]*2+1) + (k + cInt[2]);
+                mask[m]=exp(-(k*k/(sigx*sigx)+j*j/(sigx*sigx))/2.);
+                norm += mask[m++];
+            }
+        }
+        // get the intensity inside the circle for each color
+        for(int color=0; color < iBuffer.isColor()*2+1; color++){
+            sum=0.;
+            n=0;
+            for( j=cInt[0]-cInt[2]; j<=cInt[0]+cInt[2]; j++) {      // column
+                for( k=cInt[1]-cInt[2]; k<=cInt[1]+cInt[2]; k++) {  // row
+                    if( (j-cInt[0])*(j-cInt[0]) + (k-cInt[1])*(k-cInt[1]) <= cInt[2]*cInt[2]) {
+                        sum += iBuffer.getpix(k+color*height,j);
+                        n++;
+                    }
+                }
+            }
+            // set the intensity inside the circle
+            m=0;
+            for( j=cInt[0]-cInt[2]; j<=cInt[0]+cInt[2]; j++) {      // column
+                for( k=cInt[1]-cInt[2]; k<=cInt[1]+cInt[2]; k++) {  // row
+                    if( (j-cInt[0])*(j-cInt[0]) + (k-cInt[1])*(k-cInt[1]) <= cInt[2]*cInt[2]) {
+                        //m=(j - dys)*(dx - dxs) + (i - dxs);
+                        m = (j-cInt[0]+cInt[2])+(k-cInt[1]+cInt[2])*(cInt[2]*2+1);
+                        iBuffer.setpix(k+color*height,j,sum*mask[m]/norm+iBuffer.getpix(k+color*height,j));
+                    }
+                }
+            }
+        }
+        free(mask);
+    }
+    return NO_ERR;
+}
+
 /*
 CVALIGN tempImageName [maxIterations terminationEpsilon warpMode floorValue]
  Align the specified temporary image with the one in the current buffer. The default values are maxIterations=1000 terminationEpsilon=1E-6  warpMode=0 (Euclidean matching; warpMode!=0 uses Homographic matching). If the optional floorValue is specified, the images used for finding the mapping will have values < floorValue set to floorValue and the new minimum set to zero.

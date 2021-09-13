@@ -29,6 +29,7 @@ static EdsError EDSCALLBACK handleObjectEvent( EdsObjectEvent event,EdsBaseRef o
 static EdsError EDSCALLBACK handlePropertyEvent (EdsPropertyEvent event,EdsPropertyID property,EdsUInt32 inParam, EdsVoid * context);
 EdsError setupCamera();
 EdsError closeCamera();
-
+EdsError  takePicture();
+EdsError  KeepOpen();
 
 #endif /* canonCamera_h */

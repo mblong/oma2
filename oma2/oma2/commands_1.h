@@ -35,6 +35,7 @@ int boundbox_c(int, char*);
 int bleed_c(int, char*);
 int bayerFlag_c(int, char*);
 int bitmap2rgb_c(int, char*);
+int blink_c(int, char*);
 
 int colorflag_c(int,char*);
 int compositefile_c(int,char*);
@@ -76,6 +77,7 @@ int disp2rgb_c(int,char*);
 int demosaic_c(int,char*);
 int decodeHobj_c(int,char*);
 int dsaturate_c(int,char*);
+int distort_c(int,char*);
 
 int echo_c(int,char*);
 int extra_c(int,char*);
@@ -94,6 +96,9 @@ int fold_c(int n, char* args);
 int filter_c(int n, char* args);
 #if defined(MacOSX_UI)
     int flippid_c(int n, char* args);
+#endif
+#if defined(Qt_UI_Mac) || defined(OPENCV_ROUTINES)
+    int fillCircles_q(int n,char* args);
 #endif
 
 int getfile_c(int,char*);
@@ -247,6 +252,7 @@ int temp_image_index (char* name,int define);
 int loadmatch(char* name);
 int loadwarp(char* name);
 float xwarp(float,float),ywarp(float,float);
+float xDistort(float,float),yDistort(float,float);
 
 void update_UI();    
 

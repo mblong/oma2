@@ -13,12 +13,16 @@ bool _isSDKLoaded=false;
 bool pictureReceived=false;
 int loadResult=true;
 int displayResult=true;
+int keepOpen=0;
+char filename[CHPERLN];
+
 EdsCameraRef _camera;
 EdsCameraListRef  cameraList = NULL;
 EdsUInt32 count = 0;
 EdsDeviceInfo deviceInfo;
 EdsUInt32 saveTo = kEdsSaveTo_Host;
-char filename[CHPERLN];
+
+
 extern char lastname[];
 extern Image iBuffer;
 extern int printMax;
@@ -29,12 +33,14 @@ extern Variable user_variables[];
  CANON command arguments
     Command to control Canon camera
     Available commands are as follows:
-    SHOOt filename -- take a picture and save the result to the specified file
+    SHOOt filename -- take a picture and save the result to the specified file. Connection to the camera is closed following the command and will time out unless another SHOOT or OPEN command is done within a minute or so.
     LOADResult loadResultFlag -- if the flag is nonzero, the file read from the camera is opened (default is true)
     DISPlayResult displayResultFlag -- if the flag is nonzero, the current image is displayed (default is true)
+    OPEN -- connects to the camera and keeps the connection active
+    CLOSE -- closes the connection initiated with OPEN
     Notes:
     Only the first four characters of a command are matched in decoding the command.
-    If a single argument is given, that is interpreted as the filename for the SHOOT command.
+    If a single argument is given that does not match one of the commands, that is interpreted as the filename for the SHOOT command.
  */
 
 int canon(int n,char* args){
@@ -79,16 +85,22 @@ int canon(int n,char* args){
                 return CMND_ERR;
             }
         case 1:
-            if(strncmp(args,"OPEN",4) == 0){
-                error=setupCamera();
-                //error = EdsOpenSession(_camera);
+            if(strncmp(args,"open",4) == 0){
+                error = setupCamera();
                 if(error){
                     beep();
-                    printf("Error on setup: %x\n",error);
+                    printf("Error on setup: 0x%x\n",error);
                     closeCamera();
+                    return error;
+                }
+                keepOpen=1;
+                while(keepOpen){
+                        [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+                        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, false);
                 }
                 return error;
-            } else if(strncmp(args,"CLOS",4) == 0){
+            } else if(strncmp(args,"clos",4) == 0){
+                keepOpen=0;
                 return closeCamera();
             } else {
                 strcpy(filename, args); // arguments as typed
@@ -96,78 +108,19 @@ int canon(int n,char* args){
             }
     }
     
+    //keepOpen=0;
+    
     if(!_isSDKLoaded)
         error=setupCamera();
     if(error){
         beep();
-        printf("Error on setup: %x\n",error);
+        printf("Error on setup: 0x%x\n",error);
         closeCamera();
         return error;
     }
-    // from OpenSessionCommand ****************
     
-    //The communication with the _camera begins
-    error = EdsOpenSession(_camera);
-
-    //Preservation ahead is set to PC
-    //if(error == EDS_ERR_OK){
-        error = EdsSetPropertyData(_camera, kEdsPropID_SaveTo, 0, sizeof(saveTo) , &saveTo);
-    printf("Error setProp: %x\n",error);
-    //}
+    takePicture();
     
-    if(error == EDS_ERR_OK){
-        EdsCapacity capacity = {0x7FFFFFFF, 0x1000, 1};
-        error = EdsSetCapacity(_camera, capacity);
-    }
-    
-    //Notification of error
-    if(error != EDS_ERR_OK){
-        /*
-         number = [[NSNumber alloc] initWithInt: error];
-         event = [[CameraEvent alloc] init:@"error" withArg: number];
-         [_model notifyObservers:event];
-         [event release];
-         [number release];
-         */
-        beep();
-        printf("error: %x\n",error);
-        return error;
-    }
-    
-
-
-        
-    // from TakePictureCommand ****************
-
-    error = EdsSendCommand( _camera , kEdsCameraCommand_PressShutterButton, kEdsCameraCommand_ShutterButton_Completely);
-    EdsSendCommand( _camera , kEdsCameraCommand_PressShutterButton, kEdsCameraCommand_ShutterButton_OFF);
-    pictureReceived=false;
-    
-    //Notification of error
-    if(error != EDS_ERR_OK){
-        // Retry it at device busy?
-        if(error == EDS_ERR_DEVICE_BUSY){
-            beep();
-            printf("EDS_ERR_DEVICE_BUSY\n");
-            closeCamera();
-            return error;
-        }
-        beep();
-        printf("Error after shutter press: %x\n",error);
-        closeCamera();
-        return error;
-        
-    }
-    
-    // wait for the image to be saved to a file
-    //CFRunLoopRunInMode(kCFRunLoopDefaultMode, 30, false);
-    while(!pictureReceived){
-        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, false);
-        [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-    }
-    error = EdsCloseSession(_camera);
-    closeCamera();
-
     if(loadResult){
         // read in the image
         Image new_im(filename,LONG_NAME);
@@ -184,10 +137,46 @@ int canon(int n,char* args){
     // and display
     if(displayResult) display(0,args);
     
+    //KeepOpen();
+    
     return NO_ERR;
 }
 
-static EdsError EDSCALLBACK handleObjectEvent( EdsObjectEvent event,EdsBaseRef object,EdsVoid * context)
+
+EdsError  takePicture(){
+    // from TakePictureCommand ****************
+    EdsError error;
+    pictureReceived=false;
+    
+    error = EdsSendCommand( _camera , kEdsCameraCommand_PressShutterButton, kEdsCameraCommand_ShutterButton_Completely);
+    EdsSendCommand( _camera , kEdsCameraCommand_PressShutterButton, kEdsCameraCommand_ShutterButton_OFF);
+    pictureReceived=false;
+    
+    //Notification of error
+    if(error != EDS_ERR_OK){
+        // Retry it at device busy?
+        if(error == EDS_ERR_DEVICE_BUSY){
+            beep();
+            printf("EDS_ERR_DEVICE_BUSY\n");
+            closeCamera();
+            return error;
+        }
+        beep();
+        printf("Error after shutter press: 0x%x\n",error);
+        closeCamera();
+        return error;
+        
+    }
+    // wait for the image to be saved to a file
+    while(!pictureReceived){
+        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, false);
+        [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+    }
+    
+    return closeCamera();
+}
+
+EdsError EDSCALLBACK handleObjectEvent( EdsObjectEvent event,EdsBaseRef object,EdsVoid * context)
 {
     EdsError err=EDS_ERR_OK;
     
@@ -197,6 +186,11 @@ static EdsError EDSCALLBACK handleObjectEvent( EdsObjectEvent event,EdsBaseRef o
             err = downloadImage(object);
             break;
         default:
+            //Object without the necessity is released
+            if(object != NULL)
+            {
+                EdsRelease(object);
+            }
             break;
     }
     
@@ -207,12 +201,12 @@ static EdsError EDSCALLBACK handleObjectEvent( EdsObjectEvent event,EdsBaseRef o
     return err;
 }
 
-static EdsError EDSCALLBACK handlePropertyEvent (EdsPropertyEvent event,EdsPropertyID     property,EdsUInt32 inParam, EdsVoid * context)
+EdsError EDSCALLBACK handlePropertyEvent (EdsPropertyEvent event,EdsPropertyID     property,EdsUInt32 inParam, EdsVoid * context)
 {
     return EDS_ERR_OK;
 }
 
-static EdsError EDSCALLBACK handleStateEvent (EdsStateEvent event,EdsUInt32 parameter,EdsVoid * context)
+EdsError EDSCALLBACK handleStateEvent (EdsStateEvent event,EdsUInt32 parameter,EdsVoid * context)
 {
     return EDS_ERR_OK;
 }
@@ -263,7 +257,7 @@ EdsError downloadImage(EdsDirectoryItemRef directoryItem)
     return err;
 }
 
-EdsError closeCamera(){
+EdsError  closeCamera(){
     EdsError error=EDS_ERR_OK;
     
     // Release _camera
@@ -272,8 +266,6 @@ EdsError closeCamera(){
     }
     
     // Terminate SDK
-
-
     EdsTerminateSDK();
     _isSDKLoaded=false;
     return error;
@@ -337,9 +329,46 @@ EdsError setupCamera(){
     if(error == EDS_ERR_OK)
         error = EdsSetCameraStateEventHandler(_camera, kEdsStateEvent_All,handleStateEvent, NULL);
 
+    // from OpenSessionCommand ****************
     
+    //The communication with the _camera begins
+    error = EdsOpenSession(_camera);
+    //Preservation ahead is set to PC
+    if(error == EDS_ERR_OK){
+        error = EdsSetPropertyData(_camera, kEdsPropID_SaveTo, 0, sizeof(saveTo) , &saveTo);
+        //printf("Error setProp: 0x%x\n",error);
+    }
     
+    if(error == EDS_ERR_OK){
+        EdsCapacity capacity = {0x7FFFFFFF, 0x1000, 1};
+        error = EdsSetCapacity(_camera, capacity);
+    }
+    
+    //Notification of error
+    if(error != EDS_ERR_OK){
+        beep();
+        printf("Set capacity error: 0x%x\n",error);
+        closeCamera();
+        return error;
+    }
  
     return error;
 }
 
+/*
+EdsError KeepOpen(){
+    EdsError error = setupCamera();
+    if(error){
+        beep();
+        printf("Error on setup: 0x%x\n",error);
+        closeCamera();
+        return error;
+    }
+    keepOpen=1;
+    while(keepOpen){
+            [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, false);
+    }
+    return error;
+}
+ */

@@ -42,6 +42,7 @@ ComDef   commands[] =    {
     {{"BLEED          "},   bleed_c},
     {{"BAYERFLAG      "},   bayerFlag_c},
     {{"BITMAP2RGB     "},   bitmap2rgb_c},
+    {{"BLINK          "},   blink_c},
     
     
     {{"CALCULATE      "},	calc_cmd_c},
@@ -87,6 +88,7 @@ ComDef   commands[] =    {
     {{"DEMOSAIC       "},	demosaic_c},
     {{"DECODEHOBJ     "},	decodeHobj_c},
     {{"DSATURATE      "},   dsaturate_c},
+    {{"DISTORT        "},   distort_c},
     
     {{"ERASE          "},	erase},
     {{"ENDIF          "},	endifcmnd},
@@ -112,7 +114,10 @@ ComDef   commands[] =    {
 #if defined(MacOSX_UI)
     {{"FLIPPID        "},   flippid_c},
 #endif
-    
+#if defined(Qt_UI_Mac) || defined(OPENCV_ROUTINES)
+    {{"FILLCIRCLES    "},   fillCircles_q},
+#endif
+
     {{"GET            "},	getfile_c},
     {{"GETRGB         "},	getfile_c},
     {{"GETFILENAMES   "},	getFileNames_c},

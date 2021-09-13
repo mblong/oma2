@@ -221,6 +221,9 @@ extern AppController* appController;
     NSString *ch = [text substringFromIndex:[text length] - 1];
     
     if([ch isEqualToString:@"\n"]){
+        extern int blinkIsActive;   // end the BLINK command if it is active
+        blinkIsActive=0;
+
         NSString *command = [text substringFromIndex:lastReturn];
         lastReturn = [text length];
         // pass this to the command decoder

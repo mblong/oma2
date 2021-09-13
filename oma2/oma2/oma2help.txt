@@ -100,7 +100,10 @@ BLEED thresholdCount fraction
 
  BITMAP2RGB
     Convert the current bitmap image to an RGB color image. This will result in 8-bit integer data as the current image.
-	
+
+BLINK [ticks first last]
+	Blink comparitor between images stored as numbered temporary images (allowed range is 0-9). ticks specifies the delay, in ticks, between display of subsequent images. If more than two images are compared, display ordering is first - last - first. Default values are 6, 0, and 1 for ticks, first, and last. Type <return> to end the BLINK sequence. On completion, the image buffer will contain the last temporary image in the sequence.
+
 CALCULATE
 	Print calculations on the rectangle specified with the RECTANGLE command or with the rectangle tools. The average, rms, # of points, and the x and y "center of mass" are printed. The mean, rms, centroid_X and centroid_Y are passed to the command_return_variables.
 
@@ -184,15 +187,17 @@ CVHOUGHCIRCLES [cannyThreshold accumulatorThreshold maxRadius]
 
 CANON command arguments
 	[Only available in oma2cam; requires Canon EDSDK framework]
-    Command to control Canon camera
+    Command to control Canon camera connected via WiFi
     Available commands are as follows:
-    SHOOt filename -- take a picture and save the result to the specified file
-    LOADResult loadResultFlag -- if the flag is nonzero, the file read from the camera is opened (default is true)
-    DISPlayResult displayResultFlag -- if the flag is nonzero, the current image is displayed (default is true)
+    SHOOt filename -- take a picture and save the result to the specified file. Connection to the camera is closed following the command and will time out unless another SHOOT or OPEN command is done within a minute or so.
+    LOADResult loadResultFlag -- if the flag is nonzero, the file read from the camera following a SHOOT command is opened (default is true)
+    DISPlayResult displayResultFlag -- if the flag is nonzero, after a SHOOT command, the current image is displayed (default is true)
+    OPEN -- connects to the camera and keeps the connection active
+    CLOSE -- closes the connection initiated with OPEN
     Notes:
     Only the first four characters of a command are matched in decoding the command.
-    If a single argument is given, that is interpreted as the filename for the SHOOT command.
- 
+    If a single argument is given that does not match one of the commands, that is interpreted as the filename for the SHOOT command.
+
 DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
 
@@ -275,7 +280,13 @@ DECODEHOBJ
 	Assume the current image has the proprietary .hobj format (from Halcon), and has not been decoded. This attempts to decode the image. See the command HOBJSETTINGS for how this decoding can be done automatically.
 
 DSATURATE [displaySaturationValue displayFloorValue]
-	This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMax-dataRange*( 1-displaySaturateValue). If a displayFloorValue is specified, the Color Min value used will be the dataMinimum + dataRange*displayFloorValue. If no argument is given, the current values are printed. If displaySaturateValue = 1.0 and no second argument is given, displayFloorValue is set to 0.0.
+	This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMax-dataRange*( 1-displaySaturateValue). If a displayFloorValue is specified, the Color Min value used will be the dataMinimum + dataRange*displayFloorValue. If no argument is given, the current values are printed. If displaySaturateValue = 1.0 and no second argument is given, displayFloorValue is set to 0.0. command_return_1, 2, 3, and 4 are set to displaySaturationValue, displayFloorValue, color max, and color min.
+	
+DISTORT [k1 subpix x0 y0]
+    Perform radially symetric image distortion and remapping accorting to:
+    x' =  (x-x0)(1+k1*r^2);
+    y' =  (y-y0)(1+k1*r^2);
+    x0 and y0 specify the center about which the radius is calculated and, by default, is at the center of the image. k1 specifies the amount of image distortion -- negative values correspond to a barrel distortion and positive values, a pincusion distortion. The default value is k1 = -0.15. subpix specifies the sub-pixel sampling used in the mapping -- default is 0.1, which would sub-sample each pixel 100 times.
 
 ERASE [n]
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.
@@ -347,6 +358,9 @@ FLIPPID Nx NcLow NcHigh Power Background
 
 FILTER n
     Apply the specified filter matrix to the current image. Filters (rectangular matrices) are numbered 0 - 9 and are loaded using the GETFILTER command.
+
+FILLCIRCLES [extraRadiusAll extraRadiusEdge excludeRadius]
+ Tries to correct coma. Using the circles found with the CVHOUGHCIRCLES command, this finds the intensity within each circle and then redistributes that intesity into a Gaussian distribution centered on the circle. extraRadiusAll adds a percentage radius to each circle (e.g., 0.1 makes each circle's radius 10% larger); extraRadiusEdge adds an increasing percentage radius to circles depending on how far the circle is from the image center; excludeRadius excludes circles within the specified radius of the image center. Defaults are 0.0 0.2 0.2 for extraRadiusAll extraRadiusEdge and excludeRadius, respectively.
 
 GET <filename>
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.
@@ -808,8 +822,8 @@ VIDADDFRAME
 VIDCLOSEFILE
 	Closes the currently open video file. This must be done after adding frames to a video. [qtoma command]
 
-VALUES [valueNumber]
-     Get the specified value for the current image and return it in command_return_1. With no arguments, all current values are listed.
+VALUES [valueNumber] [value]
+     With one argument, get the specified value for the current image and return it in command_return_1. With two arguments, set the specified value number to the specified value. With no arguments, all current values are listed.
 
 WARP subpix
 	Remaps an image coordinate system using bilinear geometric warping.
