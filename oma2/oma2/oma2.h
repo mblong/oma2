@@ -107,6 +107,8 @@ name of the units. Occupies trailer[5] to trailer[12] */
 
 #define OMA_OK 0
 #define OMA_FILE -1
+#define MAX_CONTOURS 10
+
 
 enum  {SHORT_NAME,LONG_NAME,HAS_SUFFIX,LEAVE_OPEN,IS_OPEN};
 
@@ -251,6 +253,12 @@ typedef struct {
     float displayFloorValue; // when Scale is selected, cmin will be dataMin + dataRange * displayFloorValue
 
     float clearBad; // another argument in the RAW command
+    
+    // for plotting contours
+    int numberOfContours;
+    int colorContours;
+    int minMaxFromData;
+    float contourLevels[MAX_CONTOURS];
     
 }oma2UIData;
 

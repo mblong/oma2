@@ -59,11 +59,38 @@ extern oma2UIData UIData;
     
     [_pixLabel setIntValue: 0];
     
+    [_numberOfContours setIntValue: 1];
+    [_contourCheckBox setState:false];
 
-
+    // set things in the Contours tab
+    nlevls=UIData.numberOfContours;
+    [_numberOfContoursPopup selectItemAtIndex:UIData.numberOfContours-1];
+    if(UIData.colorContours)
+        [_colorCheckbox setState:true];
+    else
+        [_colorCheckbox setState:false];
+    if(UIData.minMaxFromData){
+        [_colorMinMaxButton setState:false];
+        [_dataMinMaxButton setState:true];
+    } else{
+        [_colorMinMaxButton setState:true];
+        [_dataMinMaxButton setState:false];
+    }
     
-    //[[self window] display];
+    theTextFields = [NSArray arrayWithObjects:_contour1,_contour2,_contour3,_contour4,_contour5,_contour6,_contour7,_contour8,_contour9,_contour10,nil];
+    
+    for(int i=0; i<UIData.numberOfContours; i++){
+        [theTextFields[i] setStringValue:[NSString stringWithFormat:@"%f",UIData.contourLevels[i]]];
+        [theTextFields[i] setAlphaValue:1];
+    }
+    
+    for(int i=UIData.numberOfContours; i<MAX_CONTOURS; i++){
+        [theTextFields[i] setAlphaValue:0];
+    }
+
     [self showWindow:self];
+    
+    
     
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
@@ -256,5 +283,112 @@ extern oma2UIData UIData;
 
 }
 
+// Palette to show contours
 
+- (IBAction)stepperChanged:(id)sender {
+    [_numberOfContours setIntValue:[_stepperValue intValue]];
+    if( [_contourCheckBox state]){
+        int contValue=256./([_stepperValue intValue]+1)+.5;
+        for(int i=0; i<256; i++){
+            if((i+1)%contValue){
+                customPalette[i*3] = customPalette[i*3+1] = customPalette[i*3+2] = 255;
+            } else {
+                customPalette[i*3] = customPalette[i*3+1] = customPalette[i*3+2] = 0;
+            }
+        }
+        [self updatePaletteImage];
+    }
+}
+- (IBAction)contourOptionChanged:(id)sender {
+    if( [_contourCheckBox state]){
+        int contValue=256./([_stepperValue intValue]+1)+.5;
+        for(int i=0; i<256; i++){
+            if((i+1)%contValue){
+                customPalette[i*3] = customPalette[i*3+1] = customPalette[i*3+2] = 255;
+            } else {
+                customPalette[i*3] = customPalette[i*3+1] = customPalette[i*3+2] = 0;
+            }
+        }
+        [self updatePaletteImage];
+
+    } else {
+        
+    }
+    
+}
+// ---------------------------------------------------------------
+// the Contours tab
+- (IBAction)contourNumberChanged:(id)sender {
+    extern int nlevls;
+    nlevls = [[[_numberOfContoursPopup menuItem] title] intValue];
+    for(int i=0; i<nlevls; i++){
+        [theTextFields[i] setStringValue:[NSString stringWithFormat:@"%f",UIData.contourLevels[i]]];
+        [theTextFields[i] setAlphaValue:1];
+    }
+    
+    for(int i=nlevls; i<MAX_CONTOURS; i++){
+        [theTextFields[i] setAlphaValue:0];
+    }
+}
+- (IBAction)contourMinMaxRadioChanged:(id)sender {
+    if([_colorMinMaxButton state]){
+        datminmax=0;
+    } else {
+        datminmax=1;
+    }
+}
+- (IBAction)saveContourPreferences:(id)sender {
+    UIData.numberOfContours=nlevls;
+    UIData.colorContours=colorctrs;
+    UIData.minMaxFromData=datminmax;
+    for(int i=0; i<nlevls;i++){
+        UIData.contourLevels[i]=[theTextFields[i] floatValue];
+    }
+    
+    [[NSColorPanel sharedColorPanel] close];
+    [[[appController preferenceController] window] close];
+}
+
+- (IBAction)cancelContourPreferences:(id)sender {
+    // set things to original values
+    // set things in the Contours tab
+    nlevls=UIData.numberOfContours;
+    [_numberOfContoursPopup selectItemAtIndex:UIData.numberOfContours-1];
+    if(UIData.colorContours)
+        [_colorCheckbox setState:true];
+    else
+        [_colorCheckbox setState:false];
+    if(UIData.minMaxFromData){
+        [_colorMinMaxButton setState:false];
+        [_dataMinMaxButton setState:true];
+    } else{
+        [_colorMinMaxButton setState:true];
+        [_dataMinMaxButton setState:false];
+    }
+ 
+    for(int i=0; i<UIData.numberOfContours; i++){
+        [theTextFields[i] setStringValue:[NSString stringWithFormat:@"%f",UIData.contourLevels[i]]];
+        [theTextFields[i] setAlphaValue:1];
+    }
+    
+    for(int i=UIData.numberOfContours; i<MAX_CONTOURS; i++){
+        [theTextFields[i] setAlphaValue:0];
+    }
+    [[NSColorPanel sharedColorPanel] close];
+    [[[appController preferenceController] window] close];
+}
+- (IBAction)colorCheckBoxChanged:(id)sender {
+    if([_colorCheckbox state]){
+        colorctrs=1;
+    } else {
+        colorctrs=0;
+    }
+}
+
+- (IBAction)calculateContours:(id)sender {
+    for(int i=0; i<nlevls; i++){
+        clevls[i] = (i+1)*1.0/(nlevls+1);
+        [theTextFields[i] setStringValue:[NSString stringWithFormat:@"%f",clevls[i]]];
+    }
+}
 @end

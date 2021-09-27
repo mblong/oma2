@@ -9,6 +9,8 @@
 #include    "dofft.h"
 #include <vector>
 
+#include "fitsio.h"
+
 enum {HOBJ_NO_DEMOSAIC=59457,HOBJ_DOC2RGB,HOBJ_BILINEAR,HOBJ_MALVAR};   // start at a funny number
 
 //#define PMODE 0666 // RW  for writing files that we can open

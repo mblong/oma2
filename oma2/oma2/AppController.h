@@ -10,7 +10,7 @@
 #import "oma2.h"
 
 // This isn't the right way to do this
-#define TITLEBAR_HEIGHT 20
+#define TITLEBAR_HEIGHT 28
 
 #define WINDOW_OFFSET 20
 
@@ -67,6 +67,7 @@ int comdec(char*);
 - (IBAction)plotRows:(id)sender;
 - (IBAction)plotCols:(id)sender;
 -(void) plotLineFrom:(NSPoint) start To: (NSPoint) end;
+- (IBAction)plotContours:(id)sender;
 
 - (IBAction)saveData:(id)sender;
 - (IBAction)saveSettings:(id)sender;

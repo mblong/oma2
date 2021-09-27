@@ -201,6 +201,9 @@ CANON command arguments
 DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
 
+DCONTOUR [nContours contourLevel1 - contourLeveln]
+    Display a contour plot of the current image data. With no argument, the current contour settings from Preferences are used. If only nContours is specified, the nContours levels are set to be equally spaced. If more than one argument is given, then contours are set according to the levels specified (between 0-1). The number of values given must match nContours. A maximum of ten contours is allowed.
+
 DMACRO [n] [command]
 	Prompts the user for lines of a command macro to be executed using the RMACRO command. If the argument n is omitted, definition starts with line one. If n is specified, definition begins with the nth line of the macro. To include numerical arguments that change each time the macro is executed, %d can be inserted in the macro command at the location where the number will be placed upon execution of the macro. If "command" is not present, the program prompts for additional command lines until a null command is entered (i.e. <CR> only). If the optional "command" is included on the same line, the text of "command" replaces any command already existing at line n and no further command lines are solicited. Dummy arguments in Macros or Execute files include the following:
 	%c  the number of seconds since OMA was started (float)
@@ -689,6 +692,9 @@ SAVEPDF <filename>
 
 SAVEINT <FileName> [typeOfInteger]
  Save the data to an oma2 file where the values are converted to integers. Default is typeOfInteger=16 (unsigned 16-bit integers) Other options for typeOfInteger are -16 (signed short), 8 (unsigned char), or -8 (signed char). Out of bounds values for a given type are set to the type's minimum and maximum -- this modifies the current image as well. FileName must not contain white-space characters. See also the MAP command.
+
+SAVEFITS filename [typeOfData]
+    Save the current image to a fits format file. Include the .fits extension in the filename. Valid values for typeOfData are 16 (for unsigned integers, no underflow/overflow checking is done) and 32 (for floats). Default is 16.
  
 SERCLOSE
 	Closes the serial port opened with the last "SERIAL device_name" command. This can be used if you need to talk to more than one serial device -- open device 1, send commands, close the serial port, open device 2, send commands, and so forth. Available in oma2cam.
@@ -784,6 +790,9 @@ SQLOPEN databaseName tableName
 
 SQLCLOSE
 	Closes any open SQL database. [qtoma command]
+
+STRTIM x0 dy scale_factor
+    This plots a series of streamlines in a two-component velocity field. x0 is the starting location of the ray that will be propagated mainly in the x direction. dy is increment between rays and can be less than one pixel if a continuous "time elapsed" image is desired. When more than one elapsed time occurs within a given pixel, the minimum value is given. The two components of the velocity field are needed. The y velocity is stored in temporary image 0; the x velocity field is in the current image buffer. On return, the image is -1 except for the stream lines. Values along the stream line correspond to elapsed time as determined by the scale_factor. time = distance/velocity*scale_factor. Distance is in pixels; velocity as per values in velocity files. A contour plot will show different residence times.
 
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.

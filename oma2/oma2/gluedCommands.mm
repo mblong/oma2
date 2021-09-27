@@ -1156,3 +1156,160 @@ int abelrect(int n, int index){
 /* ************************* */
 
 
+/* ************************* */
+/*
+STRTIM x0 dy scale_factor
+    This plots a series of streamlines in the image (similar to a loop containing STREAM commands). x0 is the starting location of the ray that will be propagated mainly in the x direction. dy is increment between rays and can be less than one pixel if a continuous "time elapsed" image is desired. When more than one elapsed time occurs within a given pixel, the minimum value is given. The two components of the velocity field are needed. The y velocity is stored in temporary image 0; the x velocity field is in the current image buffer. On return, the image is -1 except for the stream lines. Values along the stream line correspond to elapsed time as determined by the scale_factor. time = distance/velocity*scale_factor. Distance is in pixels; velocity as per values in velocity files.
+*/
+
+int strtim_g(int n, char* args){
+    int index = moveOMA2toOMA(n,args);
+    int err;
+    
+    backsize=0;
+    backdat=NULL;
+    backdat=iTempImages[0].getImageData();
+    backsize=(iTempImages[0].width()*iTempImages[0].height()+MAXDOFFSET)*DATABYTES;
+    err = strtim(n,index);
+    
+    moveOMAtoOMA2();
+    iBuffer.getmaxx(printMax);
+    update_UI();
+    return err;
+}
+
+int strtim(int n, int index)            // calculate an image made up of elapsed time
+                                                // along streamlines
+                                                // STRTIM x0 dy scale_factor
+                                                // x0 is the starting x point for all rays
+                                                // dy is increment between rays
+                                                // the two components of the velocity field are needed
+                                                // the y velocity is stored with SBACK
+                                                // the x velocity field is in the current image buffer
+                                                // it is assumed that the major velocity component is in the x direction
+{
+    int ix,iy,nt,nc,count = 0;
+    int narg,size;
+    double x,y=0,distance=0,theta,theta_min,theta_max,vx,vy;
+    double dx,x0,y0,time=0,factor,v;
+        double dy,ymax,loopy;
+    float sx,sy,f;
+    DATAWORD *datp,idat(int,int),*datp2,*datp3,itime;
+        
+    //extern DATAWORD *backdat;        // the data pointer for backgrounds
+    //extern unsigned int backsize;
+
+    
+    size = (header[NCHAN] * header[NTRAK] + MAXDOFFSET) * DATABYTES;
+    size = (size+511)/512*512;    // make a bit bigger for file reads
+
+    datp2 = (DATAWORD*)malloc(size);
+    if(datp2 == 0) {
+        nomemory();
+        return -1;
+    }
+    datp = datp2+doffset;                 // set image to -1
+    for(nt=0; nt<header[NTRAK];nt++) {
+        for(nc=0;nc < header[NCHAN]; nc++){
+            *(datp++) = -1;
+        }
+    }
+    
+    datp = datp2+doffset;
+    //datp3 = backdat + doffset;
+    datp3 = backdat;
+    
+    narg = sscanf(&cmnd[index],"%f %f %f",&sx,&sy,&f);
+    if(narg != 3){
+        beep();
+        printf("Need 3 args: x0 dy scale_factor\n");
+        return -1;
+    }
+    x = sx;
+    dy = sy;
+    factor = f;
+    printf("%f %f %f\n",x,y,factor);
+        if(backdat == 0) {
+            beep();
+            printf("Must load second image using SBACK first.\n");
+            return -1;
+        }
+        if( (header[NCHAN]*header[NTRAK]+MAXDOFFSET)*DATABYTES != backsize) {
+            beep();
+            printf("Image Sizes Conflict.\n");
+            return -2;
+        }
+        ymax = header[NTRAK]-1;
+    for(loopy = 0.1; loopy< ymax; loopy+= dy){
+            // start at specified pixel
+            x = sx;
+            y = loopy;
+            ix = x;
+            iy = y;
+            distance = 0.0;
+            time = 0.0;
+            count = 0;
+            //printf("%d %d\n",ix,iy);
+            // propogate across the entire image
+            while(ix < header[NCHAN]-1 && iy > 1 && iy < header[NTRAK]-1&& count++ < header[NCHAN]*3){
+                x0 = x;
+                y0 = y;
+                vx = idat(iy,ix);
+                vy = *(datp3 + ix + iy*header[NCHAN]);    /* y velocity */
+                v = sqrt(vx*vx+vy*vy);
+                theta = atan(vy/vx);
+                
+                itime = time;
+                if(*(datp + ix + iy*header[NCHAN]) == -1 || itime < *(datp + ix + iy*header[NCHAN]) ){  // remember the minimum time
+                    *(datp + ix + iy*header[NCHAN]) = itime;    // fill in this pixel
+                }
+                
+                if(x == (float)ix){        // start from LHS of pixel
+                        theta_max = atan( (float)(iy+1) - y );
+                        theta_min = atan( (float)(iy) - y );
+                        if( theta <= theta_max && theta >= theta_min){    // this will make it to the RHS of the pixel
+                                ix++;
+                                x = ix;
+                                y = y + tan(theta);
+                        } else if(theta > theta_max) {            // this will go to pixel above
+                                x = x + ((float)(iy+1) - y)/tan(theta);
+                                iy++;
+                                y = iy;
+                        } else {                                // this goes to pixel below
+                                x = x + ((float)(iy) - y)/tan(theta);
+                                iy--;
+                                y = iy+1;
+                        }
+                } else {                                    // start from top or bottom of pixel
+                        theta_max = atan( 1.0/(1.0 - x + (float)ix));
+                        theta_min = -theta_max;
+                        if( theta <= theta_max && theta >= theta_min){    // this will make it to the RHS of the pixel
+                                y = y + tan(theta)*(1.0 - x + (float)ix);
+                                ix++;
+                                x = ix;
+                        } else if(theta > 0.0) {                // this will go to pixel above
+                                x = x + 1.0/tan(theta);
+                                iy++;
+                                y = iy;
+                        } else {                                // this goes to pixel below
+                                x = x - 1.0/tan(theta);
+                                iy--;
+                                y = iy+1;
+                        }
+                }
+                dx = sqrt( (x-x0)*(x-x0) + (y-y0)*(y-y0) );
+                distance += dx;
+                time += dx/v*factor;
+            }
+    }
+    
+    free(datpt);
+    datpt = datp2;
+    
+    have_max = 0;
+        maxx();
+        printf(" Distance and Time:\t%f\t%f\n", distance,time);
+    return 0;
+    
+}
+/* ************************* */

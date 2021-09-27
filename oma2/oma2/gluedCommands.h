@@ -55,5 +55,7 @@ int abelprep(int n, int index);
 int abelrect_g(int n, char* args);
 int abelrect(int n, int index);
 
+int strtim_g(int n, char* args);
+int strtim(int n, int index);
 
 #endif

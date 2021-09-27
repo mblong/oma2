@@ -40,6 +40,7 @@ int windowNameMemory = 0;
 
 char binaryExtension[CHPERLN] = {"RAW"};
 int bin_rows = 1024, bin_cols = 1360, bin_header = 0, binary_file_bytes_per_data_point = 2 , swap_bytes_flag = 0, unsigned_flag=0;
+// if position of RAW changes, be sure to update definition of #define RAW_FILE_EXT_INDEX 24 in image.h
 
 int printMax = PRINT_RESULT;
 
@@ -55,26 +56,27 @@ FileDecoderExtensions fileDecoderExtensions[] = {
     {{".HIF"},JPEG},
     {{".HEIF"},JPEG},
     {{".HEIC"},JPEG},
-//    {{".png"},JPEG},
     {{".PNG"},JPEG},
-//    {{".tif"},TIFREAD},
     {{".TIF"},TIFREAD},
-//    {{".tiff"},TIFREAD},
     {{".TIFF"},TIFREAD},
-//   {{".hobj"},HOBJ},
     {{".HOBJ"},HOBJ},
-//   {{".hdr"},HDR},
     {{".HDR"},HDR},
-//   {{".dat"},OMA},
     {{".DAT"},OMA},
-//    {{".o2d"},OMA},
     {{".O2D"},OMA},
     {{".CSV"},TXT},
-//    {{".csv"},TXT},
+    {{".FITS"},FITS},
     {{".RAW"},RAW},
     {{""},},
 };
-// if position of RAW changes, be sure to update definition of #define RAW_FILE_EXT_INDEX 24 in image.h
+
+
+// Globals for contour plots
+// These can be set in the preferences
+float clevls[MAX_CONTOURS]={.5,0,0,0,0,0,0,0,0,0};
+int nlevls=1;
+int colorctrs=1;
+int datminmax=1;
+
 
 //extern "C" int get_byte_swap_value(short);
 //extern "C" void swap_bytes_routine(char* co, int num,int nb);
@@ -234,7 +236,20 @@ Image::Image(char* filename, int kindOfName)
         }
     }
 
-    
+    for(i=0; fileDecoderExtensions[i].ext[0]; i++ ){
+        int extLength = (int)strlen(fileDecoderExtensions[i].ext);
+        if(fileDecoderExtensions[i].decoder == FITS
+           && strncmp(&filenameCopy[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
+            if (kindOfName == LONG_NAME) {
+                error = readFits(filename,this);
+            } else {
+                error = readFits(fullname(filename,RAW_DATA),this);
+            }
+            if (error) windowNameMemory = 0;
+            return;
+        }
+    }
+
     // read a binary file that has an extension specified by the BINEXTENSION command
     // find the extension
 
@@ -1322,6 +1337,11 @@ int* Image::getspecs(){             // this allocates space for specs that the u
     return thespecs;
 }
 
+int Image::getspec(int n){          // return a value from the specs array
+    if ( n>=NSPECS || n<0) return NAN;
+    return specs[n];
+}
+
 int Image::rows(){             // this allocates space for specs that the user must free
     return specs[ROWS];
 }
@@ -1337,6 +1357,11 @@ DATAWORD* Image::getvalues(){       // this allocates space for values that the 
         thevalues[i] = values[i];
     }
     return thevalues;
+}
+    
+DATAWORD Image::getvalue(int n){          // return a value from the values array
+    if ( n>=NVALUES || n<0) return NAN;
+    return values[n];
 }
 
 float* Image::getextra(){       // returns a copy of the extra data array

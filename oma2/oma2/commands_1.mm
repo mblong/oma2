@@ -242,6 +242,91 @@ int saveInt_c(int n,char* args)
 
 /* ********** */
 
+/*
+SAVEFITS filename [typeOfData]
+    Save the current image to a fits format file. Include the .fits extension in the filename. Valid values for typeOfData are 16 (for unsigned integers, no underflow/overflow checking is done) and 32 (for floats). Default is 16.
+ */
+
+int savefits_c(int n,char* args)
+{
+    char filename[CHPERLN];
+    int typeOfData=16;
+    int narg = sscanf(args,"%s %d", filename, &typeOfData);
+    
+    fitsfile *fptr;
+    int status = 0;  // MUST initialize status
+    long  fpixel, nelements, exposure;
+    
+    int naxis    =   2;        // 2-dimensional image
+    long naxes[3] = { 1,1,1};
+    size_t i;
+    
+    
+    if(narg < 1){    // no file name was specified
+        beep();
+        printf(" No filename specified.\n");
+        return FILE_ERR;
+    } else { // otherwise, add the prefix and suffix and use the name specified
+        fullname(filename,RAW_DATA);
+        for(i=strlen(filename); i>0; i--) filename[i]=filename[i-1];
+        filename[0]='!';    // add ! to the beginning of the filename to allow overwriting
+        filename[strlen(filename)]=0;
+        if (fits_create_file(&fptr, filename, &status)){ /* create new FITS file */
+            beep();
+            printf("Fits Create File Error for %s: %d\n",filename,status);
+            return status ;
+        }
+        naxes[0] = iBuffer.width();
+        if(iBuffer.isColor()){
+            naxis = 3;
+            naxes[2]=3;
+            naxes[1] = iBuffer.height();
+        } else {
+            naxes[1] = iBuffer.height();
+        }
+        fpixel = 1;                                 /* first pixel to write      */
+        nelements = naxes[0] * naxes[1] * naxes[2];          /* number of pixels to write */
+
+        switch (typeOfData){
+            case 16:
+                unsigned short* data;
+                data = new unsigned short[nelements];
+                for(i=0; i<nelements; i++) data[i] = iBuffer.getImageData()[i];
+                /* Write the required keywords for the primary array image */
+                if ( fits_create_img(fptr,  USHORT_IMG, naxis, naxes, &status) )
+                    return status ;
+                if ( fits_write_img(fptr, TUSHORT, fpixel, nelements, data, &status) ){
+                    delete[] data;
+                    return status ;
+                }
+                delete[] data;
+                break;
+            case 32:
+                /* Write the required keywords for the primary array image */
+                if ( fits_create_img(fptr,  FLOAT_IMG, naxis, naxes, &status) )
+                    return status ;
+                if ( fits_write_img(fptr, TFLOAT, fpixel, nelements, iBuffer.getImageData(), &status) )
+                    return status ;
+                break;
+            default:
+                beep();
+                printf("Specified data type must be 16 or 32.\n");
+                return FILE_ERR;
+        }
+        /* Write another optional keyword; must pass the ADDRESS of the value */
+        exposure = iBuffer.getvalue(EXPOSURE);
+        if ( fits_write_key(fptr, TLONG, "EXPOSURE", &exposure,"Total Exposure Time", &status) ){
+            beep();
+            printf("Error setting exposure.\n");
+        }
+        fits_close_file(fptr, &status);            /* close the file */
+        return status ;
+
+    }
+}
+
+/* ********** */
+
 int fwdatm_c(int n,char* args)
 {
     int	i,nt,nc;

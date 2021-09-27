@@ -72,6 +72,7 @@ ComDef   commands[] =    {
 #endif
     
     {{"DISPLAY        "},	display},
+    {{"DCONTOUR       "},   dcontour},
     {{"DMACRO         "},	defmac},
     {{"DMNMX          "},	dmnmx},
     {{"DIVFILE        "},	divfile_c},
@@ -89,6 +90,7 @@ ComDef   commands[] =    {
     {{"DECODEHOBJ     "},	decodeHobj_c},
     {{"DSATURATE      "},   dsaturate_c},
     {{"DISTORT        "},   distort_c},
+    
     
     {{"ERASE          "},	erase},
     {{"ENDIF          "},	endifcmnd},
@@ -244,6 +246,8 @@ ComDef   commands[] =    {
     {{"SCATTER        "},   scatter_c},
     {{"SETALPHA       "},   setAlpha},
     {{"SATURATE       "},   saturate_c},
+    {{"STRTIM         "},   strtim_g},
+    {{"SAVEFITS       "},   savefits_c},
 
 
 #if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
@@ -1526,6 +1530,47 @@ float rmsInRect()
 int display(int n, char* args){
     iBitmap = iBuffer;
     display_data;
+    update_UI();
+    return NO_ERR;
+}
+
+// **********
+
+/*
+DCONTOUR [nContours contourLevel1 - contourLeveln]
+    Display a contour plot of the current image. With no argument, the current contour settings from Preferences are used. If only nContours is specified, the contour levels are set to be equally spaced. If more than one argument is given, then contours are set according to the values specified (between 0-1). THe number of values given must match nContours. A maximum of ten contours are allowed.
+*/
+
+int dcontour(int n, char* args){
+    extern float clevls[];
+    iBitmap = iBuffer;
+    n=1;
+    int narg = sscanf(args,"%d %f %f %f %f %f %f %f %f %f %f", &n,clevls,&clevls[1],&clevls[2],&clevls[3],&clevls[4], &clevls[5],&clevls[6],&clevls[7],&clevls[8],&clevls[9]);
+    if(n < 1 || n > 10){
+        beep();
+        printf("Number of contours must be between 1-10\n");
+        return CMND_ERR;
+    }
+    if(narg == -1){ // use current contour settings
+        display_contour_plot
+        update_UI();
+        return NO_ERR;
+    } else if (narg == 1){
+        for(int i=0; i<n; i++){
+            UIData.contourLevels[i] = (i+1)*1.0/(n+1);
+        }
+        UIData.numberOfContours=n;
+    } else if (narg != n+1 ){
+        beep();
+        printf("Number of contours specified must match number of contour values given.\n");
+        return CMND_ERR;
+    } else {
+        for(int i=0; i<n; i++){
+            UIData.contourLevels[i] = clevls[i];
+        }
+        UIData.numberOfContours=n;
+    }
+    display_contour_plot
     update_UI();
     return NO_ERR;
 }

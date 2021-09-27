@@ -13,6 +13,12 @@
 extern RGBColor color[256][8];  // the eight color palttes
 extern unsigned char customPalette[];
 
+extern float clevls[MAX_CONTOURS];
+extern int nlevls;
+extern int colorctrs;
+extern int datminmax;
+
+
 @interface PreferenceController : NSWindowController{
     NSTextField *__weak savePrefix;
     NSTextField *__weak getPrefix;
@@ -29,11 +35,12 @@ extern unsigned char customPalette[];
     NSString *sometext;
     
     // for the Palette tab
-    
     int colorIndex;
     int lastIndex;
     unsigned char originalPalette[768];
     
+    // for the contours tab
+    NSArray *theTextFields;
     
     
 }
@@ -81,8 +88,28 @@ extern unsigned char customPalette[];
 @property (weak) IBOutlet NSTextField *pixLabel;
 @property (weak) IBOutlet NSSlider *sliderValue;
 
+@property (weak) IBOutlet NSTextField *numberOfContours;
+@property (weak) IBOutlet NSStepper *stepperValue;
+@property (weak) IBOutlet NSButton *contourCheckBox;
 
 - (void) updatePaletteImage;
+
+// Contours tab
+@property (weak) IBOutlet NSPopUpButtonCell *numberOfContoursPopup;
+@property (weak) IBOutlet NSButton *colorMinMaxButton;
+@property (weak) IBOutlet NSButton *dataMinMaxButton;
+@property (weak) IBOutlet NSButton *colorCheckbox;
+@property (weak) IBOutlet NSTextField *contour1;
+@property (weak) IBOutlet NSTextField *contour2;
+@property (weak) IBOutlet NSTextField *contour3;
+@property (weak) IBOutlet NSTextField *contour4;
+@property (weak) IBOutlet NSTextField *contour5;
+@property (weak) IBOutlet NSTextField *contour6;
+@property (weak) IBOutlet NSTextField *contour7;
+@property (weak) IBOutlet NSTextField *contour8;
+@property (weak) IBOutlet NSTextField *contour9;
+@property (weak) IBOutlet NSTextField *contour10;
+
 
 
 @end

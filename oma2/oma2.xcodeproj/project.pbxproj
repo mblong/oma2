@@ -47,6 +47,10 @@
 		DB3E355D18E6030300381607 /* serial.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3E355C18E6030300381607 /* serial.c */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
+		DB50CB39270233910097B2C9 /* libcfitsio.9.4.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */; };
+		DB50CB3C270235940097B2C9 /* libcfitsio.9.4.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */; settings = {ATTRIBUTES = (Required, ); }; };
+		DB50CB3D270237BA0097B2C9 /* libcfitsio.9.4.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DB50CB3E270237E40097B2C9 /* libcfitsio.9.4.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB51D9DC2274CF7F00917D5C /* libPvAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB57E31818F58D7900FA4D29 /* sbig.mm */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
@@ -165,6 +169,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				DB50CB3D270237BA0097B2C9 /* libcfitsio.9.4.0.0.dylib in CopyFiles */,
 				DBA7F676238843FD003F2608 /* LibTiff_F.framework in CopyFiles */,
 				DBCB577E22CA389F00988D83 /* libgsl.23.dylib in CopyFiles */,
 			);
@@ -176,6 +181,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				DB50CB3E270237E40097B2C9 /* libcfitsio.9.4.0.0.dylib in CopyFiles */,
 				DB629C09248E8A500035CB37 /* LibTiff_F.framework in CopyFiles */,
 				DB629C06248E8A020035CB37 /* libgsl.23.dylib in CopyFiles */,
 				DB629C07248E8A020035CB37 /* libPvAPI.dylib in CopyFiles */,
@@ -264,6 +270,8 @@
 		DB4329B517EF13E900A51802 /* gluedCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gluedCommands.mm; sourceTree = "<group>"; };
 		DB4E036D1835272400250EA4 /* dofft.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dofft.mm; sourceTree = "<group>"; };
 		DB4E036F183527B200250EA4 /* dofft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dofft.h; sourceTree = "<group>"; };
+		DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcfitsio.9.4.0.0.dylib; sourceTree = "<group>"; };
+		DB50CB3A2702356D0097B2C9 /* oma2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = oma2; sourceTree = "<group>"; };
 		DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPvAPI.dylib; sourceTree = "<group>"; };
 		DB52C79E17F102130048F57A /* dcrawx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dcrawx.h; sourceTree = "<group>"; };
 		DB57E31818F58D7900FA4D29 /* sbig.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = sbig.mm; sourceTree = "<group>"; };
@@ -337,6 +345,7 @@
 				DB85D3E925D48BEC00EFD8E7 /* CoreImage.framework in Frameworks */,
 				DB685CE62355633600812918 /* LibTiff_F.framework in Frameworks */,
 				DBBB5AC422CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */,
+				DB50CB3C270235940097B2C9 /* libcfitsio.9.4.0.0.dylib in Frameworks */,
 				DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */,
 				DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */,
 			);
@@ -354,6 +363,7 @@
 				DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */,
 				DB685CE72355633600812918 /* LibTiff_F.framework in Frameworks */,
 				DBBB5AC522CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */,
+				DB50CB39270233910097B2C9 /* libcfitsio.9.4.0.0.dylib in Frameworks */,
 				DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */,
 				DB51D9DC2274CF7F00917D5C /* libPvAPI.dylib in Frameworks */,
 			);
@@ -396,6 +406,7 @@
 		DB0FC0211519183C008A9B54 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB50CB3A2702356D0097B2C9 /* oma2 */,
 				DBD0B8D725C7114700CD40C3 /* CoreImage.framework */,
 				DBB2C37217F9A187008C03BB /* ImageIO.framework */,
 				DB0FC0221519183C008A9B54 /* Cocoa.framework */,
@@ -562,6 +573,7 @@
 		DBB4233C17F9B942005BCF33 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */,
 				DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */,
 				DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */,
 				DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */,

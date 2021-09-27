@@ -86,6 +86,7 @@ std::string getTempImagesString(std::string varString);
 
 // function prototypes for commands in comdec.cpp
 int display(int, char*);
+int dcontour(int,char*);
 int erase(int, char*);
 int endifcmnd(int, char*);
 int execut(int, char*);

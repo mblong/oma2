@@ -214,6 +214,7 @@ int shotnoise_c(int,char*);
 int say_c(int,char*);
 int scatter_c(int,char*);
 int saturate_c(int,char*);
+int savefits_c(int, char*);
 
 
 #if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)

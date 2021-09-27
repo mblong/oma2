@@ -5,6 +5,12 @@ extern char reply[1024];
 extern oma2UIData UIData;
 extern int printMax;
 
+extern float clevls[MAX_CONTOURS];
+extern int nlevls;
+extern int colorctrs;
+extern int datminmax;
+
+
 /*
  These are general purpose C functions that may be used anywhere.
  The assumption is they don't use anything in the oma2 classes unless passed as arguments.
@@ -109,6 +115,10 @@ void setUpUIData(){
     UIData.applyGamma=1.0;
     UIData.clearBad=0.0;
 
+    UIData.numberOfContours = nlevls;
+    UIData.colorContours = colorctrs;
+    UIData.minMaxFromData = datminmax;
+    for(int i=0; i<MAX_CONTOURS; i++) UIData.contourLevels[i]=clevls[i];
     
 }
 
@@ -506,7 +516,14 @@ int loadprefs(char* name)
             missingBytes -= sizeof(float);
         }
 
-
+        if(missingBytes >= sizeof(float)*MAX_CONTOURS+3*sizeof(int)){
+            // set the default values for contours
+            UIData.numberOfContours=nlevls;
+            UIData.colorContours=1;
+            UIData.minMaxFromData=1;
+            for(int i=0; i<MAX_CONTOURS; i++) UIData.contourLevels[i]=clevls[i];
+            missingBytes -= sizeof(sizeof(float)*MAX_CONTOURS+3*sizeof(int));
+        }
         return NO_ERR;
     }
     
@@ -1249,6 +1266,77 @@ int readCsv(char* filename,Image* theImage){
     update_UI();
 
     return NO_ERR;
+}
+
+/* ********** */
+int readFits(char* filename,Image* theImage){
+    fitsfile *fptr;   /* FITS file pointer, defined in fitsio.h */
+    int status = 0,i;   /* CFITSIO status value MUST be initialized to zero! */
+    int bitpix, naxis;
+    long naxes[3] = {1,1,1}, fpixel[3] = {1,1,1};
+    int rows=0,cols=0;
+
+    if (!fits_open_file(&fptr, filename, READONLY, &status)) {
+        if (!fits_get_img_param(fptr, 3, &bitpix, &naxis, naxes, &status) ){
+            printf("Axes: %d Dimensions: ",naxis);
+            for(i=0; i< naxis-1; i++){
+                printf("%d x ",naxes[i]);
+            }
+            printf("%d\n",naxes[i]);
+        }
+        
+        if(naxis == 2){     //monochrome image
+            rows=(int)naxes[1];
+            cols=(int)naxes[0];
+        } else if (naxis == 3 && naxes[2] == 3){        // color image
+            rows=(int)naxes[1]*3;
+            cols=(int)naxes[0];
+        }else {
+            beep();
+            printf("Unsupported FITS image format.\n");
+            return FILE_ERR;
+        }
+        Image newIm(rows,cols);
+        if(naxes[2]==3) newIm.specs[IS_COLOR]=1;
+        switch (bitpix){
+            case FLOAT_IMG:
+                if (fits_read_pix(fptr, TFLOAT, fpixel, naxes[0]*naxes[1]*naxes[2], NULL,
+                                  newIm.data, NULL, &status)){
+                    beep();
+                    printf("Error reading pixel data.\n");
+                    newIm.free();
+                    return FILE_ERR;
+                }
+                break;
+            case SHORT_IMG:
+                unsigned short* data;
+                data =  new unsigned short[naxes[0]*naxes[1]*naxes[2]];
+                if (fits_read_pix(fptr, TUSHORT, fpixel, naxes[0]*naxes[1]*naxes[2], NULL,
+                                  data, NULL, &status)){
+                    beep();
+                    printf("Error reading pixel data.\n");
+                    delete[] data;
+                    newIm.free();
+                    return FILE_ERR;
+                }
+                for( size_t i=0; i< naxes[0]*naxes[1]*naxes[2]; i++) newIm.data[i] = data[i];
+                delete[] data;
+                break;
+            default:
+                beep();
+                printf("Unsupported FITS image format.\n");
+                return FILE_ERR;
+        }
+        theImage->free();     // release the old data
+        *theImage = newIm;   // this is the new data
+        theImage->getmaxx(printMax);
+        update_UI();
+        return NO_ERR;
+
+    }
+    beep();
+    printf("Error opening Fits image.\n");
+    return FILE_ERR;
 }
 
 /* ********** */

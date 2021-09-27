@@ -54,7 +54,7 @@ enum {NO_PRINT,PRINT_RESULT};
 enum {BILINEAR,MALVAR};
 
 // special file reader types
-enum {DCRAW,JPEG,TIFREAD,HDR,HOBJ,OMA,TXT,RAW};
+enum {DCRAW,JPEG,TIFREAD,HDR,HOBJ,OMA,TXT,RAW,FITS};
 #define RAW_FILE_EXT_INDEX 12
 
 
@@ -119,11 +119,13 @@ public:
     
     void copyABD(Image);        ///< copy All But Data from one image to another
     int* getspecs();            ///< returns a copy of the image specs array
+    int getspec(int);            ///< returns the specified member of speces array
     float* getextra();          ///< returns a copy of the extra data array
     void setExtra(float*,int);  ///< Loads the extra buffer with the specified number of floating point values
     int getExtraSize();         ///< returns the size of the extra data array
      void setspecs(int*);        ///< sets the image specs array
     DATAWORD* getvalues();      ///< returns a copy of the image values array
+    DATAWORD getvalue(int);     ///< returns the specified member of values array
     DATAWORD min();             ///< returns the image min
     DATAWORD max();             ///< returns the image max
     void setvalues(DATAWORD*);  ///< sets the image values array
@@ -167,6 +169,7 @@ public:
     friend int readHDR(char* filename, Image*);
     friend int readHobj(char* filename, Image*);
     friend int readCsv(char* filename, Image*);
+    friend int readFits(char* filename, Image*);
     friend void oma_write_ppm_tiff (int thecolor, Image* im);
 #ifdef GIGE_
     friend int gige(int n, char* args);

@@ -142,6 +142,21 @@ extern AppController* appController;
 
 }
 
+-(void) placeContourDrawing: (NSRect) theLocation {
+    //extern RGBColor color[256][8];
+    drawingType = CONTOUR_DRAWING;
+    windowRect = theLocation;
+    [[self window] setTitle:windowName];
+
+    NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
+    
+    [drawingView setFrame:rect];
+    [drawingView setBytesPerPlot: -1];  // use to indicate that this is a contour plot
+    [drawingView display];
+
+
+}
+
 -(void) updateRowDrawing: (int) theWindowRow {
     // where the data comes from
     NSRect dataRect =  [[dataWindowController imageView] frame ];

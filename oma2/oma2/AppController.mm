@@ -248,6 +248,74 @@ extern oma2UIData UIData;
 }
 
 
+- (IBAction)plotContours:(id)sender {
+    // figure out where to place image
+    // window_placement needs to have the right position and size
+    
+    // this is for possibly scaling down images that won't fit on screen
+    int windowHeight = iBitmap.getheight()*UIData.windowScaleFactor;
+    int windowWidth = iBitmap.getwidth()*UIData.windowScaleFactor;
+    float scaleWidth = (float)windowWidth/(float)screenRect.size.width;
+    // leave a little space at the bottom of the sreen
+    float scaleHeight = (float)windowHeight/(float)(screenRect.size.height-2*TITLEBAR_HEIGHT);
+    float scaleWindow = 1.0;
+    if (scaleHeight > 1.0 || scaleWidth > 1.0) {
+        if(scaleHeight > scaleWidth)
+            scaleWindow = scaleHeight;
+        else
+            scaleWindow = scaleWidth;
+        windowHeight /= scaleWindow;
+        windowWidth /= scaleWindow;
+        char txt[128];
+        sprintf(txt," Window scaled by %f\n",scaleWindow);
+        [self appendCText:txt];
+        
+    }
+    
+    // now, figure out where to place the window
+    if(window_placement.origin.x == WINDOW_OFFSET+screenRect.origin.x) {   // left column
+        window_placement.origin.y -= (windowHeight+TITLEBAR_HEIGHT);
+    }
+    
+    window_placement=NSMakeRect(window_placement.origin.x,
+                                window_placement.origin.y,
+                                windowWidth, windowHeight+TITLEBAR_HEIGHT);
+    
+    if (window_placement.origin.x+windowWidth>screenRect.size.width) {
+        window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
+        
+        if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > 0){
+            window_placement.origin.y -= (windowHeight + TITLEBAR_HEIGHT);
+        } else{
+            wraps++;
+            window_placement.origin.y = screenRect.size.height
+             -windowHeight- wraps*TITLEBAR_HEIGHT; // wrap to top
+        }
+         
+    }
+    // create a new window controller object
+    DrawingWindowController* contourWindowController = [[DrawingWindowController alloc] initWithWindowNibName:@"DrawingWindow"];
+    
+    // add that to the array of windows
+    [windowArray addObject:contourWindowController];
+    
+    // name the window appropriately
+    [contourWindowController setWindowName:@"Contour"] ;
+    
+    // tell the window who its data controller is
+    //[contourWindowController setDataWindowController:windowArray[key]];
+
+    // display the data
+    [contourWindowController placeContourDrawing:window_placement];
+    
+    window_placement.origin.x += windowWidth;            // increment for next one
+    
+    [contourWindowController showWindow:self];
+
+}
+
+
+
 - (IBAction)plotRows:(id)sender{
     NSWindow* activekey = [NSApp keyWindow];
     NSWindow* activemain = [NSApp mainWindow];

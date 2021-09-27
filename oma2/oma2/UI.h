@@ -90,6 +90,10 @@ dispatch_sync(dispatch_get_main_queue(),^{[appController setAlpha:(float) newAlp
 else \
 dispatch_sync(dispatch_get_main_queue(),^{[appController labelMinMax];});
 
+#define display_contour_plot if([NSThread isMainThread]) \
+[appController plotContours:nil]; \
+else \
+dispatch_sync(dispatch_get_main_queue(),^{[appController plotContours:nil];});
 
 
 BOOL dropped_file(char*,char*);
