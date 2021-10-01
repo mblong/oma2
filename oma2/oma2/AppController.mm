@@ -293,6 +293,12 @@ extern oma2UIData UIData;
         }
          
     }
+    // delete the first window if this will take us over the max limit
+    if ([windowArray count] >= MAX_WINDOW_COUNT) {
+        [self eraseWindow:0];
+        wraps = 1;
+    }
+
     // create a new window controller object
     DrawingWindowController* contourWindowController = [[DrawingWindowController alloc] initWithWindowNibName:@"DrawingWindow"];
     
@@ -375,7 +381,12 @@ extern oma2UIData UIData;
         }
         
     }
-    
+    // delete the first window if this will take us over the max limit
+    if ([windowArray count] >= MAX_WINDOW_COUNT) {
+        [self eraseWindow:0];
+        wraps = 1;
+    }
+
     // create a new window controller object
     DrawingWindowController* rowWindowController = [[DrawingWindowController alloc] initWithWindowNibName:@"DrawingWindow"];
     
@@ -462,7 +473,12 @@ extern oma2UIData UIData;
         }
         
     }
-    
+    // delete the first window if this will take us over the max limit
+    if ([windowArray count] >= MAX_WINDOW_COUNT) {
+        [self eraseWindow:0];
+        wraps = 1;
+    }
+
     // create a new window controller object
     DrawingWindowController* colWindowController = [[DrawingWindowController alloc] initWithWindowNibName:@"DrawingWindow"];
     
@@ -543,7 +559,12 @@ extern oma2UIData UIData;
         }
         
     }
-    
+    // delete the first window if this will take us over the max limit
+    if ([windowArray count] >= MAX_WINDOW_COUNT) {
+        [self eraseWindow:0];
+        wraps = 1;
+    }
+
     // create a new window controller object
     DrawingWindowController* linePlotWindowController = [[DrawingWindowController alloc] initWithWindowNibName:@"DrawingWindow"];
     
@@ -747,8 +768,7 @@ extern oma2UIData UIData;
         return;
     }
     // delete the first window if this will take us over the max limit
-    
-    if ([windowArray count] == MAX_WINDOW_COUNT) {
+    if ([windowArray count] >= MAX_WINDOW_COUNT) {
         [self eraseWindow:0];
         wraps = 1;
     }

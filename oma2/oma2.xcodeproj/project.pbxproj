@@ -271,7 +271,6 @@
 		DB4E036D1835272400250EA4 /* dofft.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dofft.mm; sourceTree = "<group>"; };
 		DB4E036F183527B200250EA4 /* dofft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dofft.h; sourceTree = "<group>"; };
 		DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcfitsio.9.4.0.0.dylib; sourceTree = "<group>"; };
-		DB50CB3A2702356D0097B2C9 /* oma2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = oma2; sourceTree = "<group>"; };
 		DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPvAPI.dylib; sourceTree = "<group>"; };
 		DB52C79E17F102130048F57A /* dcrawx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dcrawx.h; sourceTree = "<group>"; };
 		DB57E31818F58D7900FA4D29 /* sbig.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = sbig.mm; sourceTree = "<group>"; };
@@ -280,6 +279,7 @@
 		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
 		DB685CE52355633600812918 /* LibTiff_F.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LibTiff_F.framework; sourceTree = "<group>"; };
 		DB6EDB2E1912A3C00032934F /* gpib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gpib.h; sourceTree = "<group>"; };
+		DB6FC3B42707421D00735B9C /* fitsio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fitsio.h; sourceTree = "<group>"; };
 		DB6FF6FF18467F46002D728B /* tiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiff.h; sourceTree = "<group>"; };
 		DB6FF70018467F46002D728B /* tiffio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffio.h; sourceTree = "<group>"; };
 		DB6FF70118467F46002D728B /* tiffvers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffvers.h; sourceTree = "<group>"; };
@@ -406,7 +406,6 @@
 		DB0FC0211519183C008A9B54 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DB50CB3A2702356D0097B2C9 /* oma2 */,
 				DBD0B8D725C7114700CD40C3 /* CoreImage.framework */,
 				DBB2C37217F9A187008C03BB /* ImageIO.framework */,
 				DB0FC0221519183C008A9B54 /* Cocoa.framework */,
@@ -552,6 +551,7 @@
 				DB021E7A15211EFA001D1B05 /* image.h */,
 				DB021E7915211EFA001D1B05 /* image.mm */,
 				DB021E7815211EFA001D1B05 /* image_support.h */,
+				DB6FC3B42707421D00735B9C /* fitsio.h */,
 				DB021E7715211EFA001D1B05 /* image_support.mm */,
 				DB6FF6FF18467F46002D728B /* tiff.h */,
 				DB6FF70018467F46002D728B /* tiffio.h */,
