@@ -280,6 +280,7 @@
 		DB685CE52355633600812918 /* LibTiff_F.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LibTiff_F.framework; sourceTree = "<group>"; };
 		DB6EDB2E1912A3C00032934F /* gpib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gpib.h; sourceTree = "<group>"; };
 		DB6FC3B42707421D00735B9C /* fitsio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fitsio.h; sourceTree = "<group>"; };
+		DB6FC3B5270743DF00735B9C /* longnam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = longnam.h; sourceTree = "<group>"; };
 		DB6FF6FF18467F46002D728B /* tiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiff.h; sourceTree = "<group>"; };
 		DB6FF70018467F46002D728B /* tiffio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffio.h; sourceTree = "<group>"; };
 		DB6FF70118467F46002D728B /* tiffvers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffvers.h; sourceTree = "<group>"; };
@@ -552,6 +553,7 @@
 				DB021E7915211EFA001D1B05 /* image.mm */,
 				DB021E7815211EFA001D1B05 /* image_support.h */,
 				DB6FC3B42707421D00735B9C /* fitsio.h */,
+				DB6FC3B5270743DF00735B9C /* longnam.h */,
 				DB021E7715211EFA001D1B05 /* image_support.mm */,
 				DB6FF6FF18467F46002D728B /* tiff.h */,
 				DB6FF70018467F46002D728B /* tiffio.h */,
