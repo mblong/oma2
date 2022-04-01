@@ -47,11 +47,8 @@
 		DB3E355D18E6030300381607 /* serial.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3E355C18E6030300381607 /* serial.c */; };
 		DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
 		DB4E036E1835272400250EA4 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
-		DB50CB39270233910097B2C9 /* libcfitsio.9.4.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */; };
-		DB50CB3C270235940097B2C9 /* libcfitsio.9.4.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */; settings = {ATTRIBUTES = (Required, ); }; };
-		DB50CB3D270237BA0097B2C9 /* libcfitsio.9.4.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		DB50CB3E270237E40097B2C9 /* libcfitsio.9.4.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB51D9DC2274CF7F00917D5C /* libPvAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DB5793D227F3615800D775C7 /* zwoCameras.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB5793D027F3615800D775C7 /* zwoCameras.mm */; };
 		DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB57E31818F58D7900FA4D29 /* sbig.mm */; };
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
@@ -61,10 +58,12 @@
 		DB629C09248E8A500035CB37 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DB685CE62355633600812918 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
 		DB685CE72355633600812918 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
+		DB7C1573270F870D00EDA9CE /* libcfitsio.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBB2388C270F82A600CD8E26 /* libcfitsio.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB83FD771D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
 		DB83FD781D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
 		DB85D3E925D48BEC00EFD8E7 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD0B8D725C7114700CD40C3 /* CoreImage.framework */; };
 		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
+		DB899B202748240C00265C60 /* libcfitsio.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBB2388C270F82A600CD8E26 /* libcfitsio.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB8A884418E3297E007C79AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
 		DB8A884518E3297E007C79AF /* oma2AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */; };
 		DB8A884618E3297E007C79AF /* CommandView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB16CA391826960F002588F4 /* CommandView.mm */; };
@@ -124,6 +123,8 @@
 		DB95A9501A2F415E00823467 /* VariablesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB95A94C1A2F415E00823467 /* VariablesWindow.xib */; };
 		DB9A98AB22720BFC008ABA5C /* SBIGUDrv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DB9B2E44186731EC00EE4871 /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
+		DB9CDBE827F3727A000FBCBE /* libASICamera2.dylib.1.22 in Frameworks */ = {isa = PBXBuildFile; fileRef = DB9CDBE727F3727A000FBCBE /* libASICamera2.dylib.1.22 */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DB9CDBE927F372A4000FBCBE /* libASICamera2.dylib.1.22 in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB9CDBE727F3727A000FBCBE /* libASICamera2.dylib.1.22 */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
 		DBA3B5F716FC781300B7FF27 /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
 		DBA3CB871911985800AD10BC /* gpib.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA3CB851911985800AD10BC /* gpib.mm */; };
@@ -134,6 +135,8 @@
 		DBAD2EFD1868975D003F9B55 /* Oma2Macro.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */; };
 		DBAEDEDD187F16FD0019677B /* LightOma2Help in Resources */ = {isa = PBXBuildFile; fileRef = DBAEDEDC187F16FD0019677B /* LightOma2Help */; };
 		DBB15EF325A78014000437AA /* openCVroutines.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB15EF025A78014000437AA /* openCVroutines.mm */; };
+		DBB2388D270F82A600CD8E26 /* libcfitsio.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2388C270F82A600CD8E26 /* libcfitsio.dylib */; };
+		DBB2388E270F832700CD8E26 /* libcfitsio.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2388C270F82A600CD8E26 /* libcfitsio.dylib */; };
 		DBB27B6B1867F1DF00CF6523 /* Oma2Settings.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */; };
 		DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
 		DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
@@ -169,7 +172,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DB50CB3D270237BA0097B2C9 /* libcfitsio.9.4.0.0.dylib in CopyFiles */,
+				DB7C1573270F870D00EDA9CE /* libcfitsio.dylib in CopyFiles */,
 				DBA7F676238843FD003F2608 /* LibTiff_F.framework in CopyFiles */,
 				DBCB577E22CA389F00988D83 /* libgsl.23.dylib in CopyFiles */,
 			);
@@ -181,7 +184,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DB50CB3E270237E40097B2C9 /* libcfitsio.9.4.0.0.dylib in CopyFiles */,
+				DB9CDBE927F372A4000FBCBE /* libASICamera2.dylib.1.22 in CopyFiles */,
+				DB899B202748240C00265C60 /* libcfitsio.dylib in CopyFiles */,
 				DB629C09248E8A500035CB37 /* LibTiff_F.framework in CopyFiles */,
 				DB629C06248E8A020035CB37 /* libgsl.23.dylib in CopyFiles */,
 				DB629C07248E8A020035CB37 /* libPvAPI.dylib in CopyFiles */,
@@ -270,9 +274,10 @@
 		DB4329B517EF13E900A51802 /* gluedCommands.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gluedCommands.mm; sourceTree = "<group>"; };
 		DB4E036D1835272400250EA4 /* dofft.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dofft.mm; sourceTree = "<group>"; };
 		DB4E036F183527B200250EA4 /* dofft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dofft.h; sourceTree = "<group>"; };
-		DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcfitsio.9.4.0.0.dylib; sourceTree = "<group>"; };
 		DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPvAPI.dylib; sourceTree = "<group>"; };
 		DB52C79E17F102130048F57A /* dcrawx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dcrawx.h; sourceTree = "<group>"; };
+		DB5793D027F3615800D775C7 /* zwoCameras.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = zwoCameras.mm; sourceTree = "<group>"; };
+		DB5793D127F3615800D775C7 /* zwoCameras.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = zwoCameras.hpp; sourceTree = "<group>"; };
 		DB57E31818F58D7900FA4D29 /* sbig.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = sbig.mm; sourceTree = "<group>"; };
 		DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SBIGUDrv.framework; sourceTree = "<group>"; };
 		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
@@ -298,6 +303,7 @@
 		DB95A94B1A2F415E00823467 /* VariablesWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VariablesWindowController.mm; sourceTree = "<group>"; };
 		DB95A94C1A2F415E00823467 /* VariablesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VariablesWindow.xib; sourceTree = "<group>"; };
 		DB9B2E43186731EC00EE4871 /* oma2Icons.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = oma2Icons.icns; sourceTree = "<group>"; };
+		DB9CDBE727F3727A000FBCBE /* libASICamera2.dylib.1.22 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libASICamera2.dylib.1.22; sourceTree = "<group>"; };
 		DBA03741181704740042DF6F /* DrawingWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawingWindow.xib; sourceTree = "<group>"; };
 		DBA3B5F616FC781300B7FF27 /* oma2help.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = oma2help.txt; sourceTree = "<group>"; usesTabs = 1; };
 		DBA3CB851911985800AD10BC /* gpib.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gpib.mm; sourceTree = "<group>"; };
@@ -312,6 +318,7 @@
 		DBAEDEDC187F16FD0019677B /* LightOma2Help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = LightOma2Help; sourceTree = "<group>"; };
 		DBB15EF025A78014000437AA /* openCVroutines.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = openCVroutines.mm; sourceTree = "<group>"; };
 		DBB15EF125A78014000437AA /* openCVroutines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = openCVroutines.h; sourceTree = "<group>"; };
+		DBB2388C270F82A600CD8E26 /* libcfitsio.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcfitsio.dylib; sourceTree = "<group>"; };
 		DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Oma2Settings.icns; sourceTree = "<group>"; };
 		DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Oma2Data.icns; sourceTree = "<group>"; };
 		DBB2C37217F9A187008C03BB /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -343,10 +350,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBB2388E270F832700CD8E26 /* libcfitsio.dylib in Frameworks */,
 				DB85D3E925D48BEC00EFD8E7 /* CoreImage.framework in Frameworks */,
 				DB685CE62355633600812918 /* LibTiff_F.framework in Frameworks */,
 				DBBB5AC422CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */,
-				DB50CB3C270235940097B2C9 /* libcfitsio.9.4.0.0.dylib in Frameworks */,
 				DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */,
 				DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */,
 			);
@@ -358,13 +365,14 @@
 			files = (
 				DBD0B8D825C7114700CD40C3 /* CoreImage.framework in Frameworks */,
 				DB9A98AB22720BFC008ABA5C /* SBIGUDrv.framework in Frameworks */,
+				DB9CDBE827F3727A000FBCBE /* libASICamera2.dylib.1.22 in Frameworks */,
 				DBFEFA0426B5F144002873C8 /* EDSDK.framework in Frameworks */,
 				DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
 				DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */,
 				DB685CE72355633600812918 /* LibTiff_F.framework in Frameworks */,
+				DBB2388D270F82A600CD8E26 /* libcfitsio.dylib in Frameworks */,
 				DBBB5AC522CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */,
-				DB50CB39270233910097B2C9 /* libcfitsio.9.4.0.0.dylib in Frameworks */,
 				DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */,
 				DB51D9DC2274CF7F00917D5C /* libPvAPI.dylib in Frameworks */,
 			);
@@ -486,9 +494,11 @@
 				DBF879C51906C6FC006C5872 /* gphotoFunctions.h */,
 				DB57E31818F58D7900FA4D29 /* sbig.mm */,
 				DB8C23FA18FC2FF200969763 /* u3.h */,
+				DB8C23FB18FC302F00969763 /* labjackusb.h */,
 				DB8C23F718FC2BA500969763 /* labjackU3.mm */,
 				DB8C23FF18FC32D500969763 /* u3.c */,
-				DB8C23FB18FC302F00969763 /* labjackusb.h */,
+				DB5793D127F3615800D775C7 /* zwoCameras.hpp */,
+				DB5793D027F3615800D775C7 /* zwoCameras.mm */,
 				DBB15EF125A78014000437AA /* openCVroutines.h */,
 				DBB15EF025A78014000437AA /* openCVroutines.mm */,
 				DBFEFA0726B5F506002873C8 /* canonCamera.h */,
@@ -532,9 +542,9 @@
 				DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */,
 				DB35126218F0BACF00202FFC /* macImageSupport.h */,
 				DB35125F18F0B8AE00202FFC /* macImageSupport.mm */,
+				DB1DC8272601424D00C5A72C /* ColorImageOptions.xib */,
 				DB1DC8252601424D00C5A72C /* ColorImageOptionsController.h */,
 				DB1DC8262601424D00C5A72C /* ColorImageOptionsController.mm */,
-				DB1DC8272601424D00C5A72C /* ColorImageOptions.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -575,7 +585,8 @@
 		DBB4233C17F9B942005BCF33 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				DB50CB38270233910097B2C9 /* libcfitsio.9.4.0.0.dylib */,
+				DB9CDBE727F3727A000FBCBE /* libASICamera2.dylib.1.22 */,
+				DBB2388C270F82A600CD8E26 /* libcfitsio.dylib */,
 				DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */,
 				DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */,
 				DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */,
@@ -788,6 +799,7 @@
 				DB8A884718E3297E007C79AF /* DrawingWindowController.mm in Sources */,
 				DBA3CB871911985800AD10BC /* gpib.mm in Sources */,
 				DB8A884818E3297E007C79AF /* StatusController.mm in Sources */,
+				DB5793D227F3615800D775C7 /* zwoCameras.mm in Sources */,
 				DB83FD781D4FE5DE009B3204 /* dmmalvar.mm in Sources */,
 				DB8A884918E3297E007C79AF /* AppController.mm in Sources */,
 				DB3E355D18E6030300381607 /* serial.c in Sources */,
@@ -995,6 +1007,7 @@
 					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DMacOSX_UI",

@@ -8770,7 +8770,7 @@ int dcrawGlue(char* name, int thecolor, Image* im){
 }
 // -- oma
 
- 
+// *********************************** THIS IS LIBRAW CODE ************************************************
 // -- oma
 #else
 extern oma2UIData UIData;

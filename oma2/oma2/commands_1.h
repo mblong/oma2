@@ -59,6 +59,7 @@ int c2rgb_c(int n,char* args);
 int cvHoughCircles_q(int,char*);
 int cvAlign_q(int,char*);
 int cvDenoise_q(int,char*);
+int cvNLDenoise_q(int,char*);
 #endif
 
 int dcrawarg_c(int,char*);

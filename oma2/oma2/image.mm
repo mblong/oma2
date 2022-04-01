@@ -65,6 +65,7 @@ FileDecoderExtensions fileDecoderExtensions[] = {
     {{".O2D"},OMA},
     {{".CSV"},TXT},
     {{".FITS"},FITS},
+    {{".FIT"},FITS},
     {{".RAW"},RAW},
     {{""},},
 };

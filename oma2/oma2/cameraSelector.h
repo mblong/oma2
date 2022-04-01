@@ -48,6 +48,7 @@
     #define GIGE_     //
     #define SBIG
     #define CANON_     // requires the Canon EDSDK -- get this from Canon
+    #define ZWO        // for ZWO CMOS cameras
     #define GPHOTO      // requires installing gphoto2 and its libraries: e.g., brew install gphoto2
                         // if this is undefined, remove -lgphoto2 from Build Settings>Linking>Other Linker Flags
 

@@ -69,6 +69,7 @@ ComDef   commands[] =    {
     {{"CVHOUGHCIRCLES "},   cvHoughCircles_q},
     {{"CVALIGN        "},   cvAlign_q},
     {{"CVDENOISE      "},   cvDenoise_q},
+    {{"CVNLDENOISE    "},   cvNLDenoise_q},
 #endif
     
     {{"DISPLAY        "},	display},
@@ -300,6 +301,10 @@ ComDef   hardwareCommands[] =    {
 
 #ifdef CANON_
     {{"CANON          "},    canon},            /*  @canonCamera.mm */
+#endif
+
+#ifdef ZWO
+    {{"ZWO            "},    zwo},            /*  @zwoCamera.mm */
 #endif
 
     

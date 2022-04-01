@@ -32,6 +32,10 @@ int andor(int, char*);
 int canon(int, char*);
 #endif
 
+#ifdef ZWO
+int zwo(int, char*);
+#endif
+
 
 #ifdef SBIG
 int sbig(int,char*);

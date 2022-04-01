@@ -481,7 +481,7 @@ int cvAlign_q(int n,char* args){
 }
 
 /*
-CVDENOISE h_luminance h_color [search_window_size block_size]
+CVDENOISE h_luminance h_color [block_size search_window_size ]
  Use the opencv fastNlMeansDenoisingColored function to denoise the current image. The 8-bit data in the current display window is used as input so the result will also be 8-bit data scaled from 0 - 255.
  
 */
@@ -493,7 +493,7 @@ int cvDenoise_q(int n,char* args){
     float hColor=3,hLuminance=3;
     Mat src;
     
-    int nargs=sscanf(args,"%f %f %d %d",&hLuminance, &hColor, &searchSize, &blockSize);
+    int nargs=sscanf(args,"%f %f %d %d",&hLuminance, &hColor, &blockSize, &searchSize);
     if(nargs < 2){
         beep();
         printf("Must specify hLuminance and hColor.\n");
@@ -503,7 +503,7 @@ int cvDenoise_q(int n,char* args){
     src = Mat(iBitmap.getheight(), iBitmap.getwidth(), CV_8UC3, iBitmap.getpixdata());
     // cvtColor(frame, frame, COLOR_RGB2BGR);   // not needed?
     
-    fastNlMeansDenoisingColored(src,src,hLuminance,hColor,blockSize,searchSize);
+    fastNlMeansDenoisingColored(src,src,hLuminance,blockSize,searchSize);
 
     //[appController updateModifiedDataWindow];
     bitmap2rgb_c(0,(char*)null);
@@ -512,5 +512,58 @@ int cvDenoise_q(int n,char* args){
     return NO_ERR;
 }
 
+/*
+CVNLDENOISE strength [templateWindowSize searchWindowSize]
+ Use the opencv fastNlMeansDenoising function to denoise the current image. The data is converted to 16-bit unsigned integers -- in some cases, consider remapping to 0 65535 to use the full dynamic range (MAP 0 65535).
+ 
+*/
+
+
+int cvNLDenoise_q(int n,char* args){
+    using namespace cv;
+    
+    int searchSize=21;
+    int blockSize=7;
+    std::vector<float> hLuminance(1);
+    float h;
+    Mat src,dst;
+    
+    int nargs=sscanf(args,"%f %d %d",&h, &blockSize, &searchSize);
+    if(nargs < 1){
+        beep();
+        printf("Must specify strength.\n");
+        return CMND_ERR;
+    }
+    
+    hLuminance[0]=h;
+    
+    unsigned short* bits= new unsigned short[iBuffer.height()* iBuffer.width()];
+    unsigned short* shortptr=bits;
+
+    DATAWORD* dataPtr = iBuffer.getImageData();
+    for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
+        *shortptr++ = *dataPtr++;
+    }
+
+    
+    //src = Mat(iBuffer.height(), iBuffer.width(), CV_8U, bits);
+    src = Mat(iBuffer.height(), iBuffer.width(), CV_16U, bits);
+    //dst = Mat(iBuffer.height(), iBuffer.width(), CV_16U, dstbits);
+    
+    
+    fastNlMeansDenoising(src,src,hLuminance,blockSize,searchSize,NORM_L1);
+
+    shortptr=bits;
+    dataPtr = iBuffer.getImageData();
+    for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
+        *dataPtr++ = *shortptr++;
+    }
+    delete[] bits;
+    update_UI();
+
+    return NO_ERR;
+}
+
 
 #endif
+  

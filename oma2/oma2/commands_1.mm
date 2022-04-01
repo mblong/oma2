@@ -2082,6 +2082,7 @@ int boundbox_c(int n, char* args)
         UIData.iRect.ul=substart;
         UIData.iRect.lr=subend;
     }
+    update_UI();
     return NO_ERR;
 }
 
