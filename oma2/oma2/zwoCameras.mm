@@ -50,71 +50,81 @@ bool connected=false;
 int iMaxWidth, iMaxHeight;
 const char* bayerPattern[] = {"RG","BG","GR","GB"};
 int iNumOfCtrl = 0;
-long ltemp = 0;
+long setTemp = 20;
+long sensorTemp=200;
 ASI_BOOL bAuto = ASI_FALSE;
 int bin = 1, Image_type;
 ASI_CONTROL_CAPS ControlCaps;
 ASI_EXPOSURE_STATUS status;
-int exp_ms;
-int gain=0, temp=20;
+int exp_ms=10;
+int gain=0;
 int imageType=2;
+long wbR,wbB;
+bool coolerEnabled=false;
+bool antiDewEnabled=false;
+bool autoDisplayEnabled=true;
+bool clearBadEnabled=false;
+int stopExposure;
 
+long coolerPercent=0;
+ASI_ERROR_CODE asiErr;
 
 int zwo(int n,char* args){
 
     long i;
     int nargs;
-    char dummy[256];
+    char dummy[CHPERLN];
+    
+    
 
     if(!connected)
         if( connectCamera() <= 0) return HARD_ERR;
     
+    zwoWindow
+    zwoGetTempInfo();
+    
+    if(strlen(args) == 0)
+        strcpy(args,"ACQ");
     for( i=0; i<3; i++) args[i] = toupper(args[i]);
     if( strncmp(args,"EXP",3) == 0){
         sscanf(args,"%s %d",dummy, &exp_ms);
         ASISetControlValue(camNum, ASI_EXPOSURE, exp_ms*1000, ASI_FALSE);
-        ASISetControlValue(camNum, ASI_BANDWIDTHOVERLOAD, 40, ASI_FALSE);
+        ASISetControlValue(camNum, ASI_BANDWIDTHOVERLOAD, 50, ASI_FALSE);
+        zwoUpdate
 
     } else if ( strncmp(args,"GAI",3) == 0){
         sscanf(args,"%s %d",dummy, &gain);
         ASISetControlValue(camNum, ASI_GAIN, gain, ASI_FALSE);
+        zwoUpdate
         
     } else if ( strncmp(args,"DIS",3) == 0){
-        ASICloseCamera(camNum);
-        connected=false;
+        zwoWindowClose
+        
+    } else if ( strncmp(args,"WBA",3) == 0){
+        sscanf(args,"%s %ld %ld",dummy, &wbR,&wbB);
+        ASISetControlValue(camNum, ASI_WB_R, wbR, ASI_FALSE);
+        ASISetControlValue(camNum, ASI_WB_B, wbB, ASI_FALSE);
         
     } else if ( strncmp(args,"TEM",3) == 0){
-        long coolerPercent,coolerOn;
-        ASIGetControlValue(camNum, ASI_COOLER_ON, &coolerOn, &bAuto);
-        ASIGetControlValue(camNum, ASI_TEMPERATURE, &ltemp, &bAuto);
-        ASIGetControlValue(camNum, ASI_COOLER_POWER_PERC, &coolerPercent, &bAuto);
-        if(coolerOn)
-            printf("Cooler is ON.\n");
-        else
-            printf("Cooler is OFF.\n");
-        printf("Sensor Temperature: %02f\n", (float)ltemp/10.0);
-        printf("Cooler Percent: %d\n", coolerPercent);
-
-    } else if ( strncmp(args,"SET",3) == 0){
-        nargs = sscanf(args,"%s %d",dummy, &temp);
+        nargs = sscanf(args,"%s %ld",dummy, &setTemp);
         if(nargs == 2){
-            if(temp >= -15 && temp <= 20){
-                ltemp=temp;
+            if(setTemp >= -15 && setTemp <= 20){
                 ASISetControlValue(camNum, ASI_COOLER_ON, 1, bAuto);
-                ASISetControlValue(camNum, ASI_TARGET_TEMP, ltemp, bAuto);
+                coolerEnabled=true;
+                ASISetControlValue(camNum, ASI_TARGET_TEMP, setTemp, bAuto);
             }
             long coolerPercent;
-            ASIGetControlValue(camNum, ASI_TEMPERATURE, &ltemp, &bAuto);
+            ASIGetControlValue(camNum, ASI_TEMPERATURE, &sensorTemp, &bAuto);
             ASIGetControlValue(camNum, ASI_COOLER_POWER_PERC, &coolerPercent, &bAuto);
-            printf("Sensor Temperature: %02f\n", (float)ltemp/10.0);
+            printf("Sensor Temperature: %.1f\n", (float)sensorTemp/10.0);
             printf("Cooler Percent: %d\n", coolerPercent);
+            
         } else {
             ASISetControlValue(camNum, ASI_COOLER_ON, 0, bAuto);
+            coolerEnabled=false;
             printf("Cooler is OFF.\n");
         }
-
-    } else if ( strncmp(args,"CRO",3) == 0){
-        printf("crop\n");
+        zwoUpdate
 
     } else if ( strncmp(args,"BIN",3) == 0){
         sscanf(args,"%s %d",dummy, &bin);
@@ -130,6 +140,7 @@ int zwo(int n,char* args){
     } else if ( strncmp(args,"ACQ",3) == 0){
         int* specs = iBuffer.getspecs();
         int modified=0;
+        stopExposure=0;
         if(specs[COLS] % (8/specs[DX])) {
             specs[COLS] -= specs[COLS] % (8/specs[DX]);
             modified=1;
@@ -150,7 +161,16 @@ int zwo(int n,char* args){
             printf("Image specs modified.\n");
             iBuffer.setspecs(specs);
         }
+        
+        DATAWORD* values = iBuffer.getvalues();
 
+        values[EXPOSURE] = exp_ms/1000.;
+        values[RED_MULT] = wbR/100.;
+        values[GREEN_MULT] = 1.;
+        values[BLUE_MULT] = wbB/100.;
+        
+        
+        
         // check to see if the parameters are OK for this camera
         // specs[COLS]%8 !=0 -- doesn't seem to be needed for bin=2
         if( specs[DX]*specs[COLS]+specs[X0] > iMaxWidth ||
@@ -160,28 +180,43 @@ int zwo(int n,char* args){
             printf("Incompatible readout parameters. (Row/Column/X0/Y0/DX/DY)\n");
             printf("Possible binning  is 1x1, 2x2, 3x3.\n");
             free(specs);
+            free(values);
             return HARD_ERR;
         }
         
-        int err = ASISetROIFormat(camNum, specs[COLS], specs[ROWS], specs[DX], (ASI_IMG_TYPE)2);
-        if(err != ASI_SUCCESS){
+        asiErr = ASISetROIFormat(camNum, specs[COLS], specs[ROWS], specs[DX], (ASI_IMG_TYPE)2);
+        if(asiErr != ASI_SUCCESS){
             beep();
-            printf("Error setting format: %d\n",err);
+            printf("Error setting format: %d\n",asiErr);
             free(specs);
+            free(values);
             return HARD_ERR;
         }
         ASISetStartPos(camNum,specs[X0]/specs[DX],specs[Y0]/specs[DY]);
 
         long imgSize = specs[COLS]* specs[ROWS]; //width*height*(1 + (imageType==ASI_IMG_RAW16));
         unsigned short* imgBuf = new unsigned short[imgSize];
-        
+        int countdown= exp_ms/1000; //seconds of exposure
         ASIStartExposure(camNum, ASI_FALSE);
         usleep(10000);//10ms
         status = ASI_EXP_WORKING;
-        while(status == ASI_EXP_WORKING)
-        {
+        while(status == ASI_EXP_WORKING){
             ASIGetExpStatus(camNum, &status);
-            usleep(1000);//1 ms
+            if(exp_ms/1000 >= 5){
+                zwoUpdateTimer
+                if(stopExposure){
+                    asiErr=ASIStopExposure(0);
+                    values[EXPOSURE]=exp_ms/1000-countdown;
+                    beep();
+                    printf("Exposure terminated early.\nExposure was ~ %d seconds.\n",exp_ms/1000-countdown);
+                    countdown=0;
+                    stopExposure=0;
+                    zwoUpdateTimer
+                } else {
+                    if(countdown) usleep(1000000);  //1 second
+                    countdown--;
+                }
+            }
         }
         if(status == ASI_EXP_SUCCESS){
             ASIGetDataAfterExp(camNum, (unsigned char*)imgBuf, imgSize*2);
@@ -192,21 +227,82 @@ int zwo(int n,char* args){
             *datptr++ = *bufptr++;
         }
         ASIStopExposure(camNum);
+        iBuffer.setvalues(values);
+        free(values);
+        
+        sprintf(dummy,"%s\nCooler On: %d\nAnti-Dew On: %d\nSet Temperature: %ld\nSensor Temperature: %f\nGain: %d\n",ASICameraInfo.Name,coolerEnabled,antiDewEnabled,setTemp,sensorTemp/10.0,gain);
+        int logLength=(int)strlen(dummy);
+        for(i=0;i<logLength;i++) if(dummy[i]=='\n') dummy[i]=0;
+        dummy[logLength]=0;
+        iBuffer.setComment(dummy, logLength+1);
+        
+
+        if(clearBadEnabled) {
+            extern oma2UIData UIData;
+            extern int bayer,ccd_height;
+            printMax=0;
+            bayer = 1;
+            if(UIData.clearBad != 0.0){
+                if(UIData.clearBad != 1.0){
+                    // take the clearBad value as counts and find bad pixels in the current image
+                    n=UIData.clearBad;
+                    sprintf(dummy,"%d",n);
+                    findbad_c(n,dummy);
+                }
+                if(ccd_height > 0){        // means bad pixels have already been found;
+                    clearbad_c(0, dummy);
+                } else {
+                    beep();
+                    printf("Bad pixels have not been located -- run FINDBAD first or specify number of counts.\n");
+                }
+            }
+            if(UIData.demosaic){
+                sprintf(dummy,"0 0 0");
+                demosaic_c(0,dummy);
+            }
+            long black;
+            asiErr = ASIGetControlValue(camNum, ASI_OFFSET, &black, &bAuto);
+            switch (UIData.subtractBlack) {
+                    
+                case 0:
+                    break;
+                case 1:
+                    sprintf(dummy,"%ld",black);
+                    minus_c(0,dummy);
+                    break;
+                case 2:
+                    sprintf(dummy,"%ld",black);
+                    minus_c(0,dummy);
+                    sprintf(dummy,"0");
+                    clipbottom_c(0, dummy);
+                    break;
+                default:
+                    break;
+            }
+            
+            if(UIData.applyWhiteBalance){
+                printf("White balance correction not implemented here.\n");
+                //im->rgbMult(redMult, greenMult, blueMult);
+                //im->clip(C.maximum-black);
+            }
+            if(UIData.applyGamma!= 1.0){
+                sprintf(dummy,"%f",1.0/UIData.applyGamma);
+                power_c(0,dummy);
+            }
+        }
+        printMax=1;
+
         iBuffer.getmaxx(printMax);
-        display(0,(char*)"ZWO");
-        
-        //setReturnValues();
-        
+        if(autoDisplayEnabled) display(0,(char*)"ZWO");
+                
         update_UI();
         delete[] imgBuf;
         free(specs);
-        return err;
+        return asiErr;
 
-
-            
     } else {
         beep();
-        printf("Unknown ZWO Command\nValid Commands are: \nEXPosure \nTEMperature\nGAIn \nACQuire \nBINning \nSTAtus\n DISconnect\n");
+        printf("Unknown ZWO Command\nValid Commands are:\n\tEXPosure exposureTimeInMsec\n\tTEMperature targetTemperature (degrees C)\n\tGAIn gainValue (0-700)\n\tACQuire (acquire an image; if connected this will be done with no arguments)\n\tBINning binValue (sets format for binValue = 1 or 2)\n\tDISconnect\n\tWBAlance whiteBalanceRed whiteBalanceBlue (values are from 1-99)\n");
         return CMND_ERR;
     }
     return NO_ERR;
@@ -260,27 +356,39 @@ int connectCamera(){
             printf("Read Only\n\n");
 
     }
-    ASIGetControlValue(camNum, ASI_TEMPERATURE, &ltemp, &bAuto);
-    printf("Sensor temperature: %02f\n", (float)ltemp/10.0);
     connected=true;
     return numDevices;
 }
 
-// _________________________________ //
-static unsigned long GetTickCount()
-{
 
-#ifdef _MAC
+ASI_ERROR_CODE zwoGetTempInfo(){
+    long getBool;
+    ASIGetControlValue(camNum, ASI_TEMPERATURE, &sensorTemp, &bAuto);
+    ASIGetControlValue(camNum, ASI_COOLER_POWER_PERC, &coolerPercent, &bAuto);
+    ASIGetControlValue(camNum, ASI_ANTI_DEW_HEATER, &getBool, &bAuto);
+    ASIGetControlValue(camNum, ASI_TARGET_TEMP, &setTemp, &bAuto);
+    antiDewEnabled = getBool;
+    asiErr = ASIGetControlValue(camNum, ASI_COOLER_ON, &getBool, &bAuto);
+    coolerEnabled = getBool;
+    asiErr = ASIGetControlValue(camNum, ASI_WB_R, &wbR, &bAuto);
+    asiErr = ASIGetControlValue(camNum, ASI_WB_B, &wbB, &bAuto);
+    return asiErr;
+}
+ASI_ERROR_CODE zwoSetTemp(int newTemp){
+    setTemp=newTemp;
+    ASISetControlValue(camNum, ASI_TARGET_TEMP, setTemp, bAuto);
+    return asiErr;
+}
+ASI_ERROR_CODE zwoSetAntiDew(bool state){
+    asiErr = ASISetControlValue(camNum, ASI_ANTI_DEW_HEATER, state, bAuto);
+    return asiErr;
+}
+ASI_ERROR_CODE zwoSetCoolerState(bool state){
+    asiErr = ASISetControlValue(camNum, ASI_COOLER_ON, state, bAuto);
+    return asiErr;
+}
 
-    struct timeval  now;
-    gettimeofday(&now, NULL);
-    unsigned long ul_ms = now.tv_usec/1000 + now.tv_sec*1000;
-    return ul_ms;
-
-#else
-   struct timespec ts;
-   clock_gettime(CLOCK_MONOTONIC,&ts);
-   return (ts.tv_sec*1000 + ts.tv_nsec/(1000*1000));
-#endif
-
+void zwoDisconnect(){
+    ASICloseCamera(camNum);
+    connected=false;
 }

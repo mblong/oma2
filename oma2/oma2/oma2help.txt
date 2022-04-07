@@ -98,12 +98,15 @@ BLEED thresholdCount fraction
  BAYERFLAG [bayerFlagValue]
 	Sets the value of the bayerFlag, which indicates if the FINDBAD command should treat the image as an undemosaiced color image. If no argument is given, the current state of the bayerFlag is printed. See also FINDBAD.
 
- BITMAP2RGB
+BITMAP2RGB
     Convert the current bitmap image to an RGB color image. This will result in 8-bit integer data as the current image.
 
 BLINK [ticks first last]
 	Blink comparitor between images stored as numbered temporary images (allowed range is 0-9). ticks specifies the delay, in ticks, between display of subsequent images. If more than two images are compared, display ordering is first - last - first. Default values are 6, 0, and 1 for ticks, first, and last. Type <return> to end the BLINK sequence. On completion, the image buffer will contain the last temporary image in the sequence.
 
+BAYERFLAG [bayerFlagValue]
+	Sets the value of the bayerFlag, which indicates if the FINDBAD command should treat the image as an undemosaiced color image. If no argument is given, the current state of the bayerFlag is printed. See also FINDBAD.
+ 
 CALCULATE
 	Print calculations on the rectangle specified with the RECTANGLE command or with the rectangle tools. The average, rms, # of points, and the x and y "center of mass" are printed. The mean, rms, centroid_X and centroid_Y are passed to the command_return_variables.
 
@@ -181,6 +184,9 @@ CVALIGN tempImageName [maxIterations terminationEpsilon warpMode floorValue]
  
 CVDENOISE h_luminance h_color [search_window_size block_size]
  Use the opencv fastNlMeansDenoisingColored function to denoise the current image. The 8-bit data in the current display window is used as input so the result will also be 8-bit data scaled from 0 - 255. oma2cam command -- requires opencv libraries.
+
+CVNLDENOISE strength [templateWindowSize searchWindowSize]
+ Use the opencv fastNlMeansDenoising function to denoise the current image. The data is converted to 16-bit unsigned integers -- in some cases, consider remapping to 0 65535 to use the full dynamic range (MAP 0 65535).
 
 CVHOUGHCIRCLES [cannyThreshold accumulatorThreshold maxRadius]
   Use the opencv HoughCircles to detect circles in an image. Works on monochrome images. Default values are 30 10 20 for cannyThreshold accumulatorThreshold maxRadius. Map the monochrome image to 0-255 first. Output shows detected circles.
@@ -670,7 +676,7 @@ REMAP Value1 Value2 [Value3]
 	With two arguments, every occurence of Value1 in the current image is replaced with Value2. With three arguments, values in the range from Value1 to Value2 are set to Value3.
 
 RAWPARAMS [demosaic subtractBlack applyWhiteBalance applyGamma clearBad]
-    Controlls whether or not additional processing is done when the libRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, at least four arguments must be specified and corrections will be done according to the specified values. subtractBlack = 1 will just subtract the raw image black value and may have negative values; subtractBlack = 2 will set the floor to 0. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing. clearBad is float; 0 means no clearing bad pixels, 1 means use the existing bad pixels data, any other value is used as the argument to the FINDBADPIX command.
+    Controlls whether or not additional processing is done when the libRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, at least four arguments must be specified and corrections will be done according to the specified values. subtractBlack = 1 will just subtract the raw image black value and may have negative values; subtractBlack = 2 will set the floor to 0. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing. clearBad is float; 0 means no clearing bad pixels, 1 means use the existing bad pixels data, any other value is used as the argument to the FINDBADPIX command. With four arguments, clearBad is set to 0.
 
 SAVEFILE <filename>
 	Saves the current data buffer to the specified file.
@@ -868,6 +874,15 @@ X0 n
 Y0 n
 	Specifies that the detector is to be read out starting at row n.
 
-
-
+ZWO [command] [commandArguments]
+	Controls a single ZWO camera in oma2cam (assumes it is color).
+	Only the first three letters of a command are checked.
+	Valid Commands are:
+	EXPosure exposureTimeInMsec
+	TEMperature targetTemperature (degrees C)
+	GAIn gainValue (0-700)
+	ACQuire (acquire an image; if connected this will be done with no arguments)
+	BINning binValue (sets format for binValue = 1 or 2)
+	DISconnect
+	WBAlance whiteBalanceRed whiteBalanceBlue (values are from 1-99)
 

@@ -95,6 +95,26 @@ dispatch_sync(dispatch_get_main_queue(),^{[appController labelMinMax];});
 else \
 dispatch_sync(dispatch_get_main_queue(),^{[appController plotContours:nil];});
 
+#define zwoWindow if([NSThread isMainThread]) \
+[appController startZwoOptionsWindow]; \
+else \
+dispatch_sync(dispatch_get_main_queue(),^{[appController startZwoOptionsWindow];});
+
+#define zwoUpdate if([NSThread isMainThread]) \
+[appController updateZwo]; \
+else \
+dispatch_sync(dispatch_get_main_queue(),^{[appController updateZwo];});
+
+#define zwoUpdateTimer if([NSThread isMainThread]) \
+[appController updateZwoTimer:countdown]; \
+else \
+dispatch_sync(dispatch_get_main_queue(),^{[appController updateZwoTimer:countdown];});
+
+#define zwoWindowClose if([NSThread isMainThread]) \
+[appController closeZwoWindow]; \
+else \
+dispatch_sync(dispatch_get_main_queue(),^{[appController closeZwoWindow];});
+
 
 BOOL dropped_file(char*,char*);
 void update_UI();

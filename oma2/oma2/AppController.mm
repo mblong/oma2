@@ -18,6 +18,12 @@
 #import "CommandView.h"
 #import "ColorImageOptionsController.h"
 
+
+#ifdef ZWO
+#import "ZwoOptions.h"
+#endif
+
+
 AppController   *appController;
 extern ImageBitmap iBitmap;
 extern Image iBuffer;
@@ -32,6 +38,7 @@ extern oma2UIData UIData;
 @synthesize variablesWindowController;
 @synthesize colorImageOptionsController;
 @synthesize windowArray;
+@synthesize zwoOptions;
 //@synthesize last_return;
 
 
@@ -979,5 +986,25 @@ extern oma2UIData UIData;
     [[appController theWindow] sendEvent: anEvent];
 }
 
+#ifdef ZWO
+-(void) startZwoOptionsWindow{
+    
+    if(!zwoOptions){
+        zwoOptions = [[ZwoOptions alloc] initWithWindowNibName:@"ZwoOptions"];
+    }
+    [zwoOptions showWindow:self];
+}
+
+-(void) updateZwo{
+    [zwoOptions updateZwoWindow];
+}
+-(void) updateZwoTimer:(int) value{
+    [zwoOptions updateTimer:value];
+}
+-(void) closeZwoWindow{
+    [zwoOptions closeWindow];
+}
+
+#endif
 
 @end

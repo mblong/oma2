@@ -25,11 +25,14 @@
 
 #include "oma2.h"
 #include "UI.h"
+#import "AppController.h"
 
 int connectCamera();
-
-// routines from SDK
-static unsigned long GetTickCount();
+ASI_ERROR_CODE zwoGetTempInfo();
+ASI_ERROR_CODE zwoSetTemp(int);
+ASI_ERROR_CODE zwoSetAntiDew(bool);
+ASI_ERROR_CODE zwoSetCoolerState(bool);
+void zwoDisconnect();
 
 
 #endif /* zwoCameras_hpp */

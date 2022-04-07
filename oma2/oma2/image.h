@@ -33,8 +33,7 @@ enum {ROWS,COLS,X0,Y0,DX,DY,LMAX,LMIN,IS_COLOR,HAVE_MAX,HAS_RULER,
 enum {UNSIGNED16=59464,SIGNED16,UNSIGNED8,SIGNED8};
 
 // types of cameras oma2 will recognize
-
-enum {SBIG_CAM=59801,GIGE_BW,GIGE_COLOR,GENERIC_GPHOTO,NIKON,CANON};
+enum {SBIG_CAM=59801,GIGE_BW,GIGE_COLOR,GENERIC_GPHOTO,NIKON,CANON,ZWO};
 
 // SAVE_FORMAT is a 2021 addition to the specs array
 // This will be used to save data in other than DATAWORD types

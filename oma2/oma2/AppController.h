@@ -32,6 +32,10 @@ int comdec(char*);
 @class DrawingWindowController;
 @class CommandView;
 @class ColorImageOptionsController;
+#ifdef ZWO
+@class ZwoOptions;
+#endif
+
 
 @interface AppController : NSObject
 {
@@ -54,6 +58,10 @@ int comdec(char*);
 @property (strong) ColorImageOptionsController *colorImageOptionsController;
 @property (strong) IBOutlet CommandView *theCommands;
 @property (strong) IBOutlet NSWindow *theWindow;
+#ifdef ZWO
+@property (strong) ZwoOptions *zwoOptions;
+#endif
+
 @property int tool;     // the tool selected in the status window, used in DataView
 @property NSMutableArray *windowArray;
 //@property NSUInteger last_return;
@@ -85,6 +93,13 @@ int comdec(char*);
 -(void) updateVariablesWindow;
 -(void) updateStatusWindow;
 -(void) startVariablesWindow;
+#ifdef ZWO
+-(void) startZwoOptionsWindow;
+-(void) updateZwo;
+-(void) closeZwoWindow;
+-(void) updateZwoTimer:(int) n;
+#endif
+
 
 -(int) saveDataWindowToPdf: (char*) fileName;
 

@@ -63,6 +63,8 @@
 		DB83FD781D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
 		DB85D3E925D48BEC00EFD8E7 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD0B8D725C7114700CD40C3 /* CoreImage.framework */; };
 		DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
+		DB89778027F7A9CA00D05582 /* ZwoOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB89777E27F7A9CA00D05582 /* ZwoOptions.mm */; };
+		DB89778127F7A9CA00D05582 /* ZwoOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB89777F27F7A9CA00D05582 /* ZwoOptions.xib */; };
 		DB899B202748240C00265C60 /* libcfitsio.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBB2388C270F82A600CD8E26 /* libcfitsio.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB8A884418E3297E007C79AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
 		DB8A884518E3297E007C79AF /* oma2AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */; };
@@ -292,6 +294,9 @@
 		DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dmmalvar.mm; sourceTree = "<group>"; };
 		DB83FD761D4FE5DE009B3204 /* dmmalvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dmmalvar.h; sourceTree = "<group>"; };
 		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
+		DB89777D27F7A9CA00D05582 /* ZwoOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZwoOptions.h; sourceTree = "<group>"; };
+		DB89777E27F7A9CA00D05582 /* ZwoOptions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ZwoOptions.mm; sourceTree = "<group>"; };
+		DB89777F27F7A9CA00D05582 /* ZwoOptions.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ZwoOptions.xib; sourceTree = "<group>"; };
 		DB8A888218E3297E007C79AF /* oma2cam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2cam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = liblabjackusb.dylib; sourceTree = "<group>"; };
 		DB8C23F718FC2BA500969763 /* labjackU3.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = labjackU3.mm; sourceTree = "<group>"; };
@@ -545,6 +550,9 @@
 				DB1DC8272601424D00C5A72C /* ColorImageOptions.xib */,
 				DB1DC8252601424D00C5A72C /* ColorImageOptionsController.h */,
 				DB1DC8262601424D00C5A72C /* ColorImageOptionsController.mm */,
+				DB89777F27F7A9CA00D05582 /* ZwoOptions.xib */,
+				DB89777D27F7A9CA00D05582 /* ZwoOptions.h */,
+				DB89777E27F7A9CA00D05582 /* ZwoOptions.mm */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -720,6 +728,7 @@
 				DB8A885F18E3297E007C79AF /* InfoPlist.strings in Resources */,
 				DB8A886018E3297E007C79AF /* Credits.rtf in Resources */,
 				DB1DC82B2601424D00C5A72C /* ColorImageOptions.xib in Resources */,
+				DB89778127F7A9CA00D05582 /* ZwoOptions.xib in Resources */,
 				DB8A886118E3297E007C79AF /* MainMenu.xib in Resources */,
 				DB8A886218E3297E007C79AF /* Status.xib in Resources */,
 				DB8A886318E3297E007C79AF /* Preferences.xib in Resources */,
@@ -822,6 +831,7 @@
 				DB8A885118E3297E007C79AF /* DrawingView.mm in Sources */,
 				DB8A885218E3297E007C79AF /* DataWindowController.mm in Sources */,
 				DB8A885318E3297E007C79AF /* dofft.mm in Sources */,
+				DB89778027F7A9CA00D05582 /* ZwoOptions.mm in Sources */,
 				DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */,
 				DB8A885518E3297E007C79AF /* StatusDrop.mm in Sources */,
 				DB8A885618E3297E007C79AF /* UI.mm in Sources */,
