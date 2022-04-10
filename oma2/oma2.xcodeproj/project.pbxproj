@@ -155,6 +155,97 @@
 		DBCB577E22CA389F00988D83 /* libgsl.23.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBD0B8D825C7114700CD40C3 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD0B8D725C7114700CD40C3 /* CoreImage.framework */; };
 		DBD2A9412270BA380041852D /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB03625D224D009800DF7BA8 /* ImageBitmap.mm */; };
+		DBDECE1527FF5337007AC635 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
+		DBDECE1627FF5337007AC635 /* oma2AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC0351519183D008A9B54 /* oma2AppDelegate.mm */; };
+		DBDECE1727FF5337007AC635 /* CommandView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB16CA391826960F002588F4 /* CommandView.mm */; };
+		DBDECE1827FF5337007AC635 /* macImageSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB35125F18F0B8AE00202FFC /* macImageSupport.mm */; };
+		DBDECE1927FF5337007AC635 /* DrawingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD56E180208E7007F8801 /* DrawingWindowController.mm */; };
+		DBDECE1A27FF5337007AC635 /* gpib.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA3CB851911985800AD10BC /* gpib.mm */; };
+		DBDECE1B27FF5337007AC635 /* StatusController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC041151918F0008A9B54 /* StatusController.mm */; };
+		DBDECE1C27FF5337007AC635 /* zwoCameras.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB5793D027F3615800D775C7 /* zwoCameras.mm */; };
+		DBDECE1D27FF5337007AC635 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
+		DBDECE1E27FF5337007AC635 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC044151918F0008A9B54 /* AppController.mm */; };
+		DBDECE1F27FF5337007AC635 /* serial.c in Sources */ = {isa = PBXBuildFile; fileRef = DB3E355C18E6030300381607 /* serial.c */; };
+		DBDECE2027FF5337007AC635 /* VariablesWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB95A94B1A2F415E00823467 /* VariablesWindowController.mm */; };
+		DBDECE2127FF5337007AC635 /* canonCamera.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBFEFA0026B5EEAB002873C8 /* canonCamera.mm */; };
+		DBDECE2227FF5337007AC635 /* PreferenceController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2BC303151933C9009D9AED /* PreferenceController.mm */; };
+		DBDECE2327FF5337007AC635 /* labjackU3.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB8C23F718FC2BA500969763 /* labjackU3.mm */; };
+		DBDECE2427FF5337007AC635 /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
+		DBDECE2527FF5337007AC635 /* u3.c in Sources */ = {isa = PBXBuildFile; fileRef = DB8C23FF18FC32D500969763 /* u3.c */; };
+		DBDECE2627FF5337007AC635 /* openCVroutines.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB15EF025A78014000437AA /* openCVroutines.mm */; };
+		DBDECE2727FF5337007AC635 /* commands_1.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7515211EFA001D1B05 /* commands_1.mm */; };
+		DBDECE2827FF5337007AC635 /* gluedCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4329B517EF13E900A51802 /* gluedCommands.mm */; };
+		DBDECE2927FF5337007AC635 /* image_support.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7715211EFA001D1B05 /* image_support.mm */; };
+		DBDECE2A27FF5337007AC635 /* image.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB021E7915211EFA001D1B05 /* image.mm */; };
+		DBDECE2B27FF5337007AC635 /* ColorImageOptionsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB1DC8262601424D00C5A72C /* ColorImageOptionsController.mm */; };
+		DBDECE2C27FF5337007AC635 /* dcrawx.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB87BF0117F08DA200E1BF68 /* dcrawx.mm */; };
+		DBDECE2D27FF5337007AC635 /* gige.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBBCFA2518E33D8600FEE3F6 /* gige.mm */; };
+		DBDECE2E27FF5337007AC635 /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
+		DBDECE2F27FF5337007AC635 /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB03625D224D009800DF7BA8 /* ImageBitmap.mm */; };
+		DBDECE3027FF5337007AC635 /* DrawingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD5691802050F007F8801 /* DrawingView.mm */; };
+		DBDECE3127FF5337007AC635 /* DataWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB17A30B15247965004F810A /* DataWindowController.mm */; };
+		DBDECE3227FF5337007AC635 /* dofft.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB4E036D1835272400250EA4 /* dofft.mm */; };
+		DBDECE3327FF5337007AC635 /* ZwoOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB89777E27F7A9CA00D05582 /* ZwoOptions.mm */; };
+		DBDECE3427FF5337007AC635 /* sbig.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB57E31818F58D7900FA4D29 /* sbig.mm */; };
+		DBDECE3527FF5337007AC635 /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
+		DBDECE3627FF5337007AC635 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
+		DBDECE3727FF5337007AC635 /* gphotoFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = DBF879C31906C18D006C5872 /* gphotoFunctions.c */; };
+		DBDECE3827FF5337007AC635 /* gphotoCommands.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF879C11906C13F006C5872 /* gphotoCommands.mm */; };
+		DBDECE3927FF5337007AC635 /* DataView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2113581540219200B23364 /* DataView.mm */; };
+		DBDECE3B27FF5337007AC635 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD0B8D725C7114700CD40C3 /* CoreImage.framework */; };
+		DBDECE3C27FF5337007AC635 /* SBIGUDrv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DBDECE3D27FF5337007AC635 /* libASICamera2.dylib.1.22 in Frameworks */ = {isa = PBXBuildFile; fileRef = DB9CDBE727F3727A000FBCBE /* libASICamera2.dylib.1.22 */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DBDECE3E27FF5337007AC635 /* EDSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBFEFA0226B5F119002873C8 /* EDSDK.framework */; };
+		DBDECE3F27FF5337007AC635 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
+		DBDECE4027FF5337007AC635 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
+		DBDECE4127FF5337007AC635 /* VISA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC3F1FC19129FEF00AD7850 /* VISA.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DBDECE4227FF5337007AC635 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
+		DBDECE4327FF5337007AC635 /* libcfitsio.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2388C270F82A600CD8E26 /* libcfitsio.dylib */; };
+		DBDECE4427FF5337007AC635 /* libgsl.23.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DBDECE4527FF5337007AC635 /* liblabjackusb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DBDECE4627FF5337007AC635 /* libPvAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DBDECE4827FF5337007AC635 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
+		DBDECE4927FF5337007AC635 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0311519183D008A9B54 /* Credits.rtf */; };
+		DBDECE4A27FF5337007AC635 /* ColorImageOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB1DC8272601424D00C5A72C /* ColorImageOptions.xib */; };
+		DBDECE4B27FF5337007AC635 /* ZwoOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB89777F27F7A9CA00D05582 /* ZwoOptions.xib */; };
+		DBDECE4C27FF5337007AC635 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0371519183D008A9B54 /* MainMenu.xib */; };
+		DBDECE4D27FF5337007AC635 /* Status.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC042151918F0008A9B54 /* Status.xib */; };
+		DBDECE4E27FF5337007AC635 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2BC2FF151930D7009D9AED /* Preferences.xib */; };
+		DBDECE4F27FF5337007AC635 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
+		DBDECE5027FF5337007AC635 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
+		DBDECE5127FF5337007AC635 /* DataWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB17A3041524754A004F810A /* DataWindow.xib */; };
+		DBDECE5227FF5337007AC635 /* Oma2Settings.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */; };
+		DBDECE5327FF5337007AC635 /* LightOma2Help in Resources */ = {isa = PBXBuildFile; fileRef = DBAEDEDC187F16FD0019677B /* LightOma2Help */; };
+		DBDECE5427FF5337007AC635 /* OMApalette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMApalette.pa1 */; };
+		DBDECE5527FF5337007AC635 /* OMApalette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */; };
+		DBDECE5627FF5337007AC635 /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
+		DBDECE5727FF5337007AC635 /* OMApalette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */; };
+		DBDECE5827FF5337007AC635 /* VariablesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB95A94C1A2F415E00823467 /* VariablesWindow.xib */; };
+		DBDECE5927FF5337007AC635 /* customPalette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DB387CA326497024004CE8BD /* customPalette.pa1 */; };
+		DBDECE5A27FF5337007AC635 /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
+		DBDECE5B27FF5337007AC635 /* oma2Icons.icns in Resources */ = {isa = PBXBuildFile; fileRef = DB9B2E43186731EC00EE4871 /* oma2Icons.icns */; };
+		DBDECE5C27FF5337007AC635 /* ruler.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB1E9B1E15A27EA300F38CE2 /* ruler.jpg */; };
+		DBDECE5D27FF5337007AC635 /* curve.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB1E9B2115A2804C00F38CE2 /* curve.jpg */; };
+		DBDECE5E27FF5337007AC635 /* pal0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A4C15A2879900502B50 /* pal0.jpg */; };
+		DBDECE5F27FF5337007AC635 /* pal2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A4E15A2884F00502B50 /* pal2.jpg */; };
+		DBDECE6027FF5337007AC635 /* pal1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A4F15A2884F00502B50 /* pal1.jpg */; };
+		DBDECE6127FF5337007AC635 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
+		DBDECE6227FF5337007AC635 /* Oma2Macro.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */; };
+		DBDECE6327FF5337007AC635 /* pal7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5215A2895B00502B50 /* pal7.jpg */; };
+		DBDECE6427FF5337007AC635 /* OMA Settings in Resources */ = {isa = PBXBuildFile; fileRef = DB912ADA224CE81100780944 /* OMA Settings */; };
+		DBDECE6527FF5337007AC635 /* pal6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5315A2895B00502B50 /* pal6.jpg */; };
+		DBDECE6627FF5337007AC635 /* pal5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5415A2895B00502B50 /* pal5.jpg */; };
+		DBDECE6727FF5337007AC635 /* pal4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5515A2895B00502B50 /* pal4.jpg */; };
+		DBDECE6827FF5337007AC635 /* pal3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5615A2895B00502B50 /* pal3.jpg */; };
+		DBDECE6927FF5337007AC635 /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
+		DBDECE6B27FF5337007AC635 /* EDSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DBFEFA0226B5F119002873C8 /* EDSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DBDECE6C27FF5337007AC635 /* SBIGUDrv.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DBDECE6E27FF5337007AC635 /* libASICamera2.dylib.1.22 in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB9CDBE727F3727A000FBCBE /* libASICamera2.dylib.1.22 */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DBDECE6F27FF5337007AC635 /* libcfitsio.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBB2388C270F82A600CD8E26 /* libcfitsio.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DBDECE7027FF5337007AC635 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DBDECE7127FF5337007AC635 /* libgsl.23.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBBB5AC322CA2E3A0055E52D /* libgsl.23.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DBDECE7227FF5337007AC635 /* libPvAPI.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DBDECE7327FF5337007AC635 /* liblabjackusb.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
 		DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
 		DBF24A2D1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
@@ -162,9 +253,6 @@
 		DBF879C41906C18D006C5872 /* gphotoFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = DBF879C31906C18D006C5872 /* gphotoFunctions.c */; };
 		DBFB1C7A248FA7810083E9F6 /* SBIGUDrv.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DBFCF5EB18FC3EEF00956047 /* u3.c in Sources */ = {isa = PBXBuildFile; fileRef = DB8C23FF18FC32D500969763 /* u3.c */; };
-		DBFEFA0126B5EEAB002873C8 /* canonCamera.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBFEFA0026B5EEAB002873C8 /* canonCamera.mm */; };
-		DBFEFA0426B5F144002873C8 /* EDSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBFEFA0226B5F119002873C8 /* EDSDK.framework */; };
-		DBFEFA0526B5F144002873C8 /* EDSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DBFEFA0226B5F119002873C8 /* EDSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -210,10 +298,36 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DBFEFA0526B5F144002873C8 /* EDSDK.framework in Embed Frameworks */,
 				DBFB1C7A248FA7810083E9F6 /* SBIGUDrv.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBDECE6A27FF5337007AC635 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DBDECE6B27FF5337007AC635 /* EDSDK.framework in Embed Frameworks */,
+				DBDECE6C27FF5337007AC635 /* SBIGUDrv.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBDECE6D27FF5337007AC635 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DBDECE6E27FF5337007AC635 /* libASICamera2.dylib.1.22 in CopyFiles */,
+				DBDECE6F27FF5337007AC635 /* libcfitsio.dylib in CopyFiles */,
+				DBDECE7027FF5337007AC635 /* LibTiff_F.framework in CopyFiles */,
+				DBDECE7127FF5337007AC635 /* libgsl.23.dylib in CopyFiles */,
+				DBDECE7227FF5337007AC635 /* libPvAPI.dylib in CopyFiles */,
+				DBDECE7327FF5337007AC635 /* liblabjackusb.dylib in CopyFiles */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -339,6 +453,9 @@
 		DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatusDrop.mm; sourceTree = "<group>"; };
 		DBC81582153DFBB7002BEFD4 /* UI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UI.mm; sourceTree = "<group>"; };
 		DBD0B8D725C7114700CD40C3 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		DBDECE1227FF314B007AC635 /* ASICamera2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICamera2.h; sourceTree = "<group>"; };
+		DBDECE7727FF5337007AC635 /* oma2camWithCanon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2camWithCanon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBDECE7827FF5338007AC635 /* oma2cam copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "oma2cam copy-Info.plist"; path = "/Users/mblong/oma2/oma2/oma2cam copy-Info.plist"; sourceTree = "<absolute>"; };
 		DBF08DE2159D63980099CB4C /* c-box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "c-box.jpg"; sourceTree = "<group>"; };
 		DBF24A2A1D3B091700115E4E /* dmbilinear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dmbilinear.h; sourceTree = "<group>"; };
 		DBF24A2B1D3B091700115E4E /* dmbilinear.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dmbilinear.mm; sourceTree = "<group>"; };
@@ -371,7 +488,6 @@
 				DBD0B8D825C7114700CD40C3 /* CoreImage.framework in Frameworks */,
 				DB9A98AB22720BFC008ABA5C /* SBIGUDrv.framework in Frameworks */,
 				DB9CDBE827F3727A000FBCBE /* libASICamera2.dylib.1.22 in Frameworks */,
-				DBFEFA0426B5F144002873C8 /* EDSDK.framework in Frameworks */,
 				DB8A885B18E3297E007C79AF /* ImageIO.framework in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
 				DBC3F1FD19129FEF00AD7850 /* VISA.framework in Frameworks */,
@@ -380,6 +496,25 @@
 				DBBB5AC522CA2E3A0055E52D /* libgsl.23.dylib in Frameworks */,
 				DBBA183018FC898600CE7B3C /* liblabjackusb.dylib in Frameworks */,
 				DB51D9DC2274CF7F00917D5C /* libPvAPI.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBDECE3A27FF5337007AC635 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBDECE3B27FF5337007AC635 /* CoreImage.framework in Frameworks */,
+				DBDECE3C27FF5337007AC635 /* SBIGUDrv.framework in Frameworks */,
+				DBDECE3D27FF5337007AC635 /* libASICamera2.dylib.1.22 in Frameworks */,
+				DBDECE3E27FF5337007AC635 /* EDSDK.framework in Frameworks */,
+				DBDECE3F27FF5337007AC635 /* ImageIO.framework in Frameworks */,
+				DBDECE4027FF5337007AC635 /* Cocoa.framework in Frameworks */,
+				DBDECE4127FF5337007AC635 /* VISA.framework in Frameworks */,
+				DBDECE4227FF5337007AC635 /* LibTiff_F.framework in Frameworks */,
+				DBDECE4327FF5337007AC635 /* libcfitsio.dylib in Frameworks */,
+				DBDECE4427FF5337007AC635 /* libgsl.23.dylib in Frameworks */,
+				DBDECE4527FF5337007AC635 /* liblabjackusb.dylib in Frameworks */,
+				DBDECE4627FF5337007AC635 /* libPvAPI.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +539,7 @@
 				DBB4233C17F9B942005BCF33 /* Libraries */,
 				DB0FC0211519183C008A9B54 /* Frameworks */,
 				DB0FC01F1519183C008A9B54 /* Products */,
+				DBDECE7827FF5338007AC635 /* oma2cam copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -413,6 +549,7 @@
 			children = (
 				DB0FC01E1519183C008A9B54 /* oma2.app */,
 				DB8A888218E3297E007C79AF /* oma2cam.app */,
+				DBDECE7727FF5337007AC635 /* oma2camWithCanon.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -502,6 +639,7 @@
 				DB8C23FB18FC302F00969763 /* labjackusb.h */,
 				DB8C23F718FC2BA500969763 /* labjackU3.mm */,
 				DB8C23FF18FC32D500969763 /* u3.c */,
+				DBDECE1227FF314B007AC635 /* ASICamera2.h */,
 				DB5793D127F3615800D775C7 /* zwoCameras.hpp */,
 				DB5793D027F3615800D775C7 /* zwoCameras.mm */,
 				DBB15EF125A78014000437AA /* openCVroutines.h */,
@@ -644,6 +782,25 @@
 			productReference = DB8A888218E3297E007C79AF /* oma2cam.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DBDECE1327FF5337007AC635 /* oma2camWithCanon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DBDECE7427FF5337007AC635 /* Build configuration list for PBXNativeTarget "oma2camWithCanon" */;
+			buildPhases = (
+				DBDECE1427FF5337007AC635 /* Sources */,
+				DBDECE3A27FF5337007AC635 /* Frameworks */,
+				DBDECE4727FF5337007AC635 /* Resources */,
+				DBDECE6A27FF5337007AC635 /* Embed Frameworks */,
+				DBDECE6D27FF5337007AC635 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = oma2camWithCanon;
+			productName = oma2;
+			productReference = DBDECE7727FF5337007AC635 /* oma2camWithCanon.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -657,6 +814,9 @@
 						ProvisioningStyle = Automatic;
 					};
 					DB8A884218E3297E007C79AF = {
+						ProvisioningStyle = Automatic;
+					};
+					DBDECE1327FF5337007AC635 = {
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -676,6 +836,7 @@
 			targets = (
 				DB0FC01D1519183C008A9B54 /* oma2 */,
 				DB8A884218E3297E007C79AF /* oma2cam */,
+				DBDECE1327FF5337007AC635 /* oma2camWithCanon */,
 			);
 		};
 /* End PBXProject section */
@@ -762,6 +923,47 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DBDECE4727FF5337007AC635 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBDECE4827FF5337007AC635 /* InfoPlist.strings in Resources */,
+				DBDECE4927FF5337007AC635 /* Credits.rtf in Resources */,
+				DBDECE4A27FF5337007AC635 /* ColorImageOptions.xib in Resources */,
+				DBDECE4B27FF5337007AC635 /* ZwoOptions.xib in Resources */,
+				DBDECE4C27FF5337007AC635 /* MainMenu.xib in Resources */,
+				DBDECE4D27FF5337007AC635 /* Status.xib in Resources */,
+				DBDECE4E27FF5337007AC635 /* Preferences.xib in Resources */,
+				DBDECE4F27FF5337007AC635 /* plus.jpg in Resources */,
+				DBDECE5027FF5337007AC635 /* box.jpg in Resources */,
+				DBDECE5127FF5337007AC635 /* DataWindow.xib in Resources */,
+				DBDECE5227FF5337007AC635 /* Oma2Settings.icns in Resources */,
+				DBDECE5327FF5337007AC635 /* LightOma2Help in Resources */,
+				DBDECE5427FF5337007AC635 /* OMApalette.pa1 in Resources */,
+				DBDECE5527FF5337007AC635 /* OMApalette3.pa1 in Resources */,
+				DBDECE5627FF5337007AC635 /* DrawingWindow.xib in Resources */,
+				DBDECE5727FF5337007AC635 /* OMApalette2.pa1 in Resources */,
+				DBDECE5827FF5337007AC635 /* VariablesWindow.xib in Resources */,
+				DBDECE5927FF5337007AC635 /* customPalette.pa1 in Resources */,
+				DBDECE5A27FF5337007AC635 /* c-box.jpg in Resources */,
+				DBDECE5B27FF5337007AC635 /* oma2Icons.icns in Resources */,
+				DBDECE5C27FF5337007AC635 /* ruler.jpg in Resources */,
+				DBDECE5D27FF5337007AC635 /* curve.jpg in Resources */,
+				DBDECE5E27FF5337007AC635 /* pal0.jpg in Resources */,
+				DBDECE5F27FF5337007AC635 /* pal2.jpg in Resources */,
+				DBDECE6027FF5337007AC635 /* pal1.jpg in Resources */,
+				DBDECE6127FF5337007AC635 /* Oma2Data.icns in Resources */,
+				DBDECE6227FF5337007AC635 /* Oma2Macro.icns in Resources */,
+				DBDECE6327FF5337007AC635 /* pal7.jpg in Resources */,
+				DBDECE6427FF5337007AC635 /* OMA Settings in Resources */,
+				DBDECE6527FF5337007AC635 /* pal6.jpg in Resources */,
+				DBDECE6627FF5337007AC635 /* pal5.jpg in Resources */,
+				DBDECE6727FF5337007AC635 /* pal4.jpg in Resources */,
+				DBDECE6827FF5337007AC635 /* pal3.jpg in Resources */,
+				DBDECE6927FF5337007AC635 /* oma2help.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -813,7 +1015,6 @@
 				DB8A884918E3297E007C79AF /* AppController.mm in Sources */,
 				DB3E355D18E6030300381607 /* serial.c in Sources */,
 				DB95A94E1A2F415E00823467 /* VariablesWindowController.mm in Sources */,
-				DBFEFA0126B5EEAB002873C8 /* canonCamera.mm in Sources */,
 				DB8A884A18E3297E007C79AF /* PreferenceController.mm in Sources */,
 				DB8C23F918FC2FC100969763 /* labjackU3.mm in Sources */,
 				DB8A884B18E3297E007C79AF /* comdec.mm in Sources */,
@@ -838,6 +1039,50 @@
 				DBF879C41906C18D006C5872 /* gphotoFunctions.c in Sources */,
 				DBF879C21906C13F006C5872 /* gphotoCommands.mm in Sources */,
 				DB8A885718E3297E007C79AF /* DataView.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBDECE1427FF5337007AC635 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBDECE1527FF5337007AC635 /* main.m in Sources */,
+				DBDECE1627FF5337007AC635 /* oma2AppDelegate.mm in Sources */,
+				DBDECE1727FF5337007AC635 /* CommandView.mm in Sources */,
+				DBDECE1827FF5337007AC635 /* macImageSupport.mm in Sources */,
+				DBDECE1927FF5337007AC635 /* DrawingWindowController.mm in Sources */,
+				DBDECE1A27FF5337007AC635 /* gpib.mm in Sources */,
+				DBDECE1B27FF5337007AC635 /* StatusController.mm in Sources */,
+				DBDECE1C27FF5337007AC635 /* zwoCameras.mm in Sources */,
+				DBDECE1D27FF5337007AC635 /* dmmalvar.mm in Sources */,
+				DBDECE1E27FF5337007AC635 /* AppController.mm in Sources */,
+				DBDECE1F27FF5337007AC635 /* serial.c in Sources */,
+				DBDECE2027FF5337007AC635 /* VariablesWindowController.mm in Sources */,
+				DBDECE2127FF5337007AC635 /* canonCamera.mm in Sources */,
+				DBDECE2227FF5337007AC635 /* PreferenceController.mm in Sources */,
+				DBDECE2327FF5337007AC635 /* labjackU3.mm in Sources */,
+				DBDECE2427FF5337007AC635 /* comdec.mm in Sources */,
+				DBDECE2527FF5337007AC635 /* u3.c in Sources */,
+				DBDECE2627FF5337007AC635 /* openCVroutines.mm in Sources */,
+				DBDECE2727FF5337007AC635 /* commands_1.mm in Sources */,
+				DBDECE2827FF5337007AC635 /* gluedCommands.mm in Sources */,
+				DBDECE2927FF5337007AC635 /* image_support.mm in Sources */,
+				DBDECE2A27FF5337007AC635 /* image.mm in Sources */,
+				DBDECE2B27FF5337007AC635 /* ColorImageOptionsController.mm in Sources */,
+				DBDECE2C27FF5337007AC635 /* dcrawx.mm in Sources */,
+				DBDECE2D27FF5337007AC635 /* gige.mm in Sources */,
+				DBDECE2E27FF5337007AC635 /* dmbilinear.mm in Sources */,
+				DBDECE2F27FF5337007AC635 /* ImageBitmap.mm in Sources */,
+				DBDECE3027FF5337007AC635 /* DrawingView.mm in Sources */,
+				DBDECE3127FF5337007AC635 /* DataWindowController.mm in Sources */,
+				DBDECE3227FF5337007AC635 /* dofft.mm in Sources */,
+				DBDECE3327FF5337007AC635 /* ZwoOptions.mm in Sources */,
+				DBDECE3427FF5337007AC635 /* sbig.mm in Sources */,
+				DBDECE3527FF5337007AC635 /* StatusDrop.mm in Sources */,
+				DBDECE3627FF5337007AC635 /* UI.mm in Sources */,
+				DBDECE3727FF5337007AC635 /* gphotoFunctions.c in Sources */,
+				DBDECE3827FF5337007AC635 /* gphotoCommands.mm in Sources */,
+				DBDECE3927FF5337007AC635 /* DataView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1183,6 +1428,123 @@
 			};
 			name = Release;
 		};
+		DBDECE7527FF5337007AC635 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "";
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/**",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/EDSDK/Framework",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "oma2/oma2cam-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/include,
+					/opt/local/include,
+					"$(SRCROOT)/**",
+					"/usr/local/include/opencv4/**",
+				);
+				INFOPLIST_FILE = "oma2cam copy-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/**",
+					"$(inherited)",
+					"$(PROJECT_DIR)/oma2",
+					"/usr/local/lib/**",
+					"/opt/local/lib/**",
+					"$(PROJECT_DIR)",
+					"/usr/local/lib/opencv/**",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DMacOSX_UI",
+					"-DCANON_",
+				);
+				OTHER_LDFLAGS = (
+					"-lgphoto2",
+					"-I/usr/local/include/opencv4",
+					"-L/usr/local/lib/opencv",
+					"-lopencv_core",
+					"-lopencv_imgcodecs",
+					"-lopencv_video",
+					"-lopencv_videoio",
+					"-lopencv_imgproc",
+					"-lopencv_photo",
+					"-lraw_r",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		DBDECE7627FF5337007AC635 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "";
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/**",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/EDSDK/Framework",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "oma2/oma2cam-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/include,
+					/opt/local/include,
+					"$(SRCROOT)/**",
+					"/usr/local/include/opencv4/**",
+				);
+				INFOPLIST_FILE = "oma2cam copy-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/**",
+					"$(inherited)",
+					"$(PROJECT_DIR)/oma2",
+					"/usr/local/lib/**",
+					"/opt/local/lib/**",
+					"$(PROJECT_DIR)",
+					"/usr/local/lib/opencv/**",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DMacOSX_UI",
+					"-DCANON_",
+				);
+				OTHER_LDFLAGS = (
+					"-lgphoto2",
+					"-I/usr/local/include/opencv4",
+					"-L/usr/local/lib/opencv",
+					"-lopencv_core",
+					"-lopencv_imgcodecs",
+					"-lopencv_video",
+					"-lopencv_videoio",
+					"-lopencv_imgproc",
+					"-lopencv_photo",
+					"-lraw_r",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1209,6 +1571,15 @@
 			buildConfigurations = (
 				DB8A888018E3297E007C79AF /* Debug */,
 				DB8A888118E3297E007C79AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DBDECE7427FF5337007AC635 /* Build configuration list for PBXNativeTarget "oma2camWithCanon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DBDECE7527FF5337007AC635 /* Debug */,
+				DBDECE7627FF5337007AC635 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

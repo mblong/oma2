@@ -881,8 +881,9 @@ ZWO [command] [commandArguments]
 	EXPosure exposureTimeInMsec
 	TEMperature targetTemperature (degrees C)
 	GAIn gainValue (0-700)
-	ACQuire (acquire an image; if connected this will be done with no arguments)
+	ACQuire (acquire an image; if connected this will be done if no arguments are given.)
 	BINning binValue (sets format for binValue = 1 or 2)
 	DISconnect
 	WBAlance whiteBalanceRed whiteBalanceBlue (values are from 1-99)
+	Focus (using the current settings, presumably a cropped window, continuously acquire and display 8-bit grey-scale images. To stop, type cmnd')
 

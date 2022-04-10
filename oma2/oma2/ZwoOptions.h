@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak) IBOutlet NSButton *enableAutoDisplay;
 @property (weak) IBOutlet NSButton *enableClearBad;
 @property (weak) IBOutlet NSTextField *balanceValues;
+@property (weak) IBOutlet NSStepper *changeGainControl;
 
 - (void)updateZwoWindow;
 - (void)updateTimer:(int)secondsRemaining;

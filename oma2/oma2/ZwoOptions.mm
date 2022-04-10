@@ -34,6 +34,7 @@ extern long wbB,wbR;
 
 @synthesize temperatureSetPoint;
 @synthesize changeSetControl;
+@synthesize changeGainControl;
 @synthesize enableCooler;
 @synthesize enableAntiDew;
 @synthesize temperatureStatus;
@@ -73,10 +74,13 @@ extern long wbB,wbR;
     [temperatureSetPoint setStringValue:[NSString stringWithFormat:@"%ld",setTemp]];
     if(coolerEnabled) zwoSetTemp(setTemp);
 }
+- (IBAction)changeGain:(id)sender {
+    gain = [changeGainControl intValue];
+    zwoSetGain();
+}
 - (IBAction)coolerStateChanged:(id)sender {
     coolerEnabled=[enableCooler state];
     zwoSetCoolerState(coolerEnabled);
-
 }
 - (IBAction)antiDewStateChanged:(id)sender {
     antiDewEnabled = [enableAntiDew state];
@@ -119,12 +123,13 @@ extern long wbB,wbR;
 - (void)keyDown:(NSEvent *)anEvent{
     if([anEvent modifierFlags] & NSEventModifierFlagCommand){
         NSString *theKey = [anEvent charactersIgnoringModifiers];
-        if([theKey isEqualToString:@";"]){
+        if([theKey isEqualToString:@"'"]){
             stopExposure=1;
+            return;
         }
-    } else {
-        [[appController theWindow] sendEvent: anEvent];
     }
+    [[appController theWindow] sendEvent: anEvent];
 }
+
 
 @end

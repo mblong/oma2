@@ -38,7 +38,9 @@ extern oma2UIData UIData;
 @synthesize variablesWindowController;
 @synthesize colorImageOptionsController;
 @synthesize windowArray;
+#ifdef ZWO
 @synthesize zwoOptions;
+#endif
 //@synthesize last_return;
 
 
@@ -868,7 +870,6 @@ extern oma2UIData UIData;
     // this next is not needed?
     //[[windowArray lastObject] showWindow:self];
 }
-
 
 -(void) setAlpha: (float) newAlpha{
    

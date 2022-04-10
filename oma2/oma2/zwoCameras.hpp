@@ -25,6 +25,7 @@
 
 #include "oma2.h"
 #include "UI.h"
+#include "ImageBitmap.h"
 #import "AppController.h"
 
 int connectCamera();
@@ -32,6 +33,7 @@ ASI_ERROR_CODE zwoGetTempInfo();
 ASI_ERROR_CODE zwoSetTemp(int);
 ASI_ERROR_CODE zwoSetAntiDew(bool);
 ASI_ERROR_CODE zwoSetCoolerState(bool);
+ASI_ERROR_CODE zwoSetGain();
 void zwoDisconnect();
 
 

@@ -2121,7 +2121,7 @@ int calcall_c(int n, char* args)
     
     substart.h = substart.v = 0;
     subend.h = bufferspecs[COLS]-1;
-    subend.v = bufferspecs[ROWS]-1;
+    subend.v = bufferspecs[ROWS]/(1+iBuffer.isColor()*2)-1;
     
     calc(substart,subend);
     free(bufferspecs);

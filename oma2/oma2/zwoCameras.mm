@@ -12,6 +12,8 @@ extern char lastname[];
 extern Image iBuffer;
 extern int printMax;
 extern Variable user_variables[];
+extern ImageBitmap iBitmap;
+extern oma2UIData UIData;
 
 
 /*
@@ -94,7 +96,7 @@ int zwo(int n,char* args){
 
     } else if ( strncmp(args,"GAI",3) == 0){
         sscanf(args,"%s %d",dummy, &gain);
-        ASISetControlValue(camNum, ASI_GAIN, gain, ASI_FALSE);
+        zwoSetGain();
         zwoUpdate
         
     } else if ( strncmp(args,"DIS",3) == 0){
@@ -300,9 +302,99 @@ int zwo(int n,char* args){
         free(specs);
         return asiErr;
 
+    } else if ( strncmp(args,"FOC",3) == 0){
+        int* specs = iBuffer.getspecs();
+        int modified=0;
+        stopExposure=0;
+        if(specs[COLS] % (8/specs[DX])) {
+            specs[COLS] -= specs[COLS] % (8/specs[DX]);
+            modified=1;
+        }
+        if(specs[ROWS] & 1) {
+            specs[ROWS]--;
+            modified=1;
+        }
+        if(specs[X0] & 1) {
+            specs[X0]--;
+            modified=1;
+        }
+        if(specs[Y0] & 1) {
+            specs[Y0]--;
+            modified=1;
+        }
+        if(modified){
+            printf("Image specs modified.\n");
+            iBuffer.setspecs(specs);
+        }
+        
+        DATAWORD* values = iBuffer.getvalues();
+        values[EXPOSURE] = exp_ms/1000.;
+        values[RED_MULT] = wbR/100.;
+        values[GREEN_MULT] = 1.;
+        values[BLUE_MULT] = wbB/100.;
+        iBuffer.setvalues(values);
+        free(values);
+
+        // check to see if the parameters are OK for this camera
+        // specs[COLS]%8 !=0 -- doesn't seem to be needed for bin=2
+        if( specs[DX]*specs[COLS]+specs[X0] > iMaxWidth ||
+           specs[DY]*specs[ROWS]+specs[Y0] > iMaxHeight || specs[DX] != specs[DY] ||
+           specs[ROWS]%2 != 0) {
+            beep();
+            printf("Incompatible readout parameters. (Row/Column/X0/Y0/DX/DY)\n");
+            printf("Possible binning  is 1x1, 2x2, 3x3.\n");
+            free(specs);
+            return HARD_ERR;
+        }
+
+        asiErr = ASISetROIFormat(camNum, specs[COLS], specs[ROWS], specs[DX], ASI_IMG_Y8);
+        if(asiErr != ASI_SUCCESS){
+            beep();
+            printf("Error setting format: %d\n",asiErr);
+            free(specs);
+            return HARD_ERR;
+        }
+        ASISetStartPos(camNum,specs[X0]/specs[DX],specs[Y0]/specs[DY]);
+        
+        long imgSize = specs[COLS]* specs[ROWS];
+        unsigned char* imgBuf = new unsigned char[imgSize];
+        DATAWORD* datptr;
+        unsigned char* bufptr;
+        int currentWindowFlag = UIData.newwindowflag;
+        UIData.newwindowflag = 0;
+
+        while (!stopExposure){
+            ASIStartExposure(camNum, ASI_FALSE);
+            usleep(10000);//10ms
+            status = ASI_EXP_WORKING;
+            while(status == ASI_EXP_WORKING){
+                ASIGetExpStatus(camNum, &status);
+            }
+            if(status == ASI_EXP_SUCCESS){
+                ASIGetDataAfterExp(camNum, imgBuf, imgSize);
+            } else {
+                stopExposure=0;
+                beep();
+                printf("Exposure error.\n");
+            }
+            datptr= iBuffer.getImageData();
+            bufptr= imgBuf;
+            for(i=0; i< imgSize; i++){
+                *datptr++ = *bufptr++;
+            }
+            ASIStopExposure(camNum);
+            iBuffer.getmaxx(0);
+            display(0,(char*)"ZWO");
+            update_UI();
+        }
+        UIData.newwindowflag = currentWindowFlag;
+        delete[] imgBuf;
+        free(specs);
+        return asiErr;
+
     } else {
         beep();
-        printf("Unknown ZWO Command\nValid Commands are:\n\tEXPosure exposureTimeInMsec\n\tTEMperature targetTemperature (degrees C)\n\tGAIn gainValue (0-700)\n\tACQuire (acquire an image; if connected this will be done with no arguments)\n\tBINning binValue (sets format for binValue = 1 or 2)\n\tDISconnect\n\tWBAlance whiteBalanceRed whiteBalanceBlue (values are from 1-99)\n");
+        printf("Unknown ZWO Command\nValid Commands are:\n\tEXPosure exposureTimeInMsec\n\tTEMperature targetTemperature (degrees C)\n\tGAIn gainValue (0-700)\n\tACQuire (acquire an image; if connected this will be done with no arguments)\n\tBINning binValue (sets format for binValue = 1 or 2)\n\tDISconnect\n\tWBAlance whiteBalanceRed whiteBalanceBlue (values are from 1-99)\n\tFOCus (using the current settings, presumably a cropped window, continuously acquire and display 8-bit grey-scale images. To stop, type cmnd')\n");
         return CMND_ERR;
     }
     return NO_ERR;
@@ -381,6 +473,10 @@ ASI_ERROR_CODE zwoSetTemp(int newTemp){
 }
 ASI_ERROR_CODE zwoSetAntiDew(bool state){
     asiErr = ASISetControlValue(camNum, ASI_ANTI_DEW_HEATER, state, bAuto);
+    return asiErr;
+}
+ASI_ERROR_CODE zwoSetGain(){
+    asiErr = ASISetControlValue(camNum, ASI_GAIN, gain, ASI_FALSE);
     return asiErr;
 }
 ASI_ERROR_CODE zwoSetCoolerState(bool state){

@@ -206,6 +206,16 @@ extern AppController* appController;
 }
 
 - (void)keyDown:(NSEvent *)anEvent{
+#ifdef ZWO
+    extern int stopExposure;
+    if([anEvent modifierFlags] & NSEventModifierFlagCommand){
+        NSString *theKey = [anEvent charactersIgnoringModifiers];
+        if([theKey isEqualToString:@"'"]){
+            stopExposure=1;
+            return;
+        }
+    }
+#endif
     [[appController theWindow] sendEvent: anEvent];
 }
 
