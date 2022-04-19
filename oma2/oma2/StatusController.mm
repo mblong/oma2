@@ -114,8 +114,8 @@ StatusController *statusController;
 - (void) labelColorMinMax{
     //MinMaxInc = UIData.cminmaxinc;
     [self setMinMaxInc:UIData.cminmaxinc];
-    [slide_val setIntValue:UIData.cminmaxinc];   
-    [slide_label setIntValue:[slide_val intValue]];
+    [slide_val setIntValue:UIData.cminmaxinc];
+    [slide_label setStringValue:[NSString stringWithFormat: @"%.1f %% of Max",[slide_val intValue]/10.]];
 
     //[minMaxIncSetting setIntValue:UIData.cminmaxinc];
 
@@ -162,9 +162,9 @@ StatusController *statusController;
 
 
 - (IBAction)decreaseColorMin:(id)sender {
-    UIData.cmin -= UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
+    UIData.cmin -= UIData.cminmaxinc/1000.0*(UIData.max - UIData.min);
     
-    UIData.displayFloorValue -= UIData.cminmaxinc/100.0;
+    UIData.displayFloorValue -= UIData.cminmaxinc/1000.0;
     NSMutableString *str = [NSMutableString stringWithFormat:@"Mx/Mn %.2g/%.2g",UIData.displaySaturateValue,UIData.displayFloorValue];
     [str setString: [str stringByReplacingOccurrencesOfString:@"0." withString:@"."]];
     [[statusController scaleState] setTitle:str];
@@ -179,9 +179,9 @@ StatusController *statusController;
 }
 
 - (IBAction)increaseColorMin:(id)sender {
-    UIData.cmin += UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
+    UIData.cmin += UIData.cminmaxinc/1000.0*(UIData.max - UIData.min);
     
-    UIData.displayFloorValue += UIData.cminmaxinc/100.0;
+    UIData.displayFloorValue += UIData.cminmaxinc/1000.0;
     NSMutableString *str = [NSMutableString stringWithFormat:@"Mx/Mn %.2g/%.2g",UIData.displaySaturateValue,UIData.displayFloorValue];
     [str setString: [str stringByReplacingOccurrencesOfString:@"0." withString:@"."]];
     [[statusController scaleState] setTitle:str];
@@ -196,9 +196,9 @@ StatusController *statusController;
 }
 
 - (IBAction)decreaseColorMax:(id)sender {
-    UIData.cmax -= UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
+    UIData.cmax -= UIData.cminmaxinc/1000.0*(UIData.max - UIData.min);
     
-    UIData.displaySaturateValue -= UIData.cminmaxinc/100.0;
+    UIData.displaySaturateValue -= UIData.cminmaxinc/1000.0;
     NSMutableString *str = [NSMutableString stringWithFormat:@"Mx/Mn %.2g/%.2g",UIData.displaySaturateValue,UIData.displayFloorValue];
     [str setString: [str stringByReplacingOccurrencesOfString:@"0." withString:@"."]];
     [[statusController scaleState] setTitle:str];
@@ -216,9 +216,9 @@ StatusController *statusController;
 }
 
 - (IBAction)increaseColorMax:(id)sender {
-    UIData.cmax += UIData.cminmaxinc/100.0*(UIData.max - UIData.min);
+    UIData.cmax += UIData.cminmaxinc/1000.0*(UIData.max - UIData.min);
     
-    UIData.displaySaturateValue += UIData.cminmaxinc/100.0;
+    UIData.displaySaturateValue += UIData.cminmaxinc/1000.0;
     NSMutableString *str = [NSMutableString stringWithFormat:@"Mx/Mn %.2g/%.2g",UIData.displaySaturateValue,UIData.displayFloorValue];
     [str setString: [str stringByReplacingOccurrencesOfString:@"0." withString:@"."]];
     [[statusController scaleState] setTitle:str];
@@ -276,10 +276,8 @@ StatusController *statusController;
     [[appController theWindow] sendEvent: anEvent];
 }
 
-
-
 - (IBAction)changedMinMaxInc:(id)sender {
-    [slide_label setIntValue:[slide_val intValue]];
+    [slide_label setStringValue:[NSString stringWithFormat: @"%.1f %% of Max",[slide_val intValue]/10.]];
     MinMaxInc = [slide_val intValue];
     UIData.cminmaxinc = MinMaxInc;
     //NSLog(@"minmaxinc: %d",MinMaxInc);
