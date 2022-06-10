@@ -16,16 +16,19 @@ extern ImageBitmap iBitmap;   // the bitmap buffer
 extern oma2UIData UIData;
 
 
-static cv::VideoWriter outputVideo;
+//static cv::VideoWriter outputVideo;
 static cv::Mat frame;
 static cv::Size frame_size;
+#ifdef HOMEBREW
 static bool videoOpened = 0;
+#endif
 
 extern ImageBitmap iBitmap;
 
 extern int printMax;
 
 int vidAddFrame_q(int n,char* args){
+#ifdef HOMEBREW
     using namespace cv;
 
     //QImage theImage = wPointer->getVideoFrame();
@@ -37,10 +40,16 @@ int vidAddFrame_q(int n,char* args){
     }
     beep();
     printf("Open video file first.\n");
+#else
+    beep();
+    printf("Command requires a more complete opencv library -- available with homebrew.\n");
+    
+#endif
     return FILE_ERR;
 }
 
 int vidOpenFile_q(int n,char* args){
+#ifdef HOMEBREW
     using namespace cv;
     int frames_per_second=15;
     char filename[CHPERLN];
@@ -73,11 +82,18 @@ int vidOpenFile_q(int n,char* args){
     } else {
         beep();
         printf("Could not open VideoWriter.\n");
-        return FILE_ERR;
     }
+
+#else
+    beep();
+    printf("Command requires a more complete opencv library -- available with homebrew.\n");
+    
+#endif
+    return FILE_ERR;
 }
 
 int vidCloseFile_q(int n,char* args){
+#ifdef HOMEBREW
     using namespace cv;
     if(videoOpened){
         outputVideo.release();
@@ -86,8 +102,12 @@ int vidCloseFile_q(int n,char* args){
     }
     beep();
     printf("No open video file.\n");
+#else
+    beep();
+    printf("Command requires a more complete opencv library -- available with homebrew.\n");
+    
+#endif
     return FILE_ERR;
-
 }
 
 

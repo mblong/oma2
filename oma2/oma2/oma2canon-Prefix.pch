@@ -1,0 +1,23 @@
+//
+// Prefix header for all source files of the 'oma2' target in the 'oma2' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
+#define CANON_
+#define OPENCV_ROUTINES
+#define USE_LIBRAW
+#define SERIAL_PORT
+#ifdef SERIAL_PORT
+    #ifdef __cplusplus
+        extern "C"{
+    #endif
+    int serial(int, char*);
+    int serclo(int, char*);
+    int open_serial_port(char* dev_name);
+    #ifdef __cplusplus
+        }
+    #endif
+#endif
+

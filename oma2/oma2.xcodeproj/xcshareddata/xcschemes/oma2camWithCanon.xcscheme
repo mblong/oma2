@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DBDECE1327FF5337007AC635"
-               BuildableName = "oma2camWithCanon.app"
-               BlueprintName = "oma2camWithCanon"
+               BuildableName = "oma2Canon.app"
+               BlueprintName = "oma2Canon"
                ReferencedContainer = "container:oma2.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DBDECE1327FF5337007AC635"
-            BuildableName = "oma2camWithCanon.app"
-            BlueprintName = "oma2camWithCanon"
+            BuildableName = "oma2Canon.app"
+            BlueprintName = "oma2Canon"
             ReferencedContainer = "container:oma2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DBDECE1327FF5337007AC635"
-            BuildableName = "oma2camWithCanon.app"
-            BlueprintName = "oma2camWithCanon"
+            BuildableName = "oma2Canon.app"
+            BlueprintName = "oma2Canon"
             ReferencedContainer = "container:oma2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

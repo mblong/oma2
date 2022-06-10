@@ -50,14 +50,14 @@
     //#define CANON_     // requires the Canon EDSDK -- get this from Canon. This is defined as a compiler flag in appropriate target
                          // This isn't included since presumably I'm not free to distribute this.
     #define ZWO        // for ZWO CMOS cameras
-    #define GPHOTO      // requires installing gphoto2 and its libraries: e.g., brew install gphoto2
+    //#define GPHOTO      // requires installing gphoto2 and its libraries: e.g., brew install gphoto2
                         // if this is undefined, remove -lgphoto2 from Build Settings>Linking>Other Linker Flags
 
     // end of camera selection section
 
     // select other hardware here
 
-    #define LJU3                //
+    //#define LJU3                //
     #define SERIAL_PORT
     //#define VISA              // no longer supported
 

@@ -20,7 +20,7 @@
 #undef NO
 #include <opencv2/core.hpp>
 #include <opencv2/opencv.hpp>
-#include <opencv2/highgui.hpp>
+//#include <opencv2/highgui.hpp>
 #include <opencv2/video.hpp>
 #include <opencv2/photo.hpp>
 

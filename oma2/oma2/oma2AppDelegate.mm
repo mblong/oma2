@@ -73,9 +73,10 @@ void setUpUIData();
     loadprefs(text);
     UIData.newwindowflag = 1;   // this default is set initially
     
+#ifndef USE_LIBRAW
     strlcpy(text,DCRAW_ARG,NEW_PREFIX_CHPERLN);
     dcrawarg_c(0,text);
-    
+#endif
     update_UI();
 
 }

@@ -2520,6 +2520,11 @@ int sinGrid_c(int n, char* args)				/* draw grid from sin function */
 
 int dcrawarg_c(int n, char* args){
     
+#ifdef USE_LIBRAW
+    beep();
+    printf("This version uses LibRaw routines, so classic dcraw decoding isn't used.\n");
+    return CMND_ERR;
+#else
     int next = 0, i;
     static int first = 1;
     extern char txt[];
@@ -2558,7 +2563,7 @@ int dcrawarg_c(int n, char* args){
         
     }
     
-    
+#endif
     return NO_ERR;
 }
 
@@ -6278,7 +6283,7 @@ int demosaic_c(int n,char* args){
 /*----------------------------------------------------------------*/
 
 /* RAWPARAMS [demosaic subtractBlack applyWhiteBalance applyGamma clearBad]
-    Controlls whether or not additional processing is done when the libRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, at least four arguments must be specified and corrections will be done according to the specified values. subtractBlack = 1 will just subtract the raw image black value and may have negative values; subtractBlack = 2 will set the floor to 0. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing. clearBad is float; 0 means no clearing bad pixels, 1 means use the existing bad pixels data, any other value is used as the argument to the FINDBADPIX command. With four arguments, clearBad is set to 0.
+    Controlls whether or not additional processing is done when the LibRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, at least four arguments must be specified and corrections will be done according to the specified values. subtractBlack = 1 will just subtract the raw image black value and may have negative values; subtractBlack = 2 will set the floor to 0. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing. clearBad is float; 0 means no clearing bad pixels, 1 means use the existing bad pixels data, any other value is used as the argument to the FINDBADPIX command. With four arguments, clearBad is set to 0.
  */
 
 int rawparams_c(int n,char* args){

@@ -1,6 +1,7 @@
 //Author: LabJack
 //December 27, 2011
 //Example U3 helper functions.  Function descriptions are in the u3.h file.
+#ifdef LJU3
 
 #include "u3.h"
 #include <stdlib.h>
@@ -1568,4 +1569,4 @@ void GetErrorString	(long errorcode,
 }
 
 
-
+#endif

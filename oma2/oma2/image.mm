@@ -443,6 +443,7 @@ Image::Image(char* filename, int kindOfName)
             close(fd);
         }
         if (error) windowNameMemory = 0;
+        specs[SAVE_FORMAT]=0;   // reset this or subsequent reads will have issues!
         return;
     }
     
@@ -1176,6 +1177,7 @@ void Image::saveFile(char* name, int kindOfName, int kindOfInt){
     if(kindOfName != IS_OPEN && kindOfName != LEAVE_OPEN){
         close(fd);
     }
+    specs[SAVE_FORMAT]=0;   // this should only be non-zero in saved files
     error = NO_ERR;
     
 }
