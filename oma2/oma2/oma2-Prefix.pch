@@ -7,4 +7,5 @@
 #endif
 #define USE_LIBRAW
 #define OPENCV_ROUTINES
+#define COMMAND_WINDOW_TITLE @"oma2"
 

@@ -475,7 +475,7 @@ HDRNUMGET
 HOBJSETTINGS <decodeFlag> <demosaicSetting> <clearBadPixelsFlag>
 	With no arguments, this command gives information on how .hobj files will be read in. If arguments are given, the decodeFlag, demosaicSetting, and clearBadPixelsFlag are specified. A nonzero decodeFlag will cause automatic decoding of .hobj files when they are read in. The demosaicSetting has the following values/meanings: 0 = no demosaicing done (appropriate for monochrome images); 1 = treat as a color image and demosaic using DOC2RGB 0 1 1 2; 2 = treat as a color image and demosaic using the bilinear algorithm with the red pixel at 0,0; 3 = treat as a color image and demosaic using the Malvar algorithm with the red pixel at 0,0. If the clearBadPixelsFlag is set, bad pixels previously specified with FINDBAD or READBAD will be set to the average of their eight nearest neighbors (of the same color -- assumes this is a raw color image).
 
- HSV2RGB
+HSV2RGB
     Convert the current HSV image to RGB. If the HSV image is in the range 0-255, the RGB image will also be in the range 0-255. All calculations are done in floating point.
 
 IF condition
@@ -640,7 +640,7 @@ RGB2GREY
 RGB2COLOR colorNumber
 	Get the red, green, or blue channel of the current color image for colorNumber = 1, 2, or 3.
 
- RGB2HSV
+RGB2HSV
     Convert the current color image to HSV, scaled from 0-255 (floating point). Ordering is HSV rather than RGB. Use the *RGB command to change various components.
 
 RMACRO [n m]
@@ -782,7 +782,7 @@ SCATTER [sizeX sizeY minX maxX minY maxY]
 SETALPHA alphaValue
 	Sets the alpha channel of the current data window or image window to alphaValue, where 0 <= alphaValue <=1. For example, an alphaValue of .25 would result in window transparency of 75%.
 
- SATURATE factor
+SATURATE factor
     Increase the color saturation by the specified factor.
 
 SQLADD

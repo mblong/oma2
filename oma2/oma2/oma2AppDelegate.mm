@@ -49,6 +49,7 @@ void setUpUIData();
     frame.size.height = COMMANDHEIGHT+TITLEBAR_HEIGHT;
     
     [[appController theWindow] setFrame:frame display:YES];
+    [[appController theWindow] setTitle:COMMAND_WINDOW_TITLE];
     [[appController theWindow] makeKeyAndOrderFront:NULL];
     [[appController theWindow] makeFirstResponder:[appController theCommands]];
     [appController appendText: @"MA2>"];    // the first letter is initialized in [theCommands initTabs];

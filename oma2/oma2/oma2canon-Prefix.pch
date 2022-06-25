@@ -9,6 +9,7 @@
 #define OPENCV_ROUTINES
 #define USE_LIBRAW
 #define SERIAL_PORT
+#define COMMAND_WINDOW_TITLE @"oma2Canon"
 #ifdef SERIAL_PORT
     #ifdef __cplusplus
         extern "C"{

@@ -50,10 +50,20 @@ extern oma2UIData UIData;
     appController = self;
     //[self appendText: @"OMA2>"];
     
-    NSScreen *mainScreen = [NSScreen mainScreen];
-    screenRect = [mainScreen visibleFrame];
+    NSArray<NSScreen *> *screens = [NSScreen screens];
+    screenRect = [screens[0] visibleFrame];
+    NSRect r1;
+    if([screens count] > 1){
+        r1 = [screens[1] visibleFrame];
+        if( r1.size.width > screenRect.size.width){
+            screenRect = r1;
+        }
+    }
+
+    //NSScreen *mainScreen = [NSScreen mainScreen];
+    //screenRect = [mainScreen visibleFrame];
     window_placement.origin.x = screenRect.origin.x+WINDOW_OFFSET;
-    window_placement.origin.y = screenRect.size.height;
+    window_placement.origin.y = screenRect.size.height+screenRect.origin.y;
     
     wraps = 1;
     
@@ -290,7 +300,7 @@ extern oma2UIData UIData;
                                 window_placement.origin.y,
                                 windowWidth, windowHeight+TITLEBAR_HEIGHT);
     
-    if (window_placement.origin.x+windowWidth>screenRect.size.width) {
+    if (window_placement.origin.x+windowWidth>screenRect.size.width+screenRect.origin.x) {
         window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
         
         if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > 0){
@@ -378,7 +388,7 @@ extern oma2UIData UIData;
                                 window_placement.origin.y,
                                 windowWidth, windowHeight+TITLEBAR_HEIGHT);
     
-    if (window_placement.origin.x+windowWidth>screenRect.size.width) {
+    if (window_placement.origin.x+windowWidth>screenRect.size.width+screenRect.origin.x) {
         window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
         
         if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > 0){
@@ -470,7 +480,7 @@ extern oma2UIData UIData;
                                 window_placement.origin.y,
                                 windowWidth, windowHeight+TITLEBAR_HEIGHT);
     
-    if (window_placement.origin.x+windowWidth>screenRect.size.width) {
+    if (window_placement.origin.x+windowWidth>screenRect.size.width+screenRect.origin.x) {
         window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
         
         if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > 0){
@@ -556,7 +566,7 @@ extern oma2UIData UIData;
                                 window_placement.origin.y,
                                 windowWidth, windowHeight+TITLEBAR_HEIGHT);
     
-    if (window_placement.origin.x+windowWidth>screenRect.size.width) {
+    if (window_placement.origin.x+windowWidth>screenRect.size.width+screenRect.origin.x) {
         window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
         
         if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > 0){
@@ -814,14 +824,15 @@ extern oma2UIData UIData;
                                 window_placement.origin.y,
                                 windowWidth, windowHeight+TITLEBAR_HEIGHT);
     
-    if (window_placement.origin.x+windowWidth>screenRect.size.width) {
+    if (window_placement.origin.x+windowWidth>screenRect.size.width+screenRect.origin.x) {
+        // next window will be on the left
         window_placement.origin.x = screenRect.origin.x + WINDOW_OFFSET;
         
-        if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > 0){
+        if(window_placement.origin.y - windowHeight - TITLEBAR_HEIGHT > screenRect.origin.y){
             window_placement.origin.y -= (windowHeight + TITLEBAR_HEIGHT);
         } else{
             wraps++;
-            window_placement.origin.y = screenRect.size.height 
+            window_placement.origin.y = screenRect.size.height + screenRect.origin.y
              -windowHeight- wraps*TITLEBAR_HEIGHT; // wrap to top
         }
          
