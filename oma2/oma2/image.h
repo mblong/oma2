@@ -111,6 +111,7 @@ public:
     void zero();                ///< set the data associated with an Image to 0
     void abs();                 ///< take the absolute value of an image
     void getmaxx(char);         ///< fill in the min and max for the current Image; argument is print flag
+    void gethistogram();        ///< fill in the histogram
     void clip(DATAWORD);        ///< set values > specifiedValue to specifiedValue
     void floor(DATAWORD);       ///< set values < specifiedValue to specifiedValue
     void saveFile(char*, int);  ///< write the Image to a file; second argument tells if name is complete or not

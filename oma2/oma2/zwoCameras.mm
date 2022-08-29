@@ -26,6 +26,10 @@ extern oma2UIData UIData;
         STAtus
         GAIn    gainSetting
         BIN     binSetting
+        DISconnect
+        WBAlance whiteBalanceRed whiteBalanceBlue (values are from 1-99)
+        FOCus (using the current settings, presumably a cropped window, continuously acquire
+         and display 8-bit grey-scale images. To stop, type cmnd')
  
     Notes:
     Only the first theree characters of a command are matched in decoding the command.

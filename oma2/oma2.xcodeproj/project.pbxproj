@@ -693,6 +693,7 @@
 				DB1DC8262601424D00C5A72C /* ColorImageOptionsController.mm */,
 				DB89777F27F7A9CA00D05582 /* ZwoOptions.xib */,
 				DB89777D27F7A9CA00D05582 /* ZwoOptions.h */,
+				DB38A5F0280DF61400F5C52C /* libgsl.u.27.dylib */,
 				DB89777E27F7A9CA00D05582 /* ZwoOptions.mm */,
 			);
 			name = UI;
@@ -737,7 +738,6 @@
 				DB1C7A5828500F8000984EBB /* libusb-1.0.0.dylib */,
 				DB3DBE072815A0FD00FCAB88 /* libraw_r.u.22.dylib */,
 				DB38A5EF280DF61400F5C52C /* libcfitsio.u.9.4.1.0.dylib */,
-				DB38A5F0280DF61400F5C52C /* libgsl.u.27.dylib */,
 				DB9CDBE727F3727A000FBCBE /* libASICamera2.dylib.1.22 */,
 				DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */,
 				DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */,

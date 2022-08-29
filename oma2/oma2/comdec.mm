@@ -148,6 +148,7 @@ ComDef   commands[] =    {
     {{"HDRNUMGET      "},	hdrNumget_c},
     {{"HOBJSETTINGS   "},	hobjSettings_c},
     {{"HSV2RGB        "},   hsv2rgb_c},
+    {{"HISTOGRAM      "},   histogram_c},
     
     {{"IF             "},	ifcmnd},
     {{"IFNOT          "},	ifnotcmnd},

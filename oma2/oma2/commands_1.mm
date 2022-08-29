@@ -1915,6 +1915,36 @@ int setcminmax_c(int n,char* args)		/* get color min and max */
     return 0;
 }
 
+/* ********** */
+
+
+int histogram_c(int n,char* args)        /* get the histogram and ? */
+{
+    extern int histogram[];
+    float lower = 5,upper=5;
+    int i;
+    float sum=0.,npts=iBuffer.rows()*iBuffer.cols(), binsize=(iBuffer.max()-iBuffer.min())/(HISTOGRAM_SIZE-1.0);
+    sscanf(args,"%f %f",&lower,&upper);
+
+    iBuffer.gethistogram();
+    for(i=0; i< HISTOGRAM_SIZE; i++){
+        sum += histogram[i];
+        if(sum/npts >= lower/100.) break;
+    }
+    printf("Value that excludes the lower %.1f percent of pixels is %g\n", lower,i*binsize+iBuffer.min());
+    
+    for(i=HISTOGRAM_SIZE-1,sum=0.; i>0; i--){
+        sum += histogram[i];
+        if(sum/npts >= upper/100.) break;
+    }
+    printf("Value that excludes the upper %.1f percent of pixels is %g\n", upper,i*binsize+iBuffer.min());
+    
+    return 0;
+}
+
+/* ********** */
+
+
 int palette_c(int n,char* args){
     if(n>= 0 && n<NUMPAL){
         UIData.thepalette = n;

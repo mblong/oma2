@@ -17,6 +17,7 @@ DATAWORD hdrCutoffMax;         // the HDR saturation value
 DATAWORD hdrCutoffMin;       // the HDR min value for inclusion in the image
 float   hdrMaxScale;        // this is the biggest scale factor -- use to determine largest value in an hdr image
 int      hdrFrames=0;       // HDR frame counter
+unsigned int histogram[HISTOGRAM_SIZE];    // total intensity histogram
 
 int numberNamedTempImages = 0;
 Variable namedTempImages[NUM_TEMP_IMAGES-NUMBERED_TEMP_IMAGES];
@@ -827,6 +828,16 @@ DATAWORD Image::max()
     return values[MAX];
 }
 
+void Image::gethistogram(){
+    DATAWORD *mydatpt,mn=min();
+    float binsize = (values[MAX] - mn)/(HISTOGRAM_SIZE-1.0);
+    int npts=specs[ROWS]*specs[COLS],histogramIndex;
+    for(int i=0; i<HISTOGRAM_SIZE; i++) histogram[i]=0;
+    for(mydatpt=data; mydatpt < data+npts; mydatpt++){
+        histogramIndex = (*mydatpt-mn)/binsize;
+        histogram[histogramIndex]++;
+    }
+}
 void Image::getmaxx(char printFlag)
 {
     DATAWORD *locmin,*locmax,*locrmin,*locrmax,*locgmin,*locgmax,*locbmin,*locbmax;
@@ -1345,11 +1356,11 @@ int Image::getspec(int n){          // return a value from the specs array
     return specs[n];
 }
 
-int Image::rows(){             // this allocates space for specs that the user must free
+int Image::rows(){             // if image is color, this is height * 3
     return specs[ROWS];
 }
 
-int Image::cols(){             // this allocates space for specs that the user must free
+int Image::cols(){             // same as width
     return specs[COLS];
 }
 

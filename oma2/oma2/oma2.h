@@ -109,6 +109,8 @@ name of the units. Occupies trailer[5] to trailer[12] */
 #define OMA_FILE -1
 #define MAX_CONTOURS 10
 
+#define HISTOGRAM_SIZE 512
+
 
 enum  {SHORT_NAME,LONG_NAME,HAS_SUFFIX,LEAVE_OPEN,IS_OPEN};
 
