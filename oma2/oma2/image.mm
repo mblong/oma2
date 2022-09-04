@@ -17,7 +17,9 @@ DATAWORD hdrCutoffMax;         // the HDR saturation value
 DATAWORD hdrCutoffMin;       // the HDR min value for inclusion in the image
 float   hdrMaxScale;        // this is the biggest scale factor -- use to determine largest value in an hdr image
 int      hdrFrames=0;       // HDR frame counter
+
 unsigned int histogram[HISTOGRAM_SIZE];    // total intensity histogram
+char histogramIsVisible=0;
 
 int numberNamedTempImages = 0;
 Variable namedTempImages[NUM_TEMP_IMAGES-NUMBERED_TEMP_IMAGES];
@@ -936,6 +938,9 @@ void Image::getmaxx(char printFlag)
             printf("Maximum %g at Row %d and Column %d\n", values[MAX], specs[LMAX]/specs[COLS], specs[LMAX]%specs[COLS]);
             printf("Minimum %g at Row %d and Column %d\n", values[MIN], specs[LMIN]/specs[COLS], specs[LMIN]%specs[COLS]);
         }
+    }
+    if(histogramIsVisible){
+        update_histogram_plot
     }
     
 }

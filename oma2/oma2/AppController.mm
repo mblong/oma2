@@ -23,11 +23,13 @@
 #import "ZwoOptions.h"
 #endif
 
+#import "Histogram.h"
 
 AppController   *appController;
 extern ImageBitmap iBitmap;
 extern Image iBuffer;
 extern oma2UIData UIData;
+extern char histogramIsVisible;
 
 @implementation AppController
 
@@ -42,7 +44,7 @@ extern oma2UIData UIData;
 @synthesize zwoOptions;
 #endif
 //@synthesize last_return;
-
+@synthesize histogram;
 
 -(void)awakeFromNib{
     // this global lets the UI independent code get in touch with us
@@ -863,13 +865,14 @@ extern oma2UIData UIData;
     window_placement.origin.x += windowWidth;            // increment for next one
 
     [dataWindowController showWindow:self];
-    
+    if(histogramIsVisible) [histogram updateHistogram];
 }
 
 -(void) updateDataWindow{
     // call this as needed when redisplaying the current image from events in the status window
     iBitmap = iBuffer;
     [[windowArray lastObject] updateImage];
+    if(histogramIsVisible) [histogram updateHistogram];
     // this next is not needed?
     //[[windowArray lastObject] showWindow:self];
 }
@@ -1018,5 +1021,17 @@ extern oma2UIData UIData;
 }
 
 #endif
+
+-(void) updateHistogram{
+    [histogram updateHistogram];
+}
+
+- (IBAction) startHistogram:(id)sender{
+    
+    if(!histogram){
+        histogram = [[Histogram alloc] initWithWindowNibName:@"Histogram"];
+    }
+    [histogram showWindow:self];
+}
 
 @end

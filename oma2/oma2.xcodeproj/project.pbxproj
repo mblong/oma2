@@ -83,6 +83,10 @@
 		DB685CE62355633600812918 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
 		DB685CE72355633600812918 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
 		DB68D6492816BD1800D5A293 /* libraw_r.u.22.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB3DBE072815A0FD00FCAB88 /* libraw_r.u.22.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DB8078AA28C13418003EBE42 /* Histogram.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85328BEA46500DE2C70 /* Histogram.mm */; };
+		DB8078AB28C13419003EBE42 /* Histogram.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85328BEA46500DE2C70 /* Histogram.mm */; };
+		DB8078AC28C13442003EBE42 /* HistogramView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85428BEA46500DE2C70 /* HistogramView.mm */; };
+		DB8078AD28C13443003EBE42 /* HistogramView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85428BEA46500DE2C70 /* HistogramView.mm */; };
 		DB83FD771D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
 		DB83FD781D4FE5DE009B3204 /* dmmalvar.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */; };
 		DB85D3E925D48BEC00EFD8E7 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD0B8D725C7114700CD40C3 /* CoreImage.framework */; };
@@ -159,6 +163,9 @@
 		DBABD56F180208E7007F8801 /* DrawingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD56E180208E7007F8801 /* DrawingWindowController.mm */; };
 		DBAD2EFD1868975D003F9B55 /* Oma2Macro.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */; };
 		DBAEDEDD187F16FD0019677B /* LightOma2Help in Resources */ = {isa = PBXBuildFile; fileRef = DBAEDEDC187F16FD0019677B /* LightOma2Help */; };
+		DBB13D7228BD5A48005CA4F6 /* Histogram.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBB13D6E28BD5A48005CA4F6 /* Histogram.xib */; };
+		DBB13D7328BD5A48005CA4F6 /* Histogram.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBB13D6E28BD5A48005CA4F6 /* Histogram.xib */; };
+		DBB13D7428BD5A48005CA4F6 /* Histogram.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBB13D6E28BD5A48005CA4F6 /* Histogram.xib */; };
 		DBB15EF325A78014000437AA /* openCVroutines.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBB15EF025A78014000437AA /* openCVroutines.mm */; };
 		DBB27B6B1867F1DF00CF6523 /* Oma2Settings.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */; };
 		DBB27B6D1867F88D00CF6523 /* Oma2Data.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBB27B6C1867F88D00CF6523 /* Oma2Data.icns */; };
@@ -167,6 +174,8 @@
 		DBBD397D155AD06000D5B56B /* OMApalette.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD397C155AD06000D5B56B /* OMApalette.pa1 */; };
 		DBBD3984155ADD5100D5B56B /* OMApalette3.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */; };
 		DBBD3985155ADD5100D5B56B /* OMApalette2.pa1 in Resources */ = {isa = PBXBuildFile; fileRef = DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */; };
+		DBC6A85528BEA46500DE2C70 /* Histogram.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85328BEA46500DE2C70 /* Histogram.mm */; };
+		DBC6A85628BEA46500DE2C70 /* HistogramView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85428BEA46500DE2C70 /* HistogramView.mm */; };
 		DBC81580153DCD54002BEFD4 /* StatusDrop.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */; };
 		DBC81583153DFBB7002BEFD4 /* UI.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC81582153DFBB7002BEFD4 /* UI.mm */; };
 		DBD0B8D825C7114700CD40C3 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD0B8D725C7114700CD40C3 /* CoreImage.framework */; };
@@ -436,6 +445,9 @@
 		DBABD56E180208E7007F8801 /* DrawingWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawingWindowController.mm; sourceTree = "<group>"; };
 		DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Oma2Macro.icns; sourceTree = "<group>"; };
 		DBAEDEDC187F16FD0019677B /* LightOma2Help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = LightOma2Help; sourceTree = "<group>"; };
+		DBB13D6C28BD5A48005CA4F6 /* Histogram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Histogram.h; sourceTree = "<group>"; };
+		DBB13D6E28BD5A48005CA4F6 /* Histogram.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Histogram.xib; sourceTree = "<group>"; };
+		DBB13D7528BE3401005CA4F6 /* HistogramView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HistogramView.h; sourceTree = "<group>"; };
 		DBB15EF025A78014000437AA /* openCVroutines.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = openCVroutines.mm; sourceTree = "<group>"; };
 		DBB15EF125A78014000437AA /* openCVroutines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = openCVroutines.h; sourceTree = "<group>"; };
 		DBB27B6A1867F1DF00CF6523 /* Oma2Settings.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Oma2Settings.icns; sourceTree = "<group>"; };
@@ -448,6 +460,8 @@
 		DBBD3982155ADD5100D5B56B /* OMApalette3.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette3.pa1; sourceTree = "<group>"; };
 		DBBD3983155ADD5100D5B56B /* OMApalette2.pa1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OMApalette2.pa1; sourceTree = "<group>"; };
 		DBC3F1FC19129FEF00AD7850 /* VISA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VISA.framework; sourceTree = "<group>"; };
+		DBC6A85328BEA46500DE2C70 /* Histogram.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Histogram.mm; sourceTree = "<group>"; };
+		DBC6A85428BEA46500DE2C70 /* HistogramView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HistogramView.mm; sourceTree = "<group>"; };
 		DBC8157E153DCD54002BEFD4 /* StatusDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusDrop.h; sourceTree = "<group>"; };
 		DBC8157F153DCD54002BEFD4 /* StatusDrop.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatusDrop.mm; sourceTree = "<group>"; };
 		DBC81582153DFBB7002BEFD4 /* UI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UI.mm; sourceTree = "<group>"; };
@@ -664,16 +678,16 @@
 				DB0FC044151918F0008A9B54 /* AppController.mm */,
 				DB16CA381826960F002588F4 /* CommandView.h */,
 				DB16CA391826960F002588F4 /* CommandView.mm */,
+				DB17A3041524754A004F810A /* DataWindow.xib */,
 				DB17A30A15247965004F810A /* DataWindowController.h */,
 				DB17A30B15247965004F810A /* DataWindowController.mm */,
 				DB2113571540219200B23364 /* DataView.h */,
 				DB2113581540219200B23364 /* DataView.mm */,
-				DB17A3041524754A004F810A /* DataWindow.xib */,
+				DBA03741181704740042DF6F /* DrawingWindow.xib */,
 				DBABD56D180208E7007F8801 /* DrawingWindowController.h */,
 				DBABD56E180208E7007F8801 /* DrawingWindowController.mm */,
 				DBABD5681802050F007F8801 /* DrawingView.h */,
 				DBABD5691802050F007F8801 /* DrawingView.mm */,
-				DBA03741181704740042DF6F /* DrawingWindow.xib */,
 				DB0FC0371519183D008A9B54 /* MainMenu.xib */,
 				DB95A94C1A2F415E00823467 /* VariablesWindow.xib */,
 				DB95A94A1A2F415E00823467 /* VariablesWindowController.h */,
@@ -693,8 +707,12 @@
 				DB1DC8262601424D00C5A72C /* ColorImageOptionsController.mm */,
 				DB89777F27F7A9CA00D05582 /* ZwoOptions.xib */,
 				DB89777D27F7A9CA00D05582 /* ZwoOptions.h */,
-				DB38A5F0280DF61400F5C52C /* libgsl.u.27.dylib */,
 				DB89777E27F7A9CA00D05582 /* ZwoOptions.mm */,
+				DBB13D6E28BD5A48005CA4F6 /* Histogram.xib */,
+				DBB13D6C28BD5A48005CA4F6 /* Histogram.h */,
+				DBC6A85328BEA46500DE2C70 /* Histogram.mm */,
+				DBB13D7528BE3401005CA4F6 /* HistogramView.h */,
+				DBC6A85428BEA46500DE2C70 /* HistogramView.mm */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -738,6 +756,7 @@
 				DB1C7A5828500F8000984EBB /* libusb-1.0.0.dylib */,
 				DB3DBE072815A0FD00FCAB88 /* libraw_r.u.22.dylib */,
 				DB38A5EF280DF61400F5C52C /* libcfitsio.u.9.4.1.0.dylib */,
+				DB38A5F0280DF61400F5C52C /* libgsl.u.27.dylib */,
 				DB9CDBE727F3727A000FBCBE /* libASICamera2.dylib.1.22 */,
 				DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */,
 				DB8C23F518FC2B5000969763 /* liblabjackusb.dylib */,
@@ -883,6 +902,7 @@
 				DB238A5915A2895B00502B50 /* pal5.jpg in Resources */,
 				DB238A5A15A2895B00502B50 /* pal4.jpg in Resources */,
 				DB238A5B15A2895B00502B50 /* pal3.jpg in Resources */,
+				DBB13D7228BD5A48005CA4F6 /* Histogram.xib in Resources */,
 				DBA3B5F716FC781300B7FF27 /* oma2help.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -895,6 +915,7 @@
 				DB8A886018E3297E007C79AF /* Credits.rtf in Resources */,
 				DB1DC82B2601424D00C5A72C /* ColorImageOptions.xib in Resources */,
 				DB89778127F7A9CA00D05582 /* ZwoOptions.xib in Resources */,
+				DBB13D7328BD5A48005CA4F6 /* Histogram.xib in Resources */,
 				DB8A886118E3297E007C79AF /* MainMenu.xib in Resources */,
 				DB8A886218E3297E007C79AF /* Status.xib in Resources */,
 				DB8A886318E3297E007C79AF /* Preferences.xib in Resources */,
@@ -964,6 +985,7 @@
 				DBDECE6627FF5337007AC635 /* pal5.jpg in Resources */,
 				DBDECE6727FF5337007AC635 /* pal4.jpg in Resources */,
 				DBDECE6827FF5337007AC635 /* pal3.jpg in Resources */,
+				DBB13D7428BD5A48005CA4F6 /* Histogram.xib in Resources */,
 				DBDECE6927FF5337007AC635 /* oma2help.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -984,12 +1006,14 @@
 				DB2BC304151933C9009D9AED /* PreferenceController.mm in Sources */,
 				DBA96ABA1520C7090043754E /* comdec.mm in Sources */,
 				DB021E7B15211EFA001D1B05 /* commands_1.mm in Sources */,
+				DBC6A85628BEA46500DE2C70 /* HistogramView.mm in Sources */,
 				DB95A94D1A2F415E00823467 /* VariablesWindowController.mm in Sources */,
 				DB4329B617EF13E900A51802 /* gluedCommands.mm in Sources */,
 				DB021E7C15211EFA001D1B05 /* image_support.mm in Sources */,
 				DB021E7D15211EFA001D1B05 /* image.mm in Sources */,
 				DB87BF0217F08DA200E1BF68 /* dcrawx.mm in Sources */,
 				DB03625E224D009800DF7BA8 /* ImageBitmap.mm in Sources */,
+				DBC6A85528BEA46500DE2C70 /* Histogram.mm in Sources */,
 				DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */,
 				DB83FD771D4FE5DE009B3204 /* dmmalvar.mm in Sources */,
 				DB1938312816FC67008E2279 /* openCVroutines.mm in Sources */,
@@ -1041,7 +1065,9 @@
 				DB57E31918F58D7900FA4D29 /* sbig.mm in Sources */,
 				DB8A885518E3297E007C79AF /* StatusDrop.mm in Sources */,
 				DB8A885618E3297E007C79AF /* UI.mm in Sources */,
+				DB8078AC28C13442003EBE42 /* HistogramView.mm in Sources */,
 				DBF879C41906C18D006C5872 /* gphotoFunctions.c in Sources */,
+				DB8078AA28C13418003EBE42 /* Histogram.mm in Sources */,
 				DBF879C21906C13F006C5872 /* gphotoCommands.mm in Sources */,
 				DB8A885718E3297E007C79AF /* DataView.mm in Sources */,
 			);
@@ -1069,6 +1095,7 @@
 				DBDECE2827FF5337007AC635 /* gluedCommands.mm in Sources */,
 				DBDECE2927FF5337007AC635 /* image_support.mm in Sources */,
 				DBDECE2A27FF5337007AC635 /* image.mm in Sources */,
+				DB8078AB28C13419003EBE42 /* Histogram.mm in Sources */,
 				DBDECE2B27FF5337007AC635 /* ColorImageOptionsController.mm in Sources */,
 				DBDECE2C27FF5337007AC635 /* dcrawx.mm in Sources */,
 				DBDECE2E27FF5337007AC635 /* dmbilinear.mm in Sources */,
@@ -1079,6 +1106,7 @@
 				DBDECE3427FF5337007AC635 /* sbig.mm in Sources */,
 				DBDECE3527FF5337007AC635 /* StatusDrop.mm in Sources */,
 				DBDECE3627FF5337007AC635 /* UI.mm in Sources */,
+				DB8078AD28C13443003EBE42 /* HistogramView.mm in Sources */,
 				DBDECE3927FF5337007AC635 /* DataView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

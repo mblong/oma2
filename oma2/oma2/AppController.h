@@ -35,7 +35,7 @@ int comdec(char*);
 #ifdef ZWO
 @class ZwoOptions;
 #endif
-
+@class Histogram;
 
 @interface AppController : NSObject
 {
@@ -62,6 +62,8 @@ int comdec(char*);
 @property (strong) ZwoOptions *zwoOptions;
 #endif
 
+@property (strong) Histogram *histogram;
+
 @property int tool;     // the tool selected in the status window, used in DataView
 @property NSMutableArray *windowArray;
 //@property NSUInteger last_return;
@@ -79,6 +81,7 @@ int comdec(char*);
 
 - (IBAction)saveData:(id)sender;
 - (IBAction)saveSettings:(id)sender;
+- (IBAction)startHistogram:(id)sender;
 
 
 -(void) showDataWindow:(char*) windowname;
@@ -100,6 +103,8 @@ int comdec(char*);
 -(void) updateZwoTimer:(int) n;
 #endif
 
+-(void) updateHistogram;
+-(IBAction) startHistogram;
 
 -(int) saveDataWindowToPdf: (char*) fileName;
 

@@ -13,6 +13,8 @@
 extern ImageBitmap iBitmap;
 extern oma2UIData  UIData;
 extern AppController *appController;
+extern char histogramIsVisible;
+
 StatusController *statusController;
 
 
@@ -176,6 +178,7 @@ StatusController *statusController;
         [appController updateDataWindow];
         UIData.autoscale = saveAuatoscale;
     }
+    if(histogramIsVisible) [appController updateHistogram];
 }
 
 - (IBAction)increaseColorMin:(id)sender {
@@ -193,6 +196,7 @@ StatusController *statusController;
         [appController updateDataWindow];
         UIData.autoscale = saveAuatoscale;
     }
+    if(histogramIsVisible) [appController updateHistogram];
 }
 
 - (IBAction)decreaseColorMax:(id)sender {
@@ -212,6 +216,7 @@ StatusController *statusController;
         
         //[self.window makeKeyAndOrderFront:NULL];
     }
+    if(histogramIsVisible) [appController updateHistogram];
     //NSLog(@"minmaxinc: %d",MinMaxInc);
 }
 
@@ -230,6 +235,7 @@ StatusController *statusController;
         [appController updateDataWindow];
         UIData.autoscale = saveAuatoscale;
     }
+    if(histogramIsVisible) [appController updateHistogram];
 }
 
 - (IBAction)nextPalette:(id)sender{

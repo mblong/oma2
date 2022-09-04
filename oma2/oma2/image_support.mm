@@ -500,7 +500,7 @@ int loadprefs(char* name)
             UIData.demosaic=0;
             UIData.subtractBlack=0;
             UIData.applyWhiteBalance=0;
-            UIData.applyGamma=0;
+            UIData.applyGamma=1.0;
              missingBytes -= 3*sizeof(int)+sizeof(float);
         }
         

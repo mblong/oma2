@@ -95,6 +95,11 @@ dispatch_sync(dispatch_get_main_queue(),^{[appController labelMinMax];});
 else \
 dispatch_sync(dispatch_get_main_queue(),^{[appController plotContours:nil];});
 
+#define update_histogram_plot if([NSThread isMainThread]) \
+[appController updateHistogram]; \
+else \
+dispatch_sync(dispatch_get_main_queue(),^{[appController updateHistogram];});
+
 #ifdef ZWO
 
 #define zwoWindow if([NSThread isMainThread]) \

@@ -203,6 +203,11 @@
                                     <action selector="showColorImageOptionsWindow:" target="536" id="1RV-nI-wRM"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Show Histogram Window" keyEquivalent="g" id="ucw-6c-Q0h">
+                                <connections>
+                                    <action selector="startHistogram:" target="536" id="YGv-Zk-Ujw"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Customize Toolbar…" id="298">
                                 <connections>
                                     <action selector="runToolbarCustomizationPalette:" target="-1" id="365"/>
@@ -254,7 +259,7 @@
             <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="0.0" y="0.0" width="600" height="354"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1512" height="944"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="2135"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="600" height="354"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -263,15 +268,15 @@
                         <rect key="frame" x="0.0" y="1" width="600" height="354"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <clipView key="contentView" drawsBackground="NO" id="xhp-Yd-C0p">
-                            <rect key="frame" x="1" y="1" width="598" height="352"/>
+                            <rect key="frame" x="1" y="1" width="583" height="352"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" allowsUndo="YES" allowsNonContiguousLayout="YES" id="539" customClass="CommandView">
-                                    <rect key="frame" x="0.0" y="0.0" width="598" height="352"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="583" height="352"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="598" height="352"/>
+                                    <size key="minSize" width="583" height="352"/>
                                     <size key="maxSize" width="614" height="10000000"/>
                                     <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <allowedInputSourceLocales>
