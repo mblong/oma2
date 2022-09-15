@@ -121,8 +121,8 @@ extern oma2UIData UIData;
 - (void) mouseUp:(NSEvent *)theEvent{
     if(zoomX) return;
     
-    UIData.displaySaturateValue = UIData.cmax/UIData.max;
-    UIData.displayFloorValue = UIData.cmin/UIData.max;
+    UIData.displaySaturateValue = (UIData.cmax-UIData.min)/(UIData.max-UIData.min);
+    UIData.displayFloorValue = (UIData.cmin-UIData.min)/(UIData.max-UIData.min);
     NSMutableString *str = [NSMutableString stringWithFormat:@"Mx/Mn %.2g/%.2g",UIData.displaySaturateValue,UIData.displayFloorValue];
     [str setString: [str stringByReplacingOccurrencesOfString:@"0." withString:@"."]];
     [[statusController scaleState] setTitle:str];

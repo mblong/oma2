@@ -55,12 +55,12 @@ extern oma2UIData UIData;
     iBuffer.gethistogram();
     if(zoomX){
         [MinLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmin]];
-        [MidLabel setStringValue:[NSString stringWithFormat:@"%g",(UIData.cmax -UIData.cmin)/2.0]];
+        [MidLabel setStringValue:[NSString stringWithFormat:@"%g",(UIData.cmax - UIData.cmin)/2.0 + UIData.cmin]];
         [MaxLabel setStringValue:[NSString stringWithFormat:@"%g",UIData.cmax]];
         [toggleZoomX setTitle:@"UnZoom X"];
     } else {
         [MinLabel setStringValue:[NSString stringWithFormat:@"%g",iBuffer.min()]];
-        [MidLabel setStringValue:[NSString stringWithFormat:@"%g",(iBuffer.max() -iBuffer.min())/2.0]];
+        [MidLabel setStringValue:[NSString stringWithFormat:@"%g",(iBuffer.max() - iBuffer.min())/2.0 + iBuffer.min()]];
         [MaxLabel setStringValue:[NSString stringWithFormat:@"%g",iBuffer.max()]];
         [toggleZoomX setTitle:@"Zoom X"];
     }
