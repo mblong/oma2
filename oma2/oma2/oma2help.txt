@@ -478,6 +478,9 @@ HOBJSETTINGS <decodeFlag> <demosaicSetting> <clearBadPixelsFlag>
 HSV2RGB
     Convert the current HSV image to RGB. If the HSV image is in the range 0-255, the RGB image will also be in the range 0-255. All calculations are done in floating point.
 
+HISTOGRAM lowerPercent upperPercent [setCminCmaxFlag]
+    Calculates the histogram of the current image and returns the data values that exclude the lowerPercent and upperPercent of pixels in the image. command_return_1 has the lower value, command_return_2, the upper. If setCminCmaxFlag is nonzero, the color min and color max are set according to the lower and upper values. Default values are 1% 1% and 0.
+
 IF condition
 	If condition evaluates to a non-zero value, the commands following the IF are executed. However, if the condition is zero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators < (less than), > (greater than), others to come....
 

@@ -1917,28 +1917,48 @@ int setcminmax_c(int n,char* args)		/* get color min and max */
 
 /* ********** */
 
+/* HISTOGRAM lowerPercent upperPercent [setCminCmaxFlag]
+    Calculates the histogram of the current image and returns the data values that exclude the lowerPercent and upperPercent of pixels in the image. command_return_1 has the lower value, command_return_2, the upper. If setCminCmaxFlag is nonzero, the color min and color max are set according to the lower and upper values. Default values are 1% 1% and 0.
+ */
 
 int histogram_c(int n,char* args)        /* get the histogram and ? */
 {
     extern int histogram[];
-    float lower = 5,upper=5;
-    int i;
+    extern Variable user_variables[];
+    float lower = 1,upper = 1;
+    DATAWORD lowerValue,upperValue;
+    int i,setCminCmaxFlag=0;
     float sum=0.,npts=iBuffer.rows()*iBuffer.cols(), binsize=(iBuffer.max()-iBuffer.min())/(HISTOGRAM_SIZE-1.0);
-    sscanf(args,"%f %f",&lower,&upper);
+    sscanf(args,"%f %f %d",&lower,&upper,&setCminCmaxFlag);
 
     iBuffer.gethistogram();
     for(i=0; i< HISTOGRAM_SIZE; i++){
         sum += histogram[i];
         if(sum/npts >= lower/100.) break;
     }
-    printf("Value that excludes the lower %.1f percent of pixels is %g\n", lower,i*binsize+iBuffer.min());
+    lowerValue = i*binsize+iBuffer.min();
+    printf("Value that excludes the lower %.2f percent of pixels is %g\n", lower,lowerValue);
+    user_variables[0].fvalue = lowerValue;
+    user_variables[0].ivalue = lowerValue;
+    user_variables[0].is_float = 1;
     
     for(i=HISTOGRAM_SIZE-1,sum=0.; i>0; i--){
         sum += histogram[i];
         if(sum/npts >= upper/100.) break;
     }
-    printf("Value that excludes the upper %.1f percent of pixels is %g\n", upper,i*binsize+iBuffer.min());
+    upperValue = i*binsize+iBuffer.min();
+    printf("Value that excludes the upper %.2f percent of pixels is %g\n", upper,upperValue);
+    user_variables[1].fvalue = upperValue;
+    user_variables[1].ivalue = upperValue;
+    user_variables[1].is_float = 1;
     
+    if (setCminCmaxFlag){
+        UIData.cmin = lowerValue;
+        UIData.cmax = upperValue;
+        UIData.autoscale = 0;
+    }
+    
+    update_UI();
     return 0;
 }
 

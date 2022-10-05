@@ -178,9 +178,15 @@ name of the units. Occupies trailer[5] to trailer[12]
 #define ACSTAT	30
  _________________________________________ */
 
+DATAWORD    valuesCopy[NVALUES];
+
 int moveOMA2toOMA(int n,char* args){
-    int r,c,i=0,index=0;
+    unsigned long i=0;
+    int r,c,index=0;
     int *imspecs = iBuffer.getspecs();
+    DATAWORD* imValues = iBuffer.getvalues();
+    for(i=0; i<NVALUES; i++) valuesCopy[i]=imValues[i];
+    free(imValues);
     
     // fill in header/trailer bits
     header[NCHAN] = imspecs[COLS];
@@ -224,7 +230,8 @@ int moveOMA2toOMA(int n,char* args){
 
 void moveOMAtoOMA2(){
     
-    int r,c,i=0;
+    unsigned long i=0;
+    int r,c;
     int* imspecs = iBuffer.getspecs();
     
     if(header[NCHAN]*header[NTRAK] != imspecs[COLS]*imspecs[ROWS]){
@@ -262,6 +269,8 @@ void moveOMAtoOMA2(){
     UIData.iRect.lr.h = subend.h;
     UIData.iRect.lr.v = subend.v;
     
+    iBuffer.setvalues(valuesCopy);
+
     free(imspecs);
     free(datpt);
     datpt = NULL;
