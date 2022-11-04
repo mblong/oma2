@@ -174,7 +174,8 @@ int zwo(int n,char* args){
         values[RED_MULT] = wbR/100.;
         values[GREEN_MULT] = 1.;
         values[BLUE_MULT] = wbB/100.;
-        
+        values[APERTURE] = 0.;
+        values[ISO] = gain;
         
         
         // check to see if the parameters are OK for this camera
