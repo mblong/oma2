@@ -487,6 +487,12 @@ IF condition
 IFNOT condition
 	If condition evaluates to a ZERO value, the commands following the IF are executed. However, if the condition is nonzero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators < (less than), > (greater than), others to come....
 
+IFDEFINED variableName
+	If variableName is a defined variable, the commands following the IF are executed, otherwise, the commands between IF and ENDIF are not executed.
+
+IFNDEFINED variableName
+	If variableName is NOT a defined variable, the commands following the IF are executed, otherwise, the commands between IF and ENDIF are not executed.
+
 INVERT
 	Inverts the image in the current image data buffer, causing the first data point to become the last data point.
 

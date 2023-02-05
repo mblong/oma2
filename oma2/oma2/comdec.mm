@@ -152,6 +152,8 @@ ComDef   commands[] =    {
     
     {{"IF             "},	ifcmnd},
     {{"IFNOT          "},	ifnotcmnd},
+    {{"IFDEFINED      "},   ifdefined},
+    {{"IFNDEFINED     "},   ifndefined},
     {{"INVERT         "},	invert_c},
     {{"INTEGRATE      "},	integrate_c},
     {{"INTFILL        "},	intfill_c},
@@ -2189,10 +2191,14 @@ int ifexist(int n, int index)
 	printf("if condition: %d; depth %d\n",if_condition_met,ifdepth);
 	return 0;
 }
+ */
+// **********
 
-// ********** 
+/* IFNDEFINED variableName
+ If variableName is not a defined variable, the commands following the IF are executed, otherwise, the commands between IF and ENDIF are not executed.
+*/
 
-int ifnotdefined(int n, int index)	// set flag to use integer value of a variable
+int ifndefined(int n, char* args)
 {
 	extern int macflag,exflag;
 	
@@ -2206,7 +2212,7 @@ int ifnotdefined(int n, int index)	// set flag to use integer value of a variabl
 	}
 	
 	// Make the test to see if the argument exists
-	arg_index = get_variable_index(&cmnd[index],0);
+	arg_index = get_variable_index(args,0);
 	if(arg_index < 0) {	// If variable wasn't defined then 
 		this_test = 1;    // test returns true
 	} else {
@@ -2233,9 +2239,13 @@ int ifnotdefined(int n, int index)	// set flag to use integer value of a variabl
 	
 }
 
-// ********** 
+// **********
 
-int ifdefined(int n, int index)	// set flag to use integer value of a variable
+/* IFDEFINED variableName
+ If variableName is a defined variable, the commands following the IF are executed, otherwise, the commands between IF and ENDIF are not executed.
+*/
+
+int ifdefined(int n, char* args)
 {
 	extern int macflag,exflag;
 	
@@ -2244,12 +2254,12 @@ int ifdefined(int n, int index)	// set flag to use integer value of a variable
 	
 	if( (macflag == 0) && (exflag == 0)) {
 		beep();
-		printf("IFNDEF must be within a Macro.\n");
+		printf("IFDEF must be within a Macro.\n");
 		return -1;
 	}
 	
 	// Make the test to see if the argument exists
-	arg_index = get_variable_index(&cmnd[index],0);
+	arg_index = get_variable_index(args,0);
 	if(arg_index < 0) {	// If variable wasn't defined then 
 		this_test = 0;    // test returns true
 	} else {
@@ -2271,13 +2281,13 @@ int ifdefined(int n, int index)	// set flag to use integer value of a variable
         printf("IF buffer overflow.\n");
         return -1;
     }
-	printf("if condition: %d; depth %d\n",if_condition_met,ifdepth);
+	//printf("if condition: %d; depth %d\n",if_condition_met,ifdepth);
 	return 0;
 	
 }
 
 // ********** 
-*/
+
 
 int ifcmnd(int n, char* args)
 {
