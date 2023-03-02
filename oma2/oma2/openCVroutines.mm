@@ -321,6 +321,7 @@ int cvAlign_q(int n,char* args){
     unsigned char* byteptr=bits;
     
     DATAWORD* values = iBuffer.getvalues();
+    DATAWORD* resultValues = iBuffer.getvalues();
     DATAWORD scale = 255./(values[MAX]-values[MIN]);
     DATAWORD minval=values[MIN];
     if(nargs == 5){
@@ -409,6 +410,7 @@ int cvAlign_q(int n,char* args){
         printf("exception caught: %s\n",err_msg);
         delete[] bits;
         delete[] bits2;
+        free(resultValues);
         return CMND_ERR;
     }
     user_variables[0].ivalue = user_variables[0].fvalue = cc;
@@ -420,6 +422,7 @@ int cvAlign_q(int n,char* args){
         printf("Error aligning images.\n");
         delete[] bits;
         delete[] bits2;
+        free(resultValues);
         return CMND_ERR;
     } else {
         pprintf("Transform returned %g.\n",cc);
@@ -493,6 +496,8 @@ int cvAlign_q(int n,char* args){
     original.free();
     iBuffer.free();
     iBuffer=newIm;
+    iBuffer.setvalues(resultValues);
+    free(resultValues);
     iBuffer.getmaxx(printMax);
     delete[] bits;
     delete[] bits2;

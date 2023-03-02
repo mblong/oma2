@@ -66,7 +66,15 @@ extern oma2UIData UIData;
     }
     [cmaxLabel setStringValue:[NSString stringWithFormat:@"Cmax: %g",UIData.cmax]];
     [cminLabel setStringValue:[NSString stringWithFormat:@"Cmin: %g",UIData.cmin]];
-
+/*
+    extern Variable user_variables[];
+    user_variables[0].fvalue = UIData.cmin;
+    user_variables[0].ivalue = UIData.cmin;
+    user_variables[0].is_float = 1;
+    user_variables[1].fvalue = UIData.cmax;
+    user_variables[1].ivalue = UIData.cmax;
+    user_variables[1].is_float = 1;
+*/
     histogramIsVisible=1;
     [histogramView display];
 

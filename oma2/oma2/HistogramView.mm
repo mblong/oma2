@@ -136,6 +136,14 @@ extern oma2UIData UIData;
         
         //[self.window makeKeyAndOrderFront:NULL];
     }
+    extern Variable user_variables[];
+    user_variables[0].fvalue = UIData.cmin;
+    user_variables[0].ivalue = UIData.cmin;
+    user_variables[0].is_float = 1;
+    user_variables[1].fvalue = UIData.cmax;
+    user_variables[1].ivalue = UIData.cmax;
+    user_variables[1].is_float = 1;
+
 
     update_UI();
 }

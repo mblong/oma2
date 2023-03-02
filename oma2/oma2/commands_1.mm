@@ -1900,7 +1900,7 @@ int columns_c(int n,char* args){
 int setcminmax_c(int n,char* args)		/* get color min and max */
 {
     DATAWORD mn = 1, mx;
-    
+
     if(*args){
         int narg = sscanf(args,"%f %f",&mn,&mx);
         if (narg == 2){
@@ -2901,6 +2901,23 @@ int echo_c(int n,char* args)
 //********************************************************
 //*** FECHO, FOPEN , FCLOSE
 //***         P. Kalt (2005)
+/*FCLOSE
+    Closes the currently open text file (there can be only one). The use of FOPEN, FCLOSE,
+     and FECHO allows derived values to be written to a file from within a macro.
+
+FECHO string
+    Writes the string to the file opened with FOPEN. A newLine is added after the string
+     unless the string ends in ..., in which case no newLine is added. The use of FOPEN,
+     FCLOSE, and FECHO allows derived values to be written to a file from within a macro.
+
+FOPEN <filename>
+    Open a text file with the name <filename> for I/O. The use of FOPEN, FCLOSE, and
+     FECHO allows derived values to be written to a file from within a macro. <filename>
+     should specify the extension (e.g., .txt or .csv).
+
+ FLOG [lineNumber]]
+    Writes log information to the file opened with FOPEN. If no lineNumber is specified, all lines are added, otherwise, just the specified line is added.
+*/
 //********************************************************
 FILE 	*fptr_local;
 char    *fptr_name;
@@ -2952,6 +2969,60 @@ int fecho_c (int n,char* args)
     }
     return NO_ERR;
 }
+
+int flog_c (int n,char* args)
+{
+    int i=0;
+    char* comment = iBuffer.getComment();
+    
+    if( fptr_local != NULL) {
+        if(comment){
+            if (*args == 0) {   // insert all lines in the log
+                while (comment[i]) {
+                    fprintf(fptr_local, "%s\n",&comment[i]);
+                    while (comment[i]) {
+                        i++;
+                    }
+                    i++;
+                }
+                free(comment);
+                return NO_ERR;
+            } else {
+                // just insert nth line
+                if(n<1){
+                    beep();
+                    printf("The line number must be > 0.\n");
+                    free(comment);
+                    return CMND_ERR;
+                }
+                int lnum=1;
+                while(lnum<n){
+                    while (comment[i]) i++; // skip over characters in this line
+                    i++;
+                    lnum++;
+                }
+                if(comment[i]){
+                    fprintf(fptr_local, "%s\n",&comment[i]);
+                } else {
+                    beep();
+                    printf("The log does not contain line %d.\n",n);
+                    free(comment);
+                    return CMND_ERR;
+                }
+            }
+            free(comment);
+            return NO_ERR;
+        } else {
+            beep();
+            printf("Error: There are no comments in the log.\n");
+            return CMND_ERR;
+        }
+    }
+    beep();
+    printf("Error: No file open. File pointer is NULL\n");
+    return OMA_FILE;
+}
+
 
 int saveJpg_c(int n, char* args){
     

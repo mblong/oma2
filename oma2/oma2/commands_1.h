@@ -95,6 +95,7 @@ int findbad_c(int,char*);
 int fwdatm_c(int n,char* args);
 int fold_c(int n, char* args);
 int filter_c(int n, char* args);
+int flog_c(int n, char* args);
 #if defined(MacOSX_UI)
     int flippid_c(int n, char* args);
 #endif

@@ -114,6 +114,7 @@ ComDef   commands[] =    {
     {{"FWDATMATLAB    "},	fwdatm_c},
     {{"FLOATAUTO      "},   floatAuto},
     {{"FILTER         "},   filter_c},
+    {{"FLOG           "},   flog_c},
 #if defined(MacOSX_UI)
     {{"FLIPPID        "},   flippid_c},
 #endif
@@ -710,7 +711,7 @@ int comdec(char* cmnd)
             
             // Now Execute the Appropriate Command -- unless this is in an IF whose condition is not met
             
-            if(if_condition_met ||fnc == endifcmnd || fnc == ifcmnd){
+            if(if_condition_met ||fnc == endifcmnd || fnc == ifcmnd || fnc == ifdefined || fnc == ifndefined || fnc == ifnotcmnd){
                 command_return = error_return = (*fnc)(ivalue,&cmnd[chindx]);
                 if(exflag==0 && macflag==0) break;
             }
@@ -1696,7 +1697,7 @@ int logg(int n,char* args)
         
         if (n == 0) n = 1;
         line_num = n;
-        // to get pointer no the next character, skip past n-1 zeros in the comment buffer
+        // to get pointer to the next character, skip past n-1 zeros in the comment buffer
         
         j = n;
         while (--j) { 			// find the start of the specified line
@@ -2203,7 +2204,7 @@ int ifndefined(int n, char* args)
 	extern int macflag,exflag;
 	
 	int this_test;
-	int arg_index;
+	int arg_index,i=0;
 	
 	if( (macflag == 0) && (exflag == 0)) {
 		beep();
@@ -2212,31 +2213,31 @@ int ifndefined(int n, char* args)
 	}
 	
 	// Make the test to see if the argument exists
-	arg_index = get_variable_index(args,0);
+    while(args[i] == ' ' || args[i] == '\t') i++;   ; // skip spaces and tabs
+	arg_index = get_variable_index(&args[i],0);
 	if(arg_index < 0) {	// If variable wasn't defined then 
 		this_test = 1;    // test returns true
 	} else {
 		this_test = 0;
 	}
 	
-	// Set the LOOP conditions
-	if(ifdepth == 0) if_condition_met = this_test;
-	else{	// we're nested -- check to make sure that one above is true
-		if(if_condition[ifdepth-1]){
-			if_condition_met = this_test;
-		}	
-	}
-	
-	if_condition[ifdepth] = this_test;
-	ifdepth++;
+    if(ifdepth == 0) if_condition_met = this_test;
+    else{    // we're nested -- check to make sure that one above is true
+        if(if_condition[ifdepth-1]){
+            if_condition_met = this_test;
+        }
+    }
+    
+    if_condition[ifdepth] = this_test;
+    ifdepth++;
     if(ifdepth >= NESTDEPTH){
         beep();
         printf("IF buffer overflow.\n");
         return -1;
     }
-	printf("if condition: %d; depth %d\n",if_condition_met,ifdepth);
-	return 0;
-	
+    //printf("if condition: %d; depth %d\n",if_condition_met,ifdepth);
+    return 0;
+    
 }
 
 // **********
@@ -2259,6 +2260,7 @@ int ifdefined(int n, char* args)
 	}
 	
 	// Make the test to see if the argument exists
+    
 	arg_index = get_variable_index(args,0);
 	if(arg_index < 0) {	// If variable wasn't defined then 
 		this_test = 0;    // test returns true
@@ -2266,24 +2268,23 @@ int ifdefined(int n, char* args)
 		this_test = 1;
 	}
 	
-	// Set the LOOP conditions
-	if(ifdepth == 0) if_condition_met = this_test;
-	else{	// we're nested -- check to make sure that one above is true
-		if(if_condition[ifdepth-1]){
-			if_condition_met = this_test;
-		}	
-	}
-	
-	if_condition[ifdepth] = this_test;
-	ifdepth++;
+    if(ifdepth == 0) if_condition_met = this_test;
+    else{    // we're nested -- check to make sure that one above is true
+        if(if_condition[ifdepth-1]){
+            if_condition_met = this_test;
+        }
+    }
+    
+    if_condition[ifdepth] = this_test;
+    ifdepth++;
     if(ifdepth >= NESTDEPTH){
         beep();
         printf("IF buffer overflow.\n");
         return -1;
     }
-	//printf("if condition: %d; depth %d\n",if_condition_met,ifdepth);
-	return 0;
-	
+    //printf("if condition: %d; depth %d\n",if_condition_met,ifdepth);
+    return 0;
+    
 }
 
 // ********** 

@@ -347,6 +347,9 @@ FCLOSE
 FECHO string
 	Writes the string to the file opened with FOPEN. A newLine is added after the string unless the string ends in ..., in which case no newLine is added. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.
 
+FLOG [lineNumber]
+    Writes log information to the file opened with FOPEN. If no lineNumber is specified, all lines are added, otherwise, just the specified line is added.
+
 FOPEN <filename>
 	Open a text file with the name <filename> for I/O. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro. <filename> should specify the extension (e.g., .txt or .csv).
 
