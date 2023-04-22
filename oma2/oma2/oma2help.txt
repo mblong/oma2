@@ -697,10 +697,13 @@ SAVSETTINGS [filename]
 	Saves the current settings to the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings are saved within the oma application. 
 
 SATIFF <filename> 
-	Converts the contents of the OMA Image buffer to 8 bit unsigned data and then uses the LibTIFF TIFFWriteEncodedStrip function to save the data to a TIFF image specified on the command line. The 'save' file prefixes are used. A ".tif" extension is automatically appended to the filename. To save as a color image, use the COLORFLAG command to set the flag appropriately.
+	Converts the contents of the OMA Image buffer to 16 bit unsigned data and saves a compressed 16-bit TIFF image to the specified filename. The 'save' file prefix is used. A ".tif" extension is automatically appended to the filename.
 
 SATIFFSCALED min max <filename>
-	Convert image to 16 bit and save as a TIFF file. Uses the specified min and max for scaling rather than the min and max of the image in the buffer. Results will be between 0 - 65535. Depending on min and max, the image may be clipped or the full 16-bit dynamic range may not be used. To save as a color image, use the COLORFLAG command to set the flag appropriately.
+	Converts the image to 16 bit and saves it as a compressed 16-bit TIFF file. The specified min and max are used for scaling rather than the min and max of the image in the buffer. Results will be between 0 - 65535. Depending on min and max, the image may be clipped or the full 16-bit dynamic range may not be used.
+
+SAVETIFF <filename>
+	This saves the current image as a compressed 16-bit TIFF file, with the color min and max used for scaling. Results will be between 0 - 65535. For processed images, this provides a higher dynamic range alternative to saving them as JPEGs.
 
 SAVEJPG <filename>
 	Saves the current image bitmap to a JPG file. The current display parameters are used to create the bitmap. Include the .jpg extension in the file name.

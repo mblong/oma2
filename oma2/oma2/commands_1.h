@@ -6,11 +6,11 @@
 #include "ImageBitmap.h"
 #include "UI.h"
 
-#ifdef MacOSX_UI
-extern "C" {
-#include "tiffio.h"
-}
-#endif
+//#ifdef MacOSX_UI
+//extern "C" {
+//#include "tiffio.h"
+//}
+//#endif
 
 // Commands
 
@@ -218,6 +218,7 @@ int say_c(int,char*);
 int scatter_c(int,char*);
 int saturate_c(int,char*);
 int savefits_c(int, char*);
+int savetiff_c(int, char*);
 
 
 #if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
@@ -270,5 +271,6 @@ void decodeHobj(Image*,int,int);
 
 void simpleFindBad(int rows, int cols, int neighborDistance, int n, Image *image);
 void simpleClearBad(int ccd_width,int rows, int cols, int neighborDistance, int x0, int y0, Image *image);
-
+int save16BitTiff(unsigned short* imageData, int nRows, int nColumns, const char* fileName);
+int save16BitColorTIFF(unsigned short* rgbData, int nRows, int nColumns, const char *fileName);
 #endif

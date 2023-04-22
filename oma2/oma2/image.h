@@ -165,7 +165,6 @@ public:
     friend int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im);
     friend int read_jpeg(char* filename,int thecolor, Image*);
     friend int readJpeg(char* filename, Image*);
-    friend int readTiff(char* filename, Image*);
     friend int readHDR(char* filename, Image*);
     friend int readHobj(char* filename, Image*);
     friend int readCsv(char* filename, Image*);

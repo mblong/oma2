@@ -81,9 +81,6 @@
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DB629C07248E8A020035CB37 /* libPvAPI.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		DB629C09248E8A500035CB37 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		DB685CE62355633600812918 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
-		DB685CE72355633600812918 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
 		DB68D6492816BD1800D5A293 /* libraw_r.u.22.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB3DBE072815A0FD00FCAB88 /* libraw_r.u.22.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB8078AA28C13418003EBE42 /* Histogram.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85328BEA46500DE2C70 /* Histogram.mm */; };
 		DB8078AB28C13419003EBE42 /* Histogram.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85328BEA46500DE2C70 /* Histogram.mm */; };
@@ -157,7 +154,6 @@
 		DBA03742181704740042DF6F /* DrawingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBA03741181704740042DF6F /* DrawingWindow.xib */; };
 		DBA3B5F716FC781300B7FF27 /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
 		DBA3CB871911985800AD10BC /* gpib.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA3CB851911985800AD10BC /* gpib.mm */; };
-		DBA7F676238843FD003F2608 /* LibTiff_F.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DBA96ABA1520C7090043754E /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
 		DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD5691802050F007F8801 /* DrawingView.mm */; };
 		DBABD56F180208E7007F8801 /* DrawingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD56E180208E7007F8801 /* DrawingWindowController.mm */; };
@@ -213,7 +209,6 @@
 		DBDECE3E27FF5337007AC635 /* EDSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBFEFA0226B5F119002873C8 /* EDSDK.framework */; };
 		DBDECE3F27FF5337007AC635 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB2C37217F9A187008C03BB /* ImageIO.framework */; };
 		DBDECE4027FF5337007AC635 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
-		DBDECE4227FF5337007AC635 /* LibTiff_F.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; };
 		DBDECE4827FF5337007AC635 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
 		DBDECE4927FF5337007AC635 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC0311519183D008A9B54 /* Credits.rtf */; };
 		DBDECE4A27FF5337007AC635 /* ColorImageOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB1DC8272601424D00C5A72C /* ColorImageOptions.xib */; };
@@ -248,7 +243,6 @@
 		DBDECE6827FF5337007AC635 /* pal3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A5615A2895B00502B50 /* pal3.jpg */; };
 		DBDECE6927FF5337007AC635 /* oma2help.txt in Resources */ = {isa = PBXBuildFile; fileRef = DBA3B5F616FC781300B7FF27 /* oma2help.txt */; };
 		DBDECE6B27FF5337007AC635 /* EDSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DBFEFA0226B5F119002873C8 /* EDSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		DBDECE7027FF5337007AC635 /* LibTiff_F.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = DB685CE52355633600812918 /* LibTiff_F.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DBF08DE3159D63980099CB4C /* c-box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DBF08DE2159D63980099CB4C /* c-box.jpg */; };
 		DBF24A2C1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
 		DBF24A2D1D3B091700115E4E /* dmbilinear.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBF24A2B1D3B091700115E4E /* dmbilinear.mm */; };
@@ -268,7 +262,6 @@
 				DB1938302816FBA3008E2279 /* libraw_r.u.22.dylib in CopyFiles */,
 				DB38A5F7280DF69000F5C52C /* libcfitsio.u.9.4.1.0.dylib in CopyFiles */,
 				DB38A5F8280DF69000F5C52C /* libgsl.u.27.dylib in CopyFiles */,
-				DBA7F676238843FD003F2608 /* LibTiff_F.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,7 +276,6 @@
 				DB68D6492816BD1800D5A293 /* libraw_r.u.22.dylib in CopyFiles */,
 				DB0333442810305100868F47 /* libcfitsio.u.9.4.1.0.dylib in CopyFiles */,
 				DB0333452810305100868F47 /* libgsl.u.27.dylib in CopyFiles */,
-				DB629C09248E8A500035CB37 /* LibTiff_F.framework in CopyFiles */,
 				DB629C07248E8A020035CB37 /* libPvAPI.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,7 +320,6 @@
 				DB11C2EB2819A09D005E521D /* libgsl.u.27.dylib in Copy Files */,
 				DB11C2E628196FC5005E521D /* libraw_r.u.22.dylib in Copy Files */,
 				DB11C2E728196FC5005E521D /* libcfitsio.u.9.4.1.0.dylib in Copy Files */,
-				DBDECE7027FF5337007AC635 /* LibTiff_F.framework in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -409,13 +400,9 @@
 		DB589E32281C34D200469001 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
 		DB593A36151B8B19007CA0C3 /* plus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plus.jpg; sourceTree = "<group>"; };
 		DB593A3A151B9766007CA0C3 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
-		DB685CE52355633600812918 /* LibTiff_F.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LibTiff_F.framework; sourceTree = "<group>"; };
 		DB6EDB2E1912A3C00032934F /* gpib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gpib.h; sourceTree = "<group>"; };
 		DB6FC3B42707421D00735B9C /* fitsio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fitsio.h; sourceTree = "<group>"; };
 		DB6FC3B5270743DF00735B9C /* longnam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = longnam.h; sourceTree = "<group>"; };
-		DB6FF6FF18467F46002D728B /* tiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiff.h; sourceTree = "<group>"; };
-		DB6FF70018467F46002D728B /* tiffio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffio.h; sourceTree = "<group>"; };
-		DB6FF70118467F46002D728B /* tiffvers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiffvers.h; sourceTree = "<group>"; };
 		DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dmmalvar.mm; sourceTree = "<group>"; };
 		DB83FD761D4FE5DE009B3204 /* dmmalvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dmmalvar.h; sourceTree = "<group>"; };
 		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
@@ -487,7 +474,6 @@
 				DB3DBE0B2815A17B00FCAB88 /* libraw_r.u.22.dylib in Frameworks */,
 				DB85D3E925D48BEC00EFD8E7 /* CoreImage.framework in Frameworks */,
 				DB41540D2819E28C00C06AB5 /* opencv2.framework in Frameworks */,
-				DB685CE62355633600812918 /* LibTiff_F.framework in Frameworks */,
 				DB38A5F1280DF61400F5C52C /* libcfitsio.u.9.4.1.0.dylib in Frameworks */,
 				DBB2C37317F9A187008C03BB /* ImageIO.framework in Frameworks */,
 				DB589E34281C351000469001 /* Accelerate.framework in Frameworks */,
@@ -508,7 +494,6 @@
 				DB2D779C2985DDD700E8F781 /* libASICamera2.dylib.1.28 in Frameworks */,
 				DB1C7A5928500F8000984EBB /* libusb-1.0.0.dylib in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
-				DB685CE72355633600812918 /* LibTiff_F.framework in Frameworks */,
 				DB38A5F5280DF61400F5C52C /* libgsl.u.27.dylib in Frameworks */,
 				DB38A5F2280DF61400F5C52C /* libcfitsio.u.9.4.1.0.dylib in Frameworks */,
 				DB589E33281C34D200469001 /* Accelerate.framework in Frameworks */,
@@ -529,7 +514,6 @@
 				DB3DBE092815A0FD00FCAB88 /* libraw_r.u.22.dylib in Frameworks */,
 				DB1C7A572850087900984EBB /* Accelerate.framework in Frameworks */,
 				DBDECE4027FF5337007AC635 /* Cocoa.framework in Frameworks */,
-				DBDECE4227FF5337007AC635 /* LibTiff_F.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,7 +569,6 @@
 			children = (
 				DB41540C2819E28C00C06AB5 /* opencv2.framework */,
 				DBFEFA0226B5F119002873C8 /* EDSDK.framework */,
-				DB685CE52355633600812918 /* LibTiff_F.framework */,
 				DBC3F1FC19129FEF00AD7850 /* VISA.framework */,
 				DB57E31C18F5901D00FA4D29 /* SBIGUDrv.framework */,
 			);
@@ -733,9 +716,6 @@
 				DB6FC3B42707421D00735B9C /* fitsio.h */,
 				DB6FC3B5270743DF00735B9C /* longnam.h */,
 				DB021E7715211EFA001D1B05 /* image_support.mm */,
-				DB6FF6FF18467F46002D728B /* tiff.h */,
-				DB6FF70018467F46002D728B /* tiffio.h */,
-				DB6FF70118467F46002D728B /* tiffvers.h */,
 				DB52C79E17F102130048F57A /* dcrawx.h */,
 				DB87BF0117F08DA200E1BF68 /* dcrawx.mm */,
 				DB4E036F183527B200250EA4 /* dofft.h */,

@@ -3062,126 +3062,181 @@ int savePdf_c(int n, char* args){
 //***          Greyscale TIFF file (uses LibTIFF)
 //***          P. Kalt (2003) after J.Fielding
 //***************************************************
-int satiff_c(int n, char* args)
+
+int save16BitTiff(unsigned short* imageData, int nRows, int nColumns, const char* fileName) {
+    // Create a bitmap representation of the image
+    NSBitmapImageRep *bitmap = [[NSBitmapImageRep alloc]
+        initWithBitmapDataPlanes:NULL
+        pixelsWide:nColumns
+        pixelsHigh:nRows
+        bitsPerSample:16
+        samplesPerPixel:1
+        hasAlpha:NO
+        isPlanar:NO
+        colorSpaceName:NSCalibratedWhiteColorSpace
+        bytesPerRow:nColumns*2
+        bitsPerPixel:16];
+    
+    // Copy the image data to the bitmap representation
+    memcpy([bitmap bitmapData], imageData, nRows*nColumns*2);
+    
+    // Create a dictionary of TIFF export options
+    NSDictionary *tiffExportOptions = @{
+        NSImageCompressionMethod : @(NSTIFFCompressionLZW)
+    };
+    
+    // Create an NSData object containing the TIFF image data
+    NSData *tiffData = [bitmap representationUsingType:NSTIFFFileType
+        properties:tiffExportOptions];
+    
+    // Write the TIFF data to disk
+    NSError *error;
+    if (![tiffData writeToFile:[NSString stringWithUTF8String:fileName]
+                       options:NSDataWritingAtomic
+                         error:&error]) {
+        //NSLog(@"Failed to save TIFF file: %@", error);
+        return FILE_ERR;
+    }
+    return NO_ERR;
+}
+
+
+// Define the function to save the image
+int save16BitColorTIFF(unsigned short* rgbData, int nRows, int nColumns, const char *fileName) {
+    
+    // Create an NSBitmapImageRep with the image data
+    NSBitmapImageRep *bitmap = [[NSBitmapImageRep alloc]  initWithBitmapDataPlanes:NULL
+     pixelsWide:nColumns
+     pixelsHigh:nRows
+     bitsPerSample:16
+     samplesPerPixel:3
+     hasAlpha:NO
+     isPlanar:NO
+     colorSpaceName:NSDeviceRGBColorSpace
+     bytesPerRow:6 * nColumns
+     bitsPerPixel:48];
+    
+    memcpy([bitmap bitmapData], rgbData, nRows*nColumns*6);
+    /*
+    // Create an NSData object with the compressed TIFF data
+    NSData *tiffData = [imageRep representationUsingType:NSTIFFFileType
+      properties:@{NSTIFFCompression:@5}];
+    */
+    // Create a dictionary of TIFF export options
+    NSDictionary *tiffExportOptions = @{
+        NSImageCompressionMethod : @(NSTIFFCompressionLZW)
+    };
+    
+    // Create an NSData object containing the TIFF image data
+    NSData *tiffData = [bitmap representationUsingType:NSTIFFFileType
+        properties:tiffExportOptions];
+
+    // Write the TIFF data to disk
+    NSError *error;
+    if (![tiffData writeToFile:[NSString stringWithUTF8String:fileName]
+                       options:NSDataWritingAtomic
+                         error:&error]) {
+        //NSLog(@"Failed to save TIFF file: %@", error);
+        return FILE_ERR;
+    }
+    return NO_ERR;
+}
+
+/*
+SAVETIFF filename
+ Saves a 16-bit compressed TIF image based on the current data and cmin/cmax values. Does not alter the current image.
+*/
+
+int savetiff_c(int n, char* args)
 {
 #ifdef MacOSX_UI
-    uint32 rowsperstrip = (uint32) -1;
-    double resolution = -1;
-    unsigned char *buf = NULL,*buf2;
-    uint32 row, col;
-    tsize_t linebytes;
-    uint16 spp;
-    TIFF *out;
-    uint32 w, h;
+
+    char theArg[128];
+
+    // save a copy of the original image
+    Image im;
+    im << iBuffer;
+    snprintf(theArg,128,"%f %f %s", UIData.cmin,UIData.cmax,args);
+    printMax=0;
+    satiffscaled_c(0,theArg); // remap iBuffer to fill 16 bits based on cmin and cmax
+    printMax=1;
+    int err = iBuffer.err();
+    iBuffer.free();
+    iBuffer = im;   // return original image
+    iBuffer.getmaxx(0);
+    update_UI();
+    return err;
     
-    char txt[CHPERLN];
-    
-    int* specs = iBuffer.getspecs();
-    
-    w = specs[COLS];
-    h = specs[ROWS];
-    spp = 1; // grayscale
-    if(specs[IS_COLOR]){
-        spp=3;
-        h /= 3;
-    }
-    
-    sscanf(args,"%s",txt);
-    
-    fullname(txt,TIF_DATA);  //if TIFF_DATA is not on your system use GET_DATA
-    printf("Writing TIFF to file: %s\n",txt);
-    
-    out = TIFFOpen(txt, "w");
-    if (out == NULL)
-        return (-4);
-    TIFFSetField(out, TIFFTAG_IMAGEWIDTH,  w);
-    TIFFSetField(out, TIFFTAG_IMAGELENGTH, h);
-    TIFFSetField(out, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
-    TIFFSetField(out, TIFFTAG_SAMPLESPERPIXEL, spp);
-    TIFFSetField(out, TIFFTAG_BITSPERSAMPLE, 8);
-    TIFFSetField(out, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
-    if(specs[IS_COLOR])
-        TIFFSetField(out, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB);
-    else
-        TIFFSetField(out, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
-    
-    TIFFSetField(out, TIFFTAG_COMPRESSION, COMPRESSION_NONE);
-    
-    linebytes = spp * w;
-    buf = (unsigned char *)_TIFFmalloc(TIFFScanlineSize(out));
-    TIFFSetField(out, TIFFTAG_ROWSPERSTRIP,
-                 TIFFDefaultStripSize(out, rowsperstrip));
-    if (resolution > 0) {
-        TIFFSetField(out, TIFFTAG_XRESOLUTION, resolution);
-        TIFFSetField(out, TIFFTAG_YRESOLUTION, resolution);
-        TIFFSetField(out, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);
-    }
-    
-    bit8_c(0,NULL); // Convert to 8bit greyscale
-    
-    if (specs[IS_COLOR]) {
-        for (row = 0; row < h; row++) {
-            buf2 = buf;
-            for (col = 0; col < w; col++){
-                *buf2++ = (unsigned char) iBuffer.getpix((int)row, (int)col);
-                *buf2++ = (unsigned char) iBuffer.getpix((int)(row+1)*h, (int)col);
-                *buf2++ = (unsigned char) iBuffer.getpix((int)(row+2)*h, (int)col);
-            }
-            if (TIFFWriteScanline(out, buf, row, 0) < 0) break;
-        }
-    } else{
-        for (row = 0; row < h; row++) {
-            for (col = 0; col < w; col++)
-                *(buf+col) = (unsigned char) iBuffer.getpix((int)row, (int)col);
-            if (TIFFWriteScanline(out, buf, row, 0) < 0) break;
-        }
-    }
-    (void) TIFFClose(out);
-    if (buf)
-        _TIFFfree(buf);
-    free(specs);
-    return NO_ERR;
 #endif
 #ifndef MacOSX_UI
     return saveTiff(args);
 #endif
-    
 }
+
+
+int satiff_c(int n, char* args)
+{
+#ifdef MacOSX_UI
+    // Define the number of rows and columns in the image
+    int nRows = iBuffer.rows();
+    int nCols = iBuffer.cols();
+
+    // Define the file name
+    const char *fileName = fullname(args,TIF_DATA);
+    printf("Writing TIFF to file: %s\n",fileName);
+    map_c(0,(char*)"0 65535"); // remap to fill 16 bits
+    DATAWORD* theData=iBuffer.getImageData();
+    if(iBuffer.isColor()){
+        nRows /= 3;
+        unsigned short* imageData = new unsigned short[nRows*nCols*3];
+        for (int i = 0; i < nRows * nCols * 3; i+= 3) {
+            imageData[i] = *theData;
+            imageData[i+1] = *(theData + nRows * nCols);
+            imageData[i+2] = *(theData++ + nRows * nCols * 2);
+        }
+        int err = save16BitColorTIFF( imageData,  nRows,  nCols,  fileName);
+        delete[] imageData;
+        if(err){
+            beep();
+            printf("File Error Saving Tif Image.\n");
+        }
+        return err;
+
+    }else {
+        unsigned short* imageData = new unsigned short[nRows*nCols];
+        for (int i = 0; i < nRows * nCols; i++) {
+            imageData[i] = *theData++;
+        }
+        int err = save16BitTiff( imageData,  nRows,  nCols,  fileName);
+        delete[] imageData;
+        if(err){
+            beep();
+            printf("File Error Saving Tif Image.\n");
+        }
+        return err;
+    }
+#endif
+#ifndef MacOSX_UI
+    return saveTiff(args);
+#endif
+}
+
 
 //***************************************************
 //*** SATIFFSCALED - Convert image to 16bit and save as a
-//***          Color or Greyscale TIFF file (uses LibTIFF)
+//***          Color or Greyscale TIFF file
 //***         Uses  min and max for scaling
 //***************************************************
 
 int satiffscaled_c(int n, char* args)
 {
 #ifdef MacOSX_UI
-    uint32 rowsperstrip = (uint32) -1;
-    double resolution = -1;
-    unsigned short *buf = NULL,*buf2;
-    uint32 row, col;
-    tsize_t linebytes;
-    uint16 spp;
-    TIFF *out;
-    uint32 w, h;
-    char txt[CHPERLN];
-    
     float mymin,mymax;
     int narg = 0;
-    
     int* specs = iBuffer.getspecs();
-    
-    w = specs[COLS];
-    h = specs[ROWS];
-    spp = 1; // grayscale
-    if(specs[IS_COLOR]){
-        spp=3;
-        h /= 3;
-    }
+    char txt[CHPERLN];
     
     narg = sscanf(args,"%f %f %s",&mymin,&mymax,txt);
-    
     if(narg != 3) {
         beep();
         printf("Need 3 arguments: min max filename\n");
@@ -3192,67 +3247,62 @@ int satiffscaled_c(int n, char* args)
         printf("Need Max > Min\n");
         return ARG_ERR;
     }
-    
     fullname(txt,TIF_DATA);  //if TIFF_DATA is not on your system use GET_DATA
     printf("Writing TIFF to file: %s\n",txt);
-    
-    out = TIFFOpen(txt, "w");
-    if (out == NULL)
-        return (-4);
-    TIFFSetField(out, TIFFTAG_IMAGEWIDTH,  w);
-    TIFFSetField(out, TIFFTAG_IMAGELENGTH, h);
-    TIFFSetField(out, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
-    TIFFSetField(out, TIFFTAG_SAMPLESPERPIXEL, spp);
-    TIFFSetField(out, TIFFTAG_BITSPERSAMPLE, 16);
-    TIFFSetField(out, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
-    if(specs[IS_COLOR])
-        TIFFSetField(out, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB);
-    else
-        TIFFSetField(out, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
-    
-    TIFFSetField(out, TIFFTAG_COMPRESSION, COMPRESSION_NONE);
-    
-    linebytes = spp * w;
-    buf = (unsigned short *)_TIFFmalloc(TIFFScanlineSize(out));
-    TIFFSetField(out, TIFFTAG_ROWSPERSTRIP,
-                 TIFFDefaultStripSize(out, rowsperstrip));
-    if (resolution > 0) {
-        TIFFSetField(out, TIFFTAG_XRESOLUTION, resolution);
-        TIFFSetField(out, TIFFTAG_YRESOLUTION, resolution);
-        TIFFSetField(out, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);
-    }
-    
-    bit16_c(n,args); // Convert to 16 bit greyscale
-    
-    if (specs[IS_COLOR]) {
-        for (row = 0; row < h; row++) {
-            buf2 = buf;
-            for (col = 0; col < w; col++){
-                *buf2++ = (unsigned short) iBuffer.getpix((int)row, (int)col);
-                *buf2++ = (unsigned short) iBuffer.getpix((int)row+h, (int)col);
-                *buf2++ = (unsigned short) iBuffer.getpix((int)row+2*h, (int)col);
-            }
-            if (TIFFWriteScanline(out, buf, row, 0) < 0) break;
-        }
-    } else{
-        for (row = 0; row < h; row++) {
-            for (col = 0; col < w; col++)
-                *(buf+col) = (unsigned short) iBuffer.getpix((int)row, (int)col);
-            if (TIFFWriteScanline(out, buf, row, 0) < 0) break;
+    // modify the data according to min/max
+    DATAWORD fpval,range = mymax - mymin;
+    for(int i=0; i<specs[ROWS]; i++){
+        for(int j = 0; j<specs[COLS]; j++){
+            fpval = (iBuffer.getpix(i,j)-mymin) * 65535.0/range;
+            if (fpval > 65535.) fpval = 65535;
+            if(fpval < 0.) fpval = 0;
+            iBuffer.setpix(i,j,fpval);
         }
     }
-    (void) TIFFClose(out);
-    if (buf)
-        _TIFFfree(buf);
     free(specs);
-    return NO_ERR;
+    iBuffer.getmaxx(printMax);
+    update_UI();
+    // Define the number of rows and columns in the image
+    int nRows = iBuffer.rows();
+    int nCols = iBuffer.cols();
+
+    DATAWORD* theData=iBuffer.getImageData();
+    if(iBuffer.isColor()){
+        nRows /= 3;
+        unsigned short* imageData = new unsigned short[nRows*nCols*3];
+        for (int i = 0; i < nRows * nCols * 3; i+= 3) {
+            imageData[i] = *theData;
+            imageData[i+1] = *(theData + nRows * nCols);
+            imageData[i+2] = *(theData++ + nRows * nCols * 2);
+        }
+        int err = save16BitColorTIFF( imageData,  nRows,  nCols,  txt);
+        delete[] imageData;
+        if(err){
+            beep();
+            printf("File Error Saving Tif Image.\n");
+        }
+        return err;
+
+    }else {
+        unsigned short* imageData = new unsigned short[nRows*nCols];
+        for (int i = 0; i < nRows * nCols; i++) {
+            imageData[i] = *theData++;
+        }
+        int err = save16BitTiff( imageData,  nRows,  nCols,  txt);
+        delete[] imageData;
+        if(err){
+            beep();
+            printf("File Error Saving Tif Image.\n");
+        }
+        return err;
+    }
+
 #endif
 #ifndef MacOSX_UI
     beep();
     printf("Not implemented in QtOMA.\n");
     return CMND_ERR;
 #endif
-    
 }
 
 

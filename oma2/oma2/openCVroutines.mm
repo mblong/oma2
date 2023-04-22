@@ -589,6 +589,22 @@ int cvNLDenoise_q(int n,char* args){
     return NO_ERR;
 }
 
+// written by Bard
+
+void denoiseMonochromeImage(unsigned short *imageData, int nRows, int nColumns, double denoisingStrength) {
+  // Convert the image data to an OpenCV Mat object.
+  cv::Mat image(nRows, nColumns, CV_16U, imageData);
+
+  // Apply denoising.
+  cv::fastNlMeansDenoising(image, image, denoisingStrength);
+
+  // Convert the image back to a 16-bit array.
+  for (int i = 0; i < nRows; i++) {
+    for (int j = 0; j < nColumns; j++) {
+      imageData[i * nColumns + j] = image.at<unsigned short>(i, j);
+    }
+  }
+}
 
 #endif
   

@@ -31,18 +31,35 @@ int readJpeg(char* filename,Image* im)
         im->specs[IS_COLOR] = 1;
         im->specs[ROWS] *= 3;
     }
-    
     im->data = new DATAWORD[im->specs[ROWS]*cols];
     if(im->data == NULL){
         im->specs[ROWS]=im->specs[COLS]=0;
         im->error = MEM_ERR;
         return MEM_ERR;
     }
-    
+
     DATAWORD* pt = im->data;
+    if(bytesPerPixel == 2){ // monochrome 16-bit
+        unsigned short* data16=(unsigned short*) bytes;
+        for(int i=0; i< rows*cols; i++){
+                *pt++ = *(data16+i);
+        }
+        return NO_ERR;
+    }
     DATAWORD* pt_green = pt + rows*cols;
     DATAWORD* pt_blue =  pt_green + rows*cols;
-    
+
+    if(bytesPerPixel == 6){ // color 16-bit
+        unsigned short* data16=(unsigned short*) bytes;
+        for(int i=0; i< rows*cols*3; i+=3){
+                *pt++ = *(data16+i);
+                *pt_green++ = *(data16+i+1);
+                *pt_blue++ = *(data16+i+2);
+        }
+        return NO_ERR;
+    }
+
+    // must be 8-bit 3 or 4 bytes per pixel
     for(int i=0; i< rows; i++){
         for(int j=0; j< cols;j++){
             *pt++ = *(bytes+i*bytesPerRow+j*bytesPerPixel);

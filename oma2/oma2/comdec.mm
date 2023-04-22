@@ -253,6 +253,8 @@ ComDef   commands[] =    {
     {{"SATURATE       "},   saturate_c},
     {{"STRTIM         "},   strtim_g},
     {{"SAVEFITS       "},   savefits_c},
+    {{"SAVETIFF       "},   savetiff_c},
+    
 
 
 #if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
