@@ -1465,6 +1465,12 @@ void Image::setvalues(float* newvalues){
     }
 }
 
+void Image::setvalue(int index,float newvalue){
+    if(index < 0 || index >= NVALUES) return;
+    values[index] = newvalue;
+}
+
+
 void Image::setRuler(float rulerScale, char* new_unit_text){
     specs[HAS_RULER] = 1;
     values[RULER_SCALE] = rulerScale;

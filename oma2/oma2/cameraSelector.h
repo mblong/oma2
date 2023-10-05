@@ -46,7 +46,7 @@
     // select cameras here
 
     #define GIGE_     //
-    #define SBIG
+    //#define SBIG
     //#define CANON_     // requires the Canon EDSDK -- get this from Canon. This is defined as a compiler flag in appropriate target
                          // This isn't included since presumably I'm not free to distribute this.
     #define ZWO        // for ZWO CMOS cameras

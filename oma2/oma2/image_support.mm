@@ -1071,6 +1071,58 @@ int readFits(char* filename,Image* theImage){
             printf("Unsupported FITS image format.\n");
             return FILE_ERR;
         }
+        
+        //https://heasarc.gsfc.nasa.gov/docs/software/fitsio/cexamples/listhead.c
+        int hdupos,single,nkeys;
+        char card[FLEN_CARD];   /* Standard string lengths defined in fitsio.h */
+        int comBufPosition=0;
+        char commentBuffer[MBUFLEN];
+        fits_get_hdu_num(fptr, &hdupos);  /* Get the current HDU position */
+        
+        /* List only a single header if a specific extension was given */
+        if (hdupos != 1 ) single = 1;
+        
+        for (; !status; hdupos++)  /* Main loop through each extension */
+        {
+            fits_get_hdrspace(fptr, &nkeys, NULL, &status); /* get # of keywords */
+            
+            printf("Header listing for HDU #%d:\n", hdupos);
+            
+            for (int ii = 1; ii <= nkeys; ii++) { /* Read and print each keywords */
+                
+                if (fits_read_record(fptr, ii, card, &status))break;
+                
+                printf("%s\n", card);
+                if(comBufPosition+strlen(card)+2<MBUFLEN){
+                    snprintf(commentBuffer+comBufPosition,strlen(card),"%s%c",card,0);
+                    comBufPosition+= strlen(card)+1;
+                }
+            }
+
+            printf("END\n\n");  /* terminate listing with END */
+            *(commentBuffer+comBufPosition+1)=0;
+            
+            if (single) break;  /* quit if only listing a single header */
+            
+            fits_movrel_hdu(fptr, 1, NULL, &status);  /* try to move to next HDU */
+        }
+        
+        if (status == END_OF_FILE)  status = 0; /* Reset after normal error */
+        float exp=0,aper=0,gain=0;
+        int retval;
+        // fitsfile *fptr, int datatype, const char *keyname, void *value,char *comm, int *status);
+        // allow different keywords for some values
+        if(fits_read_key(fptr,TFLOAT,"EXPTIME",&exp,NULL,&status)){
+            fits_read_key(fptr,TFLOAT,"EXPOSURE",&exp,NULL,&status);
+        }
+        status=0;
+        if(fits_read_key(fptr,TFLOAT,"APTDIA",&aper,NULL,&status)){
+            fits_read_key(fptr,TFLOAT,"APERTURE",&aper,NULL,&status);
+        }
+        status=0;
+        fits_read_key(fptr,TFLOAT,"GAIN",&gain,NULL,&status);
+        status = 0; /* even if there were errors */
+        
         Image newIm(rows,cols);
         if(naxes[2]==3) newIm.specs[IS_COLOR]=1;
         switch (bitpix){
@@ -1104,7 +1156,12 @@ int readFits(char* filename,Image* theImage){
         }
         theImage->free();     // release the old data
         *theImage = newIm;   // this is the new data
+        if(comBufPosition !=0) theImage->setComment(commentBuffer, comBufPosition+1);
+        theImage->setvalue(EXPOSURE,exp);
+        theImage->setvalue(APERTURE,aper);
+        theImage->setvalue(ISO,gain);
         theImage->getmaxx(printMax);
+        
         update_UI();
         return NO_ERR;
 

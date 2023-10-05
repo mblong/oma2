@@ -255,7 +255,7 @@ int savefits_c(int n,char* args)
     
     fitsfile *fptr;
     int status = 0;  // MUST initialize status
-    long  fpixel, nelements, exposure;
+    long  fpixel, nelements;
     
     int naxis    =   2;        // 2-dimensional image
     long naxes[3] = { 1,1,1};
@@ -314,11 +314,23 @@ int savefits_c(int n,char* args)
                 return FILE_ERR;
         }
         /* Write another optional keyword; must pass the ADDRESS of the value */
-        exposure = iBuffer.getvalue(EXPOSURE);
-        if ( fits_write_key(fptr, TLONG, "EXPOSURE", &exposure,"Total Exposure Time", &status) ){
+        float exposure = iBuffer.getvalue(EXPOSURE);
+        if ( fits_write_key(fptr, TFLOAT, "EXPTIME", &exposure,"Total Exposure Time", &status) ){
             beep();
             printf("Error setting exposure.\n");
         }
+        long gain=0,aperture=0;
+        gain = iBuffer.getvalue(ISO);
+        if ( fits_write_key(fptr, TLONG, "GAIN", &gain,"Gain", &status) ){
+            beep();
+            printf("Error setting gain.\n");
+        }
+        aperture  = iBuffer.getvalue(APERTURE);
+        if ( fits_write_key(fptr, TLONG, "APTDIA", &aperture,"Aperture", &status) ){
+            beep();
+            printf("Error setting aperture.\n");
+        }
+
         fits_close_file(fptr, &status);            /* close the file */
         return status ;
 

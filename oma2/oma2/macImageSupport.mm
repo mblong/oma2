@@ -10,67 +10,53 @@
 
 int readJpeg(char* filename,Image* im)
 {
-    NSString *file = [[NSString alloc] initWithCString:filename encoding:NSASCIIStringEncoding];
-    NSImage* nsim = [[NSImage alloc] initByReferencingFile:file];
-    // the source of the data
-    if (![nsim isValid]) {
-        beep();
-        printf( "Can't open %s\n", filename);
-        return(FILE_ERR);
-    }
-    
-    NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:[nsim TIFFRepresentation]];
-    int bytesPerPixel  = (int)[imageRep bitsPerPixel]/8;
-    int bytesPerRow = (int)[imageRep bytesPerRow];
-    unsigned char* bytes = [imageRep bitmapData];
-    
-    int cols = im->specs[COLS] = (int)imageRep.pixelsWide;
-    int rows = im->specs[ROWS] = (int)imageRep.pixelsHigh;
-    
-    if(bytesPerPixel >= 3){
-        im->specs[IS_COLOR] = 1;
-        im->specs[ROWS] *= 3;
-    }
-    im->data = new DATAWORD[im->specs[ROWS]*cols];
-    if(im->data == NULL){
-        im->specs[ROWS]=im->specs[COLS]=0;
-        im->error = MEM_ERR;
-        return MEM_ERR;
-    }
-
-    DATAWORD* pt = im->data;
-    if(bytesPerPixel == 2){ // monochrome 16-bit
-        unsigned short* data16=(unsigned short*) bytes;
-        for(int i=0; i< rows*cols; i++){
-                *pt++ = *(data16+i);
+    @autoreleasepool{
+        NSString *file = [[NSString alloc] initWithCString:filename encoding:NSASCIIStringEncoding];
+        NSImage* nsim = [[NSImage alloc] initByReferencingFile:file];
+        // the source of the data
+        if (![nsim isValid]) {
+            beep();
+            printf( "Can't open %s\n", filename);
+            return(FILE_ERR);
         }
-        return NO_ERR;
-    }
-    DATAWORD* pt_green = pt + rows*cols;
-    DATAWORD* pt_blue =  pt_green + rows*cols;
-
-    if(bytesPerPixel == 6){ // color 16-bit
-        unsigned short* data16=(unsigned short*) bytes;
-        for(int i=0; i< rows*cols*3; i+=3){
-                *pt++ = *(data16+i);
-                *pt_green++ = *(data16+i+1);
-                *pt_blue++ = *(data16+i+2);
+        
+        NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:[nsim TIFFRepresentation]];
+        int bytesPerPixel  = (int)[imageRep bitsPerPixel]/8;
+        int bytesPerRow = (int)[imageRep bytesPerRow];
+        unsigned char* bytes = [imageRep bitmapData];
+        
+        int cols = im->specs[COLS] = (int)imageRep.pixelsWide;
+        int rows = im->specs[ROWS] = (int)imageRep.pixelsHigh;
+        
+        if(bytesPerPixel >= 3){
+            im->specs[IS_COLOR] = 1;
+            im->specs[ROWS] *= 3;
         }
-        return NO_ERR;
-    }
-
-    // must be 8-bit 3 or 4 bytes per pixel
-    for(int i=0; i< rows; i++){
-        for(int j=0; j< cols;j++){
-            *pt++ = *(bytes+i*bytesPerRow+j*bytesPerPixel);
-            if(bytesPerPixel >= 3){
-                *pt_green++ = *(bytes+i*bytesPerRow+j*bytesPerPixel+1);
-                *pt_blue++ = *(bytes+i*bytesPerRow+j*bytesPerPixel+2);
+        
+        im->data = new DATAWORD[im->specs[ROWS]*cols];
+        if(im->data == NULL){
+            im->specs[ROWS]=im->specs[COLS]=0;
+            im->error = MEM_ERR;
+            return MEM_ERR;
+        }
+        
+        DATAWORD* pt = im->data;
+        DATAWORD* pt_green = pt + rows*cols;
+        DATAWORD* pt_blue =  pt_green + rows*cols;
+        
+        for(int i=0; i< rows; i++){
+            for(int j=0; j< cols;j++){
+                *pt++ = *(bytes+i*bytesPerRow+j*bytesPerPixel);
+                if(bytesPerPixel >= 3){
+                    *pt_green++ = *(bytes+i*bytesPerRow+j*bytesPerPixel+1);
+                    *pt_blue++ = *(bytes+i*bytesPerRow+j*bytesPerPixel+2);
+                }
             }
         }
+        return NO_ERR;
     }
-    return NO_ERR;
 }
+
 
 int saveJpeg(char* filename)
 {

@@ -128,7 +128,8 @@ public:
     DATAWORD getvalue(int);     ///< returns the specified member of values array
     DATAWORD min();             ///< returns the image min
     DATAWORD max();             ///< returns the image max
-    void setvalues(DATAWORD*);  ///< sets the image values array
+    void setvalues(float*);     ///< sets the image values array
+    void setvalue(int,float);   ///< sets a specific image value
     char* getunit_text();       ///< returns a copy of the image ruler units
     char* getComment();        ///< returns a copy of the comment buffer
     void setComment(char*,int);        ///< Loads the comment buffer with the specified number of characters
