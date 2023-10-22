@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #include "zwoCameras.hpp"
+#include "EAF_focuser.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,6 +28,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak) IBOutlet NSButton *enableClearBad;
 @property (weak) IBOutlet NSTextField *balanceValues;
 @property (weak) IBOutlet NSStepper *changeGainControl;
+
+
+@property (weak) IBOutlet NSTextField *focuserCurrentPosition;
+@property (weak) IBOutlet NSTextField *focuserTemperature;
+@property (weak) IBOutlet NSTextField *focuserMaxPosition;
+@property (weak) IBOutlet NSTextField *focuserGotoPosition;
+@property (weak) IBOutlet NSTextField *focuserStepSize;
+
+
 
 - (void)updateZwoWindow;
 - (void)updateTimer:(int)secondsRemaining;

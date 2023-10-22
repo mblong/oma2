@@ -34,6 +34,7 @@ int canon(int, char*);
 
 #ifdef ZWO
 int zwo(int, char*);
+int zFocus(int, char*);
 #endif
 
 

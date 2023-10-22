@@ -23,6 +23,12 @@ extern bool clearBadEnabled;
 extern int stopExposure;
 extern long wbB,wbR;
 
+// For EAF Focuser
+extern bool focuserConnected;
+extern int currentPos;
+extern int maxPos;
+extern int steps;
+extern float fTemp;
 
 @interface ZwoOptions ()
 
@@ -45,6 +51,13 @@ extern long wbB,wbR;
 @synthesize enableAutoDisplay;
 @synthesize enableClearBad;
 @synthesize balanceValues;
+
+
+@synthesize focuserCurrentPosition;
+@synthesize focuserTemperature;
+@synthesize focuserMaxPosition;
+@synthesize focuserGotoPosition;
+@synthesize focuserStepSize;
 
 - (void)windowDidLoad {
     [super windowDidLoad];
@@ -92,6 +105,14 @@ extern long wbB,wbR;
 - (IBAction)clearBadChanged:(id)sender {
     clearBadEnabled = [enableClearBad state];
 }
+- (IBAction)moveRight:(id)sender {
+    focuserMoveSteps(steps);
+    [self updateZwoWindow];
+}
+- (IBAction)moveLeft:(id)sender {
+    focuserMoveSteps(-steps);
+    [self updateZwoWindow];
+}
 
 - (void)updateZwoWindow{
     [temperatureSetPoint setStringValue:[NSString stringWithFormat:@"%ld",setTemp]];
@@ -105,6 +126,20 @@ extern long wbB,wbR;
     [enableClearBad setState:clearBadEnabled];
     [enableAutoDisplay setState:autoDisplayEnabled];
     [balanceValues setStringValue:[NSString stringWithFormat:@"%ld/%ld",wbR,wbB]];
+    if(!focuserConnected){
+        [focuserCurrentPosition setStringValue:@"-"];
+        [focuserMaxPosition setStringValue:@"-"];
+        [focuserTemperature setStringValue:@"-"];
+        [focuserGotoPosition setStringValue:@"-"];
+        [focuserStepSize setStringValue:@"-"];
+    } else {
+        [focuserCurrentPosition setStringValue:[NSString stringWithFormat:@"%d",currentPos]];
+        [focuserMaxPosition setStringValue:[NSString stringWithFormat:@"%d",maxPos]];
+        [focuserTemperature setStringValue:[NSString stringWithFormat:@"%g",fTemp]];
+        [focuserGotoPosition setStringValue:[NSString stringWithFormat:@"%d",currentPos]];
+        [focuserStepSize setStringValue:[NSString stringWithFormat:@"%d",steps]];
+    }
+    
 }
 - (void)updateCoolingInfo{
     zwoGetTempInfo();

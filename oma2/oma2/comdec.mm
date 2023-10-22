@@ -311,6 +311,7 @@ ComDef   hardwareCommands[] =    {
 
 #ifdef ZWO
     {{"ZWO            "},    zwo},            /*  @zwoCamera.mm */
+    {{"ZFOCUS         "},    zFocus},         /*  @zwoFocus.mm */
 #endif
 
     
