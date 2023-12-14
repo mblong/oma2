@@ -101,6 +101,7 @@ int comdec(char*);
 -(void) updateZwo;
 -(void) closeZwoWindow;
 -(void) updateZwoTimer:(int) n;
+-(void) updateZwoFwhm:(float) value;
 #endif
 
 -(void) updateHistogram;

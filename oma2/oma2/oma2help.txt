@@ -373,6 +373,9 @@ FILTER n
 
 FILLCIRCLES [extraRadiusAll extraRadiusEdge excludeRadius]
  Tries to correct coma. Using the circles found with the CVHOUGHCIRCLES command, this finds the intensity within each circle and then redistributes that intesity into a Gaussian distribution centered on the circle. extraRadiusAll adds a percentage radius to each circle (e.g., 0.1 makes each circle's radius 10% larger); extraRadiusEdge adds an increasing percentage radius to circles depending on how far the circle is from the image center; excludeRadius excludes circles within the specified radius of the image center. Defaults are 0.0 0.2 0.2 for extraRadiusAll extraRadiusEdge and excludeRadius, respectively.
+ 
+FWHM [radius ratio minIncreaseFraction averageOver]
+    Finds the center of mass (COM) of the image within the current rectangle, and calculates the full width of a presumed circular image within the specified radius (default = 50 or last specified value) of the COM. For ratio = 0.5 (default, or last specified value), the value is the full width at half max. If minIncreaseFraction > 0 (default = 0, or last specified value), all values < minIncreaseFraction * range within current rectangle are set to 0. The averageOver argument (Default = 1, or last specified) is only used in the oma2cam ZWO FOCUS command, and specifies how many values are averaged in the displayed FWHM value. Return values are FWHM, circleDeviation, xCOM, yCOM.
 
 GET <filename>
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.
@@ -890,9 +893,9 @@ Y0 n
 	Specifies that the detector is to be read out starting at row n.
 
 ZWO [command] [commandArguments]
-	Controls a single ZWO camera in oma2cam (assumes it is color).
+	Controls a single ZWO camera in oma2cam.
 	Only the first three letters of a command are checked.
-	Valid Commands are:
+	Valid Commands:
 	EXPosure exposureTimeInMsec
 	TEMperature targetTemperature (degrees C)
 	GAIn gainValue (0-700)
@@ -901,4 +904,10 @@ ZWO [command] [commandArguments]
 	DISconnect
 	WBAlance whiteBalanceRed whiteBalanceBlue (values are from 1-99)
 	Focus (using the current settings, presumably a cropped window, continuously acquire and display 8-bit grey-scale images. To stop, type cmnd')
-
+ZFOCUS [cmnd command_args]
+    Controls a single ZWO EAF Focuser in oma2cam.
+    Valid Commands:
+    MOVe steps --- increment or decrement current position by the specified number of steps
+    GOto targetPosition --- move the the specified target position
+    MAX maxPosition --- set the Maximum allowed position
+    SET position --- set the current position to the specfied value

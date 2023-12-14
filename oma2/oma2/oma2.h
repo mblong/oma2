@@ -111,6 +111,8 @@ name of the units. Occupies trailer[5] to trailer[12] */
 
 #define HISTOGRAM_SIZE 512
 
+#define MAX_FWHM_AVERAGE_SIZE 20
+
 
 enum  {SHORT_NAME,LONG_NAME,HAS_SUFFIX,LEAVE_OPEN,IS_OPEN};
 

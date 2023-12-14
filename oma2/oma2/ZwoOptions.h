@@ -14,6 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZwoOptions : NSWindowController{
     NSTimer *myTimer;
+    bool modifyingMaxPos;
+    bool modifyingGoto;
+    bool modifyingStepSize;
+    bool modifyingCurrentPosition;
+
 }
 @property (weak) IBOutlet NSTextField *temperatureSetPoint;
 @property (weak) IBOutlet NSTextField *temperatureStatus;
@@ -35,12 +40,22 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak) IBOutlet NSTextField *focuserMaxPosition;
 @property (weak) IBOutlet NSTextField *focuserGotoPosition;
 @property (weak) IBOutlet NSTextField *focuserStepSize;
+@property (weak) IBOutlet NSButtonCell *rightButton;
+@property (weak) IBOutlet NSButtonCell *leftButton;
 
+@property (weak) IBOutlet NSButton *modifyMaxPosButton;
+@property (weak) IBOutlet NSButton *modifyGotoButton;
+@property (weak) IBOutlet NSButton *modifyStepSizeButton;
+@property (weak) IBOutlet NSButton *modifyCurrentPositionButton;
+
+@property (weak) IBOutlet NSTextField *countdownFWHM;
 
 
 - (void)updateZwoWindow;
 - (void)updateTimer:(int)secondsRemaining;
+- (void)updateFwhm:(float)fwhm;
 - (void)closeWindow;
+- (void)focuserGoto:(int) target;
 @end
 
 NS_ASSUME_NONNULL_END

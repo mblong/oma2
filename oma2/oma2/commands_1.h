@@ -96,6 +96,7 @@ int fwdatm_c(int n,char* args);
 int fold_c(int n, char* args);
 int filter_c(int n, char* args);
 int flog_c(int n, char* args);
+int fwhm_c(int n, char* args);
 #if defined(MacOSX_UI)
     int flippid_c(int n, char* args);
 #endif
@@ -263,6 +264,7 @@ void update_UI();
 
 char* fullname(char* fnam,int  type);
 int calc(point,point);
+float fwhm(point,point,int,float,float);
 
 float tabfun(int,float);
 

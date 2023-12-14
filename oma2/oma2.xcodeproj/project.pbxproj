@@ -82,6 +82,7 @@
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DB629C07248E8A020035CB37 /* libPvAPI.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB68D6492816BD1800D5A293 /* libraw_r.u.22.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB3DBE072815A0FD00FCAB88 /* libraw_r.u.22.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DB8029C32AEDE33E0095C562 /* ZwoOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB89777E27F7A9CA00D05582 /* ZwoOptions.mm */; };
 		DB8078AA28C13418003EBE42 /* Histogram.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85328BEA46500DE2C70 /* Histogram.mm */; };
 		DB8078AB28C13419003EBE42 /* Histogram.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85328BEA46500DE2C70 /* Histogram.mm */; };
 		DB8078AC28C13442003EBE42 /* HistogramView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85428BEA46500DE2C70 /* HistogramView.mm */; };
@@ -1080,6 +1081,7 @@
 				DBDECE1827FF5337007AC635 /* macImageSupport.mm in Sources */,
 				DBDECE1927FF5337007AC635 /* DrawingWindowController.mm in Sources */,
 				DBDECE1B27FF5337007AC635 /* StatusController.mm in Sources */,
+				DB8029C32AEDE33E0095C562 /* ZwoOptions.mm in Sources */,
 				DBDECE1D27FF5337007AC635 /* dmmalvar.mm in Sources */,
 				DBDECE1E27FF5337007AC635 /* AppController.mm in Sources */,
 				DBDECE1F27FF5337007AC635 /* serial.c in Sources */,

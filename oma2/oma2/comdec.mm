@@ -115,6 +115,8 @@ ComDef   commands[] =    {
     {{"FLOATAUTO      "},   floatAuto},
     {{"FILTER         "},   filter_c},
     {{"FLOG           "},   flog_c},
+    {{"FWHM           "},   fwhm_c},
+    
 #if defined(MacOSX_UI)
     {{"FLIPPID        "},   flippid_c},
 #endif

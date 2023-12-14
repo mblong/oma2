@@ -15,6 +15,9 @@ any question feel free contact us:yang.zhou@zwoptical.com
 #define EAF_ID_MAX 128
 
 int focuserMoveSteps(int);
+int focuserGoto(int);
+int focuserResetPosition(int);
+int focuserSetMaxPosition(int);
 
 typedef struct _EAF_INFO
 {

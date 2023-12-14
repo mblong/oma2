@@ -15,6 +15,10 @@ extern Variable user_variables[];
 extern ImageBitmap iBitmap;
 extern oma2UIData UIData;
 
+extern float fwhmRatio;
+extern float fwhmMinIncreaseFraction;
+extern int fwhmRadius;
+extern int fwhmAverageOver;
 
 /*
  ZWO command arguments
@@ -71,6 +75,9 @@ bool antiDewEnabled=false;
 bool autoDisplayEnabled=true;
 bool clearBadEnabled=false;
 int stopExposure;
+long maxGain;
+float fwhmValue;
+float circDevValue;
 
 long coolerPercent=0;
 ASI_ERROR_CODE asiErr;
@@ -100,6 +107,11 @@ int zwo(int n,char* args){
 
     } else if ( strncmp(args,"GAI",3) == 0){
         sscanf(args,"%s %d",dummy, &gain);
+        if(gain > maxGain){
+            beep();
+            printf("Maximum gain is set to %d\n",maxGain);
+            gain = (int)maxGain;
+        }
         zwoSetGain();
         zwoUpdate
         
@@ -309,8 +321,11 @@ int zwo(int n,char* args){
 
     } else if ( strncmp(args,"FOC",3) == 0){
         int* specs = iBuffer.getspecs();
-        int modified=0;
+        int modified=0,count=0;
+        int numInArray=0;
+        float fwhmArray[MAX_FWHM_AVERAGE_SIZE];
         stopExposure=0;
+        
         if(specs[COLS] % (8/specs[DX])) {
             specs[COLS] -= specs[COLS] % (8/specs[DX]);
             modified=1;
@@ -367,7 +382,7 @@ int zwo(int n,char* args){
         unsigned char* bufptr;
         int currentWindowFlag = UIData.newwindowflag;
         UIData.newwindowflag = 0;
-
+        
         while (!stopExposure){
             ASIStartExposure(camNum, ASI_FALSE);
             usleep(10000);//10ms
@@ -391,7 +406,38 @@ int zwo(int n,char* args){
             iBuffer.getmaxx(0);
             display(0,(char*)"ZWO");
             update_UI();
+            if(UIData.toolselected == CALCRECT){
+                //printf("%d ave over\n",fwhmAverageOver);
+                point substart,subend;
+                substart = UIData.iRect.ul;
+                subend = UIData.iRect.lr;
+                //float* distribution = new float[distSize];
+                
+                if (subend.h < iBuffer.width() && subend.v < iBuffer.height() &&
+                    substart.h >= 0 && substart.v >= 0){
+                    fwhmValue=fwhm(substart,subend,fwhmRadius,fwhmRatio,fwhmMinIncreaseFraction);
+                    fwhmArray[count%fwhmAverageOver]=fwhmValue; // save this latest value
+                    count++;
+                    if( numInArray < fwhmAverageOver){
+                        numInArray++;
+                    } else {
+                        numInArray=fwhmAverageOver;
+                    }
+                    float sum=0.0;
+                    for(i=0; i < numInArray; i++){
+                        sum += fwhmArray[i];
+                    }
+                    fwhmValue=sum/numInArray;
+                    //printf("%f %d %f\n",sum,numInArray,fwhmValue);
+                    zwoUpdateFwhm
+                }
+             }
         }
+        if(UIData.toolselected == CALCRECT){
+            fwhmValue=-1.0;
+            zwoUpdateFwhm
+        }
+        
         UIData.newwindowflag = currentWindowFlag;
         delete[] imgBuf;
         free(specs);
@@ -441,6 +487,9 @@ int connectCamera(){
         printf("%s\n", ControlCaps.Name);
         printf("\t%s\n", ControlCaps.Description);
         printf("\tMax Value: %ld\n", ControlCaps.MaxValue);
+        if(strncmp(ControlCaps.Name,"Gain",4) == 0){
+            maxGain = ControlCaps.MaxValue;
+        }
         printf("\tMin Value: %ld\n", ControlCaps.MinValue);
         printf("\tDefault: %ld\n", ControlCaps.DefaultValue);
         if(ControlCaps.IsAutoSupported)

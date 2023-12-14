@@ -1019,6 +1019,10 @@ extern char histogramIsVisible;
 -(void) closeZwoWindow{
     [zwoOptions closeWindow];
 }
+-(void) updateZwoFwhm:(float) value{
+    [zwoOptions updateFwhm:value];
+}
+
 
 #endif
 

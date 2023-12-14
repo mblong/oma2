@@ -122,11 +122,18 @@ dispatch_sync(dispatch_get_main_queue(),^{[appController updateZwoTimer:countdow
 else \
 dispatch_sync(dispatch_get_main_queue(),^{[appController closeZwoWindow];});
 
+#define zwoUpdateFwhm if([NSThread isMainThread]) \
+[appController updateZwoFwhm:fwhmValue]; \
+else \
+dispatch_sync(dispatch_get_main_queue(),^{[appController updateZwoFwhm:fwhmValue];});
+
+
 #else
 
 #define zwoWindow ;
 #define zwoUpdate ;
 #define zwoUpdateTimer ;
+#define zwoUpdateFwhm ;
 #define zwoWindowClose ;
 
 #endif

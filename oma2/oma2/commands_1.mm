@@ -2190,6 +2190,180 @@ int calcall_c(int n, char* args)
     return 0;
 }
 
+/* ********** */
+
+/* FWHM [radius ratio minIncreaseFraction averageOver]
+    Finds the center of mass (COM) of the image within the current rectangle, and calculates the full width of a presumed circilar image within the specified radius (default = 50 or last specified value) of the COM. For ratio=0.5 (default, or last specified value), the value is the full width at half max. If minIncreaseFraction > 0 (default = 0, or last specified value), all values < minIncreaseFraction * range within current rectangle are set to 0. The averageOver argument (Default = 1, or last specified) is only used in the oma2cam FOCUS command, and specifies how many values are averaged in the displayed FWHM value. Return values are FWHM, circleDeviation, xCOM, yCOM.
+ */
+
+
+bool fromCommandLine=false;
+float fwhmRatio=0.5;
+float fwhmMinIncreaseFraction=0.;
+int fwhmRadius=50;
+int fwhmAverageOver=1;
+
+
+int fwhm_c(int n, char* args){
+    point substart,subend;
+    substart = UIData.iRect.ul;
+    subend = UIData.iRect.lr;
+    
+    if (subend.h > iBuffer.width()-1 ||
+        subend.v > iBuffer.height()-1 ||
+        substart.h < 0 ||
+        substart.v < 0){
+        beep();
+        printf("Rectangle not contained in current image.\n");
+        return SIZE_ERR;
+    }
+    
+    sscanf(args,"%d %f %f %d",&fwhmRadius,&fwhmRatio,&fwhmMinIncreaseFraction,&fwhmAverageOver);
+    if(fwhmAverageOver < 0 || fwhmAverageOver > MAX_FWHM_AVERAGE_SIZE) fwhmAverageOver=MAX_FWHM_AVERAGE_SIZE;
+    printf("%d ave over\n",fwhmAverageOver);
+    fromCommandLine=true;
+    fwhm(substart,subend,fwhmRadius,fwhmRatio,fwhmMinIncreaseFraction);
+    fromCommandLine=false;
+    return NO_ERR;
+}
+
+float fwhm(point start,point end, int radius,float ratio,float minIncreaseFraction){
+    double xcom,ycom,ave,rms,minVal,maxVal;        // centroid coordinates,average, and rms
+    int icount,nt,nc;
+    DATAWORD datval;
+    //DATAWORD* buffervalues = iBuffer.getvalues();
+    //int* bufferspecs = iBuffer.getspecs();
+    extern Variable user_variables[];
+    // find local min value
+    maxVal=minVal=iBuffer.getpix(start.v,start.h);
+    for(int c=0; c<=iBuffer.isColor()*2; c++){
+        for(nt=start.v; nt<=end.v; nt++) {
+            for(nc=start.h; nc<=end.h; nc++) {
+                datval = iBuffer.getpix(nt+c*iBuffer.height(),nc);
+                if(minVal > datval) minVal=datval;
+                if(maxVal < datval) maxVal=datval;
+            }
+        }
+    }
+    minVal=minVal+(maxVal-minVal)*minIncreaseFraction;
+    if(fromCommandLine)printf("Minimum is %g\n",minVal);
+
+    // first get center of mass
+    // for color images, consider all three components
+    icount = 0;
+    xcom = ycom = ave = rms = 0.0;
+    for(int c=0; c<= iBuffer.isColor()*2; c++){
+        //printf("%d %d %d %d \n", start->v,start->h,end->v,end->h);
+        for(nt=start.v; nt<=end.v; nt++) {
+            for(nc=start.h; nc<=end.h; nc++) {
+                datval = iBuffer.getpix(nt+c*iBuffer.height(),nc);
+                datval -= minVal;
+                if(datval<0.)datval=0.;
+                ave += datval;                    // average
+                xcom += nc * (datval);            // x center of mass -- subtract min
+                ycom += nt * (datval);            // y center of mass -- subtract min
+                rms += datval*datval;            // rms
+                icount++;                        // number of points
+            }
+        }
+    }
+    xcom /= icount;
+    ycom /= icount;
+    ave = ave/(float)icount;
+    xcom /= (ave);
+    ycom /= (ave);
+    
+    rms = rms/icount - ave*ave;
+    rms = sqrt(rms);
+    if(fromCommandLine)printf("Center of mass at %.2f %.2f\n",xcom,ycom);
+    // now get average distribution
+#define STEPS_PER_PIX 50
+    int distSize=radius*STEPS_PER_PIX,i;
+    float dr=1.0/STEPS_PER_PIX,x,y,r;
+    float* distribution = new float[distSize];
+    float dtheta = atan(1.0/radius),theta,pi=acos(-1.0);
+    for(i=0; i<distSize; i++) distribution[i]=0.0;
+    for(theta=0.; theta < 2*pi; theta += dtheta){
+        for(int c=0; c<= iBuffer.isColor()*2; c++){
+            for(i=0; i<distSize; i++){
+                r=(float)i*dr;
+                x=xcom+r*cos(theta);
+                y=ycom+r*sin(theta)+c*iBuffer.height();
+                //printf("%d %d %f\n",x,y,iBuffer.getpix(y, x));
+                distribution[i]+=iBuffer.getpix(y,x);
+            }
+        }
+    }
+    float distMax=distribution[0];
+    int maxRadius=0;
+    for(i=1; i<distSize; i++){
+        if(distMax<distribution[i]){
+            distMax=distribution[i];
+            maxRadius=i;
+        }
+    }
+    if(fromCommandLine){
+        printf("Distribution max is %.2f at radius of %.2f pixels\n",distMax,(float)maxRadius/STEPS_PER_PIX);
+    }
+    for(i=1; i<distSize; i++){
+        //printf("%f %f\n",(float)i/STEPS_PER_PIX,distribution[i]);
+        if(distribution[i]<=distMax*ratio) break;
+    }
+        
+    float hwhm;
+    float circleDeviation = -1;
+    if(i<distSize){
+        hwhm = (float)i/STEPS_PER_PIX;    // half width
+        circleDeviation = 0;
+        int nTheta = 2*pi/dtheta;
+        for(theta=0.; theta < 2*pi; theta += dtheta){
+            for(int c=0; c<= iBuffer.isColor()*2; c++){
+                for(i=0; i<distSize; i++){
+                    r=(float)i*dr;
+                    x=xcom+r*cos(theta);
+                    y=ycom+r*sin(theta)+c*iBuffer.height();
+                    //printf("%d %d %f\n",x,y,iBuffer.getpix(y, x));
+                    if(iBuffer.getpix(y,x) <= distMax*ratio/nTheta){
+                        circleDeviation += pow(hwhm-r,2);
+                        i=distSize;
+                    }
+                }
+            }
+        }
+        circleDeviation /= nTheta;
+        circleDeviation=sqrt(circleDeviation);
+        //circleDeviation /= 2.*pi*hwhm;
+    } else {
+        hwhm= radius;    // this is the case for not finding a half width
+    }
+    
+    if(fromCommandLine){
+        if(hwhm < float(radius)){
+            printf("Full width of %g * Max is %g pixels\n",ratio,hwhm*2.0);
+            printf("Circle deviation is %g\n",circleDeviation);
+        } else {
+            printf("Full width of %g * Max not found within radius of %d pixels.\nMinimum ratio is %g\n",ratio,radius,distribution[distSize-1]/distMax);
+        }
+    }
+
+    delete[] distribution;
+    
+    // return values available as variables monochrome or red
+    user_variables[0].fvalue = hwhm*2.0;
+    user_variables[0].is_float = 1;
+    user_variables[1].fvalue = circleDeviation;
+    user_variables[1].is_float = 1;
+    user_variables[2].fvalue = xcom;
+    user_variables[2].is_float = 1;
+    user_variables[3].fvalue = ycom;
+    user_variables[3].is_float = 1;
+    
+      update_UI();
+    return hwhm*2.0;
+    
+}
+
+
 int calc(point start,point end){
     
     double xcom,ycom,ave,rms;		// centroid coordinates,average, and rms
