@@ -56,6 +56,12 @@ enum {BILINEAR,MALVAR};
 enum {DCRAW,JPEG,TIFREAD,HDR,HOBJ,OMA,TXT,RAW,FITS};
 #define RAW_FILE_EXT_INDEX 12
 
+// definitionss for cameras that are know to all versions of oma2
+// leave room for future expansion
+#define ZWO_EXTRA_SIZE 24
+enum {ZWO_CAMERA_TYPE,SET_TEMP,CAM_TEMP,COOLER_ON,ANTI_DEW_ON,FOCUSER_CONNECTED,FOCUSER_POSITION,FOCUSER_TEMP,XPIXSZ,YPIXSZ,FOCAL_LENGTH};
+enum {ASI2600MC,ASI174MM};
+
 
 /******************** Class Definitions ********************/
 
@@ -138,6 +144,7 @@ public:
     DATAWORD getpix(int,int);     ///< get a pixel value at the specified row and column
     DATAWORD getpix(float,float); ///< get an interpoated pixel value at the specified fractional row and column
     DATAWORD* getImageData();     ///< returns the data pointer
+    void setImageData(DATAWORD*); ///< frees the current data and sets a new data pointer
     
     void setpix(int,int,DATAWORD);   ///< set a pixel value at the specified row and column
     

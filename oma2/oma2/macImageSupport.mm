@@ -22,8 +22,10 @@ int readJpeg(char* filename,Image* im)
         
         NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:[nsim TIFFRepresentation]];
         int bytesPerPixel  = (int)[imageRep bitsPerPixel]/8;
+        printf("bytes per pixel %d\n",bytesPerPixel);
         int bytesPerRow = (int)[imageRep bytesPerRow];
         unsigned char* bytes = [imageRep bitmapData];
+        unsigned short* twoByte=(unsigned short*)bytes;
         
         int cols = im->specs[COLS] = (int)imageRep.pixelsWide;
         int rows = im->specs[ROWS] = (int)imageRep.pixelsHigh;
@@ -43,13 +45,26 @@ int readJpeg(char* filename,Image* im)
         DATAWORD* pt = im->data;
         DATAWORD* pt_green = pt + rows*cols;
         DATAWORD* pt_blue =  pt_green + rows*cols;
-        
-        for(int i=0; i< rows; i++){
-            for(int j=0; j< cols;j++){
-                *pt++ = *(bytes+i*bytesPerRow+j*bytesPerPixel);
-                if(bytesPerPixel >= 3){
-                    *pt_green++ = *(bytes+i*bytesPerRow+j*bytesPerPixel+1);
-                    *pt_blue++ = *(bytes+i*bytesPerRow+j*bytesPerPixel+2);
+        if(bytesPerPixel == 1 || bytesPerPixel == 3 || bytesPerPixel == 4){     // the 8-bit cases
+            for(int i=0; i< rows; i++){
+                for(int j=0; j< cols;j++){
+                    *pt++ = *(bytes+i*bytesPerRow+j*bytesPerPixel);
+                    if(bytesPerPixel >= 3){
+                        *pt_green++ = *(bytes+i*bytesPerRow+j*bytesPerPixel+1);
+                        *pt_blue++ = *(bytes+i*bytesPerRow+j*bytesPerPixel+2);
+                    }
+                }
+            }
+        }else{
+            bytesPerRow /= 2;
+            bytesPerPixel /=2 ;
+            for(int i=0; i< rows; i++){
+                for(int j=0; j< cols;j++){
+                    *pt++ = *(twoByte+i*bytesPerRow+j*bytesPerPixel);
+                    if(bytesPerPixel >= 3){
+                        *pt_green++ = *(twoByte+i*bytesPerRow+j*bytesPerPixel+1);
+                        *pt_blue++ = *(twoByte+i*bytesPerRow+j*bytesPerPixel+2);
+                    }
                 }
             }
         }

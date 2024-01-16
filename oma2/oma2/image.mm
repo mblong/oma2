@@ -104,7 +104,8 @@ Image::Image()              // create an empty Image with default values
     extraSize = 0;
     extra = NULL;
     for(int i=0; i < NVALUES; i++)
-        values[i]=NAN;
+        values[i]=0.0;
+    values[RED_MULT] = values[GREEN_MULT] = values[BLUE_MULT] = 1.0;
 }
 
 
@@ -1265,6 +1266,12 @@ void Image::filter(int rows,int cols,float* filter){
 DATAWORD* Image::getImageData(){                // returns a pointer to the data; use with extreme caution
     return data;
 }
+
+void Image::setImageData(DATAWORD* newImageData){    // sets the image data pointer; use with extreme caution
+    delete[] data;      // free the old data
+    data=newImageData;
+}
+
 
 DATAWORD Image::getpix(int r ,int c)   // get a pixel value at the specified row and column
 {

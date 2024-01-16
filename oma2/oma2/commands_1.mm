@@ -268,9 +268,11 @@ int savefits_c(int n,char* args)
         return FILE_ERR;
     } else { // otherwise, add the prefix and suffix and use the name specified
         fullname(filename,RAW_DATA);
+        printf("%d %s\n",strlen(filename),filename);
+        filename[strlen(filename)+1]=0;
         for(i=strlen(filename); i>0; i--) filename[i]=filename[i-1];
         filename[0]='!';    // add ! to the beginning of the filename to allow overwriting
-        filename[strlen(filename)]=0;
+        printf("%d %s\n",strlen(filename),filename);
         if (fits_create_file(&fptr, filename, &status)){ /* create new FITS file */
             beep();
             printf("Fits Create File Error for %s: %d\n",filename,status);
@@ -313,24 +315,124 @@ int savefits_c(int n,char* args)
                 printf("Specified data type must be 16 or 32.\n");
                 return FILE_ERR;
         }
-        /* Write another optional keyword; must pass the ADDRESS of the value */
-        float exposure = iBuffer.getvalue(EXPOSURE);
-        if ( fits_write_key(fptr, TFLOAT, "EXPTIME", &exposure,"Total Exposure Time", &status) ){
+        char error[CHPERLN];
+        float value = iBuffer.getvalue(EXPOSURE);
+        if ( fits_write_key(fptr, TFLOAT, "EXPTIME", &value,"Total Exposure Time", &status) ){
             beep();
-            printf("Error setting exposure.\n");
+            printf("Error setting exposure %d.\n",status);
         }
         long gain=0,aperture=0;
         gain = iBuffer.getvalue(ISO);
         if ( fits_write_key(fptr, TLONG, "GAIN", &gain,"Gain", &status) ){
             beep();
-            printf("Error setting gain.\n");
+            printf("Error setting gain %d.\n",status);
         }
         aperture  = iBuffer.getvalue(APERTURE);
         if ( fits_write_key(fptr, TLONG, "APTDIA", &aperture,"Aperture", &status) ){
             beep();
-            printf("Error setting aperture.\n");
+            printf("Error setting aperture %d.\n",status);
         }
 
+        long spec  = iBuffer.getspec(X0);
+        if ( fits_write_key(fptr, TLONG, "XORGSUBF", &spec,"Subframe X position in binned pixels", &status) ){
+            beep();
+            printf("Error setting X0 %d.\n",status);
+        }
+
+        spec  = iBuffer.getspec(Y0);
+        if ( fits_write_key(fptr, TLONG, "YORGSUBF", &spec,"Subframe Y position in binned pixels", &status) ){
+            beep();
+            printf("Error setting Y0 %d.\n",status);
+        }
+
+        spec  = iBuffer.getspec(DX);
+        if ( fits_write_key(fptr, TLONG, "XBINNING", &spec,"Camera X Bin", &status) ){
+            beep();
+            printf("Error setting DX %d.\n",status);
+        }
+
+        spec  = iBuffer.getspec(DY);
+        if ( fits_write_key(fptr, TLONG, "YBINNING", &spec,"Camera Y Bin", &status) ){
+            beep();
+            printf("Error setting DY %d.\n",status);
+        }
+        
+        // interpret extra values as coming from known devices
+        if(iBuffer.getExtraSize() == ZWO_EXTRA_SIZE){
+            float* extra = iBuffer.getextra();
+            if(extra[ZWO_CAMERA_TYPE] == ASI2600MC){
+                if ( fits_write_key(fptr, TSTRING, "INSTRUME", (char*)"ZWO ASI2600MC Pro","Instrument Name", &status) ){
+                    beep();
+                    printf("Error setting Instrument %d.\n",status);
+                    fits_get_errstatus(status,error);
+                    printf("%s\n",error);
+                }
+                if ( fits_write_key(fptr, TSTRING, "BAYERPAT", (char*)"RGGB","Bayer pattern", &status) ){
+                    beep();
+                    printf("Error setting bayer pattern %d.\n",status);
+                }
+                value=3.76;
+                if ( fits_write_key(fptr, TFLOAT, "XPIXSZ", &value,"Pixel width [microns]", &status) ){
+                    beep();
+                    printf("Error setting xPixSize %d.\n",status);
+                }
+                if ( fits_write_key(fptr, TFLOAT, "YPIXSZ",&value,"Pixel height [microns]", &status) ){
+                    beep();
+                    printf("Error setting yPixSize %d.\n",status);
+                }
+
+           }else{
+                if ( fits_write_key(fptr, TSTRING, "INSTRUME", (char*)"ZWO ASI174MM Mini","Instrument Name", &status) ){
+                    beep();
+                    printf("Error setting Instrument %d.\n",status);
+                    fits_get_errstatus(status,error);
+                    printf("%s\n",error);
+                }
+               if ( fits_write_key(fptr, TSTRING, "BAYERPAT", (char*)"NONE","Bayer pattern", &status) ){
+                   beep();
+                   printf("Error setting bayer pattern %d.\n",status);
+               }
+               if ( fits_write_key(fptr, TSTRING, "COLORTYP", (char*)"RAW16","Bayer pattern", &status) ){
+                   beep();
+                   printf("Error setting bayer pattern %d.\n",status);
+               }
+               value=5.86;
+               if ( fits_write_key(fptr, TFLOAT, "XPIXSZ", &value,"Pixel width [microns]", &status) ){
+                   beep();
+                   printf("Error setting xPixSize %d.\n",status);
+               }
+               if ( fits_write_key(fptr, TFLOAT, "YPIXSZ", &value,"Pixel height [microns]", &status) ){
+                   beep();
+                   printf("Error setting yPixSize %d.\n",status);
+               }
+
+            }
+        
+            spec  = extra[CAM_TEMP];
+            if ( fits_write_key(fptr, TLONG, "CCD-TEMP", &spec,"Sensor temperature in C", &status) ){
+                beep();
+                printf("Error setting sensor temperature %d.\n",status);
+            }
+            value = extra[FOCAL_LENGTH];
+            if(value){
+                if ( fits_write_key(fptr, TFLOAT, "FOCALLEN", &value,"Focal length of telescope in mm", &status) ){
+                    beep();
+                    printf("Error setting yPixSize %d.\n",status);
+                }
+            }
+
+            if(extra[FOCUSER_CONNECTED == 1.0]){
+                spec  = extra[FOCUSER_POSITION];
+                if ( fits_write_key(fptr, TLONG, "FOCUSPOS", &spec,"Focuser position in steps", &status) ){
+                    beep();
+                    printf("Error setting focus position %d.\n",status);
+                }
+
+            }
+            
+        }
+
+ 
         fits_close_file(fptr, &status);            /* close the file */
         return status ;
 
@@ -950,36 +1052,38 @@ int rectan_c(int n, char* args)
 }
 
 /* ********** */
-
-int list_c(int n, char* args){
     
-    int lc,i;
-    
-    lc = 1;
-    i = 0;
-    char* comment = iBuffer.getComment();
-    int* specs = iBuffer.getspecs();
-    DATAWORD* values = iBuffer.getvalues();
-    if(comment){
-        while (comment[i]) {
-            printf( "Line #%d: ",lc++);
-            printf( "%s\n",&comment[i]);
+    int list_c(int n, char* args){
+        
+        int lc,i;
+        
+        lc = 1;
+        i = 0;
+        char* comment = iBuffer.getComment();
+        int* specs = iBuffer.getspecs();
+        DATAWORD* values = iBuffer.getvalues();
+        if(comment){
             while (comment[i]) {
+                printf( "Line #%d: ",lc++);
+                printf( "%s\n",&comment[i]);
+                while (comment[i]) {
+                    i++;
+                }
                 i++;
             }
-            i++;
+            free(comment);
         }
-        free(comment);
-    }
-    printf("\n");
-    printf(" %7d  Data Points\n",specs[ROWS]*specs[COLS]);
-    printf(" %7d  Columns (Channels)\n",specs[COLS]);
-    printf(" %7d  Rows (Tracks)\n",specs[ROWS]);
-    printf(" %7d  X0\n",specs[X0]);
-    printf(" %7d  Y0\n",specs[Y0]);
-    printf(" %7d  Delta X\n",specs[DX]);
-    printf(" %7d  Delta Y\n",specs[DY]);
-    printf(" %g  Exposure \n",values[EXPOSURE]);
+        printf("\n");
+        printf(" %7d  Data Points\n",specs[ROWS]*specs[COLS]);
+        printf(" %7d  Columns (Channels)\n",specs[COLS]);
+        printf(" %7d  Rows (Tracks)\n",specs[ROWS]);
+        printf(" %7d  X0\n",specs[X0]);
+        printf(" %7d  Y0\n",specs[Y0]);
+        printf(" %7d  Delta X\n",specs[DX]);
+        printf(" %7d  Delta Y\n",specs[DY]);
+        printf(" %g  Exposure \n",values[EXPOSURE]);
+        printf(" %g  ISO/Gain \n",values[ISO]);
+    
     /*
      #ifdef FLOAT
      printf(" %g  Color Minimum\n %g  Color Maximum\n",cmin,cmax);
@@ -2213,9 +2317,9 @@ int fwhm_c(int n, char* args){
         subend.v > iBuffer.height()-1 ||
         substart.h < 0 ||
         substart.v < 0){
-        beep();
-        printf("Rectangle not contained in current image.\n");
-        return SIZE_ERR;
+        substart = {0,0};
+        subend.h = iBuffer.width()-1;
+        subend.v = iBuffer.height()-1;
     }
     
     sscanf(args,"%d %f %f %d",&fwhmRadius,&fwhmRatio,&fwhmMinIncreaseFraction,&fwhmAverageOver);
@@ -2272,10 +2376,10 @@ float fwhm(point start,point end, int radius,float ratio,float minIncreaseFracti
     ave = ave/(float)icount;
     xcom /= (ave);
     ycom /= (ave);
-    
     rms = rms/icount - ave*ave;
     rms = sqrt(rms);
     if(fromCommandLine)printf("Center of mass at %.2f %.2f\n",xcom,ycom);
+    
     // now get average distribution
 #define STEPS_PER_PIX 50
     int distSize=radius*STEPS_PER_PIX,i;
@@ -2294,6 +2398,7 @@ float fwhm(point start,point end, int radius,float ratio,float minIncreaseFracti
             }
         }
     }
+    // get the maximum of the distribution
     float distMax=distribution[0];
     int maxRadius=0;
     for(i=1; i<distSize; i++){
@@ -2305,16 +2410,20 @@ float fwhm(point start,point end, int radius,float ratio,float minIncreaseFracti
     if(fromCommandLine){
         printf("Distribution max is %.2f at radius of %.2f pixels\n",distMax,(float)maxRadius/STEPS_PER_PIX);
     }
+    // find the radius
     for(i=1; i<distSize; i++){
         //printf("%f %f\n",(float)i/STEPS_PER_PIX,distribution[i]);
         if(distribution[i]<=distMax*ratio) break;
     }
-        
+    distMax /= 2*pi/dtheta;
     float hwhm;
     float circleDeviation = -1;
     if(i<distSize){
         hwhm = (float)i/STEPS_PER_PIX;    // half width
+        //printf("%.2f HWHM\n",hwhm);
+        // now find the deviation from a circle
         circleDeviation = 0;
+        dtheta = atan(1.0/hwhm);
         int nTheta = 2*pi/dtheta;
         for(theta=0.; theta < 2*pi; theta += dtheta){
             for(int c=0; c<= iBuffer.isColor()*2; c++){
@@ -2323,7 +2432,8 @@ float fwhm(point start,point end, int radius,float ratio,float minIncreaseFracti
                     x=xcom+r*cos(theta);
                     y=ycom+r*sin(theta)+c*iBuffer.height();
                     //printf("%d %d %f\n",x,y,iBuffer.getpix(y, x));
-                    if(iBuffer.getpix(y,x) <= distMax*ratio/nTheta){
+                    if(iBuffer.getpix(y,x) <= distMax*ratio){
+                        //printf("%f\n",fabs(hwhm-r));
                         circleDeviation += pow(hwhm-r,2);
                         i=distSize;
                     }
@@ -2332,7 +2442,7 @@ float fwhm(point start,point end, int radius,float ratio,float minIncreaseFracti
         }
         circleDeviation /= nTheta;
         circleDeviation=sqrt(circleDeviation);
-        //circleDeviation /= 2.*pi*hwhm;
+        circleDeviation = circleDeviation/hwhm*100.;
     } else {
         hwhm= radius;    // this is the case for not finding a half width
     }
@@ -3156,6 +3266,11 @@ int fecho_c (int n,char* args)
     return NO_ERR;
 }
 
+/*
+FLOG [lineNumber]
+ Write the lineNumber entry in the comment log to the file opened with FOPEN. If lineNumber is ommited, all lines of the comment log are written to the file.
+*/
+
 int flog_c (int n,char* args)
 {
     int i=0;
@@ -3243,11 +3358,6 @@ int savePdf_c(int n, char* args){
     
 }
 
-//***************************************************
-//*** SATIFF - Convert image to 8bit and save as a
-//***          Greyscale TIFF file (uses LibTIFF)
-//***          P. Kalt (2003) after J.Fielding
-//***************************************************
 
 int save16BitTiff(unsigned short* imageData, int nRows, int nColumns, const char* fileName) {
     // Create a bitmap representation of the image
@@ -5523,9 +5633,11 @@ int extra_c(int n,char* args){
     
     if (*args == 0) {
         if ( size) {
-            printf("Extra values are as follows:\n");
+            printf("%d extra values are as follows:\n",size);
             float* extra = iBuffer.getextra();
-            for (int i = 0; i< NUM_COMMAND_RETURN_VARIABLES; i++){
+            int nv = NUM_COMMAND_RETURN_VARIABLES;
+            if(size < NUM_COMMAND_RETURN_VARIABLES) nv=size;
+            for (int i = 0; i< nv; i++){
                 printf("%g\n",extra[i]);
                 user_variables[i].ivalue = user_variables[i].fvalue = extra[i];
                 user_variables[i].is_float = 1;
@@ -5547,14 +5659,14 @@ int extra_c(int n,char* args){
     }
     float value;
     int nargs = sscanf(args, "%d %f)",&n,&value);
-    if (--n < 0) {
+    if (n < 0) {
         printf("Index must be > 0.\n");
         return CMND_ERR;
     }
     if(nargs == 1 ){
         if(n<size){
             float* extra = iBuffer.getextra();
-            printf("Extra value %d is %f:\n",n+1, extra[n]);
+            printf("Extra value %d is %f:\n",n, extra[n]);
             user_variables[0].ivalue = user_variables[0].fvalue = extra[n];
             user_variables[0].is_float = 1;
             //free(extra);
@@ -5580,12 +5692,16 @@ int extra_c(int n,char* args){
     // need more space
     float* newextra = new float[n+1];
     float* extra = iBuffer.getextra();
-    for (int i = 0; i < size; i++) {
-        newextra[i] = extra[i];
+    for (int i = 0; i < n; i++) {
+        if(i < size)
+            newextra[i] = extra[i];
+        else
+            newextra[i]=0.0;
     }
     delete[] extra;
     newextra[n] = value;
     iBuffer.setExtra(newextra, n+1);
+    delete [] newextra;
     
     return NO_ERR;
     

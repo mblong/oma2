@@ -25,6 +25,7 @@
 #include "ImageBitmap.h"
 #import "AppController.h"
 
+
 int connectCamera();
 ASI_ERROR_CODE zwoGetTempInfo();
 ASI_ERROR_CODE zwoSetTemp(int);

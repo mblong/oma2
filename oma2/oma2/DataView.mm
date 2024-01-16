@@ -12,12 +12,14 @@
 #import "DrawingWindowController.h"
 #import "ImageBitmap.h"
 #import "UI.h"
+#import "sep.h"
 
 
 extern ImageBitmap iBitmap;
 extern Image iBuffer;
 extern AppController* appController; 
 extern oma2UIData UIData;
+extern sep_catalog* catalog;
 
 
 
@@ -125,6 +127,39 @@ extern oma2UIData UIData;
         thePoint.y = 5;
         [minMax2 drawAtPoint:thePoint withAttributes:stringAttributes];
     }
+    
+    if(catalog){
+        
+        for(int i=0; i< catalog->nobj;i++){
+            NSBezierPath *path = [NSBezierPath bezierPath];
+            [[NSColor redColor] set];
+            [path setLineWidth:2.0];
+            float scalex = self.frame.size.width/iBitmap.getwidth();
+            float scaley = self.frame.size.height/iBitmap.getheight();
+            float wh=[self frame].size.height ;
+            float x0 = catalog->x[i]-catalog->a[i];
+            float y0 = wh - (catalog->y[i]+catalog->b[i]);
+            float w = 2*catalog->a[i];
+            float h = 2*catalog->b[i];
+            x0 *= scalex;
+            y0 *= scaley;
+            [path appendBezierPathWithOvalInRect:
+             NSMakeRect(x0,y0,w,h)];
+            
+            NSAffineTransform *transform = [NSAffineTransform transform];
+            [transform translateXBy: catalog->x[i]*scalex yBy:  wh - (catalog->y[i])*scaley];
+            [transform rotateByRadians:-catalog->theta[i]];
+            [transform translateXBy: -catalog->x[i]*scalex yBy: -(wh - (catalog->y[i]))*scaley];
+            [path transformUsingAffineTransform: transform];
+            
+            [path stroke];
+        }
+        
+        //sep_catalog_free(catalog);
+        //catalog=NULL;
+
+    }
+
 
 }
 

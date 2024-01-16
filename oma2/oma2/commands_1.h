@@ -222,6 +222,7 @@ int savefits_c(int, char*);
 int savetiff_c(int, char*);
 
 
+
 #if defined(Qt_UI_Mac)  || defined(Qt_UI_Win) || defined(Qt_UI_Linux)
 int sqlAdd_q(int,char*);
 int sqlNew_q(int,char*);

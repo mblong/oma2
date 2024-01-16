@@ -256,6 +256,11 @@ ComDef   commands[] =    {
     {{"STRTIM         "},   strtim_g},
     {{"SAVEFITS       "},   savefits_c},
     {{"SAVETIFF       "},   savetiff_c},
+    {{"STARS          "},   stars},
+    {{"STARCLEAR      "},   starClear},
+    {{"STARBACK       "},   starBack},
+    {{"STARMATCH      "},   starMatch},
+    
     
 
 

@@ -312,8 +312,8 @@ EXECUTE <filename>
 EXPOSURE exposureValue
 	Sets an exposure time to be used in generating HDR images. If no argument is given, the value of the current exposure is echoed and command_return_1 returns the value.
 
-EXTRA [index] [value]
-	Add extra information to the current image in the form of a floating point value. Indexing starts at 1. If both arguments are present, the value is placed at the location specified by the index. If no argument is given, the command lists extra values in the current image buffer and puts the first ten extra values into the command_return variables. With one argument, the extra value at the specified index is put into command_return_1.
+ [index] [value]
+	Add extra information to the current image in the form of a floating point value. Indexing starts at 0. If both arguments are present, the value is placed at the location specified by the index. If no argument is given, the command lists extra values in the current image buffer and puts the first ten extra values into the command_return variables. With one argument, the extra value at the specified index is put into command_return_1.
  
  EXIT
 	Quit the program.
@@ -376,6 +376,9 @@ FILLCIRCLES [extraRadiusAll extraRadiusEdge excludeRadius]
  
 FWHM [radius ratio minIncreaseFraction averageOver]
     Finds the center of mass (COM) of the image within the current rectangle, and calculates the full width of a presumed circular image within the specified radius (default = 50 or last specified value) of the COM. For ratio = 0.5 (default, or last specified value), the value is the full width at half max. If minIncreaseFraction > 0 (default = 0, or last specified value), all values < minIncreaseFraction * range within current rectangle are set to 0. The averageOver argument (Default = 1, or last specified) is only used in the oma2cam ZWO FOCUS command, and specifies how many values are averaged in the displayed FWHM value. Return values are FWHM, circleDeviation, xCOM, yCOM.
+
+FLOG [lineNumber]
+	Write the lineNumber entry in the comment log to the file opened with FOPEN. If lineNumber is ommited, all lines of the comment log are written to the file.
 
 GET <filename>
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.
@@ -817,6 +820,12 @@ SQLCLOSE
 
 STRTIM x0 dy scale_factor
     This plots a series of streamlines in a two-component velocity field. x0 is the starting location of the ray that will be propagated mainly in the x direction. dy is increment between rays and can be less than one pixel if a continuous "time elapsed" image is desired. When more than one elapsed time occurs within a given pixel, the minimum value is given. The two components of the velocity field are needed. The y velocity is stored in temporary image 0; the x velocity field is in the current image buffer. On return, the image is -1 except for the stream lines. Values along the stream line correspond to elapsed time as determined by the scale_factor. time = distance/velocity*scale_factor. Distance is in pixels; velocity as per values in velocity files. A contour plot will show different residence times.
+
+STARS Factor
+	Assume the image is a deep sky image, and identify the stars. Uses the SEP algorithms (https://github.com/kbarbary/sep). Background is subtracted and stored as a temp image named 'bkg'. Factor specifies the threshold multiplier factor -- the threshold will be factor*globalRms. Default is 1.5. The identified stars are displayed in subsequent display commands. See also STARCLEAR.
+
+STARCLEAR
+	Delete the catalog of stars found with the STARS command.
 
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.

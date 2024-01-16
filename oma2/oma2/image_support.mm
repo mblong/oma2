@@ -1094,7 +1094,7 @@ int readFits(char* filename,Image* theImage){
                 
                 printf("%s\n", card);
                 if(comBufPosition+strlen(card)+2<MBUFLEN){
-                    snprintf(commentBuffer+comBufPosition,strlen(card),"%s%c",card,0);
+                    snprintf(commentBuffer+comBufPosition,strlen(card)+1,"%s",card);
                     comBufPosition+= strlen(card)+1;
                 }
             }

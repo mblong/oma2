@@ -302,21 +302,6 @@ public:
 
     void release();
 
-    class CV_EXPORTS UserContext {
-    public:
-        virtual ~UserContext();
-    };
-    template <typename T>
-    inline void setUserContext(const std::shared_ptr<T>& userContext) {
-        setUserContext(typeid(T), userContext);
-    }
-    template <typename T>
-    inline std::shared_ptr<T> getUserContext() {
-        return std::dynamic_pointer_cast<T>(getUserContext(typeid(T)));
-    }
-    void setUserContext(std::type_index typeId, const std::shared_ptr<UserContext>& userContext);
-    std::shared_ptr<UserContext> getUserContext(std::type_index typeId);
-
     struct Impl;
     inline Impl* getImpl() const { return (Impl*)p; }
     inline bool empty() const { return !p; }
@@ -697,7 +682,8 @@ protected:
     Impl* p;
 };
 
-CV_EXPORTS const char* convertTypeStr(int sdepth, int ddepth, int cn, char* buf);
+CV_EXPORTS CV_DEPRECATED const char* convertTypeStr(int sdepth, int ddepth, int cn, char* buf);
+CV_EXPORTS const char* convertTypeStr(int sdepth, int ddepth, int cn, char* buf, size_t buf_size);
 CV_EXPORTS const char* typeToStr(int t);
 CV_EXPORTS const char* memopTypeToStr(int t);
 CV_EXPORTS const char* vecopTypeToStr(int t);

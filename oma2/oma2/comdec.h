@@ -128,4 +128,11 @@ int keylimit(int n);
 float aveInRect();
 float rmsInRect();
 
+int stars(int,char*);
+int starClear(int, char*);
+int starBack(int, char*);
+int starMatch(int, char*);
+
+
+
 #endif

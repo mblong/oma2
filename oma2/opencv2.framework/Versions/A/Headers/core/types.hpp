@@ -57,6 +57,11 @@
 #include "opencv2/core/cvstd.hpp"
 #include "opencv2/core/matx.hpp"
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4459)  // declaration of '...' hides global declaration
+#endif
+
 namespace cv
 {
 
@@ -162,7 +167,7 @@ public:
     //! default constructor
     Point_();
     Point_(_Tp _x, _Tp _y);
-#if (defined(__GNUC__) && __GNUC__ < 5)  // GCC 4.x bug. Details: https://github.com/opencv/opencv/pull/20837
+#if (defined(__GNUC__) && __GNUC__ < 5) && !defined(__clang__)  // GCC 4.x bug. Details: https://github.com/opencv/opencv/pull/20837
     Point_(const Point_& pt);
     Point_(Point_&& pt) CV_NOEXCEPT = default;
 #elif OPENCV_ABI_COMPATIBILITY < 500
@@ -172,7 +177,7 @@ public:
     Point_(const Size_<_Tp>& sz);
     Point_(const Vec<_Tp, 2>& v);
 
-#if (defined(__GNUC__) && __GNUC__ < 5)  // GCC 4.x bug. Details: https://github.com/opencv/opencv/pull/20837
+#if (defined(__GNUC__) && __GNUC__ < 5) && !defined(__clang__)  // GCC 4.x bug. Details: https://github.com/opencv/opencv/pull/20837
     Point_& operator = (const Point_& pt);
     Point_& operator = (Point_&& pt) CV_NOEXCEPT = default;
 #elif OPENCV_ABI_COMPATIBILITY < 500
@@ -522,38 +527,44 @@ The sample below demonstrates how to use RotatedRect:
 
 @sa CamShift, fitEllipse, minAreaRect, CvBox2D
 */
-class CV_EXPORTS RotatedRect
+class CV_EXPORTS_W_SIMPLE RotatedRect
 {
 public:
     //! default constructor
-    RotatedRect();
+    CV_WRAP RotatedRect();
     /** full constructor
     @param center The rectangle mass center.
     @param size Width and height of the rectangle.
     @param angle The rotation angle in a clockwise direction. When the angle is 0, 90, 180, 270 etc.,
     the rectangle becomes an up-right rectangle.
     */
-    RotatedRect(const Point2f& center, const Size2f& size, float angle);
+    CV_WRAP RotatedRect(const Point2f& center, const Size2f& size, float angle);
     /**
     Any 3 end points of the RotatedRect. They must be given in order (either clockwise or
     anticlockwise).
      */
-    RotatedRect(const Point2f& point1, const Point2f& point2, const Point2f& point3);
+    CV_WRAP RotatedRect(const Point2f& point1, const Point2f& point2, const Point2f& point3);
 
-    /** returns 4 vertices of the rectangle
-    @param pts The points array for storing rectangle vertices. The order is bottomLeft, topLeft, topRight, bottomRight.
+    /** returns 4 vertices of the rotated rectangle
+    @param pts The points array for storing rectangle vertices. The order is _bottomLeft_, _topLeft_, topRight, bottomRight.
+    @note _Bottom_, _Top_, _Left_ and _Right_ sides refer to the original rectangle (angle is 0),
+    so after 180 degree rotation _bottomLeft_ point will be located at the top right corner of the
+    rectangle.
     */
     void points(Point2f pts[]) const;
+
+    CV_WRAP void points(CV_OUT std::vector<Point2f>& pts) const;
+
     //! returns the minimal up-right integer rectangle containing the rotated rectangle
-    Rect boundingRect() const;
+    CV_WRAP Rect boundingRect() const;
     //! returns the minimal (exact) floating point rectangle containing the rotated rectangle, not intended for use with images
     Rect_<float> boundingRect2f() const;
     //! returns the rectangle mass center
-    Point2f center;
+    CV_PROP_RW Point2f center;
     //! returns width and height of the rectangle
-    Size2f size;
+    CV_PROP_RW Size2f size;
     //! returns the rotation angle. When the angle is 0, 90, 180, 270 etc., the rectangle becomes an up-right rectangle.
-    float angle;
+    CV_PROP_RW float angle;
 };
 
 template<> class DataType< RotatedRect >
@@ -1186,7 +1197,7 @@ template<typename _Tp> inline
 Point_<_Tp>::Point_(_Tp _x, _Tp _y)
     : x(_x), y(_y) {}
 
-#if (defined(__GNUC__) && __GNUC__ < 5)  // GCC 4.x bug. Details: https://github.com/opencv/opencv/pull/20837
+#if (defined(__GNUC__) && __GNUC__ < 5) && !defined(__clang__)  // GCC 4.x bug. Details: https://github.com/opencv/opencv/pull/20837
 template<typename _Tp> inline
 Point_<_Tp>::Point_(const Point_& pt)
     : x(pt.x), y(pt.y) {}
@@ -1200,7 +1211,7 @@ template<typename _Tp> inline
 Point_<_Tp>::Point_(const Vec<_Tp,2>& v)
     : x(v[0]), y(v[1]) {}
 
-#if (defined(__GNUC__) && __GNUC__ < 5)  // GCC 4.x bug. Details: https://github.com/opencv/opencv/pull/20837
+#if (defined(__GNUC__) && __GNUC__ < 5) && !defined(__clang__)  // GCC 4.x bug. Details: https://github.com/opencv/opencv/pull/20837
 template<typename _Tp> inline
 Point_<_Tp>& Point_<_Tp>::operator = (const Point_& pt)
 {
@@ -1895,13 +1906,33 @@ Rect_<_Tp>& operator -= ( Rect_<_Tp>& a, const Size_<_Tp>& b )
 template<typename _Tp> static inline
 Rect_<_Tp>& operator &= ( Rect_<_Tp>& a, const Rect_<_Tp>& b )
 {
-    _Tp x1 = std::max(a.x, b.x);
-    _Tp y1 = std::max(a.y, b.y);
-    a.width = std::min(a.x + a.width, b.x + b.width) - x1;
-    a.height = std::min(a.y + a.height, b.y + b.height) - y1;
-    a.x = x1;
-    a.y = y1;
-    if( a.width <= 0 || a.height <= 0 )
+    if (a.empty() || b.empty()) {
+        a = Rect();
+        return a;
+    }
+    const Rect_<_Tp>& Rx_min = (a.x < b.x) ? a : b;
+    const Rect_<_Tp>& Rx_max = (a.x < b.x) ? b : a;
+    const Rect_<_Tp>& Ry_min = (a.y < b.y) ? a : b;
+    const Rect_<_Tp>& Ry_max = (a.y < b.y) ? b : a;
+    // Looking at the formula below, we will compute Rx_min.width - (Rx_max.x - Rx_min.x)
+    // but we want to avoid overflows. Rx_min.width >= 0 and (Rx_max.x - Rx_min.x) >= 0
+    // by definition so the difference does not overflow. The only thing that can overflow
+    // is (Rx_max.x - Rx_min.x). And it can only overflow if Rx_min.x < 0.
+    // Let us first deal with the following case.
+    if ((Rx_min.x < 0 && Rx_min.x + Rx_min.width < Rx_max.x) ||
+        (Ry_min.y < 0 && Ry_min.y + Ry_min.height < Ry_max.y)) {
+        a = Rect();
+        return a;
+    }
+    // We now know that either Rx_min.x >= 0, or
+    // Rx_min.x < 0 && Rx_min.x + Rx_min.width >= Rx_max.x and therefore
+    // Rx_min.width >= (Rx_max.x - Rx_min.x) which means (Rx_max.x - Rx_min.x)
+    // is inferior to a valid int and therefore does not overflow.
+    a.width = std::min(Rx_min.width - (Rx_max.x - Rx_min.x), Rx_max.width);
+    a.height = std::min(Ry_min.height - (Ry_max.y - Ry_min.y), Ry_max.height);
+    a.x = Rx_max.x;
+    a.y = Ry_max.y;
+    if (a.empty())
         a = Rect();
     return a;
 }
@@ -1996,6 +2027,15 @@ double jaccardDistance(const Rect_<_Tp>& a, const Rect_<_Tp>& b) {
     // distance = 1 - jaccard_index
     return 1.0 - Aab / (Aa + Ab - Aab);
 }
+
+/** @brief Finds out if there is any intersection between two rectangles
+ *
+ * mainly useful for language bindings
+ * @param rect1 First rectangle
+ * @param rect2 Second rectangle
+ * @return the area of the intersection
+ */
+CV_EXPORTS_W inline double rectangleIntersectionArea(const Rect2d& a, const Rect2d& b) { return (a & b).area(); }
 
 ////////////////////////////// RotatedRect //////////////////////////////
 
@@ -2415,5 +2455,9 @@ TermCriteria::TermCriteria(int _type, int _maxCount, double _epsilon)
 //! @endcond
 
 } // cv
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif //OPENCV_CORE_TYPES_HPP

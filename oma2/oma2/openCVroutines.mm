@@ -252,7 +252,7 @@ CVALIGN tempImageName [maxIterations terminationEpsilon warpMode floorValue]
  Align the specified temporary image with the one in the current buffer. The default values are maxIterations=1000 terminationEpsilon=1E-6  warpMode=0 (Euclidean matching; warpMode!=0 uses Homographic matching). If the optional floorValue is specified, the images used for finding the mapping will have values < floorValue set to floorValue and the new minimum set to zero.
  
 */
-int cvAlign_q(int n,char* args){
+int cvAlignOriginal_q(int n,char* args){
     
     using namespace cv;
     
@@ -428,6 +428,258 @@ int cvAlign_q(int n,char* args){
         pprintf("Transform returned %g.\n",cc);
     }
     
+    if(colorImage){
+        // need a BGR array for this
+        int size=iBuffer.height()*iBuffer.width();
+        bgrArray=new DATAWORD[size*3];
+        DATAWORD* bgrPtr=bgrArray;
+        dataPtr = original.getImageData();
+        bluePtr=dataPtr+2*size;
+        greenPtr=dataPtr+size;
+        for(int i=0; i<size; i++){     // map image2 (the temp image) to 8 bit and convert to uint8
+            *bgrPtr++ = *bluePtr++;
+            *bgrPtr++ = *greenPtr++;
+            *bgrPtr++ = *dataPtr++;
+        }
+        im2_original = Mat(iBuffer.height(), iBuffer.width(), CV_32FC3, bgrArray);
+    } else {
+        im2_original = Mat(iBuffer.height(), iBuffer.width(), CV_32FC1, original.getImageData());
+    }
+    
+    
+    // Storage for warped image.
+    if(colorImage){
+        im2_aligned = Mat(iBuffer.height(), iBuffer.width(), CV_32FC3);
+    } else {
+        im2_aligned = Mat(iBuffer.height(), iBuffer.width(), CV_32FC1);
+    }
+    if (warp_mode != MOTION_HOMOGRAPHY)
+        // Use warpAffine for Translation, Euclidean and Affine
+        warpAffine(im2_original, im2_aligned, warp_matrix, im1.size(), INTER_LINEAR + WARP_INVERSE_MAP);
+    else
+        // Use warpPerspective for Homography
+        warpPerspective (im2_original, im2_aligned, warp_matrix, im1.size(),INTER_LINEAR + WARP_INVERSE_MAP);
+    
+    Image newIm;
+
+    DATAWORD* resultPtr = (DATAWORD*) im2_aligned.ptr();
+    if(colorImage){
+        newIm=Image(im2_aligned.rows*3,im2_aligned.cols);
+        dataPtr = newIm.getImageData();
+        delete[] bgrArray;
+        int size=iBuffer.height()*iBuffer.width();
+        bluePtr=dataPtr+2*size;
+        greenPtr=dataPtr+size;
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
+            *bluePtr++ = *resultPtr++;
+            *greenPtr++ = *resultPtr++;
+            *dataPtr++ = *resultPtr++;
+        }
+        int* specs= newIm.getspecs();
+        specs[IS_COLOR]= 1;
+        newIm.setspecs(specs);
+        free(specs);
+    } else {
+        newIm=Image(im2_aligned.rows,im2_aligned.cols);
+        dataPtr = newIm.getImageData();
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
+            *dataPtr++ = *resultPtr++;
+        }
+    }
+    im1.release();
+    im2.release();
+    im2_original.release();
+    im2_aligned.release();
+    
+    original.free();
+    iBuffer.free();
+    iBuffer=newIm;
+    iBuffer.setvalues(resultValues);
+    free(resultValues);
+    iBuffer.getmaxx(printMax);
+    delete[] bits;
+    delete[] bits2;
+    update_UI();
+    return NO_ERR;
+}
+
+
+/*
+CVALIGN tempImageName [maxIterations terminationEpsilon warpMode floorValue]
+ Align the specified temporary image with the one in the current buffer. The default values are maxIterations=1000 terminationEpsilon=1E-6  warpMode=0 (Euclidean matching; warpMode!=0 uses Homographic matching). If the optional floorValue is specified, the images used for finding the mapping will have values < floorValue set to floorValue and the new minimum set to zero.
+ 
+*/
+int cvAlign_q(int n,char* args){
+    
+    using namespace cv;
+    
+    char tempImageName[128];
+    DATAWORD* dataPtr = iBuffer.getImageData();
+    // Specify the number of iterations.
+    int number_of_iterations = 1000;
+    // Specify the threshold of the increment
+    // in the correlation coefficient between two iterations
+    double termination_eps = 1e-6;
+    // Define the motion model
+    int warp_mode = MOTION_EUCLIDEAN;
+    int mode=0;
+    DATAWORD floorValue;
+    extern Variable user_variables[];
+    extern Image  iTempImages[];
+    
+    int nargs=sscanf(args,"%s %d %lf %d %f",tempImageName, &number_of_iterations, &termination_eps, &mode,&floorValue);
+    if(nargs < 1){
+        beep();
+        printf("Must specify temp image.\n");
+        return CMND_ERR;
+    }
+
+    // is tempImage valid?
+    n = temp_image_index(tempImageName,0);
+    if(n >=0){
+        if( iTempImages[n].isEmpty()){
+            beep();
+            printf("Temporary image is not defined.\n");
+            return MEM_ERR;
+        }
+    } else{
+        beep();
+        printf("Temporary image is not valid.\n");
+        return MEM_ERR;
+    }
+    // checking for images the same size
+    
+    if(iBuffer != iTempImages[n]){
+        beep();
+        printf("Images are not the same size.\n");
+        return MEM_ERR;
+    }
+    
+    if(mode){
+        warp_mode = MOTION_HOMOGRAPHY;
+        printf("Align %s to the current image with Max Iterations: %d, Epsilon: %g, using Homographic Match.\n",
+               tempImageName,number_of_iterations,termination_eps);
+
+    } else {
+        warp_mode = MOTION_EUCLIDEAN;
+        printf("Align %s to the current image with Max Iterations: %d, Epsilon: %g, using Euclidean Match.\n",
+               tempImageName,number_of_iterations,termination_eps);
+
+    }
+    
+    bool colorImage=false;
+    if(iBuffer.isColor()){
+        colorImage=true;
+        rgb2grey_c(0, nil);     // iBuffer is now greyscale
+    }
+    // ********* image1 ***********
+    float* bits= new float[iBuffer.height()* iBuffer.width()];
+    float* byteptr=bits;
+    
+    DATAWORD* values = iBuffer.getvalues();
+    DATAWORD* resultValues = iBuffer.getvalues();
+    DATAWORD minval=values[MIN];
+    if(nargs == 5){
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
+            if(*dataPtr < floorValue) *dataPtr = floorValue;
+            *byteptr++ = ((*dataPtr++)-floorValue);
+        }
+    } else {
+        floorValue=minval;
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
+            *byteptr++ = ((*dataPtr++)-floorValue);
+        }
+    }
+    // minimum value is now 0 in all cases
+    free(values);
+    Mat im1 = Mat(iBuffer.height(), iBuffer.width(), CV_32F, bits);
+    
+    // ********* image2 ***********
+    Image original;
+    original<<iTempImages[n];
+    float* bits2= new float[iBuffer.height()* iBuffer.width()];
+    byteptr = bits2;
+    
+    if(colorImage){
+        iBuffer.free();             // copy the temp image to iBuffer and make monochrome
+        iBuffer<<iTempImages[n];
+        rgb2grey_c(0, nil);
+        dataPtr = iBuffer.getImageData();
+        values = iBuffer.getvalues();
+    } else{
+        dataPtr = iTempImages[n].getImageData();
+        values = iTempImages[n].getvalues();
+    }
+    minval=values[MIN];
+    if(nargs == 5){
+        //scale = 255./(values[MAX]-floorValue);
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){     // map image2 (the temp image) to 8 bit and convert to uint8
+            if(*dataPtr < floorValue) *dataPtr = floorValue;
+            *byteptr++ = ((*dataPtr++)-floorValue);
+        }
+    } else {
+        floorValue=minval;
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){     // map image2 (the temp image) to 8 bit and convert to uint8
+            *byteptr++ = ((*dataPtr++)-floorValue);
+        }
+    }
+    free(values);
+    Mat im2 = Mat(iBuffer.height(), iBuffer.width(), CV_32F, bits2);
+    
+    DATAWORD* bgrArray;
+    Mat im2_original;
+    Mat im2_aligned;
+    DATAWORD* bluePtr;
+    DATAWORD* greenPtr;
+
+    // Set a 2x3 or 3x3 warp matrix depending on the motion model.
+    Mat warp_matrix;
+    
+    // Initialize the matrix to identity
+    if ( warp_mode == MOTION_HOMOGRAPHY )
+        warp_matrix = Mat::eye(3, 3, CV_32F);
+    else
+        warp_matrix = Mat::eye(2, 3, CV_32F);
+    
+    // Define termination criteria
+    TermCriteria criteria (TermCriteria::COUNT+TermCriteria::EPS, number_of_iterations, termination_eps);
+    
+    // Run the ECC algorithm. The results are stored in warp_matrix.
+    double cc;
+    try {
+    cc = findTransformECC(
+                     im1,
+                     im2,
+                     warp_matrix,
+                     warp_mode,
+                     criteria
+                     );
+    }
+    catch( cv::Exception& e )
+    {
+        beep();
+        const char* err_msg = e.what();
+        printf("exception caught: %s\n",err_msg);
+        delete[] bits;
+        delete[] bits2;
+        free(resultValues);
+        return CMND_ERR;
+    }
+    user_variables[0].ivalue = user_variables[0].fvalue = cc;
+    user_variables[0].is_float = 1;
+
+
+    if(cc==-1.){
+        beep();
+        printf("Error aligning images.\n");
+        delete[] bits;
+        delete[] bits2;
+        free(resultValues);
+        return CMND_ERR;
+    } else {
+        pprintf("Transform returned %g.\n",cc);
+    }
+    
 
     
     if(colorImage){
@@ -504,6 +756,7 @@ int cvAlign_q(int n,char* args){
     update_UI();
     return NO_ERR;
 }
+
 
 /*
 CVDENOISE h_luminance h_color [block_size search_window_size ]

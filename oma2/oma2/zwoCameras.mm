@@ -82,6 +82,12 @@ float circDevValue;
 long coolerPercent=0;
 ASI_ERROR_CODE asiErr;
 
+// information about the ZWO focuser is included in the extra data
+extern bool focuserConnected;
+extern int currentPos;
+extern float fTemp;
+
+
 int zwo(int n,char* args){
 
     long i;
@@ -148,15 +154,25 @@ int zwo(int n,char* args){
         sscanf(args,"%s %d",dummy, &bin);
         int w = iMaxWidth/bin;
         int h= iMaxHeight/bin;
-        sprintf(dummy,"%d %d", h,w);
+        snprintf(dummy,CHPERLN,"%d %d", h,w);
         size_c(0,dummy);
         int* specs = iBuffer.getspecs();
         specs[DX] = specs[DY] = bin;
+        specs[CAMERA] = ZWO+0;
         iBuffer.setspecs(specs);
         free(specs);
         update_UI();
     } else if ( strncmp(args,"ACQ",3) == 0){
         int* specs = iBuffer.getspecs();
+        float* extra;
+        int exSize = iBuffer.getExtraSize();
+        if(exSize == ZWO_EXTRA_SIZE){                // assume this extra is valid for camera info
+            extra = iBuffer.getextra();
+        }else{
+            extra = new float[ZWO_EXTRA_SIZE];      // if no extra exists, we'll make new extra
+            for(i=0; i<ZWO_EXTRA_SIZE; i++) extra[i]=0.0;
+        }
+        specs[CAMERA] = ZWO+0;
         int modified=0;
         stopExposure=0;
         if(specs[COLS] % (8/specs[DX])) {
@@ -249,23 +265,47 @@ int zwo(int n,char* args){
         iBuffer.setvalues(values);
         free(values);
         
-        sprintf(dummy,"%s\nCooler On: %d\nAnti-Dew On: %d\nSet Temperature: %ld\nSensor Temperature: %f\nGain: %d\n",ASICameraInfo.Name,coolerEnabled,antiDewEnabled,setTemp,sensorTemp/10.0,gain);
+        // add comments
+        snprintf(dummy,CHPERLN,"%s\nCooler On: %d\nAnti-Dew On: %d\nSet Temperature: %ld\nSensor Temperature: %f\nGain: %d\n",ASICameraInfo.Name,coolerEnabled,antiDewEnabled,setTemp,sensorTemp/10.0,gain);
         int logLength=(int)strlen(dummy);
         for(i=0;i<logLength;i++) if(dummy[i]=='\n') dummy[i]=0;
         dummy[logLength]=0;
         iBuffer.setComment(dummy, logLength+1);
         
+        // add extra data
+        extra[SET_TEMP] = setTemp;
+        extra[CAM_TEMP] = sensorTemp/10.0;
+        extra[COOLER_ON] = coolerEnabled;
+        extra[ANTI_DEW_ON] = antiDewEnabled;
+        if(focuserConnected){
+            extra[FOCUSER_CONNECTED] = 1.0;
+            extra[FOCUSER_POSITION] = currentPos;
+            extra[FOCUSER_TEMP] = fTemp;
+        } else {
+            extra[FOCUSER_CONNECTED] = 0.0;
+            extra[FOCUSER_POSITION] = -1.0;
+            extra[FOCUSER_TEMP] = 100.0;
+        }
+        if(strncmp("ZWO ASI2600MC Pro",ASICameraInfo.Name,17) == 0){
+            extra[ZWO_CAMERA_TYPE] = ASI2600MC;
+            extra[XPIXSZ] = 3.76;
+            extra[YPIXSZ] = 3.76;
+        } else {
+            extra[ZWO_CAMERA_TYPE] = ASI174MM;
+            extra[XPIXSZ] = 5.86;
+            extra[YPIXSZ] = 5.86;
+        }
 
         if(clearBadEnabled) {
             extern oma2UIData UIData;
             extern int bayer,ccd_height;
             printMax=0;
-            bayer = 1;
+            //bayer = 1;
             if(UIData.clearBad != 0.0){
                 if(UIData.clearBad != 1.0){
                     // take the clearBad value as counts and find bad pixels in the current image
                     n=UIData.clearBad;
-                    sprintf(dummy,"%d",n);
+                    snprintf(dummy,CHPERLN,"%d",n);
                     findbad_c(n,dummy);
                 }
                 if(ccd_height > 0){        // means bad pixels have already been found;
@@ -276,7 +316,7 @@ int zwo(int n,char* args){
                 }
             }
             if(UIData.demosaic){
-                sprintf(dummy,"0 0 0");
+                snprintf(dummy,CHPERLN,"0 0 0");
                 demosaic_c(0,dummy);
             }
             long black;
@@ -286,13 +326,13 @@ int zwo(int n,char* args){
                 case 0:
                     break;
                 case 1:
-                    sprintf(dummy,"%ld",black);
+                    snprintf(dummy,CHPERLN,"%ld",black);
                     minus_c(0,dummy);
                     break;
                 case 2:
-                    sprintf(dummy,"%ld",black);
+                    snprintf(dummy,CHPERLN,"%ld",black);
                     minus_c(0,dummy);
-                    sprintf(dummy,"0");
+                    snprintf(dummy,CHPERLN,"0");
                     clipbottom_c(0, dummy);
                     break;
                 default:
@@ -305,12 +345,14 @@ int zwo(int n,char* args){
                 //im->clip(C.maximum-black);
             }
             if(UIData.applyGamma!= 1.0){
-                sprintf(dummy,"%f",1.0/UIData.applyGamma);
+                snprintf(dummy,CHPERLN,"%f",1.0/UIData.applyGamma);
                 power_c(0,dummy);
             }
         }
         printMax=1;
-
+        iBuffer.setExtra(extra, ZWO_EXTRA_SIZE);
+        delete[] extra;
+ 
         iBuffer.getmaxx(printMax);
         if(autoDisplayEnabled) display(0,(char*)"ZWO");
                 
@@ -321,6 +363,7 @@ int zwo(int n,char* args){
 
     } else if ( strncmp(args,"FOC",3) == 0){
         int* specs = iBuffer.getspecs();
+        specs[CAMERA] = ZWO+0;
         int modified=0,count=0;
         int numInArray=0;
         float fwhmArray[MAX_FWHM_AVERAGE_SIZE];
@@ -452,6 +495,7 @@ int zwo(int n,char* args){
 }
 
 int connectCamera(){
+    extern int bayer;
     int i;
     
     numDevices = ASIGetNumOfConnectedCameras();
@@ -477,10 +521,13 @@ int connectCamera(){
     iMaxWidth = ASICameraInfo.MaxWidth;
     iMaxHeight =  ASICameraInfo.MaxHeight;
     printf("Resolution: %d X %d\n", iMaxWidth, iMaxHeight);
-    if(ASICameraInfo.IsColorCam)
+    if(ASICameraInfo.IsColorCam){
         printf("Color Camera: bayer pattern:%s\n",bayerPattern[ASICameraInfo.BayerPattern]);
-    else
+        bayer=1;
+    }else{
         printf("Mono camera\n");
+        bayer=0;
+    }
     ASIGetNumOfControls(camNum, &iNumOfCtrl);
     for( i = 0; i < iNumOfCtrl; i++) {
         ASIGetControlCaps(camNum, i, &ControlCaps);
