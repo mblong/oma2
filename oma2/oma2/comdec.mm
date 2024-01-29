@@ -168,6 +168,7 @@ ComDef   commands[] =    {
         
     {{"LIST           "},	list_c},
     {{"LOG            "},	logg},
+    {{"LOGNEXT        "},   logNext},
     {{"LMACRO         "},	lmacro},
     {{"LABELDATA      "},	labelData},
     {{"LOOP           "},	loop},
@@ -259,8 +260,8 @@ ComDef   commands[] =    {
     {{"STARS          "},   stars},
     {{"STARCLEAR      "},   starClear},
     {{"STARBACK       "},   starBack},
+    {{"STARABSOLUTE   "},   starAbsolute},
     {{"STARMATCH      "},   starMatch},
-    
     
 
 
@@ -1694,6 +1695,42 @@ void clear_buffer_to_end(char* buffer)
 
 /* ********** */
 
+/*
+ LOGNEXT theText
+    Add the specified text to the end of the comment buffer.
+ */
+
+
+int logNext(int n,char* args)
+{
+    int charNum=0,i;
+    if(*args == 0){
+        beep();
+        printf("No comment was specified\n");
+        return CMND_ERR;
+    }
+    while(commentBuffer[charNum]){
+        while(commentBuffer[charNum++]);
+        charNum++;
+    }
+    if(charNum+strlen(args)>= MBUFLEN-2) {
+        beep();
+        printf ("Comment Buffer Overflow.\n");
+        return MEM_ERR;
+    }
+    if(charNum)charNum--;
+    for(int i=0; args[i]; i++){
+        commentBuffer[charNum++]=args[i];
+    }
+    commentBuffer[charNum++]=0;
+    commentBuffer[charNum++]=0;
+    iBuffer.setComment(commentBuffer,charNum);
+    return NO_ERR;
+}
+
+
+/* ********** */
+
 //The LOG coommand
 
 int logg(int n,char* args)
@@ -1740,7 +1777,7 @@ int logg(int n,char* args)
                 
                 if ( (i + k + j) >= MBUFLEN) {
                     beep();
-                    printf ("Macro Buffer Overflow.\n");
+                    printf ("Comment Buffer Overflow.\n");
                     return MEM_ERR;
                 }
                 while((args[index] != EOL) && (args[index] != ';')) {

@@ -44,6 +44,7 @@
 #define SEP_APER_HASMASKED   0x0020
 #define SEP_APER_ALLMASKED   0x0040
 #define SEP_APER_NONPOSITIVE 0x0080
+#define SEP_OBJ_EXCLUDE        0x0100  // 
 
 /* noise_type values in sep_image */
 #define SEP_NOISE_NONE   0

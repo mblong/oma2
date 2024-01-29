@@ -538,6 +538,9 @@ LABEL textString [lineNumber]
 LOG [n] [comment]
 	Adds a comment to the comment buffer at line n. If n is not specified, the comment is added to the beginning of the comment buffer. If "comment" is not present, the program prompts for additional comment lines until a null comment is entered (i.e. <CR> only). If the optional "comment" is included on the same line, the text of "comment" replaces any comment already existing at line n and no further comment lines are solicited.
 
+LOGNEXT theText
+	Add the specified text to the end of the comment buffer.
+
 LMACRO
 	Lists the contents in the current macro buffer.
 
@@ -821,12 +824,21 @@ SQLCLOSE
 STRTIM x0 dy scale_factor
     This plots a series of streamlines in a two-component velocity field. x0 is the starting location of the ray that will be propagated mainly in the x direction. dy is increment between rays and can be less than one pixel if a continuous "time elapsed" image is desired. When more than one elapsed time occurs within a given pixel, the minimum value is given. The two components of the velocity field are needed. The y velocity is stored in temporary image 0; the x velocity field is in the current image buffer. On return, the image is -1 except for the stream lines. Values along the stream line correspond to elapsed time as determined by the scale_factor. time = distance/velocity*scale_factor. Distance is in pixels; velocity as per values in velocity files. A contour plot will show different residence times.
 
-STARS Factor
-	Assume the image is a deep sky image, and identify the stars. Uses the SEP algorithms (https://github.com/kbarbary/sep). Background is subtracted and stored as a temp image named 'bkg'. Factor specifies the threshold multiplier factor -- the threshold will be factor*globalRms. Default is 1.5. The identified stars are displayed in subsequent display commands. See also STARCLEAR.
+STARS [Factor Radius SizeFactor EllipticityFactor]
+	Assume the image is a deep sky image, and identify the stars. Uses the SEP algorithms (https://github.com/kbarbary/sep). Background is subtracted and stored as a temp image named 'bkg'. Factor specifies the threshold multiplier factor -- the threshold will be factor*globalRms -- default is 2.0. The identified stars are displayed in subsequent display commands. Radius specifies the pixel radius used in summing the intensity of each star identified -- default is 5. SizeFactor specifies maximum size of objects to be included in the star catalog. If absoluteFlag = 0, objects with ellipse parameters a+b > sizeFactor*aveSize will be excluded. If absoluteFlag != 0, objects with  a+b > sizeFactor pixels will be excluded -- default is 4.0.  EllipticityFactor specifies maximum elipticity of objects to be included in the star catalog. If absoluteFlag = 0, objects with ellipticity  > EllipticityFactor*aveEllipticity will be excluded. If absoluteFlag != 0, objects with ellipticity > EllipticityFactor will be excluded -- default is 2.0. The star catalog is sorted in descending order according to the intensity. See also STARCLEAR and STARABSOLUTE.
 
 STARCLEAR
 	Delete the catalog of stars found with the STARS command.
+	
+STARBACK [tileSize filtersize]
+	Assume the image is a deep sky image, and use the SEP algorithms (https://github.com/kbarbary/sep) to find the background. tileSize is the size (in pixels) of a region grouped together -- default is 64. filtersize is the size (in tiles) of the filter -- default is 3.
 
+STARABSOLUTE [absoluteFlag]
+	If the argument is present, the absoluteFlag is set accordingly. Otherwise, the current value of absoluteFlag is printed.
+
+STARMATCH [Factor Radius SizeFactor EllipticityFactor NumStars]
+	Assume the current deep sky image is to be matched with an image whose stars have already been indentified with the STARS command. The first four arguemnts are the same as the for the STARS command, and should probably match.  NumStars specifies how many stars should be used in searching for matching stars between the two images. These are used to determine the affine transform used to match the images.
+ 
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.
 

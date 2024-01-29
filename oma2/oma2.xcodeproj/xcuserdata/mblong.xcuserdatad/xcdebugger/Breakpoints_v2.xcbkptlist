@@ -402,8 +402,8 @@
             timestampString = "585138907.4785089"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "347"
-            endingLineNumber = "347"
+            startingLineNumber = "348"
+            endingLineNumber = "348"
             landmarkName = "unknown"
             landmarkType = "0">
          </BreakpointContent>
@@ -419,8 +419,8 @@
             timestampString = "585138907.479048"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
+            startingLineNumber = "358"
+            endingLineNumber = "358"
             landmarkName = "unknown"
             landmarkType = "0">
          </BreakpointContent>
@@ -436,8 +436,8 @@
             timestampString = "585138907.479381"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "502"
-            endingLineNumber = "502"
+            startingLineNumber = "503"
+            endingLineNumber = "503"
             landmarkName = "comdec(cmnd)"
             landmarkType = "9">
          </BreakpointContent>
@@ -453,8 +453,8 @@
             timestampString = "585138907.479695"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "511"
-            endingLineNumber = "511"
+            startingLineNumber = "512"
+            endingLineNumber = "512"
             landmarkName = "comdec(cmnd)"
             landmarkType = "9">
          </BreakpointContent>
@@ -521,8 +521,8 @@
             timestampString = "585138907.4801151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2531"
-            endingLineNumber = "2531"
+            startingLineNumber = "2568"
+            endingLineNumber = "2568"
             landmarkName = "loopbreak(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -538,8 +538,8 @@
             timestampString = "585138907.480392"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2537"
-            endingLineNumber = "2537"
+            startingLineNumber = "2574"
+            endingLineNumber = "2574"
             landmarkName = "loopbreak(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -911,8 +911,8 @@
             timestampString = "585138907.481038"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1403"
-            endingLineNumber = "1403"
+            startingLineNumber = "1404"
+            endingLineNumber = "1404"
             landmarkName = "evaluate(start, end)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1013,8 +1013,8 @@
             timestampString = "585138907.4813859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1366"
-            endingLineNumber = "1366"
+            startingLineNumber = "1367"
+            endingLineNumber = "1367"
             landmarkName = "evaluate(start, end)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1131,7 +1131,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "166"
             endingLineNumber = "166"
-            landmarkName = "-addItem:"
+            landmarkName = "-drawRect:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1353,8 +1353,8 @@
             filePath = "oma2/comdec.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1786"
-            endingLineNumber = "1786"
+            startingLineNumber = "1823"
+            endingLineNumber = "1823"
             landmarkName = "logg(n, args)"
             landmarkType = "9">
          </BreakpointContent>
@@ -1698,22 +1698,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9BA45605-5096-41CE-9F4C-680795BC0A87"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "oma2/image_support.mm"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1130"
-            endingLineNumber = "1130"
-            landmarkName = "readFits(filename, theImage)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "B15E8E76-4283-4968-A00E-0CFE8741F50F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -2002,22 +1986,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A59D01D4-B651-477F-A0A6-32A9C89A43F7"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "oma2/image_support.mm"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1098"
-            endingLineNumber = "1098"
-            landmarkName = "readFits(filename, theImage)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "451269C8-D8FE-47FD-9657-4E1612C585C5"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -2028,6 +1996,85 @@
             startingLineNumber = "708"
             endingLineNumber = "708"
             landmarkName = "cvAlign_q(n, args)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6D46BD31-35E0-4D17-A757-5AEB4EF04FD9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/sepFunctions.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "stars(n, args)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "6D46BD31-35E0-4D17-A757-5AEB4EF04FD9 - 20a61ef0cf685659"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "stars(int, char*)"
+                  moduleName = "oma2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mblong/oma2NewLib/oma2/oma2/sepFunctions.mm"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "1100">
+               </Location>
+               <Location
+                  uuid = "6D46BD31-35E0-4D17-A757-5AEB4EF04FD9 - 20a61ef0cf685659"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "stars(int, char*)"
+                  moduleName = "oma2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mblong/oma2NewLib/oma2/oma2/sepFunctions.mm"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "1112">
+               </Location>
+               <Location
+                  uuid = "6D46BD31-35E0-4D17-A757-5AEB4EF04FD9 - 20a61ef0cf6855c2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "stars(int, char*)"
+                  moduleName = "oma2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mblong/oma2NewLib/oma2/oma2/sepFunctions.mm"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "156"
+                  endingLineNumber = "156"
+                  offsetFromSymbolStart = "772">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2D1BEADE-A942-4AE0-AEE0-7F1D7033C1F4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "oma2/comdec.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1712"
+            endingLineNumber = "1712"
+            landmarkName = "logNext(n, args)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

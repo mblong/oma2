@@ -9,6 +9,11 @@
 #include "image.h"
 #include <vector>
 #include "openCVroutines.h"
+#include <opencv2/opencv.hpp>
+
+using namespace std;
+using namespace cv;
+
 //#include <opencv2/opencv.hpp>
 
 //#include <opencv2/core.hpp>
@@ -16,7 +21,7 @@
 //#include <opencv2/highgui.hpp>
 //#include <opencv2/video.hpp>
 //#include <opencv2/photo.hpp>
-
+#include <opencv2/calib3d.hpp>
 
 
 using namespace std;
@@ -25,9 +30,12 @@ using namespace cv;
 
 extern Image iBuffer;
 extern Image  iTempImages[];
+extern Variable user_variables[];
 
 sep_catalog* catalog = NULL;
 vector<Point3f> theStars;
+int absolute=0;
+float globalBackMedian=0, globalBackRMS=0;
 
 /*
 STARCLEAR
@@ -44,7 +52,7 @@ int starClear(int n, char* args)
 }
 
 /*
-STARS Factor
+STARS Factor Radius SizeFactor EllipticityFactor
  Assume the image is a deep sky image, and identify the stars. Uses the SEP algorithms (https://github.com/kbarbary/sep). Background is subtracted and stored as temp image bkg. Factor specifies the threshold multiplier factor -- the threshold will be factor*globalRms. Default is 1.5.
  */
 int stars(int n, char* args)
@@ -53,24 +61,50 @@ int stars(int n, char* args)
     int i, status, nx, ny;
     double *flux, *fluxerr, *fluxt, *fluxerrt, *area, *areat;
     short *flag, *flagt;
-    float *data, *imback;
-    sep_bkg *bkg = NULL;
+    float *data;
+    //sep_bkg *bkg = NULL;
     float conv[] = {1,2,1, 2,4,2, 1,2,1};
     
     if(catalog){
         sep_catalog_free(catalog);
         catalog=NULL;
+        theStars.clear();
     }
     
     status = 0;
     flux = fluxerr = NULL;
     flag = NULL;
     nx = iBuffer.width();
-    ny = iBuffer.height()*(1+iBuffer.isColor()*2);
-    data = iBuffer.getImageData();
-    float factor=1.5;
-    sscanf(args,"%f", &factor);
+    //ny = iBuffer.height()*(1+iBuffer.isColor()*2);
+    ny = iBuffer.height();
+    if(iBuffer.isColor()){
+        data = iBuffer.getImageData()+nx*ny;    // for color images, use the green channel to find stars
+    } else {
+        data = iBuffer.getImageData();
+    }
     
+    float factor=2.0;
+    float radius = 5.0;
+    float sizeFactor=4.0;
+    float ellipticityFactor=2.0;
+    sscanf(args,"%f %f %f %f", &factor,&radius,&sizeFactor,&ellipticityFactor);
+    
+    Image copy;
+    copy << iBuffer;
+    // get the background
+    starBack(0,NULL);
+    n = temp_image_index((char*)"bkg",1);
+    if(n >=0){
+        iTempImages[n] << iBuffer;
+    } else {
+        beep();
+        printf("Error saving temp image 'bkg'\n");
+    }
+    copy - iBuffer; // subtract the background
+    iBuffer.free(); // done with the background
+    iBuffer = copy;
+    
+    /*
     // background estimation
     sep_image im = {data, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
     status = sep_background(&im, 64, 64, 3, 3, 0.0, &bkg);
@@ -91,6 +125,11 @@ int stars(int n, char* args)
         // save to temp image
         Image copy;
         copy.copyABD(iBuffer); // get the specs
+        int* specs = iBuffer.getspecs();
+        specs[IS_COLOR] = 0;
+        specs[ROWS] = ny;
+        copy.setspecs(specs);
+        free(specs);
         copy.setImageData(imback);
         n = temp_image_index((char*)"bkg",1);
         if(n >=0){
@@ -101,86 +140,98 @@ int stars(int n, char* args)
         }
         copy.free();
     }
-    //print_time("sep_bkg_array()", t1-t0);
     
-    /* subtract background */
+    // subtract background
     status = sep_bkg_subarray(bkg, data, im.dtype);
     if (status){
         sep_bkg_free(bkg);
         printErr(status);
         return status;
     }
-    //print_time("sep_bkg_subarray()", t1-t0);
+    */
     
     // extract sources
     // Note that we set deblend_cont = 1.0 to turn off deblending.
     //
-    status = sep_extract(&im, factor*bkg->globalrms, SEP_THRESH_ABS,
+    sep_image im = {iBuffer.getImageData() +iBuffer.isColor()*nx*ny, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
+    status = sep_extract(&im, factor*globalBackRMS, SEP_THRESH_ABS,
                          5, conv, 3, 3, SEP_FILTER_CONV,
                          32, .005, 1, 1.0, &catalog);
     if (status){
-        sep_bkg_free(bkg);
+        //sep_bkg_free(bkg);
         printErr(status);
         return status;
     }
+    if( catalog->nobj == 0){
+        //sep_bkg_free(bkg);
+        beep();
+        printf("No stars found.\n");
+        return CMND_ERR;
+    }
     
     // aperture photometry
-    im.noise = &(bkg->globalrms);  /* set image noise level */
+    im.noise = &globalBackRMS;  /* set image noise level */
     im.ndtype = SEP_TFLOAT;
     fluxt = flux = (double *)malloc(catalog->nobj * sizeof(double));
     fluxerrt = fluxerr = (double *)malloc(catalog->nobj * sizeof(double));
     areat = area = (double *)malloc(catalog->nobj * sizeof(double));
     flagt = flag = (short *)malloc(catalog->nobj * sizeof(short));
+    double aveEllipticity=0,aveSize=0;
     for (i=0; i<catalog->nobj; i++, fluxt++, fluxerrt++, flagt++, areat++){
-        sep_sum_circle(&im,catalog->x[i], catalog->y[i], 5.0, 0, 5, 0,fluxt, fluxerrt, areat, flagt);
+        sep_sum_circle(&im,catalog->x[i], catalog->y[i], radius, 0, 5, 0,fluxt, fluxerrt, areat, flagt);
+        aveEllipticity += (catalog->a[i] - catalog->b[i])/catalog->a[i];
+        aveSize += catalog->a[i] + catalog->b[i];
     }
-    
-    // print results
-    //printf("writing to file: %s\n", fname2);
-    //catout = fopen(fname2, "w+");
-    //printf( "# SEP catalog\n");
-    //printf( "# 1 NUMBER\n");
-    //printf( "# 2 X_IMAGE (0-indexed)\n");
-    //printf( "# 3 Y_IMAGE (0-indexed)\n");
-    //printf( "# 4 FLUX\n");
-    //printf( "# 5 FLUXERR\n");
-    
-    
+    aveEllipticity/=catalog->nobj;
+    aveSize/=catalog->nobj;
+    printf("Average Ellipticity: %g Average Size: %g\n",aveEllipticity,aveSize/2);
+        
     for (i=0; i<catalog->nobj; i++)
     {
-        //printf( "%3d %#11.7g %#11.7g %#11.7g %#11.7g %#11.3g %#11.3g %#11.3g\n",i+1, catalog->x[i], catalog->y[i], flux[i], fluxerr[i],catalog->a[i],catalog->b[i],catalog->theta[i]);
-        theStars.push_back(Point3f(catalog->x[i],catalog->y[i],catalog->flux[i]));
+        if (absolute){
+            if(catalog->a[i] + catalog->b[i] <= sizeFactor && (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor){
+                theStars.push_back(Point3f(catalog->x[i],catalog->y[i],catalog->flux[i]));  // save this star
+            } else {
+                catalog->flag[i] = SEP_OBJ_EXCLUDE;
+            }
+        } else {
+            if(catalog->a[i] + catalog->b[i] <= sizeFactor*aveSize && (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor*aveEllipticity){
+                theStars.push_back(Point3f(catalog->x[i],catalog->y[i],catalog->flux[i]));  // save this star
+            } else {
+                catalog->flag[i] = SEP_OBJ_EXCLUDE;
+            }
+        }
     }
+    // arrange stars from brightest to dimmest
     sort(theStars.begin(), theStars.end(), [](const Point3f& a, const Point3f& b) {
         return a.z > b.z;  // Assuming intensity is stored in the 'z' component
     });
+    
     printf("Top three:\n");
     for(i=0; i<3;i++){
-        pprintf("%.2f %.2f %.0f\n",theStars[i].x,theStars[i].y,theStars[i].z);
+        printf("%.2f %.2f %.0f\n",theStars[i].x,theStars[i].y,theStars[i].z);
     }
     
     /* clean-up & exit */
-    sep_bkg_free(bkg);
-    //free(data);
+    //sep_bkg_free(bkg);
     free(flux);
     free(fluxerr);
     free(flag);
-    //sep_catalog_free(catalog);
     update_UI();
     return status;
 }
 
 /*
-STARMATCH Factor
- Assume the current image is to be matched with an image.
+ STARMATCH [Factor Radius SizeFactor EllipticityFactor NumStars]
+     Assume the current deep sky image is to be matched with an image whose stars have already been indentified with the STARS command. The first four arguemnts are the same as the for the STARS command, and should probably match.  NumStars specifies how many stars should be used in searching for matching stars between the two images. These are used to determine the affine transform used to match the images.
  */
 int starMatch(int n, char* args)
 {
     int i, status, nx, ny;
     double *flux, *fluxerr, *fluxt, *fluxerrt, *area, *areat;
     short *flag, *flagt;
-    float *data, *imback;
-    sep_bkg *bkg = NULL;
+    float *data;
+    //sep_bkg *bkg = NULL;
     float conv[] = {1,2,1, 2,4,2, 1,2,1};
     sep_catalog* matchCatalog = NULL;
     
@@ -194,127 +245,208 @@ int starMatch(int n, char* args)
     flux = fluxerr = NULL;
     flag = NULL;
     nx = iBuffer.width();
-    ny = iBuffer.height()*(1+iBuffer.isColor()*2);
-    data = iBuffer.getImageData();
-    float factor=1.5;
-    sscanf(args,"%f", &factor);
+    //ny = iBuffer.height()*(1+iBuffer.isColor()*2);
+    ny = iBuffer.height();
+    //data = iBuffer.getImageData();
+    float factor=2.5;
+    int numpts = 10;
+    float radius=5;
+    float sizeFactor=4.0;
+    float ellipticityFactor=2.0;
     
-    // background estimation
-    sep_image im = {data, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
-    status = sep_background(&im, 64, 64, 3, 3, 0.0, &bkg);
-    if (status){
-        sep_bkg_free(bkg);
-        printErr(status);
-        return status;
-    }
-    //printf("median %.3f   rms %.3f\n",sep_bkg_global( bkg), sep_bkg_globalrms(bkg));
     
-    // evaluate background
-    /*
-    imback = (float *)malloc((nx * ny)*sizeof(float));
-    status = sep_bkg_array(bkg, imback, SEP_TFLOAT);
-    if (status) {
-        sep_bkg_free(bkg);
-        printErr(status);        return status;
-    }else {
-        // save to temp image
-        Image copy;
-        copy.copyABD(iBuffer); // get the specs
-        copy.setImageData(imback);
-        n = temp_image_index((char*)"bkg",1);
-        if(n >=0){
-            iTempImages[n] << copy;
-        } else {
-            beep();
-            printf("Error saving temp image 'bkg'\n");
-        }
-        copy.free();
-    }
-    */
-    
+    sscanf(args,"%f %f %f %f %d", &factor,&radius,&sizeFactor,&ellipticityFactor,&numpts);
     Image original;
     original << iBuffer;
-
-    // subtract background
-    status = sep_bkg_subarray(bkg, data, im.dtype);
-    if (status){
-        sep_bkg_free(bkg);
-        printErr(status);
-        return status;
-    }
+    
+    Image copy;
+    copy << iBuffer;
+    // get the background
+    starBack(0,NULL);
+    copy - iBuffer; // subtract the background
+    iBuffer.free(); // done with the background
+    iBuffer = copy;
+    
+    /*
+     // background estimation
+     sep_image im = {data, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
+     status = sep_background(&im, 64, 64, 3, 3, 0.0, &bkg);
+     if (status){
+     sep_bkg_free(bkg);
+     printErr(status);
+     return status;
+     }
+     
+     Image original;
+     original << iBuffer;
+     
+     // subtract background
+     status = sep_bkg_subarray(bkg, data, im.dtype);
+     if (status){
+     sep_bkg_free(bkg);
+     printErr(status);
+     return status;
+     }
+     */
     
     // extract sources
     // Note that we set deblend_cont = 1.0 to turn off deblending.
     //
-    status = sep_extract(&im, factor*bkg->globalrms, SEP_THRESH_ABS,
+    sep_image im = {iBuffer.getImageData() + iBuffer.isColor()*nx*ny, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
+    status = sep_extract(&im, factor*globalBackRMS, SEP_THRESH_ABS,
                          5, conv, 3, 3, SEP_FILTER_CONV,
                          32, .005, 1, 1.0, &matchCatalog);
     if (status){
-        sep_bkg_free(bkg);
+        //sep_bkg_free(bkg);
         printErr(status);
         return status;
     }
     
     // aperture photometry
-    im.noise = &(bkg->globalrms);  /* set image noise level */
+    im.noise = &globalBackRMS;  /* set image noise level */
     im.ndtype = SEP_TFLOAT;
     fluxt = flux = (double *)malloc(matchCatalog->nobj * sizeof(double));
     fluxerrt = fluxerr = (double *)malloc(matchCatalog->nobj * sizeof(double));
     areat = area = (double *)malloc(matchCatalog->nobj * sizeof(double));
     flagt = flag = (short *)malloc(matchCatalog->nobj * sizeof(short));
+    double aveEllipticity=0,aveSize=0;
     for (i=0; i<matchCatalog->nobj; i++, fluxt++, fluxerrt++, flagt++, areat++){
-        sep_sum_circle(&im,matchCatalog->x[i], matchCatalog->y[i], 5.0, 0, 5, 0,fluxt, fluxerrt, areat, flagt);
+        sep_sum_circle(&im,matchCatalog->x[i], matchCatalog->y[i], radius, 0, 5, 0,fluxt, fluxerrt, areat, flagt);
+        aveEllipticity += (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i];
+        aveSize += matchCatalog->a[i] + matchCatalog->b[i];
     }
-        
+    aveEllipticity/=matchCatalog->nobj;
+    aveSize/=matchCatalog->nobj;
+    
     vector<Point3f> matchStars;
     
-    for (i=0; i<matchCatalog->nobj; i++)
-    {
-        matchStars.push_back(Point3f(matchCatalog->x[i],matchCatalog->y[i],matchCatalog->flux[i]));
+    for (i=0; i<matchCatalog->nobj; i++){
+        if (absolute){
+            if(matchCatalog->a[i] + matchCatalog->b[i] <= sizeFactor && (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i] <= ellipticityFactor){
+                matchStars.push_back(Point3f(matchCatalog->x[i],matchCatalog->y[i],matchCatalog->flux[i]));  // save this star
+            } else {
+                matchCatalog->flag[i] = SEP_OBJ_EXCLUDE;
+            }
+        } else {
+            if(matchCatalog->a[i] + matchCatalog->b[i] <= sizeFactor*aveSize && (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i] <= ellipticityFactor*aveEllipticity){
+                matchStars.push_back(Point3f(matchCatalog->x[i],matchCatalog->y[i],matchCatalog->flux[i]));  // save this star
+            } else {
+                matchCatalog->flag[i] = SEP_OBJ_EXCLUDE;
+            }
+        }
     }
+    // sort according to intesity
     sort(matchStars.begin(), matchStars.end(), [](const Point3f& a, const Point3f& b) {
         return a.z > b.z;  // Assuming intensity is stored in the 'z' component
     });
-    printf("Top three:\n");
-    for(i=0; i<10;i++){
-        pprintf("%.2f %.2f %.0f\n",matchStars[i].x,matchStars[i].y,matchStars[i].z);
+    
+    float minDist,dist;
+    int minIndex;
+    Point3f temp;
+    for(i=0; i<numpts;i++){
+        minDist = pow(matchStars[i].x-theStars[i].x,2) + pow(matchStars[i].y-theStars[i].y,2);
+        minIndex = i;
+        for(int j=i+1; j<numpts; j++){
+            dist = pow(matchStars[j].x-theStars[i].x,2) + pow(matchStars[j].y-theStars[i].y,2);
+            if(dist < minDist){
+                minDist = dist;
+                minIndex = j;
+            }
+        }
+        if(minIndex != i){  // change order
+            temp = matchStars[i];
+            matchStars[i] = matchStars[minIndex];
+            matchStars[minIndex] = temp;
+        }
+        //printf("%.2f %.2f %.0f\n",matchStars[i].x,matchStars[i].y,matchStars[i].z);
     }
     
     // Extract matched keypoints
-   //vector<Point2f> pointsBase, pointsAlign;
-    Point2f pointsBase[6], pointsAlign[6];
-    for (i=0; i<6;i++) {
-        pointsBase[i] = (Point2f(theStars[i].x,theStars[i].y));
-        pointsAlign[i] = (Point2f(matchStars[i].x,matchStars[i].y));
+    //vector<Point2f> pointsBase, pointsAlign;
+    //Point2f pointsBase[6], pointsAlign[6];
+    vector<Point2f> pointsBase, pointsAlign;
+    for (i=0; i<numpts;i++) {
+        //pointsBase[i] = (Point2f(theStars[i].x,theStars[i].y));
+        //pointsAlign[i] = (Point2f(matchStars[i].x,matchStars[i].y));
+        pointsBase.push_back(Point2f(theStars[i].x,theStars[i].y));
+        pointsAlign.push_back(Point2f(matchStars[i].x,matchStars[i].y));
     }
     
- 
+    vector<uchar> inliers(numpts, 0);
     // Find the homography transformation between the keypoints
     //Mat H = findHomography(pointsAlign, pointsBase, RANSAC);
-    Mat H = getAffineTransform(pointsBase,pointsAlign);
-
+    //Mat H = getAffineTransform(pointsBase,pointsAlign);
+    Mat H = estimateAffine2D(pointsBase, pointsAlign,inliers,RANSAC);
+    int inlie=0;
+    for(i=0; i<numpts; i++)
+        inlie += inliers.at(i);
+    pprintf("%d inliers of %d\n",inlie,numpts);
+    user_variables[0].ivalue = user_variables[0].fvalue = inlie;
+    user_variables[0].is_float = 0;
+    
+    
     // Apply the transformation to align the images
-    //warpAffine(imageToAlign, alignedImage, H, baseImage.size());
+    // warpAffine(imageToAlign, alignedImage, H, baseImage.size());
     // Use warpAffine for Translation, Euclidean and Affine
+    DATAWORD* bgrArray;
     Mat im2_original;
     Mat im2_aligned;
-    im2_original = Mat(iBuffer.height(), iBuffer.width(), CV_32FC1, original.getImageData());
-    im2_aligned = Mat(iBuffer.height(), iBuffer.width(), CV_32FC1);
+    DATAWORD* bluePtr;
+    DATAWORD* greenPtr;
+    DATAWORD* dataPtr;
     
+    
+    if(original.isColor()){
+        // need a BGR array for this
+        int size=iBuffer.height()*iBuffer.width();
+        bgrArray=new DATAWORD[size*3];
+        DATAWORD* bgrPtr=bgrArray;
+        dataPtr = original.getImageData();
+        bluePtr=dataPtr+2*size;
+        greenPtr=dataPtr+size;
+        for(int i=0; i<size; i++){     
+            *bgrPtr++ = *bluePtr++;
+            *bgrPtr++ = *greenPtr++;
+            *bgrPtr++ = *dataPtr++;
+        }
+        im2_original = Mat(iBuffer.height(), iBuffer.width(), CV_32FC3, bgrArray);
+        im2_aligned = Mat(iBuffer.height(), iBuffer.width(), CV_32FC3);
+    } else {
+        im2_original = Mat(iBuffer.height(), iBuffer.width(), CV_32FC1, original.getImageData());
+        im2_aligned = Mat(iBuffer.height(), iBuffer.width(), CV_32FC1);
+    }
+
     warpAffine(im2_original, im2_aligned, H, im2_original.size(), INTER_LINEAR + WARP_INVERSE_MAP);
     
+    Image newIm=Image(nx*(1+original.isColor()*2),ny);
+    newIm.copyABD(original);
+    dataPtr = newIm.getImageData();
     DATAWORD* resultPtr = (DATAWORD*) im2_aligned.ptr();
-    DATAWORD* dataPtr = iBuffer.getImageData();
-    for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
-        *dataPtr++ = *resultPtr++;
+    if(original.isColor()){
+        delete[] bgrArray;
+        int size=nx*ny;
+        bluePtr=dataPtr+2*size;
+        greenPtr=dataPtr+size;
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
+            *bluePtr++ = *resultPtr++;
+            *greenPtr++ = *resultPtr++;
+            *dataPtr++ = *resultPtr++;
+        }
+    } else {
+        for(int i=0; i<iBuffer.height()* iBuffer.width(); i++){
+            *dataPtr++ = *resultPtr++;
+        }
     }
-    
-    original.free();
     im2_original.release();
     im2_aligned.release();
+    
+    original.free();
+    iBuffer.free();
+    iBuffer=newIm;
+    iBuffer.getmaxx(PRINT_RESULT);
 
     /* clean-up & exit */
-    sep_bkg_free(bkg);
+    //sep_bkg_free(bkg);
     sep_catalog_free(matchCatalog);
     free(flux);
     free(fluxerr);
@@ -338,37 +470,37 @@ STARBACK [tileSize filtersize]
 int starBack(int n, char* args)
 {
     int status, nx, ny,tileSize=64,filterSize=3;
-    float *data, *imback;
+    //float *data, *imback;
     sep_bkg *bkg = NULL;
-        
+    
     status = 0;
     nx = iBuffer.width();
-    ny = iBuffer.height()*(1+iBuffer.isColor()*2);
-    data = iBuffer.getImageData();
-    //float factor=1.5;
-    sscanf(args,"%d %d", &tileSize,&filterSize);
-    
-    /* background estimation */
-    sep_image im = {data, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
-    
-    status = sep_background(&im, tileSize, tileSize, filterSize, filterSize, 0.0, &bkg);
-    if (status){
-        sep_bkg_free(bkg);
-        printErr(status);
-        return status;
-    }
-    //printf("median %.3f   rms %.3f\n",sep_bkg_global( bkg), sep_bkg_globalrms(bkg));
-    
-    /* evaluate background */
-    imback = (float *)malloc((nx * ny)*sizeof(float));    
-    status = sep_bkg_array(bkg, imback, SEP_TFLOAT);
-    if (status) {
-        sep_bkg_free(bkg);
-        printErr(status);
-        return status;
-    }else {
-        // save to current image buffer
-        iBuffer.setImageData(imback);
+    //ny = iBuffer.height()*(1+iBuffer.isColor()*2);
+    ny = iBuffer.height();
+    if(args) sscanf(args,"%d %d", &tileSize,&filterSize);
+    // background estimation for each color separately
+    sep_image im = {NULL, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
+    for (int i=0; i< 1+iBuffer.isColor()*2; i++) {
+        im.data = iBuffer.getImageData() + nx*ny*i;
+        status = sep_background(&im, tileSize, tileSize, filterSize, filterSize, 0.0, &bkg);
+        if (status){
+            sep_bkg_free(bkg);
+            printErr(status);
+            return status;
+        }
+        printf("For color %d:\tMedian %.2f\tRMS %.2f\n",i+1,sep_bkg_global( bkg), sep_bkg_globalrms(bkg));
+        if(i<2){
+            globalBackMedian = sep_bkg_global( bkg);
+            globalBackRMS = sep_bkg_globalrms(bkg);
+        }
+        /* evaluate background */
+        //imback = (float *)malloc((nx * ny)*sizeof(float));
+        status = sep_bkg_array(bkg, (float *)im.data, SEP_TFLOAT);
+        if (status) {
+            sep_bkg_free(bkg);
+            printErr(status);
+            return status;
+        }
     }
     sep_bkg_free(bkg);
     iBuffer.getmaxx(PRINT_RESULT);
@@ -376,7 +508,18 @@ int starBack(int n, char* args)
     return status;
 }
 
-
+/*
+ STARABSOLUTE [absoluteFlag]
+     If the argument is present, the absoluteFlag is set accordingly. Otherwise, the current value of absoluteFlag is printed.
+ */
+int starAbsolute(int n, char* args){
+    
+    if (*args) {
+        sscanf(args, "%d",&absolute);
+    }
+    printf("absoluteFlag is %d\n", absolute);
+    return NO_ERR;
+}
 
 
 

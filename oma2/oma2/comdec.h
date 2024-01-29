@@ -116,6 +116,7 @@ int getsettings(int,char*);
 int savsettings(int,char*);
 int defmac(int,char*);
 int logg(int,char*);
+int logNext(int,char*);
 int dmnmx(int,char*);
 int labelData(int, char*);
 int setAlpha(int, char*);
@@ -132,7 +133,7 @@ int stars(int,char*);
 int starClear(int, char*);
 int starBack(int, char*);
 int starMatch(int, char*);
-
+int starAbsolute(int, char*);
 
 
 #endif
