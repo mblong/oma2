@@ -59,7 +59,7 @@ int stars(int n, char* args)
 {
     //char *fname1, *fname2;
     int i, status, nx, ny;
-    double *flux, *fluxerr, *fluxt, *fluxerrt, *area, *areat;
+    double *flux, *fluxerr, *fluxt, *fluxerrt, *area, *areat, *kront, *kron;
     short *flag, *flagt;
     float *data;
     //sep_bkg *bkg = NULL;
@@ -104,51 +104,6 @@ int stars(int n, char* args)
     iBuffer.free(); // done with the background
     iBuffer = copy;
     
-    /*
-    // background estimation
-    sep_image im = {data, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
-    status = sep_background(&im, 64, 64, 3, 3, 0.0, &bkg);
-    if (status){
-        sep_bkg_free(bkg);
-        printErr(status);
-        return status;
-    }
-    //printf("median %.3f   rms %.3f\n",sep_bkg_global( bkg), sep_bkg_globalrms(bkg));
-    
-    // evaluate background
-    imback = (float *)malloc((nx * ny)*sizeof(float));
-    status = sep_bkg_array(bkg, imback, SEP_TFLOAT);
-    if (status) {
-        sep_bkg_free(bkg);
-        printErr(status);        return status;
-    }else {
-        // save to temp image
-        Image copy;
-        copy.copyABD(iBuffer); // get the specs
-        int* specs = iBuffer.getspecs();
-        specs[IS_COLOR] = 0;
-        specs[ROWS] = ny;
-        copy.setspecs(specs);
-        free(specs);
-        copy.setImageData(imback);
-        n = temp_image_index((char*)"bkg",1);
-        if(n >=0){
-            iTempImages[n] << copy;
-        } else {
-            beep();
-            printf("Error saving temp image 'bkg'\n");
-        }
-        copy.free();
-    }
-    
-    // subtract background
-    status = sep_bkg_subarray(bkg, data, im.dtype);
-    if (status){
-        sep_bkg_free(bkg);
-        printErr(status);
-        return status;
-    }
-    */
     
     // extract sources
     // Note that we set deblend_cont = 1.0 to turn off deblending.
@@ -176,32 +131,41 @@ int stars(int n, char* args)
     fluxerrt = fluxerr = (double *)malloc(catalog->nobj * sizeof(double));
     areat = area = (double *)malloc(catalog->nobj * sizeof(double));
     flagt = flag = (short *)malloc(catalog->nobj * sizeof(short));
-    double aveEllipticity=0,aveSize=0;
-    for (i=0; i<catalog->nobj; i++, fluxt++, fluxerrt++, flagt++, areat++){
+    kront = kron = (double *)malloc(catalog->nobj * sizeof(double));
+    double aveEllipticity=0,aveSize=0,aveKron=0;;
+    for (i=0; i<catalog->nobj; i++, fluxt++, fluxerrt++, flagt++, areat++,kront++){
         sep_sum_circle(&im,catalog->x[i], catalog->y[i], radius, 0, 5, 0,fluxt, fluxerrt, areat, flagt);
+        sep_kron_radius(&im,catalog->x[i], catalog->y[i],catalog->cxx[i], catalog->cyy[i], catalog->cxy[i],
+                    radius, 0,
+                    kront, flagt);
+        aveKron += *kront;
         aveEllipticity += (catalog->a[i] - catalog->b[i])/catalog->a[i];
         aveSize += catalog->a[i] + catalog->b[i];
     }
     aveEllipticity/=catalog->nobj;
     aveSize/=catalog->nobj;
-    printf("Average Ellipticity: %g Average Size: %g\n",aveEllipticity,aveSize/2);
-        
+    aveKron/=catalog->nobj;
+    int nRetained=0;
     for (i=0; i<catalog->nobj; i++)
     {
         if (absolute){
             if(catalog->a[i] + catalog->b[i] <= sizeFactor && (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor){
                 theStars.push_back(Point3f(catalog->x[i],catalog->y[i],catalog->flux[i]));  // save this star
+                nRetained++;
             } else {
                 catalog->flag[i] = SEP_OBJ_EXCLUDE;
             }
         } else {
             if(catalog->a[i] + catalog->b[i] <= sizeFactor*aveSize && (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor*aveEllipticity){
                 theStars.push_back(Point3f(catalog->x[i],catalog->y[i],catalog->flux[i]));  // save this star
+                nRetained++;
             } else {
                 catalog->flag[i] = SEP_OBJ_EXCLUDE;
             }
         }
     }
+    printf("%d stars found -- %d stars retained\n",catalog->nobj,nRetained);
+    printf("Average Ellipticity: %.2g Average Size: %.2g Average Kron Radius: %.2g\n",aveEllipticity,aveSize/2,aveKron);
     // arrange stars from brightest to dimmest
     sort(theStars.begin(), theStars.end(), [](const Point3f& a, const Point3f& b) {
         return a.z > b.z;  // Assuming intensity is stored in the 'z' component
@@ -217,6 +181,8 @@ int stars(int n, char* args)
     free(flux);
     free(fluxerr);
     free(flag);
+    free(area);
+    free(kron);
     update_UI();
     return status;
 }
@@ -266,29 +232,7 @@ int starMatch(int n, char* args)
     copy - iBuffer; // subtract the background
     iBuffer.free(); // done with the background
     iBuffer = copy;
-    
-    /*
-     // background estimation
-     sep_image im = {data, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
-     status = sep_background(&im, 64, 64, 3, 3, 0.0, &bkg);
-     if (status){
-     sep_bkg_free(bkg);
-     printErr(status);
-     return status;
-     }
-     
-     Image original;
-     original << iBuffer;
-     
-     // subtract background
-     status = sep_bkg_subarray(bkg, data, im.dtype);
-     if (status){
-     sep_bkg_free(bkg);
-     printErr(status);
-     return status;
-     }
-     */
-    
+        
     // extract sources
     // Note that we set deblend_cont = 1.0 to turn off deblending.
     //
@@ -317,7 +261,7 @@ int starMatch(int n, char* args)
     }
     aveEllipticity/=matchCatalog->nobj;
     aveSize/=matchCatalog->nobj;
-    
+
     vector<Point3f> matchStars;
     
     for (i=0; i<matchCatalog->nobj; i++){
@@ -451,6 +395,7 @@ int starMatch(int n, char* args)
     free(flux);
     free(fluxerr);
     free(flag);
+    free(area);
     update_UI();
     return status;
 }

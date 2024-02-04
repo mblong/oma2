@@ -140,8 +140,8 @@ extern sep_catalog* catalog;
                 float wh=[self frame].size.height ;
                 float x0 = catalog->x[i]-catalog->a[i];
                 float y0 = wh - (catalog->y[i]+catalog->b[i]);
-                float w = 2*catalog->a[i];
-                float h = 2*catalog->b[i];
+                float w = 2*catalog->a[i]*scalex;
+                float h = 2*catalog->b[i]*scaley;
                 x0 *= scalex;
                 y0 *= scaley;
                 [path appendBezierPathWithOvalInRect:

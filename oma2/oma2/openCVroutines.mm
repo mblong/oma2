@@ -16,16 +16,17 @@ extern ImageBitmap iBitmap;   // the bitmap buffer
 extern oma2UIData UIData;
 
 
-//static cv::VideoWriter outputVideo;
 static cv::Mat frame;
 static cv::Size frame_size;
+
 #ifdef HOMEBREW
 static bool videoOpened = 0;
+static cv::VideoWriter outputVideo;
 #endif
 
 extern ImageBitmap iBitmap;
-
 extern int printMax;
+
 
 int vidAddFrame_q(int n,char* args){
 #ifdef HOMEBREW
@@ -71,8 +72,10 @@ int vidOpenFile_q(int n,char* args){
     frame_size= cv::Size(iBitmap.getwidth(), iBitmap.getheight());
 
     //qDebug()<<theImage.bytesPerLine()<<" "<<theImage.height()<<endl;
-
-    outputVideo = VideoWriter(fullname(filename,SAVE_DATA_NO_SUFFIX), VideoWriter::fourcc('M', 'J', 'P', 'G'),
+    //fullname(filename,SAVE_DATA_NO_SUFFIX)
+    
+    String name={"/users/mblong/tst.avi"};
+    outputVideo = VideoWriter(name, VideoWriter::fourcc('M', 'J', 'P', 'G'),
                                 frames_per_second, frame_size, true);
 
     if(outputVideo.isOpened()){
