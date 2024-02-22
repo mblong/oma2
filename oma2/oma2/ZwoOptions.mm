@@ -382,6 +382,19 @@ extern float fTemp;
     }
 }
 
+- (void)updateSize:(float)size andEllipticity: (float)ellipticity{
+    extern Variable user_variables[];
+    if(size<0.0){
+        [countdownFWHM setStringValue:@"Countdown"];
+        [timerText setStringValue:@"-"];
+    } else {
+        [countdownFWHM setStringValue:@"Size\t\tEllipticity"];
+        [timerText setStringValue:[NSString stringWithFormat:@"%.2f\t\t\t%.2f",size,ellipticity]];
+    }
+}
+
+;
+
 - (void)closeWindow{
     [[self window] close];
 }

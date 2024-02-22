@@ -127,6 +127,10 @@ dispatch_sync(dispatch_get_main_queue(),^{[appController closeZwoWindow];});
 else \
 dispatch_sync(dispatch_get_main_queue(),^{[appController updateZwoFwhm:fwhmValue];});
 
+#define zwoUpdateSize if([NSThread isMainThread]) \
+[appController updateZwoSize:size andEllipticity: ellipticity]; \
+else \
+dispatch_sync(dispatch_get_main_queue(),^{[appController updateZwoSize:size andEllipticity: ellipticity];});
 
 #else
 
@@ -134,6 +138,7 @@ dispatch_sync(dispatch_get_main_queue(),^{[appController updateZwoFwhm:fwhmValue
 #define zwoUpdate ;
 #define zwoUpdateTimer ;
 #define zwoUpdateFwhm ;
+#define zwoUpdateSize ;
 #define zwoWindowClose ;
 
 #endif

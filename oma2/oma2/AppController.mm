@@ -287,9 +287,10 @@ extern char histogramIsVisible;
             scaleWindow = scaleWidth;
         windowHeight /= scaleWindow;
         windowWidth /= scaleWindow;
-        char txt[128];
-        sprintf(txt," Window scaled by %f\n",scaleWindow);
-        [self appendCText:txt];
+        //char txt[128];
+        printf("\nWindow scaled by %f\n",scaleWindow);
+        //sprintf(txt," Window scaled by %f\n",scaleWindow);
+        //[self appendCText:txt];
         
     }
     
@@ -811,9 +812,10 @@ extern char histogramIsVisible;
             scaleWindow = scaleWidth;
         windowHeight /= scaleWindow;
         windowWidth /= scaleWindow;
-        char txt[128];
-        sprintf(txt," Window scaled by %f\n",scaleWindow);
-        [self appendCText:txt];
+        //char txt[128];
+        printf(" Window scaled by %f\n",scaleWindow);
+        //sprintf(txt," Window scaled by %f\n",scaleWindow);
+        //[self appendCText:txt];
         
     }
     
@@ -1021,6 +1023,9 @@ extern char histogramIsVisible;
 }
 -(void) updateZwoFwhm:(float) value{
     [zwoOptions updateFwhm:value];
+}
+-(void) updateZwoSize:(float)size andEllipticity: (float)ellipticity{
+    [zwoOptions updateSize:size andEllipticity: ellipticity];
 }
 
 

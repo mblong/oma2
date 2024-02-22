@@ -102,6 +102,7 @@ int comdec(char*);
 -(void) closeZwoWindow;
 -(void) updateZwoTimer:(int) n;
 -(void) updateZwoFwhm:(float) value;
+-(void) updateZwoSize:(float)size andEllipticity: (float)ellipticity;
 #endif
 
 -(void) updateHistogram;

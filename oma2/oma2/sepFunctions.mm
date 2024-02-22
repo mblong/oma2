@@ -59,7 +59,7 @@ int stars(int n, char* args)
 {
     //char *fname1, *fname2;
     int i, status, nx, ny;
-    double *flux, *fluxerr, *fluxt, *fluxerrt, *area, *areat, *kront, *kron;
+    double *flux, *fluxerr, *fluxt, *fluxerrt, *area, *areat, *kront, *kron,*fluxRt,*fluxR;
     short *flag, *flagt;
     float *data;
     //sep_bkg *bkg = NULL;
@@ -132,40 +132,78 @@ int stars(int n, char* args)
     areat = area = (double *)malloc(catalog->nobj * sizeof(double));
     flagt = flag = (short *)malloc(catalog->nobj * sizeof(short));
     kront = kron = (double *)malloc(catalog->nobj * sizeof(double));
-    double aveEllipticity=0,aveSize=0,aveKron=0;;
-    for (i=0; i<catalog->nobj; i++, fluxt++, fluxerrt++, flagt++, areat++,kront++){
+    fluxRt = fluxR = (double *)malloc(catalog->nobj * sizeof(double));
+    double aveEllipticity=0,aveSize=0,aveKron=0,aveFluxR=0;
+    int excludeSmall = 0;
+    for (i=0; i<catalog->nobj; i++, fluxt++, fluxerrt++, flagt++, areat++,kront++,fluxRt++){
         sep_sum_circle(&im,catalog->x[i], catalog->y[i], radius, 0, 5, 0,fluxt, fluxerrt, areat, flagt);
-        sep_kron_radius(&im,catalog->x[i], catalog->y[i],catalog->cxx[i], catalog->cyy[i], catalog->cxy[i],
-                    radius, 0,
-                    kront, flagt);
-        aveKron += *kront;
-        aveEllipticity += (catalog->a[i] - catalog->b[i])/catalog->a[i];
-        aveSize += catalog->a[i] + catalog->b[i];
+        sep_kron_radius(&im,catalog->x[i], catalog->y[i],catalog->cxx[i], catalog->cyy[i], catalog->cxy[i], radius, 0, kront, flagt);
+        double f=0.5;
+        sep_flux_radius(&im,catalog->x[i], catalog->y[i], catalog->a[i]*2, 0, 5, 0,NULL,&f,1,fluxRt, flagt);
+        if(catalog->a[i] + catalog->b[i] <= 2.5){
+            catalog->flag[i] = SEP_OBJ_EXCLUDE;     // these are too small to be real
+            excludeSmall++;
+        }else{
+            aveKron += *kront;
+            aveFluxR += *fluxRt;
+            aveEllipticity += (catalog->a[i] - catalog->b[i])/catalog->a[i];
+            aveSize += catalog->a[i] + catalog->b[i];
+        }
     }
-    aveEllipticity/=catalog->nobj;
-    aveSize/=catalog->nobj;
-    aveKron/=catalog->nobj;
+    float sumEll=aveEllipticity;
+    float sumSiz=aveSize;
+
+    aveEllipticity/=(catalog->nobj-excludeSmall);
+    aveSize/=(catalog->nobj-excludeSmall);
+    aveKron/=(catalog->nobj-excludeSmall);
+    aveFluxR/=(catalog->nobj-excludeSmall);
+    
     int nRetained=0;
     for (i=0; i<catalog->nobj; i++)
     {
         if (absolute){
-            if(catalog->a[i] + catalog->b[i] <= sizeFactor && (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor){
+            if(catalog->a[i] + catalog->b[i] <= sizeFactor && 
+               (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor &&
+               catalog->flag[i] != SEP_OBJ_EXCLUDE){
                 theStars.push_back(Point3f(catalog->x[i],catalog->y[i],catalog->flux[i]));  // save this star
                 nRetained++;
             } else {
+                if(catalog->flag[i] != SEP_OBJ_EXCLUDE){    // don't exclude this twice!
+                    sumSiz -= catalog->a[i] + catalog->b[i];
+                    sumEll -= (catalog->a[i] - catalog->b[i])/catalog->a[i];
+                }
                 catalog->flag[i] = SEP_OBJ_EXCLUDE;
             }
         } else {
-            if(catalog->a[i] + catalog->b[i] <= sizeFactor*aveSize && (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor*aveEllipticity){
+            if(catalog->a[i] + catalog->b[i] <= sizeFactor*aveSize && 
+               (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor*aveEllipticity &&
+               catalog->flag[i] != SEP_OBJ_EXCLUDE){
                 theStars.push_back(Point3f(catalog->x[i],catalog->y[i],catalog->flux[i]));  // save this star
                 nRetained++;
             } else {
+                if(catalog->flag[i] != SEP_OBJ_EXCLUDE){    // don't exclude this twice!
+                    sumSiz -= catalog->a[i] + catalog->b[i];
+                    sumEll -= (catalog->a[i] - catalog->b[i])/catalog->a[i];
+                }
                 catalog->flag[i] = SEP_OBJ_EXCLUDE;
             }
         }
     }
-    printf("%d stars found -- %d stars retained\n",catalog->nobj,nRetained);
-    printf("Average Ellipticity: %.2g Average Size: %.2g Average Kron Radius: %.2g\n",aveEllipticity,aveSize/2,aveKron);
+    aveEllipticity = sumEll/nRetained;
+    aveSize = sumSiz/nRetained;
+
+    printf("%d stars found -- %d stars retained -- %d small stars excluded\n",catalog->nobj,nRetained,excludeSmall);
+    printf("Average Ellipticity: %.2g Average Size: %.2g Average Kron Radius: %.2g Average Flux Radius: %.2g\n",aveEllipticity,aveSize,aveKron,aveFluxR);
+    
+    user_variables[0].fvalue = aveSize;
+    user_variables[0].is_float = 1;
+    user_variables[1].fvalue = aveEllipticity;
+    user_variables[1].is_float = 1;
+    user_variables[2].fvalue = aveKron;
+    user_variables[2].is_float = 1;
+    user_variables[3].ivalue = nRetained;
+    user_variables[3].is_float = 0;
+
     // arrange stars from brightest to dimmest
     sort(theStars.begin(), theStars.end(), [](const Point3f& a, const Point3f& b) {
         return a.z > b.z;  // Assuming intensity is stored in the 'z' component
@@ -173,7 +211,7 @@ int stars(int n, char* args)
     
     printf("Top three:\n");
     for(i=0; i<3;i++){
-        printf("%.2f %.2f %.0f\n",theStars[i].x,theStars[i].y,theStars[i].z);
+        printf("%.2f %.2f %.2e\n",theStars[i].x,theStars[i].y,theStars[i].z);
     }
     
     /* clean-up & exit */
@@ -196,7 +234,7 @@ int starMatch(int n, char* args)
     int i, status, nx, ny;
     double *flux, *fluxerr, *fluxt, *fluxerrt, *area, *areat;
     short *flag, *flagt;
-    float *data;
+    //float *data;
     //sep_bkg *bkg = NULL;
     float conv[] = {1,2,1, 2,4,2, 1,2,1};
     sep_catalog* matchCatalog = NULL;
@@ -254,25 +292,34 @@ int starMatch(int n, char* args)
     areat = area = (double *)malloc(matchCatalog->nobj * sizeof(double));
     flagt = flag = (short *)malloc(matchCatalog->nobj * sizeof(short));
     double aveEllipticity=0,aveSize=0;
+    int excludeSmall=0;
     for (i=0; i<matchCatalog->nobj; i++, fluxt++, fluxerrt++, flagt++, areat++){
         sep_sum_circle(&im,matchCatalog->x[i], matchCatalog->y[i], radius, 0, 5, 0,fluxt, fluxerrt, areat, flagt);
-        aveEllipticity += (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i];
-        aveSize += matchCatalog->a[i] + matchCatalog->b[i];
+        if(matchCatalog->a[i] + matchCatalog->b[i] <= 2.5){
+            matchCatalog->flag[i] = SEP_OBJ_EXCLUDE;     // these are too small to be real
+            excludeSmall++;
+        }else{
+            aveEllipticity += (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i];
+            aveSize += matchCatalog->a[i] + matchCatalog->b[i];
+        }
     }
-    aveEllipticity/=matchCatalog->nobj;
-    aveSize/=matchCatalog->nobj;
+    aveEllipticity/=(matchCatalog->nobj-excludeSmall);
+    aveSize/=(matchCatalog->nobj-excludeSmall);
 
     vector<Point3f> matchStars;
     
     for (i=0; i<matchCatalog->nobj; i++){
         if (absolute){
-            if(matchCatalog->a[i] + matchCatalog->b[i] <= sizeFactor && (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i] <= ellipticityFactor){
+            if(matchCatalog->a[i] + matchCatalog->b[i] <= sizeFactor && 
+               (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i] <= ellipticityFactor &&
+               matchCatalog->flag[i] != SEP_OBJ_EXCLUDE){
                 matchStars.push_back(Point3f(matchCatalog->x[i],matchCatalog->y[i],matchCatalog->flux[i]));  // save this star
             } else {
                 matchCatalog->flag[i] = SEP_OBJ_EXCLUDE;
             }
         } else {
-            if(matchCatalog->a[i] + matchCatalog->b[i] <= sizeFactor*aveSize && (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i] <= ellipticityFactor*aveEllipticity){
+            if(matchCatalog->a[i] + matchCatalog->b[i] <= sizeFactor*aveSize && 
+               (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i] <= ellipticityFactor*aveEllipticity && matchCatalog->flag[i] != SEP_OBJ_EXCLUDE){
                 matchStars.push_back(Point3f(matchCatalog->x[i],matchCatalog->y[i],matchCatalog->flux[i]));  // save this star
             } else {
                 matchCatalog->flag[i] = SEP_OBJ_EXCLUDE;
@@ -398,6 +445,116 @@ int starMatch(int n, char* args)
     free(area);
     update_UI();
     return status;
+}
+
+
+// For the current image, find background, subtract it, find objects, reject too small, too large, too oval. Return average elipticity and average size; scale up displayed size.
+
+int starFocus(float *aveSize, float *aveEllipticity){
+    int status, nx, ny,tileSize=64,filterSize=3,i;
+    //float *data, *imback;
+    sep_bkg *bkg = NULL;
+    
+    status = 0;
+    nx = iBuffer.width();
+    ny = iBuffer.height();
+    // background estimation for each color separately
+    sep_image im = {NULL, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
+    for (int i=0; i< 1+iBuffer.isColor()*2; i++) {
+        im.data = iBuffer.getImageData() + nx*ny*i;
+        status = sep_background(&im, tileSize, tileSize, filterSize, filterSize, 0.0, &bkg);
+        if (status){
+            sep_bkg_free(bkg);
+            printErr(status);
+            return status;
+        }
+        if(i<2){
+            globalBackMedian = sep_bkg_global( bkg);
+            globalBackRMS = sep_bkg_globalrms(bkg);
+        }
+        // subtract backtround
+        status = sep_bkg_subarray(bkg, (void*)im.data, im.dtype);
+    }
+    sep_bkg_free(bkg);
+    
+    //
+    float conv[] = {1,2,1, 2,4,2, 1,2,1};
+    float factor = 6;
+    float sizeFactor=4.0;
+    float ellipticityFactor=2.0;
+    float scaleUp = 4.0;
+
+    status = sep_extract(&im, factor*globalBackRMS, SEP_THRESH_ABS,
+                         5, conv, 3, 3, SEP_FILTER_CONV,
+                         32, .005, 1, 1.0, &catalog);
+    if (status){
+        printErr(status);
+        return status;
+    }
+    if( catalog->nobj == 0){
+        beep();
+        printf("No stars found.\n");
+        return CMND_ERR;
+    }
+    
+    // aperture photometry
+    im.noise = &globalBackRMS;  /* set image noise level */
+    im.ndtype = SEP_TFLOAT;
+    *aveEllipticity=0;
+    *aveSize=0;
+    int excludeSmall = 0;
+    for (i=0; i<catalog->nobj; i++){
+        if(catalog->a[i] + catalog->b[i] <= 2.5){
+            catalog->flag[i] = SEP_OBJ_EXCLUDE;     // these are too small to be real
+            excludeSmall++;
+        }else{
+            *aveEllipticity += (catalog->a[i] - catalog->b[i])/catalog->a[i];
+            *aveSize += catalog->a[i] + catalog->b[i];
+        }
+    }
+    float sumEll=*aveEllipticity;
+    float sumSiz=*aveSize;
+    *aveEllipticity/=(catalog->nobj-excludeSmall);
+    *aveSize/=(catalog->nobj-excludeSmall);
+    int nRetained=0;
+    for (i=0; i<catalog->nobj; i++)
+    {
+        if (absolute){
+            if(catalog->a[i] + catalog->b[i] <= sizeFactor &&
+               (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor &&
+               catalog->flag[i] != SEP_OBJ_EXCLUDE){
+                nRetained++;
+                catalog->a[i] *= scaleUp;
+                catalog->b[i] *= scaleUp;
+            } else {
+                if(catalog->flag[i] != SEP_OBJ_EXCLUDE){    // don't exclude this twice!
+                    sumSiz -= catalog->a[i] + catalog->b[i];
+                    sumEll -= (catalog->a[i] - catalog->b[i])/catalog->a[i];
+                }
+                catalog->flag[i] = SEP_OBJ_EXCLUDE;
+            }
+        } else {
+            if(catalog->a[i] + catalog->b[i] <= sizeFactor* *aveSize &&
+               (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor* *aveEllipticity &&
+               catalog->flag[i] != SEP_OBJ_EXCLUDE){
+                nRetained++;
+                catalog->a[i] *= scaleUp;
+                catalog->b[i] *= scaleUp;
+            } else {
+                if(catalog->flag[i] != SEP_OBJ_EXCLUDE){    // don't exclude this twice!
+                    sumSiz -= catalog->a[i] + catalog->b[i];
+                    sumEll -= (catalog->a[i] - catalog->b[i])/catalog->a[i];
+                }
+                catalog->flag[i] = SEP_OBJ_EXCLUDE;
+            }
+        }
+    }
+    *aveEllipticity = sumEll/nRetained;
+    *aveSize = sumSiz/nRetained;
+    //printf("%d stars found -- %d stars retained -- %d small stars excluded\n",catalog->nobj,nRetained,excludeSmall);
+    //printf("Average Ellipticity: %.2g Average Size: %.2\n", aveEllipticity, aveSize);
+
+    return noErr;
 }
 
 

@@ -442,14 +442,14 @@ int zwo(int n,char* args){
             }
             datptr= iBuffer.getImageData();
             bufptr= imgBuf;
-            for(i=0; i< imgSize; i++){
+            for(i=0; i< imgSize; i++){      // copy the 8-bit data into iBuffer
                 *datptr++ = *bufptr++;
             }
             ASIStopExposure(camNum);
             iBuffer.getmaxx(0);
-            display(0,(char*)"ZWO");
-            update_UI();
             if(UIData.toolselected == CALCRECT){
+                display(0,(char*)"ZWO");
+                update_UI();
                 //printf("%d ave over\n",fwhmAverageOver);
                 point substart,subend;
                 substart = UIData.iRect.ul;
@@ -474,9 +474,18 @@ int zwo(int n,char* args){
                     //printf("%f %d %f\n",sum,numInArray,fwhmValue);
                     zwoUpdateFwhm
                 }
-             }
+            } else if (UIData.toolselected == CROSS){
+                float size,ellipticity;
+                starFocus(&size,&ellipticity);
+                display(0,(char*)"ZWO");
+                update_UI();
+                zwoUpdateSize
+            } else {
+                display(0,(char*)"ZWO");
+                update_UI();
+            }
         }
-        if(UIData.toolselected == CALCRECT){
+        if(UIData.toolselected == CALCRECT || UIData.toolselected == CROSS){
             fwhmValue=-1.0;
             zwoUpdateFwhm
         }

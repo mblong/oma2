@@ -13,6 +13,7 @@
 #import "ImageBitmap.h"
 #import "UI.h"
 #import "sep.h"
+#import "oma2.h"
 
 
 extern ImageBitmap iBitmap;
@@ -36,6 +37,8 @@ extern sep_catalog* catalog;
 @synthesize labelArray;
 @synthesize degrees;
 @synthesize zoom;
+
+@synthesize selectedIndex;
 
 
 - (void)drawRect:(NSRect)dirtyRect{
@@ -129,15 +132,20 @@ extern sep_catalog* catalog;
     }
     
     if(catalog){
-        
+        float scalex = self.frame.size.width/iBitmap.getwidth();
+        float scaley = self.frame.size.height/iBitmap.getheight();
+        float wh=[self frame].size.height ;
+        NSColor *myColor = [NSColor colorWithCalibratedRed:UIData.highlightSaturatedRed/255. green:UIData.highlightSaturatedGreen/255. blue:UIData.highlightSaturatedBlue/255. alpha:1.0f];
+
+
         for(int i=0; i< catalog->nobj;i++){
             if(catalog->flag[i] != SEP_OBJ_EXCLUDE){
                 NSBezierPath *path = [NSBezierPath bezierPath];
-                [[NSColor redColor] set];
+                [myColor set];
                 [path setLineWidth:2.0];
-                float scalex = self.frame.size.width/iBitmap.getwidth();
-                float scaley = self.frame.size.height/iBitmap.getheight();
-                float wh=[self frame].size.height ;
+                //float scalex = self.frame.size.width/iBitmap.getwidth();
+                //float scaley = self.frame.size.height/iBitmap.getheight();
+                //float wh=[self frame].size.height ;
                 float x0 = catalog->x[i]-catalog->a[i];
                 float y0 = wh - (catalog->y[i]+catalog->b[i]);
                 float w = 2*catalog->a[i]*scalex;
@@ -155,11 +163,28 @@ extern sep_catalog* catalog;
                 
                 [path stroke];
             }
+            if(selectedIndex >= 0){
+                NSMutableDictionary *stringAttributes = [[NSMutableDictionary alloc] init];
+                 [stringAttributes setValue: myColor forKey:NSForegroundColorAttributeName];
+                 [stringAttributes setValue:[NSFont fontWithName:@"Monaco" size:10] forKey:NSFontAttributeName];
+
+                float scalex = self.frame.size.width/iBitmap.getwidth();
+                float scaley = self.frame.size.height/iBitmap.getheight();
+                float wh=[self frame].size.height ;
+
+                NSString *label =[NSString stringWithFormat:@"Size: %.2f\nEllip: %.2f\nFlux: %.1e\n",catalog->a[selectedIndex] + catalog->b[selectedIndex], (catalog->a[selectedIndex] - catalog->b[selectedIndex])/catalog->a[selectedIndex], catalog->flux[selectedIndex]];
+                NSPoint startPoint;
+                startPoint.x = catalog->x[selectedIndex]*scalex+10;
+                if(startPoint.x + 80 >= self.frame.size.width)
+                    startPoint.x = catalog->x[selectedIndex]*scalex - 90;
+                startPoint.y = wh - catalog->y[selectedIndex]*scaley-35;
+                //NSDictionary *attributes = @{ NSForegroundColorAttributeName : [NSColor textColor]};
+                [label drawAtPoint:startPoint withAttributes: stringAttributes];
+                
+
+            }
         }
         
-        //sep_catalog_free(catalog);
-        //catalog=NULL;
-
     }
 
 
@@ -234,7 +259,32 @@ extern sep_catalog* catalog;
             colLine = newLine;
         }
     }
-    
+    if(catalog ){
+        if(appController.tool == CROSS){
+            float dist,minDist;
+            int minIndex,i=0;
+            int x = startRect.x;
+            int y = startRect.y;
+            while(catalog->flag[i] == SEP_OBJ_EXCLUDE) i++; // skip past any excluded items
+            minDist = pow(x-catalog->x[i],2) + pow(y-catalog->y[i],2);
+            minIndex = i;
+            for(int j=i+1; j<catalog->nobj; j++){
+                dist = pow(x-catalog->x[j],2) + pow(y-catalog->y[j],2);
+                if(dist < minDist && catalog->flag[j] != SEP_OBJ_EXCLUDE){
+                    minDist = dist;
+                    minIndex = j;
+                }
+            }
+            printf("Size: %.2f  Ellipticity: %.2f Flux: %.1e\n",catalog->a[minIndex] + catalog->b[minIndex], (catalog->a[minIndex] - catalog->b[minIndex])/catalog->a[minIndex], catalog->flux[minIndex]);
+            
+            selectedIndex = minIndex;
+            [self setNeedsDisplay:YES];
+
+        } else {
+            selectedIndex = -1;
+        }
+    }
+
     [statusController labelX0:x Y0:y Z0: iBuffer.getpix(y,x)];
     [statusController labelX1:-1 Y1:-1 Z1: 0];
     last_x_val = x;
@@ -378,9 +428,9 @@ extern sep_catalog* catalog;
             break;
 
             
-    }   
-    
+    }
     mouse_down = 0;
+    
 }
 
 - (void) rightMouseDown:(NSEvent *)theEvent{

@@ -24,7 +24,7 @@
 #include "UI.h"
 #include "ImageBitmap.h"
 #import "AppController.h"
-
+#include "sep.h"
 
 int connectCamera();
 ASI_ERROR_CODE zwoGetTempInfo();

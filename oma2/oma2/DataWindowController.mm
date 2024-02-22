@@ -143,6 +143,8 @@ extern AppController* appController;
     [imageView setColLine: -1];
     [imageView setRowWindowController: NULL];
     
+    [imageView setSelectedIndex: -1];
+    
     //[imageView setNeedsDisplay:YES]; // for display in macro, this doesn't do the job
     [imageView display];
     

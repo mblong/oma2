@@ -427,3 +427,4 @@ SEP_API void sep_get_errdetail(char *errtext);
 
 // ____________________ OMA SEP ROUTINES ________________
 void printErr(int);
+int starFocus(float *aveSize, float *aveEllipticity);

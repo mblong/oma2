@@ -54,6 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateZwoWindow;
 - (void)updateTimer:(int)secondsRemaining;
 - (void)updateFwhm:(float)fwhm;
+- (void)updateSize:(float)size andEllipticity: (float)ellipticity;
 - (void)closeWindow;
 - (void)focuserGoto:(int) target;
 @end

@@ -19,6 +19,7 @@
     int eraseLines;
     int degrees;
     float zoom;
+    int selectedIndex;  // index of selected star
 
     DrawingWindowController *rowWindowController;
     DrawingWindowController *colWindowController;
@@ -36,6 +37,8 @@
 @property NSMutableArray *labelArray;
 @property int degrees;
 @property float zoom;
+
+@property int selectedIndex;
 
 -(void) addItem: (NSObject*) theItem;
 -(void) setAlpha: (float) newAlpha;

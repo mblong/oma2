@@ -196,8 +196,8 @@
             timestampString = "556742866.436366"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
             landmarkName = "-drawRect:"
             landmarkType = "7">
          </BreakpointContent>
@@ -214,8 +214,8 @@
             timestampString = "556742866.4364229"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
             landmarkName = "-drawRect:"
             landmarkType = "7">
          </BreakpointContent>
@@ -555,8 +555,8 @@
             timestampString = "546458488.011"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "259"
-            endingLineNumber = "259"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
             landmarkName = "DataWindowController"
             landmarkType = "3">
          </BreakpointContent>
@@ -572,8 +572,8 @@
             timestampString = "546458488.01105"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
+            startingLineNumber = "208"
+            endingLineNumber = "208"
             landmarkName = "-acceptsFirstResponder"
             landmarkType = "7">
          </BreakpointContent>
@@ -673,8 +673,8 @@
             timestampString = "546458488.01116"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
+            startingLineNumber = "238"
+            endingLineNumber = "238"
             landmarkName = "-copy:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1097,8 +1097,8 @@
             filePath = "oma2/DataView.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
             landmarkName = "-drawRect:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1113,8 +1113,8 @@
             filePath = "oma2/AppController.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "692"
-            endingLineNumber = "692"
+            startingLineNumber = "693"
+            endingLineNumber = "693"
             landmarkName = "AppController"
             landmarkType = "3">
          </BreakpointContent>
@@ -1129,8 +1129,8 @@
             filePath = "oma2/DataView.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "166"
-            endingLineNumber = "166"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
             landmarkName = "-drawRect:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1145,8 +1145,8 @@
             filePath = "oma2/AppController.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "719"
-            endingLineNumber = "719"
+            startingLineNumber = "720"
+            endingLineNumber = "720"
             landmarkName = "-labelDataWindow:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1241,8 +1241,8 @@
             filePath = "oma2/DataView.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "399"
-            endingLineNumber = "399"
+            startingLineNumber = "449"
+            endingLineNumber = "449"
             landmarkName = "-rightMouseDown:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1257,8 +1257,8 @@
             filePath = "oma2/DataView.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "-mouseDown:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1337,8 +1337,8 @@
             filePath = "oma2/DataView.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
+            startingLineNumber = "437"
+            endingLineNumber = "437"
             landmarkName = "-rightMouseDown:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1785,8 +1785,8 @@
             filePath = "oma2/DataWindowController.mm"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
             landmarkName = "-updateImage"
             landmarkType = "7">
          </BreakpointContent>

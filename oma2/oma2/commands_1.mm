@@ -2992,7 +2992,7 @@ int nextFile_c(int n,char* args){
         printf("All files have been read.\n");
         fclose(nameFilePtr);
         nameFilePtr = NULL;
-        return FILE_ERR;
+        return EOF_ERR;
     }
     
     while (txt[0] == ';')  {
