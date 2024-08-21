@@ -204,6 +204,9 @@ CANON command arguments
     Only the first four characters of a command are matched in decoding the command.
     If a single argument is given that does not match one of the commands, that is interpreted as the filename for the SHOOT command.
 
+CBALANCE
+	For a color image, use the  specified rectangle to balance RGB channels. Assumes the color in the rectangle should be grey. command_return_0 and 1 contain redBalance and blueBalance values.
+
 DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
 
@@ -438,6 +441,9 @@ GETNEXT
 GETFILTER n filename
      Read in a tabulated filter matrix and store it as filter n, where in is in the range 0-9. These are used with the FILTER command. The format for tabulated filter matrices requires delimited text files, with the last element of a row terminated with a newline character. It must be a rectangular matrix with all elements specified. The number of rows and columns must be odd.
 
+GETCATALOG filename
+	Load information from a star catalog previously saved to a csv file using the SAVECATALOG command. This information is used for display/processing and will not be used for the STARMATCH command. Ordering is x,y,a,b,theta,flux,flags.
+
 GIGE command
 	Available in oma2cam. Commands are as follows:
 	ACQuire (gets frames in MULTIFRAME mode)
@@ -613,7 +619,7 @@ NEWWINDOW flag
 	If flag = 1 (default), a new window will be opened for each "DISPLAY" command. If flag = 0, the results of "DISPLAY" commands will be placed in the last-opened window. If no window exists, a new one will be opened. 
  
 NEXTFILE [prefix] [shortNameLength]
-  Open the next file specified in the NameFile that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. A leading ; in the filename list indicates that file should be skipped. The prefix must be specified in order to set a shortNameLength. command_return_1 is the filename without any prefix and without the extension (last 4 characters). command_return_2 is the last shortNameLength characters of the filename (default is 10).
+  Open the next file specified in the NameFile that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. A leading ; or - in the filename list indicates that file should be skipped. The prefix must be specified in order to set a shortNameLength. command_return_1 is the filename without any prefix and without the extension (last 4 characters). command_return_2 is the last shortNameLength characters of the filename (default is 10).
 
 
 NEXTFOLDER
@@ -624,6 +630,9 @@ NOISE average rms [seed]
 
 NAN2ZERO
 	Set any nan values to 0.
+
+NEGATIVE
+	Create a negative of the current image: (1.0 - (value-min)/range)*range+min
 
 OPENFILE <filename>
 	Reads data from the specified filename but does not close it. If there is more than one image in the file, the GETNEXT command will read the next image. This type of multi-image data file can be created with the CREATEFILE, CONCATFILE, CLOSEFILE commands, or may be produced by some cameras.
@@ -639,6 +648,9 @@ POSITVE
 
 POWER y
 	Raise the data in the current image buffer to the power y (float).
+
+POWTMPIMAGE name
+	Each pixel in the current image buffer is raised to the power specified in the corresponding pixel of the specified temporary image.
 
 RAMP
 	Fill current image with a ramp from 0 to the number of number of channels.
@@ -702,10 +714,13 @@ RAWPARAMS [demosaic subtractBlack applyWhiteBalance applyGamma clearBad]
 SAVEFILE <filename>
 	Saves the current data buffer to the specified file.
 
-SAVSETTINGS [filename]
-	Saves the current settings to the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings are saved within the oma application. 
+SAVECATALOG filename
+ Save information from the star catalog to a csv file. The star catalog is first created with the STARS command. It may also be modified interectively by option-clicking or cmnd-clicking on displayed stars/objects. Ordering is x,y,a,b,theta,flux,flags.
 
-SATIFF <filename> 
+SAVSETTINGS [filename]
+	Saves the current settings to the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings are saved within the oma application.
+ 
+ SATIFF <filename>
 	Converts the contents of the OMA Image buffer to 16 bit unsigned data and saves a compressed 16-bit TIFF image to the specified filename. The 'save' file prefix is used. A ".tif" extension is automatically appended to the filename.
 
 SATIFFSCALED min max <filename>
@@ -825,7 +840,13 @@ STRTIM x0 dy scale_factor
     This plots a series of streamlines in a two-component velocity field. x0 is the starting location of the ray that will be propagated mainly in the x direction. dy is increment between rays and can be less than one pixel if a continuous "time elapsed" image is desired. When more than one elapsed time occurs within a given pixel, the minimum value is given. The two components of the velocity field are needed. The y velocity is stored in temporary image 0; the x velocity field is in the current image buffer. On return, the image is -1 except for the stream lines. Values along the stream line correspond to elapsed time as determined by the scale_factor. time = distance/velocity*scale_factor. Distance is in pixels; velocity as per values in velocity files. A contour plot will show different residence times.
 
 STARS [Factor Radius SizeFactor EllipticityFactor]
-	Assume the image is a deep sky image, and identify the stars. Uses the SEP algorithms (https://github.com/kbarbary/sep). Background is subtracted and stored as a temp image named 'bkg'. Factor specifies the threshold multiplier factor -- the threshold will be factor*globalRms -- default is 2.0. The identified stars are displayed in subsequent display commands. Radius specifies the pixel radius used in summing the intensity of each star identified -- default is 5. SizeFactor specifies maximum size of objects to be included in the star catalog. If absoluteFlag = 0, objects with ellipse parameters a+b > sizeFactor*aveSize will be excluded. If absoluteFlag != 0, objects with  a+b > sizeFactor pixels will be excluded -- default is 4.0.  EllipticityFactor specifies maximum elipticity of objects to be included in the star catalog. If absoluteFlag = 0, objects with ellipticity  > EllipticityFactor*aveEllipticity will be excluded. If absoluteFlag != 0, objects with ellipticity > EllipticityFactor will be excluded -- default is 2.0. The star catalog is sorted in descending order according to the intensity. See also STARCLEAR and STARABSOLUTE.
+	Assume the image is a deep sky image, and identify the stars. Uses the SEP algorithms (https://github.com/kbarbary/sep). Background is subtracted and stored as a temp image named 'bkg'.
+	Factor specifies the threshold multiplier factor -- the threshold will be factor*globalRms -- default is 2.0. Higher values correspond to fewer, brighter stars.
+	Radius specifies the pixel radius used in summing the intensity of each star identified -- default is 5.
+	SizeFactor specifies maximum size of objects to be included in the star catalog. If absoluteFlag = 0, objects with ellipse parameters a+b > sizeFactor*aveSize will be excluded. If absoluteFlag != 0, objects with  a+b > sizeFactor pixels will be excluded -- default is 4.0.
+	EllipticityFactor specifies maximum elipticity of objects to be included in the star catalog. If absoluteFlag = 0, objects with ellipticity  > EllipticityFactor*aveEllipticity will be excluded. If absoluteFlag != 0, objects with ellipticity > EllipticityFactor will be excluded -- default is 2.0.
+	The star catalog is sorted in descending order according to the intensity. The identified stars are displayed in subsequent display commands. If the crosshair tool is selected, clicking on a star in the displayed image shows its size, elipticity, and flux. Option-click on a star will mark it to be excluded from display/processing. Cmnd-click on a star will add a previously excluded star/object.
+	See also STARCLEAR, STARSETTINGS, SAVECATALOG, GETCATALOG.
 
 STARCLEAR
 	Delete the catalog of stars found with the STARS command.
@@ -833,12 +854,17 @@ STARCLEAR
 STARBACK [tileSize filtersize]
 	Assume the image is a deep sky image, and use the SEP algorithms (https://github.com/kbarbary/sep) to find the background. tileSize is the size (in pixels) of a region grouped together -- default is 64. filtersize is the size (in tiles) of the filter -- default is 3.
 
-STARABSOLUTE [absoluteFlag]
-	If the argument is present, the absoluteFlag is set accordingly. Otherwise, the current value of absoluteFlag is printed.
+STARSETTINGS [absoluteFlag smallCutoff deblendContrast]
+	If at least one argument is present, the absoluteFlag is set accordingly. If given, smallCutoff and deblendContrast can also be input. The current value of the parameters is printed.
+	smallCutoff: stars with ellipse parameters a+b <= smallCutoff, which is a float, are excluded. Default is 2.5.
+	deblendContrast: specifies the minimum deblending contrast. Default is .005. A value of 1.0 disables deblending.
 
 STARMATCH [Factor Radius SizeFactor EllipticityFactor NumStars]
 	Assume the current deep sky image is to be matched with an image whose stars have already been indentified with the STARS command. The first four arguemnts are the same as the for the STARS command, and should probably match.  NumStars specifies how many stars should be used in searching for matching stars between the two images. These are used to determine the affine transform used to match the images.
- 
+
+SMINIMUM [newMinValue]
+	Set the minimum to the specified value. If no argument is given, 0 is assumed. command_return_1 is the offset subtracted from the data.
+
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.
 
@@ -924,7 +950,9 @@ ZWO [command] [commandArguments]
 	BINning binValue (sets format for binValue = 1 or 2)
 	DISconnect
 	WBAlance whiteBalanceRed whiteBalanceBlue (values are from 1-99)
-	Focus (using the current settings, presumably a cropped window, continuously acquire and display 8-bit grey-scale images. To stop, type cmnd')
+	Focus (using the current settings, presumably a cropped window, continuously acquire and display 8-bit grey-scale images. To stop, type cmnd') If the Calculate Rectangle tool is selected, the FWHM of at the center-of-mass of the image (presumably a single star in the window) is calculated and displayed. (see the FWHM command). If the Crosshair tool is selected, the average size and elipticity of stars in the window are calculated and displayed.
+	<camera number> Apply subsequent commands to the specified camera. Numbering starts at 1.
+
 ZFOCUS [cmnd command_args]
     Controls a single ZWO EAF Focuser in oma2cam.
     Valid Commands:

@@ -18,6 +18,8 @@ extern int      hdrFrames;     // HDR frame counter
 extern int numberNamedTempImages;
 extern Variable namedTempImages[];
 extern int printMax;
+//extern sep_catalog* catalog;
+extern sep_small_catalog omaCatalog;
 
 /* ********** */
 /// Add a constant
@@ -80,6 +82,109 @@ int multiply_c(int n,char* args){
     update_UI();
     return NO_ERR;
 }
+/* ********** */
+/// For a color image, use the  specified rectangle to balance RGB channels. Assumes the color in the rectangle should be grey.
+///
+/*
+CBALANCE
+ For a color image, use the  specified rectangle to balance RGB channels. Assumes the color in the rectangle should be grey. command_return_0 and 1 contain redBalance and blueBalance values.
+*/
+
+int cBalance_c(int n,char* args){
+    if( iBuffer.isColor() == 0){
+        beep();
+        printf("The current image is not a color image\n");
+        return CMND_ERR;
+    }
+    float ra,ga,ba,max=iBuffer.max();
+    extern Variable user_variables[];
+    calc_cmd_c(0,args);
+    ra=user_variables[0].fvalue;
+    ga=user_variables[4].fvalue;
+    ba=user_variables[8].fvalue;
+    iBuffer.rgbMult(ga/ra,1.0,ga/ba);
+    iBuffer.clip(max);
+    iBuffer.getmaxx(printMax);
+    user_variables[0].is_float = user_variables[1].is_float = 1;
+    user_variables[0].fvalue = ga/ra;
+    user_variables[1].fvalue = ga/ba;
+    update_UI();
+    return NO_ERR;
+}
+/* ********** */
+/*
+ BLOCK n [m]
+    Group the image data into n x m blocks (rows x cols). This command reduces the size
+      of the data buffer. The values are summed. If the image is flagged as color, the three color planes are treated separately.
+*/
+
+int block_c(int n,char* args){
+    int dx=2,dy=2;
+    int narg = sscanf(args,"%d %d",&dx,&dy);
+    if(dx < 1 || dy < 1){
+        beep();
+        printf("Blocking amounts must be > 0\n");
+        return CMND_ERR;
+    }
+    if(narg == 1){
+        dy = dx;
+    }
+    Image im;
+    int* specs=iBuffer.getspecs();
+    im.copyABD(iBuffer);
+    int rowMultiplier;
+    if(iBuffer.isColor()) rowMultiplier = 3;
+    else rowMultiplier = 1;
+    specs[ROWS] = iBuffer.height()/dy*rowMultiplier;
+    specs[COLS] = iBuffer.width()/dx;
+    im.setspecs(specs); // this will allocate the memory
+    int size = iBuffer.height() * iBuffer.width();
+    for(int nt=0; nt<specs[ROWS]*dy/rowMultiplier; nt+=dy) {
+        for(int nc=0; nc<specs[COLS]*dx;nc+=dx){
+            for(int c=0; c<rowMultiplier; c++){
+                float fsum = 0.0;
+                for(int i=0; i<dx; i++) {
+                    for(int j=0; j<dy; j++) {
+                        fsum += iBuffer.getpix(c*iBuffer.height()+nt+j,nc+i);
+                    }
+                }
+                im.setpix(c*im.height()+nt/dy, nc/dx, fsum);
+            }
+        }
+    }
+    free(specs);
+    iBuffer.free();     // release the old data
+    iBuffer = im;   // this is the new data
+    iBuffer.getmaxx(printMax);
+    update_UI();
+    return NO_ERR;
+}
+
+
+/* ********** */
+/// Set minimum to specified value (default is 0)
+///
+
+/*
+SMINIMUM [newMinValue]
+ Set the minimum to the specified value. If no argument is given, 0 is assumed. command_return_1 is the offset subtracted from the data.
+ 
+ */
+int sMinimum_c(int n,char* args){
+    DATAWORD val;
+    extern Variable user_variables[];
+    if( sscanf(args,"%f",&val) != 1)
+        val = n;
+    val = iBuffer.min() - val;
+    (iBuffer-val);
+    user_variables[0].fvalue = val;
+    user_variables[0].ivalue = val+.5;
+    user_variables[0].is_float = 1;
+    iBuffer.getmaxx(printMax);
+    update_UI();
+    return NO_ERR;
+}
+
 
 /* ********** */
 /// Multiply RGB by a specified constants.
@@ -240,8 +345,152 @@ int saveInt_c(int n,char* args)
     }
 }
 
+/*
+ int    nobj;
+ float     *thresh;               threshold (ADU)                          
+ int     *npix;                  # pixels extracted (size of pix array)   
+ int    *tnpix;                 # pixels above thresh (unconvolved)      
+ int     *xmin, *xmax;
+ int    *ymin, *ymax;
+ double *x, *y;                  barycenter (first moments)               
+ double *x2, *y2, *xy;          second moments                           
+ double *errx2, *erry2, *errxy;       second moment errors            
+ float     *a, *b, *theta;     ellipse parameters                       
+ float     *cxx, *cyy, *cxy;   ellipse parameters (alternative)         
+ float     *cflux;                 total flux of pixels (convolved im)      
+ float     *flux;                total flux of pixels (unconvolved)       
+ float  *cpeak;                 peak intensity (ADU) (convolved)         
+ float  *peak;                  peak intensity (ADU) (unconvolved)       
+ int    *xcpeak, *ycpeak;        x, y coords of peak (convolved) pixel    
+ int    *xpeak, *ypeak;          x, y coords of peak (unconvolved) pixel  
+ short     *flag;                  extraction flags                         
+ int    **pix;              array giving indicies of object's pixels in   
+                            image (linearly indexed). Length is `npix`.  
+                            (pointer to within the `objectspix` buffer)  
+ int    *objectspix;       buffer holding pixel indicies for all objects 
+*/
+
+/*
+SAVECATALOG filename
+ Save information from the star catalog to a csv file. The star catalog is first created with the STARS command. It may also be modified interectively by option-clicking or cmnd-clicking on displayed stars/objects. Ordering is x,y,a,b,theta,flux,flags.
+ */
+
+int savecatalog_c(int n,char* args)
+{
+    if(args[0] == 0){
+        beep();
+        printf("Need a file name.\n");
+        return CMND_ERR;
+    }
+    if(omaCatalog.nobj == 0){
+        beep();
+        printf("No catalog file exists.\n");
+        return CMND_ERR;
+    }
+    
+    int i;
+    FILE *fp;
+    
+    fp = fopen(fullname(args,CSV_DATA),"w");
+    if( fp != NULL) {
+        for(i=0; i<omaCatalog.nobj; i++){
+            if(omaCatalog.nColor == 1){
+                fprintf(fp,"%f,%f,%f,%f,%f,%f,%d\n",omaCatalog.x[i],omaCatalog.y[i],omaCatalog.a[i],
+                        omaCatalog.b[i],omaCatalog.theta[i],omaCatalog.flux[i],omaCatalog.flag[i]);
+            } else {
+                fprintf(fp,"%f,%f,%f,%f,%f,",omaCatalog.x[i],omaCatalog.y[i],omaCatalog.a[i],
+                        omaCatalog.b[i],omaCatalog.theta[i]);
+                for(int j=0; j<omaCatalog.nColor; j++){
+                    fprintf(fp,"%f,",omaCatalog.flux[i*omaCatalog.nColor+j]);
+                }
+                fprintf(fp,"%d\n",omaCatalog.flag[i]);
+            }
+        }
+        fclose(fp);
+    }
+    else {
+        beep();
+        printf("Could not open file: %s\n",args);
+        return FILE_ERR;
+    }
+    return NO_ERR;
+}
 /* ********** */
 
+/*
+ GETCATALOG filename
+     Load information from a star catalog previously saved to a csv file using the SAVECATALOG command. This information is used for display/processing and will not be used for the STARMATCH command. Ordering is x,y,a,b,theta,flux,flags.
+ */
+int getcatalog_c(int n,char* args)
+{
+    if(args[0] == 0){
+        beep();
+        printf("Need a file name.\n");
+        return CMND_ERR;
+    }
+    
+    FILE *file;
+    file = fopen(fullname(args,CSV_DATA), "rb");
+    if (!file){
+        beep();
+        printf("Could not open %s\n",args);
+        return FILE_ERR;
+    }
+    if(omaCatalog.nobj != 0){
+        deleteSmallCatalog();
+    }
+    char buffer[2048];
+    // find the number of objects by counting the newlines before EOF
+    int nobj=0;
+    int itemsPerRow=0;
+    while((n = (int)fread(buffer,1,sizeof(buffer),file)) > 0){
+        for(int i=0; i<n; i++){
+            if(nobj==0 && buffer[i] == ',') itemsPerRow++;
+            if(buffer[i] == '\n') nobj++;
+         }
+    }
+    fclose(file);
+    if(itemsPerRow == 6)
+        omaCatalog.nColor=1;
+    else
+        omaCatalog.nColor=itemsPerRow-5;
+    printf("%d objects read in; %d colors\n",nobj,omaCatalog.nColor);
+    
+    omaCatalog.nobj = nobj;
+    omaCatalog.x = (float*)malloc(nobj * sizeof(float));
+    omaCatalog.y = (float*)malloc(nobj * sizeof(float));
+    omaCatalog.a = (float*)malloc(nobj * sizeof(float));
+    omaCatalog.b = (float*)malloc(nobj * sizeof(float));
+    omaCatalog.theta = (float*)malloc(nobj * sizeof(float));
+    omaCatalog.flux = (float*)malloc(nobj * sizeof(float)*omaCatalog.nColor);
+    omaCatalog.flag = (short*)malloc(nobj * sizeof(short));
+    FILE *fp;
+    fp = fopen(args,"r");
+    if( fp != NULL) {
+        for(int i=0; i<omaCatalog.nobj; i++){
+            if(omaCatalog.nColor ==1){
+                fscanf(fp,"%f,%f,%f,%f,%f,%f,%hd\n",&omaCatalog.x[i],&omaCatalog.y[i],&omaCatalog.a[i],
+                       &omaCatalog.b[i],&omaCatalog.theta[i],&omaCatalog.flux[i],&omaCatalog.flag[i]);
+            } else {
+                fscanf(fp,"%f,%f,%f,%f,%f\n",&omaCatalog.x[i],&omaCatalog.y[i],&omaCatalog.a[i],
+                       &omaCatalog.b[i],&omaCatalog.theta[i]);
+                for(int j=0; j<omaCatalog.nColor; j++){
+                    fscanf(fp,"%f,",&omaCatalog.flux[i*omaCatalog.nColor+j]);
+                }
+                fscanf(fp,"%hd\n",&omaCatalog.flag[i]);
+            }
+        }
+        fclose(fp);
+    }
+    else {
+        beep();
+        printf("Could not open %s for reading.\n",args);
+        return FILE_ERR;
+    }
+    
+    return NO_ERR;
+}
+/* ********** */
 /*
 SAVEFITS filename [typeOfData]
     Save the current image to a fits format file. Include the .fits extension in the filename. Valid values for typeOfData are 16 (for unsigned integers, no underflow/overflow checking is done) and 32 (for floats). Default is 16.
@@ -2039,7 +2288,7 @@ int setcminmax_c(int n,char* args)		/* get color min and max */
 
 int histogram_c(int n,char* args)        /* get the histogram and ? */
 {
-    extern int histogram[];
+    extern unsigned int histogram[];
     extern Variable user_variables[];
     float lower = 1,upper = 1;
     DATAWORD lowerValue,upperValue;
@@ -2810,6 +3059,50 @@ int divtmp_c(int n, char* args)
         return MEM_ERR;
 }
 
+/* ********** */
+
+int powtmp_c(int n, char* args)
+{
+    n = temp_image_index(args,0);
+    if(n >=0){
+        if (iBuffer != iTempImages[n]) {
+            beep();
+            printf("Images are not the same size.\n");
+            return SIZE_ERR;
+        }
+        int* theSpecs = iBuffer.getspecs();
+            
+        for(int nt=0; nt<theSpecs[ROWS];nt++) {
+            for(int nc=0;nc < theSpecs[COLS]; nc++){
+                iBuffer.setpix(nt, nc, pow(iBuffer.getpix(nt,nc),iTempImages[n].getpix(nt, nc)));
+            }
+        }
+        free(theSpecs);
+        iBuffer.getmaxx(printMax);
+        update_UI();
+        return NO_ERR;
+    } else
+        return MEM_ERR;
+}
+
+/* ********** */
+
+int negative_c(int n, char* args)
+{
+    int* theSpecs = iBuffer.getspecs();
+    DATAWORD value,range,max=iBuffer.max(),min=iBuffer.min();
+    range = max-min;
+    for(int nt=0; nt<theSpecs[ROWS];nt++) {
+        for(int nc=0;nc < theSpecs[COLS]; nc++){
+            value= (1.0 - (iBuffer.getpix(nt,nc)-min)/range)*range+min;
+            iBuffer.setpix(nt, nc, value);
+        }
+    }
+    free(theSpecs);
+    iBuffer.getmaxx(printMax);
+    update_UI();
+    return NO_ERR;
+}
 
 /* ********** */
 
@@ -2974,7 +3267,7 @@ int getFolderNames_c(int n,char* args)            // open a file containing file
 
 /*
  NEXTFILE [prefix] [shortNameLength]
-   Open the next file specified in the NameFile that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. A leading ; in the filename list indicates that file should be skipped. The prefix must be specified in order to set a shortNameLength. command_return_1 is the filename without any prefix and without the extension (last 4 characters). command_return_2 is the last shortNameLength characters of the filename (default is 10). */
+   Open the next file specified in the NameFile that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. A leading ; or - in the filename list indicates that file should be skipped. The prefix must be specified in order to set a shortNameLength. command_return_1 is the filename without any prefix and without the extension (last 4 characters). command_return_2 is the last shortNameLength characters of the filename (default is 10). */
 int nextFile_c(int n,char* args){
     char 	txt[256];          // read the filename in here initially
     char 	fulltxt[512];
@@ -2995,7 +3288,7 @@ int nextFile_c(int n,char* args){
         return EOF_ERR;
     }
     
-    while (txt[0] == ';')  {
+    while (txt[0] == ';' || txt[0] == '-' )  {
         // a leading ; indicates this file should be skipped -- read the next name in the file
         if(fscanf(nameFilePtr, "%s",txt) == EOF){
             beep();

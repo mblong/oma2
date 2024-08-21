@@ -132,10 +132,18 @@ extern AppController* appController;
     
     if(pause_flag == 1){
         pause_flag = 0;
+        NSString *theKey = [anEvent charactersIgnoringModifiers];
+        extern Variable user_variables[];
+        user_variables[9].ivalue = 0;
+        user_variables[9].is_float=0;
+        if([theKey isEqualToString:@"1"]){
+            user_variables[9].ivalue = 1;
+        }
+
         dispatch_queue_t queue = dispatch_queue_create("oma.oma2.CommandTask",NULL);
         
         dispatch_async(queue,^{
-            int returnValue = comdec((char*) oma2Command);
+            int returnValue = comdec((char*) self->oma2Command);
             if(returnValue < GET_MACRO_LINE) printf("OMA2>");
         });
         return;

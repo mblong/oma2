@@ -9,6 +9,8 @@
 #ifndef zwoCameras_hpp
 #define zwoCameras_hpp
 
+#define MAXCAMS 8
+
 #define _MAC
 #define _LIN
 
@@ -34,5 +36,6 @@ ASI_ERROR_CODE zwoSetCoolerState(bool);
 ASI_ERROR_CODE zwoSetGain();
 void zwoDisconnect();
 
+int setCameraNumber(int);
 
 #endif /* zwoCameras_hpp */

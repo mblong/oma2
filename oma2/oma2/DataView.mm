@@ -20,7 +20,8 @@ extern ImageBitmap iBitmap;
 extern Image iBuffer;
 extern AppController* appController; 
 extern oma2UIData UIData;
-extern sep_catalog* catalog;
+//extern sep_catalog* catalog;
+extern sep_small_catalog omaCatalog;
 
 
 
@@ -131,34 +132,34 @@ extern sep_catalog* catalog;
         [minMax2 drawAtPoint:thePoint withAttributes:stringAttributes];
     }
     
-    if(catalog){
+    if(omaCatalog.nobj){
         float scalex = self.frame.size.width/iBitmap.getwidth();
         float scaley = self.frame.size.height/iBitmap.getheight();
         float wh=[self frame].size.height ;
         NSColor *myColor = [NSColor colorWithCalibratedRed:UIData.highlightSaturatedRed/255. green:UIData.highlightSaturatedGreen/255. blue:UIData.highlightSaturatedBlue/255. alpha:1.0f];
 
 
-        for(int i=0; i< catalog->nobj;i++){
-            if(catalog->flag[i] != SEP_OBJ_EXCLUDE){
+        for(int i=0; i< omaCatalog.nobj;i++){
+            if(!(omaCatalog.flag[i] & SEP_OBJ_EXCLUDE)){
                 NSBezierPath *path = [NSBezierPath bezierPath];
                 [myColor set];
                 [path setLineWidth:2.0];
                 //float scalex = self.frame.size.width/iBitmap.getwidth();
                 //float scaley = self.frame.size.height/iBitmap.getheight();
                 //float wh=[self frame].size.height ;
-                float x0 = catalog->x[i]-catalog->a[i];
-                float y0 = wh - (catalog->y[i]+catalog->b[i]);
-                float w = 2*catalog->a[i]*scalex;
-                float h = 2*catalog->b[i]*scaley;
+                float x0 = omaCatalog.x[i]-omaCatalog.a[i];
+                float y0 = wh - (omaCatalog.y[i]+omaCatalog.b[i]);
+                float w = 2*omaCatalog.a[i]*scalex;
+                float h = 2*omaCatalog.b[i]*scaley;
                 x0 *= scalex;
                 y0 *= scaley;
                 [path appendBezierPathWithOvalInRect:
                  NSMakeRect(x0,y0,w,h)];
                 
                 NSAffineTransform *transform = [NSAffineTransform transform];
-                [transform translateXBy: catalog->x[i]*scalex yBy:  wh - (catalog->y[i])*scaley];
-                [transform rotateByRadians:-catalog->theta[i]];
-                [transform translateXBy: -catalog->x[i]*scalex yBy: -(wh - (catalog->y[i]))*scaley];
+                [transform translateXBy: omaCatalog.x[i]*scalex yBy:  wh - (omaCatalog.y[i])*scaley];
+                [transform rotateByRadians:-omaCatalog.theta[i]];
+                [transform translateXBy: -omaCatalog.x[i]*scalex yBy: -(wh - (omaCatalog.y[i]))*scaley];
                 [path transformUsingAffineTransform: transform];
                 
                 [path stroke];
@@ -171,13 +172,18 @@ extern sep_catalog* catalog;
                 float scalex = self.frame.size.width/iBitmap.getwidth();
                 float scaley = self.frame.size.height/iBitmap.getheight();
                 float wh=[self frame].size.height ;
-
-                NSString *label =[NSString stringWithFormat:@"Size: %.2f\nEllip: %.2f\nFlux: %.1e\n",catalog->a[selectedIndex] + catalog->b[selectedIndex], (catalog->a[selectedIndex] - catalog->b[selectedIndex])/catalog->a[selectedIndex], catalog->flux[selectedIndex]];
+                float theFlux;
+                if(omaCatalog.nColor == 1){
+                    theFlux = omaCatalog.flux[selectedIndex];
+                } else {
+                    theFlux = omaCatalog.flux[selectedIndex*omaCatalog.nColor+1];
+                }
+                NSString *label =[NSString stringWithFormat:@"Size: %.2f\nEllip: %.2f\nFlux: %.1e\n",omaCatalog.a[selectedIndex] + omaCatalog.b[selectedIndex], (omaCatalog.a[selectedIndex] - omaCatalog.b[selectedIndex])/omaCatalog.a[selectedIndex], theFlux];
                 NSPoint startPoint;
-                startPoint.x = catalog->x[selectedIndex]*scalex+10;
+                startPoint.x = omaCatalog.x[selectedIndex]*scalex+10;
                 if(startPoint.x + 80 >= self.frame.size.width)
-                    startPoint.x = catalog->x[selectedIndex]*scalex - 90;
-                startPoint.y = wh - catalog->y[selectedIndex]*scaley-35;
+                    startPoint.x = omaCatalog.x[selectedIndex]*scalex - 90;
+                startPoint.y = wh - omaCatalog.y[selectedIndex]*scaley-35;
                 //NSDictionary *attributes = @{ NSForegroundColorAttributeName : [NSColor textColor]};
                 [label drawAtPoint:startPoint withAttributes: stringAttributes];
                 
@@ -259,27 +265,67 @@ extern sep_catalog* catalog;
             colLine = newLine;
         }
     }
-    if(catalog ){
+    if(omaCatalog.nobj ){
         if(appController.tool == CROSS){
             float dist,minDist;
-            int minIndex,i=0;
+            int minIndex,i=0,j;
             int x = startRect.x;
             int y = startRect.y;
-            while(catalog->flag[i] == SEP_OBJ_EXCLUDE) i++; // skip past any excluded items
-            minDist = pow(x-catalog->x[i],2) + pow(y-catalog->y[i],2);
-            minIndex = i;
-            for(int j=i+1; j<catalog->nobj; j++){
-                dist = pow(x-catalog->x[j],2) + pow(y-catalog->y[j],2);
-                if(dist < minDist && catalog->flag[j] != SEP_OBJ_EXCLUDE){
-                    minDist = dist;
-                    minIndex = j;
-                }
-            }
-            printf("Size: %.2f  Ellipticity: %.2f Flux: %.1e\n",catalog->a[minIndex] + catalog->b[minIndex], (catalog->a[minIndex] - catalog->b[minIndex])/catalog->a[minIndex], catalog->flux[minIndex]);
             
-            selectedIndex = minIndex;
-            [self setNeedsDisplay:YES];
+            
+            NSUInteger flags = theEvent.modifierFlags;
+            int modStar=0;
+            if(flags & NSEventModifierFlagCommand) modStar = 1;     // add a previously discarded star
+            if(flags & NSEventModifierFlagOption) modStar = -1;     // remove a previously included star
+            while((omaCatalog.flag[i] & SEP_OBJ_EXCLUDE) && modStar == 0) i++; // skip past any excluded items at the start of the list if we're not modifying
+            minDist = pow(x-omaCatalog.x[i],2) + pow(y-omaCatalog.y[i],2);
+            minIndex = i;
 
+            if(modStar <= 0){
+                for(j=i+1; j<omaCatalog.nobj; j++){
+                    dist = pow(x-omaCatalog.x[j],2) + pow(y-omaCatalog.y[j],2);
+                    if(dist < minDist && omaCatalog.flag[j] != SEP_OBJ_EXCLUDE){
+                        minDist = dist;
+                        minIndex = j;
+                    }
+                }
+                selectedIndex = minIndex;
+                float theFlux;
+                if(omaCatalog.nColor == 1){
+                    theFlux = omaCatalog.flux[minIndex];
+                } else {
+                    theFlux = omaCatalog.flux[minIndex*omaCatalog.nColor+1];
+                }
+
+                if(modStar == -1){
+                    omaCatalog.flag[minIndex] |= SEP_OBJ_EXCLUDE;
+                    printf("Star Excluded.\n");
+                    selectedIndex = -1;
+                }
+                printf("Size: %.2f  Ellipticity: %.2f Flux: %.1e\n",omaCatalog.a[minIndex] + omaCatalog.b[minIndex], (omaCatalog.a[minIndex] - omaCatalog.b[minIndex])/omaCatalog.a[minIndex], theFlux);
+                
+                [self setNeedsDisplay:YES];
+            } else {   // add an excluded star
+                for(j=i+1; j<omaCatalog.nobj; j++){
+                    dist = pow(x-omaCatalog.x[j],2) + pow(y-omaCatalog.y[j],2);
+                    if(dist < minDist && omaCatalog.flag[j] & SEP_OBJ_EXCLUDE){
+                        minDist = dist;
+                        minIndex = j;
+                    }
+                }
+                omaCatalog.flag[minIndex] -= SEP_OBJ_EXCLUDE;
+                float theFlux;
+                if(omaCatalog.nColor == 1){
+                    theFlux = omaCatalog.flux[minIndex];
+                } else {
+                    theFlux = omaCatalog.flux[minIndex*omaCatalog.nColor+1];
+                }
+
+                printf("Star Added\nSize: %.2f  Ellipticity: %.2f Flux: %.1e\n",omaCatalog.a[minIndex] + omaCatalog.b[minIndex], (omaCatalog.a[minIndex] - omaCatalog.b[minIndex])/omaCatalog.a[minIndex], theFlux);
+                
+                selectedIndex = minIndex;
+                [self setNeedsDisplay:YES];
+            }
         } else {
             selectedIndex = -1;
         }

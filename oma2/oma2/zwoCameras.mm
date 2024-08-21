@@ -34,6 +34,7 @@ extern int fwhmAverageOver;
         WBAlance whiteBalanceRed whiteBalanceBlue (values are from 1-99)
         FOCus (using the current settings, presumably a cropped window, continuously acquire
          and display 8-bit grey-scale images. To stop, type cmnd')
+        <camera number> Apply subsequent commands to the specified camera. Numbering starts at 1
  
     Notes:
     Only the first theree characters of a command are matched in decoding the command.
@@ -57,7 +58,6 @@ int zWidth;
 int zHeight;
 ASI_CAMERA_INFO ASICameraInfo;
 bool connected=false;
-int iMaxWidth, iMaxHeight;
 const char* bayerPattern[] = {"RG","BG","GR","GB"};
 int iNumOfCtrl = 0;
 long setTemp = 20;
@@ -93,14 +93,23 @@ int zwo(int n,char* args){
     long i;
     int nargs;
     char dummy[CHPERLN];
-    
-    
+
 
     if(!connected)
         if( connectCamera() <= 0) return HARD_ERR;
     
     zwoWindow
     zwoGetTempInfo();
+    
+    if(args[0] > '0' && args[0] <= '8'){
+        int nCam = args[0] - '1';
+        if(nCam > numDevices){
+            beep();
+            printf("Camera %d is not connected.\n",nCam);
+            return HARD_ERR;
+        }
+        return setCameraNumber(nCam);
+    }
     
     if(strlen(args) == 0)
         strcpy(args,"ACQ");
@@ -137,7 +146,7 @@ int zwo(int n,char* args){
                 coolerEnabled=true;
                 ASISetControlValue(camNum, ASI_TARGET_TEMP, setTemp, bAuto);
             }
-            long coolerPercent;
+            //long coolerPercent;
             ASIGetControlValue(camNum, ASI_TEMPERATURE, &sensorTemp, &bAuto);
             ASIGetControlValue(camNum, ASI_COOLER_POWER_PERC, &coolerPercent, &bAuto);
             printf("Sensor Temperature: %.1f\n", (float)sensorTemp/10.0);
@@ -152,8 +161,8 @@ int zwo(int n,char* args){
 
     } else if ( strncmp(args,"BIN",3) == 0){
         sscanf(args,"%s %d",dummy, &bin);
-        int w = iMaxWidth/bin;
-        int h= iMaxHeight/bin;
+        int w = ASICameraInfo.MaxWidth/bin;
+        int h= ASICameraInfo.MaxHeight/bin;
         snprintf(dummy,CHPERLN,"%d %d", h,w);
         size_c(0,dummy);
         int* specs = iBuffer.getspecs();
@@ -208,8 +217,8 @@ int zwo(int n,char* args){
         
         // check to see if the parameters are OK for this camera
         // specs[COLS]%8 !=0 -- doesn't seem to be needed for bin=2
-        if( specs[DX]*specs[COLS]+specs[X0] > iMaxWidth ||
-           specs[DY]*specs[ROWS]+specs[Y0] > iMaxHeight || specs[DX] != specs[DY] ||
+        if( specs[DX]*specs[COLS]+specs[X0] > ASICameraInfo.MaxWidth ||
+           specs[DY]*specs[ROWS]+specs[Y0] > ASICameraInfo.MaxHeight || specs[DX] != specs[DY] ||
            specs[ROWS]%2 != 0) {
             beep();
             printf("Incompatible readout parameters. (Row/Column/X0/Y0/DX/DY)\n");
@@ -400,8 +409,8 @@ int zwo(int n,char* args){
 
         // check to see if the parameters are OK for this camera
         // specs[COLS]%8 !=0 -- doesn't seem to be needed for bin=2
-        if( specs[DX]*specs[COLS]+specs[X0] > iMaxWidth ||
-           specs[DY]*specs[ROWS]+specs[Y0] > iMaxHeight || specs[DX] != specs[DY] ||
+        if( specs[DX]*specs[COLS]+specs[X0] > ASICameraInfo.MaxWidth ||
+           specs[DY]*specs[ROWS]+specs[Y0] > ASICameraInfo.MaxHeight || specs[DX] != specs[DY] ||
            specs[ROWS]%2 != 0) {
             beep();
             printf("Incompatible readout parameters. (Row/Column/X0/Y0/DX/DY)\n");
@@ -503,6 +512,30 @@ int zwo(int n,char* args){
     return NO_ERR;
 }
 
+int setCameraNumber(int cNum){
+    extern int bayer;
+    int i;
+    
+    ASIGetCameraProperty(&ASICameraInfo, cNum);
+    if(ASICameraInfo.IsColorCam){
+        printf("Color Camera: bayer pattern:%s\n",bayerPattern[ASICameraInfo.BayerPattern]);
+        bayer=1;
+    }else{
+        printf("Mono camera\n");
+        bayer=0;
+    }
+    ASIGetNumOfControls(camNum, &iNumOfCtrl);
+    for( i = 0; i < iNumOfCtrl; i++) {
+        ASIGetControlCaps(camNum, i, &ControlCaps);
+        if(strncmp(ControlCaps.Name,"Gain",4) == 0){
+            maxGain = ControlCaps.MaxValue;
+        }
+    }
+    camNum=cNum;
+    zwoUpdate
+    return NO_ERR;
+}
+
 int connectCamera(){
     extern int bayer;
     int i;
@@ -515,49 +548,49 @@ int connectCamera(){
     } else {
         printf("Attached cameras:\n");
     }
-    for( i = 0; i < numDevices; i++) {
-        ASIGetCameraProperty(&ASICameraInfo, i);
+    for( camNum = 0; camNum < numDevices; camNum++) {
+        ASIGetCameraProperty(&ASICameraInfo, camNum);
         printf("%d %s\n",i, ASICameraInfo.Name);
-    }
-    // For now, assume only one camera and that is camNum=0
-    if(ASIOpenCamera(camNum) != ASI_SUCCESS) {
-        beep();
-        printf("Open Camera error.\n");
-        return -1;
-    }
-    ASIInitCamera(camNum);
-    
-    iMaxWidth = ASICameraInfo.MaxWidth;
-    iMaxHeight =  ASICameraInfo.MaxHeight;
-    printf("Resolution: %d X %d\n", iMaxWidth, iMaxHeight);
-    if(ASICameraInfo.IsColorCam){
-        printf("Color Camera: bayer pattern:%s\n",bayerPattern[ASICameraInfo.BayerPattern]);
-        bayer=1;
-    }else{
-        printf("Mono camera\n");
-        bayer=0;
-    }
-    ASIGetNumOfControls(camNum, &iNumOfCtrl);
-    for( i = 0; i < iNumOfCtrl; i++) {
-        ASIGetControlCaps(camNum, i, &ControlCaps);
-        printf("%s\n", ControlCaps.Name);
-        printf("\t%s\n", ControlCaps.Description);
-        printf("\tMax Value: %ld\n", ControlCaps.MaxValue);
-        if(strncmp(ControlCaps.Name,"Gain",4) == 0){
-            maxGain = ControlCaps.MaxValue;
+        
+        // For now, assume only one camera and that is camNum=0
+        if(ASIOpenCamera(camNum) != ASI_SUCCESS) {
+            beep();
+            printf("Open Camera error.\n");
+            return -1;
         }
-        printf("\tMin Value: %ld\n", ControlCaps.MinValue);
-        printf("\tDefault: %ld\n", ControlCaps.DefaultValue);
-        if(ControlCaps.IsAutoSupported)
-            printf("Auto Adjust IS supported\n");
-        else
-            printf("Auto Adjust IS NOT supported\n");
-        if(ControlCaps.IsWritable)
-            printf("Read/Write\n\n");
-        else
-            printf("Read Only\n\n");
-
+        ASIInitCamera(camNum);
+        
+        printf("Resolution: %d X %d\n", ASICameraInfo.MaxWidth, ASICameraInfo.MaxHeight);
+        if(ASICameraInfo.IsColorCam){
+            printf("Color Camera: bayer pattern:%s\n",bayerPattern[ASICameraInfo.BayerPattern]);
+            bayer=1;
+        }else{
+            printf("Mono camera\n");
+            bayer=0;
+        }
+        ASIGetNumOfControls(camNum, &iNumOfCtrl);
+        for( i = 0; i < iNumOfCtrl; i++) {
+            ASIGetControlCaps(camNum, i, &ControlCaps);
+            printf("%s\n", ControlCaps.Name);
+            printf("\t%s\n", ControlCaps.Description);
+            printf("\tMax Value: %ld\n", ControlCaps.MaxValue);
+            if(strncmp(ControlCaps.Name,"Gain",4) == 0){
+                maxGain = ControlCaps.MaxValue;
+            }
+            printf("\tMin Value: %ld\n", ControlCaps.MinValue);
+            printf("\tDefault: %ld\n", ControlCaps.DefaultValue);
+            if(ControlCaps.IsAutoSupported)
+                printf("Auto Adjust IS supported\n");
+            else
+                printf("Auto Adjust IS NOT supported\n");
+            if(ControlCaps.IsWritable)
+                printf("Read/Write\n\n");
+            else
+                printf("Read Only\n\n");
+            
+        }
     }
+    camNum--;
     connected=true;
     return numDevices;
 }

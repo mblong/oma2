@@ -19,15 +19,20 @@
 * along with SEP.  If not, see <http://www.gnu.org/licenses/>.
 *
 *%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
-
+#ifndef _SEP_H_
+#define _SEP_H_
 
 #ifdef _MSC_VER
 #define SEP_API __declspec(dllexport)
 #else
-#define SEP_API __attribute__((visibility("default")))
+//#define SEP_API __attribute__((visibility("default")))
+#define SEP_API extern "C"
 #endif
 
-#define SEP_API extern "C"
+#include <cmath>
+#include <cstdlib>
+
+
 
 /* datatype codes */
 #define SEP_TBYTE        11  /* 8-bit unsigned byte */
@@ -133,6 +138,16 @@ typedef struct {
                             /* (pointer to within the `objectspix` buffer)  */
   int    *objectspix;      /* buffer holding pixel indicies for all objects */
 } sep_catalog;
+
+typedef struct {
+    int    nobj;                 /* number of objects (length of all arrays) */
+    float *x, *y;                 /* barycenter (first moments)               */
+    float     *a, *b, *theta;    /* ellipse parameters                       */
+    float     *cflux;                /* total flux of pixels (convolved im)      */
+    float     *flux;               /* total flux of pixels (unconvolved)       */
+    short     *flag;                 /* extraction flags                         */
+    short     nColor;               // number of colors
+} sep_small_catalog;
 
 
 /*--------------------- global background estimation ------------------------*/
@@ -428,3 +443,8 @@ SEP_API void sep_get_errdetail(char *errtext);
 // ____________________ OMA SEP ROUTINES ________________
 void printErr(int);
 int starFocus(float *aveSize, float *aveEllipticity);
+void populateSmallCatalog();
+void deleteSmallCatalog();
+void gaussianArray(float x, float y, float r, float intensity, int* pixX, int* pixY, int* N, float** values);
+float getColorFlux(float x, float y, float r, int color);
+#endif

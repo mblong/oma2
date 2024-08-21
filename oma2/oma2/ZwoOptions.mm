@@ -288,10 +288,9 @@ extern float fTemp;
             [changeSetControl setIntegerValue:setTemp];
             [enableCooler setEnabled:true];
             [enableCooler setState:coolerEnabled];
+            [enableAntiDew setEnabled:true];
             [enableAntiDew setState:antiDewEnabled];
             [coolerPercentValue setStringValue:[NSString stringWithFormat:@"%ld",coolerPercent]];
-
-
         } else{
             [temperatureSetPoint setStringValue:@"-"];
             [changeSetControl setEnabled:false];
@@ -354,6 +353,9 @@ extern float fTemp;
     if(connected){
         zwoGetTempInfo();
         [temperatureStatus setStringValue:[NSString stringWithFormat:@"%g",sensorTemp/10.]];
+        if( ASICameraInfo.IsCoolerCam){
+            [coolerPercentValue setStringValue:[NSString stringWithFormat:@"%ld",coolerPercent]];
+        }
     }
     if(focuserConnected){
         EAFGetTemp(iSelectedID, &fTemp);

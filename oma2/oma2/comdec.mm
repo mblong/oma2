@@ -33,7 +33,7 @@ ComDef   commands[] =    {
     {{"ACMEVELOCITY   "},   acmevelocity_c},
     {{"ASPECT         "},   aspect_c},
 
-    {{"BLOCK          "},	block_g},
+    {{"BLOCK          "},	block_c},
     {{"BIT8           "},	bit8_c},
     {{"BIT16          "},	bit16_c},
     {{"BINARGUMENTS   "},	binarguments_c},
@@ -71,6 +71,7 @@ ComDef   commands[] =    {
     {{"CVDENOISE      "},   cvDenoise_q},
     {{"CVNLDENOISE    "},   cvNLDenoise_q},
 #endif
+    {{"CBALANCE       "},   cBalance_c},
     
     {{"DISPLAY        "},	display},
     {{"DCONTOUR       "},   dcontour},
@@ -133,6 +134,7 @@ ComDef   commands[] =    {
     {{"GETFILTER      "},   getfilter_c},
     {{"GETBINARYFILE  "},	getbin_c},
     {{"GETANGLE       "},   getangle_c},
+    {{"GETCATALOG     "},   getcatalog_c},
     {{"GMACRO         "},	gmacro_c},
     {{"GAUSSIAN       "},	gaussian_c},
     {{"GTEMPIMAGE     "},	gtemp_c},
@@ -199,6 +201,7 @@ ComDef   commands[] =    {
     {{"NEXTFOLDER     "},	nextFolder_c},
     {{"NOISE          "},	noise_c},
     {{"NAN2ZERO       "},   nan2zero_c},
+    {{"NEGATIVE       "},   negative_c},
         
     {{"OPENFILE       "},	openfile_c},
         
@@ -208,6 +211,7 @@ ComDef   commands[] =    {
     {{"PAUSE          "},	imp_pause},
     {{"POWER          "},	power_c},
     {{"PIXVALUE       "},	pixValue_c},
+    {{"POWTMPIMAGE    "},   powtmp_c},
     
     
     {{"RMACRO         "},	rmacro},
@@ -237,6 +241,7 @@ ComDef   commands[] =    {
     {{"SAVEJPG        "},	saveJpg_c},
     {{"SAVEPDF        "},   savePdf_c},
     {{"SAVEINT        "},   saveInt_c},
+    {{"SAVECATALOG    "},   savecatalog_c},
     {{"SIZE           "},	size_c},
     {{"SINGRID        "},	sinGrid_c},
     {{"STEMPIMAGE     "},	stemp_c},
@@ -260,8 +265,10 @@ ComDef   commands[] =    {
     {{"STARS          "},   stars},
     {{"STARCLEAR      "},   starClear},
     {{"STARBACK       "},   starBack},
-    {{"STARABSOLUTE   "},   starAbsolute},
+    {{"STARSETTINGS   "},   starSettings},
     {{"STARMATCH      "},   starMatch},
+    {{"STARSYNTH      "},   starSynth},
+    {{"SMINIMUM       "},   sMinimum_c},
     
 
 

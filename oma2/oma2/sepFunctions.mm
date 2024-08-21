@@ -33,9 +33,12 @@ extern Image  iTempImages[];
 extern Variable user_variables[];
 
 sep_catalog* catalog = NULL;
+sep_small_catalog omaCatalog={0};
 vector<Point3f> theStars;
 int absolute=0;
 float globalBackMedian=0, globalBackRMS=0;
+float smallCutoff = 2.5;
+float deblendContrast = .005;
 
 /*
 STARCLEAR
@@ -47,6 +50,7 @@ int starClear(int n, char* args)
         sep_catalog_free(catalog);
         catalog=NULL;
         theStars.clear();
+        deleteSmallCatalog();
     }
     return NO_ERR;
 }
@@ -69,6 +73,7 @@ int stars(int n, char* args)
         sep_catalog_free(catalog);
         catalog=NULL;
         theStars.clear();
+        deleteSmallCatalog();
     }
     
     status = 0;
@@ -79,8 +84,10 @@ int stars(int n, char* args)
     ny = iBuffer.height();
     if(iBuffer.isColor()){
         data = iBuffer.getImageData()+nx*ny;    // for color images, use the green channel to find stars
+        omaCatalog.nColor = 3;
     } else {
         data = iBuffer.getImageData();
+        omaCatalog.nColor = 1;
     }
     
     float factor=2.0;
@@ -106,12 +113,12 @@ int stars(int n, char* args)
     
     
     // extract sources
-    // Note that we set deblend_cont = 1.0 to turn off deblending.
+    // Note that setting deblendContrast = 1.0 will turn off deblending.
     //
-    sep_image im = {iBuffer.getImageData() +iBuffer.isColor()*nx*ny, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
+    sep_image im = {iBuffer.getImageData() +iBuffer.isColor()*nx*ny, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, deblendContrast, 0.0};
     status = sep_extract(&im, factor*globalBackRMS, SEP_THRESH_ABS,
                          5, conv, 3, 3, SEP_FILTER_CONV,
-                         32, .005, 1, 1.0, &catalog);
+                         32, deblendContrast, 1, 1.0, &catalog);
     if (status){
         //sep_bkg_free(bkg);
         printErr(status);
@@ -140,8 +147,8 @@ int stars(int n, char* args)
         sep_kron_radius(&im,catalog->x[i], catalog->y[i],catalog->cxx[i], catalog->cyy[i], catalog->cxy[i], radius, 0, kront, flagt);
         double f=0.5;
         sep_flux_radius(&im,catalog->x[i], catalog->y[i], catalog->a[i]*2, 0, 5, 0,NULL,&f,1,fluxRt, flagt);
-        if(catalog->a[i] + catalog->b[i] <= 2.5){
-            catalog->flag[i] = SEP_OBJ_EXCLUDE;     // these are too small to be real
+        if(catalog->a[i] + catalog->b[i] <= smallCutoff){
+            catalog->flag[i] |= SEP_OBJ_EXCLUDE;     // these are too small to be real
             excludeSmall++;
         }else{
             aveKron += *kront;
@@ -164,28 +171,28 @@ int stars(int n, char* args)
         if (absolute){
             if(catalog->a[i] + catalog->b[i] <= sizeFactor && 
                (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor &&
-               catalog->flag[i] != SEP_OBJ_EXCLUDE){
+               !(catalog->flag[i] & SEP_OBJ_EXCLUDE)){
                 theStars.push_back(Point3f(catalog->x[i],catalog->y[i],catalog->flux[i]));  // save this star
                 nRetained++;
             } else {
-                if(catalog->flag[i] != SEP_OBJ_EXCLUDE){    // don't exclude this twice!
+                if(!(catalog->flag[i] & SEP_OBJ_EXCLUDE)){    // don't exclude this twice!
                     sumSiz -= catalog->a[i] + catalog->b[i];
                     sumEll -= (catalog->a[i] - catalog->b[i])/catalog->a[i];
                 }
-                catalog->flag[i] = SEP_OBJ_EXCLUDE;
+                catalog->flag[i] |= SEP_OBJ_EXCLUDE;
             }
         } else {
             if(catalog->a[i] + catalog->b[i] <= sizeFactor*aveSize && 
                (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor*aveEllipticity &&
-               catalog->flag[i] != SEP_OBJ_EXCLUDE){
+               !(catalog->flag[i] & SEP_OBJ_EXCLUDE)){
                 theStars.push_back(Point3f(catalog->x[i],catalog->y[i],catalog->flux[i]));  // save this star
                 nRetained++;
             } else {
-                if(catalog->flag[i] != SEP_OBJ_EXCLUDE){    // don't exclude this twice!
+                if(!(catalog->flag[i] & SEP_OBJ_EXCLUDE)){    // don't exclude this twice!
                     sumSiz -= catalog->a[i] + catalog->b[i];
                     sumEll -= (catalog->a[i] - catalog->b[i])/catalog->a[i];
                 }
-                catalog->flag[i] = SEP_OBJ_EXCLUDE;
+                catalog->flag[i] |= SEP_OBJ_EXCLUDE;
             }
         }
     }
@@ -221,9 +228,52 @@ int stars(int n, char* args)
     free(flag);
     free(area);
     free(kron);
+    free(fluxR);
+    populateSmallCatalog();
+    
     update_UI();
     return status;
 }
+
+void populateSmallCatalog(){
+    if(omaCatalog.nobj != 0) deleteSmallCatalog();
+    omaCatalog.nobj = catalog->nobj;
+    omaCatalog.x = (float*)malloc(catalog->nobj * sizeof(float));
+    omaCatalog.y = (float*)malloc(catalog->nobj * sizeof(float));
+    omaCatalog.a = (float*)malloc(catalog->nobj * sizeof(float));
+    omaCatalog.b = (float*)malloc(catalog->nobj * sizeof(float));
+    omaCatalog.theta = (float*)malloc(catalog->nobj * sizeof(float));
+    omaCatalog.flux = (float*)malloc(catalog->nobj * sizeof(float) * omaCatalog.nColor);
+    omaCatalog.flag = (short*)malloc(catalog->nobj * sizeof(short));
+    for(int i=0; i< omaCatalog.nobj; i++){
+        omaCatalog.x[i] = catalog->x[i];
+        omaCatalog.y[i] = catalog->y[i];
+        omaCatalog.a[i] = catalog->a[i];
+        omaCatalog.b[i] = catalog->b[i];
+        omaCatalog.theta[i] = catalog->theta[i];
+        if(omaCatalog.nColor == 1){
+            omaCatalog.flux[i] = catalog->flux[i];
+        } else {
+            float normalize = catalog->flux[i]/getColorFlux(omaCatalog.x[i], omaCatalog.y[i], omaCatalog.a[i], 1);  // use the factor to make red and blue agree with green
+            omaCatalog.flux[i*omaCatalog.nColor] = normalize*getColorFlux(omaCatalog.x[i], omaCatalog.y[i], omaCatalog.a[i], 0);
+            omaCatalog.flux[i*omaCatalog.nColor+1] = catalog->flux[i];
+            omaCatalog.flux[i*omaCatalog.nColor+2] = normalize*getColorFlux(omaCatalog.x[i], omaCatalog.y[i], omaCatalog.a[i], 2);
+        }
+        omaCatalog.flag[i] = catalog->flag[i];
+    }
+}
+
+void deleteSmallCatalog(){
+    free(omaCatalog.x);
+    free(omaCatalog.y);
+    free(omaCatalog.a);
+    free(omaCatalog.b);
+    free(omaCatalog.theta);
+    free(omaCatalog.flux);
+    free(omaCatalog.flag);
+    omaCatalog.nobj = 0;
+}
+
 
 /*
  STARMATCH [Factor Radius SizeFactor EllipticityFactor NumStars]
@@ -272,12 +322,12 @@ int starMatch(int n, char* args)
     iBuffer = copy;
         
     // extract sources
-    // Note that we set deblend_cont = 1.0 to turn off deblending.
+    // Note that setting deblendContrast = 1.0 will turn off deblending.
     //
     sep_image im = {iBuffer.getImageData() + iBuffer.isColor()*nx*ny, NULL, NULL, NULL, SEP_TFLOAT, 0, 0, 0, nx, ny, 0.0, SEP_NOISE_NONE, 1.0, 0.0};
     status = sep_extract(&im, factor*globalBackRMS, SEP_THRESH_ABS,
                          5, conv, 3, 3, SEP_FILTER_CONV,
-                         32, .005, 1, 1.0, &matchCatalog);
+                         32, deblendContrast, 1, 1.0, &matchCatalog);
     if (status){
         //sep_bkg_free(bkg);
         printErr(status);
@@ -295,8 +345,8 @@ int starMatch(int n, char* args)
     int excludeSmall=0;
     for (i=0; i<matchCatalog->nobj; i++, fluxt++, fluxerrt++, flagt++, areat++){
         sep_sum_circle(&im,matchCatalog->x[i], matchCatalog->y[i], radius, 0, 5, 0,fluxt, fluxerrt, areat, flagt);
-        if(matchCatalog->a[i] + matchCatalog->b[i] <= 2.5){
-            matchCatalog->flag[i] = SEP_OBJ_EXCLUDE;     // these are too small to be real
+        if(matchCatalog->a[i] + matchCatalog->b[i] <= smallCutoff){
+            matchCatalog->flag[i] |= SEP_OBJ_EXCLUDE;     // these are too small to be real
             excludeSmall++;
         }else{
             aveEllipticity += (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i];
@@ -312,17 +362,17 @@ int starMatch(int n, char* args)
         if (absolute){
             if(matchCatalog->a[i] + matchCatalog->b[i] <= sizeFactor && 
                (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i] <= ellipticityFactor &&
-               matchCatalog->flag[i] != SEP_OBJ_EXCLUDE){
+               !(matchCatalog->flag[i] & SEP_OBJ_EXCLUDE)){
                 matchStars.push_back(Point3f(matchCatalog->x[i],matchCatalog->y[i],matchCatalog->flux[i]));  // save this star
             } else {
-                matchCatalog->flag[i] = SEP_OBJ_EXCLUDE;
+                matchCatalog->flag[i] |= SEP_OBJ_EXCLUDE;
             }
         } else {
             if(matchCatalog->a[i] + matchCatalog->b[i] <= sizeFactor*aveSize && 
-               (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i] <= ellipticityFactor*aveEllipticity && matchCatalog->flag[i] != SEP_OBJ_EXCLUDE){
+               (matchCatalog->a[i] - matchCatalog->b[i])/matchCatalog->a[i] <= ellipticityFactor*aveEllipticity && !(matchCatalog->flag[i] & SEP_OBJ_EXCLUDE)){
                 matchStars.push_back(Point3f(matchCatalog->x[i],matchCatalog->y[i],matchCatalog->flux[i]));  // save this star
             } else {
-                matchCatalog->flag[i] = SEP_OBJ_EXCLUDE;
+                matchCatalog->flag[i] |= SEP_OBJ_EXCLUDE;
             }
         }
     }
@@ -455,6 +505,13 @@ int starFocus(float *aveSize, float *aveEllipticity){
     //float *data, *imback;
     sep_bkg *bkg = NULL;
     
+    if(catalog){
+        sep_catalog_free(catalog);
+        catalog=NULL;
+        theStars.clear();
+        deleteSmallCatalog();
+    }
+    
     status = 0;
     nx = iBuffer.width();
     ny = iBuffer.height();
@@ -486,7 +543,7 @@ int starFocus(float *aveSize, float *aveEllipticity){
 
     status = sep_extract(&im, factor*globalBackRMS, SEP_THRESH_ABS,
                          5, conv, 3, 3, SEP_FILTER_CONV,
-                         32, .005, 1, 1.0, &catalog);
+                         32, deblendContrast, 1, 1.0, &catalog);
     if (status){
         printErr(status);
         return status;
@@ -504,8 +561,8 @@ int starFocus(float *aveSize, float *aveEllipticity){
     *aveSize=0;
     int excludeSmall = 0;
     for (i=0; i<catalog->nobj; i++){
-        if(catalog->a[i] + catalog->b[i] <= 2.5){
-            catalog->flag[i] = SEP_OBJ_EXCLUDE;     // these are too small to be real
+        if(catalog->a[i] + catalog->b[i] <= smallCutoff){
+            catalog->flag[i] |= SEP_OBJ_EXCLUDE;     // these are too small to be real
             excludeSmall++;
         }else{
             *aveEllipticity += (catalog->a[i] - catalog->b[i])/catalog->a[i];
@@ -522,35 +579,36 @@ int starFocus(float *aveSize, float *aveEllipticity){
         if (absolute){
             if(catalog->a[i] + catalog->b[i] <= sizeFactor &&
                (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor &&
-               catalog->flag[i] != SEP_OBJ_EXCLUDE){
+               !(catalog->flag[i] & SEP_OBJ_EXCLUDE)){
                 nRetained++;
                 catalog->a[i] *= scaleUp;
                 catalog->b[i] *= scaleUp;
             } else {
-                if(catalog->flag[i] != SEP_OBJ_EXCLUDE){    // don't exclude this twice!
+                if(!(catalog->flag[i] & SEP_OBJ_EXCLUDE)){    // don't exclude this twice!
                     sumSiz -= catalog->a[i] + catalog->b[i];
                     sumEll -= (catalog->a[i] - catalog->b[i])/catalog->a[i];
                 }
-                catalog->flag[i] = SEP_OBJ_EXCLUDE;
+                catalog->flag[i] |= SEP_OBJ_EXCLUDE;
             }
         } else {
             if(catalog->a[i] + catalog->b[i] <= sizeFactor* *aveSize &&
                (catalog->a[i] - catalog->b[i])/catalog->a[i] <= ellipticityFactor* *aveEllipticity &&
-               catalog->flag[i] != SEP_OBJ_EXCLUDE){
+               !(catalog->flag[i] & SEP_OBJ_EXCLUDE)){
                 nRetained++;
                 catalog->a[i] *= scaleUp;
                 catalog->b[i] *= scaleUp;
             } else {
-                if(catalog->flag[i] != SEP_OBJ_EXCLUDE){    // don't exclude this twice!
+                if(!(catalog->flag[i] & SEP_OBJ_EXCLUDE)){    // don't exclude this twice!
                     sumSiz -= catalog->a[i] + catalog->b[i];
                     sumEll -= (catalog->a[i] - catalog->b[i])/catalog->a[i];
                 }
-                catalog->flag[i] = SEP_OBJ_EXCLUDE;
+                catalog->flag[i] |= SEP_OBJ_EXCLUDE;
             }
         }
     }
     *aveEllipticity = sumEll/nRetained;
     *aveSize = sumSiz/nRetained;
+    populateSmallCatalog();
     //printf("%d stars found -- %d stars retained -- %d small stars excluded\n",catalog->nobj,nRetained,excludeSmall);
     //printf("Average Ellipticity: %.2g Average Size: %.2\n", aveEllipticity, aveSize);
 
@@ -611,17 +669,125 @@ int starBack(int n, char* args)
 }
 
 /*
- STARABSOLUTE [absoluteFlag]
-     If the argument is present, the absoluteFlag is set accordingly. Otherwise, the current value of absoluteFlag is printed.
+ STARSETTINGS [absoluteFlag smallCutoff]
+     If at least one argument is present, the absoluteFlag is set accordingly. If given, smallCutoff and deblendContrast can also be input. The current value of the parameters is printed.
  */
-int starAbsolute(int n, char* args){
-    
+int starSettings(int n, char* args){
     if (*args) {
-        sscanf(args, "%d",&absolute);
+        sscanf(args, "%d %f %f",&absolute,&smallCutoff,&deblendContrast);
     }
-    printf("absoluteFlag is %d\n", absolute);
+    printf("absoluteFlag: %d\nsmallCutoff: %f\ndeblendContrast: %f\n", absolute,smallCutoff,deblendContrast);
     return NO_ERR;
 }
+/*
+ STARSYNTH
+ If at least one argument is present, the absoluteFlag is set accordingly. If given, smallCutoff can also be input. The current value of the parameters are printed.
+ */
+int starSynth(int n, char* args){
+    extern int printMax;
+    float* values;
+    int pixX,pixY,N;
+    
+    if(omaCatalog.nobj == 0){
+        beep();
+        printf("No catalog is present. Use the STARS comand on the image first.\n");
+        return CMND_ERR;
+    }
+    
+    for(int color=0; color < 1+2*iBuffer.isColor(); color++){
+        for(int i=0; i< omaCatalog.nobj;i++){
+            if(!(omaCatalog.flag[i] & SEP_OBJ_EXCLUDE)){
+                gaussianArray(omaCatalog.x[i],omaCatalog.y[i],omaCatalog.a[i],omaCatalog.flux[i*omaCatalog.nColor + color],&pixX, &pixY,&N,&values);
+                float* valPtr=values;
+                for(int r = pixY; r < N+pixY; r++){
+                    for(int c=pixX; c < N+pixX; c++){
+                        iBuffer.setpix(r+color*iBuffer.height(), c, iBuffer.getpix(r+color*iBuffer.height(), c) + *valPtr++);
+                    }
+                }
+                delete[] values;
+            }
+        }
+    }
+    iBuffer.getmaxx(printMax);
+    update_UI();
+    return NO_ERR;
+    
+}
+
+float getColorFlux(float x, float y, float r, int color){
+    // color is 0,1,2 for R,G,B
+    float inten=0.;
+    for(float c = x- r ; c < x+r ; c+= .5){
+        for(float ro = y - r ; ro < y+r ; ro+= .5){
+            float row = ro+color*iBuffer.height();
+            inten += iBuffer.getpix(row,c);
+        }
+    }
+    return inten/4.0;
+}
+/*
+ Write a C++ function that calculates a sub-image containing the pixel values of an image of a star. Approximate the intensity distribution of the star as being Gaussian.
+
+ Subroutine inputs are as follows:
+ x and y,  are the pixel coordinates of the center of the star
+ r is the radius of 1/e squared intensity of the star
+ intensity is the integrated intensity of the star
+
+ x, y, and r all have sub-pixel resolution.
+
+ Outputs are as follows:
+
+ pixX and pixY are the pixel indicies of the start of the sub-image
+ N is the size in pixels of the N by N subimage
+ values is a pointer to the N by N array of pixel values.
+
+ the function prototype is as follows:
+
+ void gaussianArray(float x, float y, float r, float intensity, int* pixX, int* pixy, int* N, float** values);
+
+ Memory allocated by the function will be freed by the calling program.
+ */
+
+
+void gaussianArray(float x, float y, float r, float intensity, int* pixX, int* pixY, int* N, float** values) {
+    // Determine the bounds of the sub-image
+    int startX = static_cast<int>(std::floor(x - 3 * r));
+    int startY = static_cast<int>(std::floor(y - 3 * r));
+    int endX = static_cast<int>(std::ceil(x + 3 * r));
+    int endY = static_cast<int>(std::ceil(y + 3 * r));
+    
+    // Calculate the size of the sub-image
+    *N = endX - startX + 1;
+    
+    // Set the starting pixel coordinates
+    *pixX = startX;
+    *pixY = startY;
+    
+    // Allocate memory for the values array
+    *values = new float[*N * *N];
+    
+    // Calculate the Gaussian intensity values
+    float two_r_squared = 2 * r * r;
+    float norm_factor = intensity / (M_PI * two_r_squared);
+    
+    for (int j = 0; j < *N; ++j) {
+        for (int i = 0; i < *N; ++i) {
+            int xi = startX + i;
+            int yj = startY + j;
+            
+            float dx = xi - x;
+            float dy = yj - y;
+            
+            // Calculate the Gaussian intensity
+            float distance_squared = dx * dx + dy * dy;
+            float value = norm_factor * std::exp(-distance_squared / two_r_squared);
+            
+            // Store the value in the array
+            (*values)[j * *N + i] = value;
+        }
+    }
+}
+
 
 
 

@@ -818,13 +818,14 @@ DATAWORD Image::max()
 }
 
 void Image::gethistogram(){
-    DATAWORD *mydatpt,mn=min();
+    DATAWORD *mydatpt,mn=min(); // this makes sure min/max are current
     float binsize = (values[MAX] - mn)/(HISTOGRAM_SIZE-1.0);
     int npts=specs[ROWS]*specs[COLS],histogramIndex;
     for(int i=0; i<HISTOGRAM_SIZE; i++) histogram[i]=0;
+    if(binsize <= 0.0) return;
     for(mydatpt=data; mydatpt < data+npts; mydatpt++){
         histogramIndex = (*mydatpt-mn)/binsize;
-        histogram[histogramIndex]++;
+        if(histogramIndex < HISTOGRAM_SIZE && histogramIndex >=0) histogram[histogramIndex]++;
     }
 }
 void Image::getmaxx(char printFlag)

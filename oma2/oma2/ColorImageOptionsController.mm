@@ -50,10 +50,17 @@ extern AppController *appController;
 }
 
 - (IBAction)multiplyRGB:(id)sender {
-    
+    extern Image iBuffer;
+    extern Variable user_variables[];
     char values[128];
-    sprintf(values,"%f %f %f", UIData.r_scale, UIData.g_scale, UIData.b_scale );
+    snprintf(values,128,"%f %f %f", UIData.r_scale, UIData.g_scale, UIData.b_scale );
+    user_variables[0].is_float = user_variables[1].is_float = user_variables[2].is_float = 1;
+    user_variables[0].fvalue = UIData.r_scale;
+    user_variables[1].fvalue = UIData.g_scale;
+    user_variables[2].fvalue = UIData.b_scale;
+    float max = iBuffer.max();
     mulRGB_c(0, values);
+    iBuffer.clip(max);
     
     [_redSlideValue setFloatValue: 0.0];
     UIData.r_scale = 1.0;
@@ -74,6 +81,7 @@ extern AppController *appController;
 
 
     [appController updateDataWindow];
+    [appController updateVariablesWindow];
 }
 
     // note that _redMultiplierLabel seems to be shorthand for [self redMultiplierLabel]

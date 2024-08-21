@@ -133,7 +133,8 @@ int stars(int,char*);
 int starClear(int, char*);
 int starBack(int, char*);
 int starMatch(int, char*);
-int starAbsolute(int, char*);
+int starSettings(int, char*);
+int starSynth(int, char*);
 
 
 #endif

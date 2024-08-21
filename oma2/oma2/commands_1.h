@@ -5,6 +5,7 @@
 #include "image.h"
 #include "ImageBitmap.h"
 #include "UI.h"
+#include "sep.h"
 
 //#ifdef MacOSX_UI
 //extern "C" {
@@ -36,6 +37,7 @@ int bleed_c(int, char*);
 int bayerFlag_c(int, char*);
 int bitmap2rgb_c(int, char*);
 int blink_c(int, char*);
+int block_c(int,char*);
 
 int colorflag_c(int,char*);
 int compositefile_c(int,char*);
@@ -61,6 +63,7 @@ int cvAlign_q(int,char*);
 int cvDenoise_q(int,char*);
 int cvNLDenoise_q(int,char*);
 #endif
+int cBalance_c(int,char*);
 
 int dcrawarg_c(int,char*);
 int divfile_c(int,char*);
@@ -120,6 +123,7 @@ int gnoise_c(int, char*);
 int getbin_c(int,char*);
 int getangle_c(int,char*);
 int getfilter_c(int,char*);
+int getcatalog_c(int,char*);
 
 int hdrAccumulate_c(int,char*);
 int hdrAcadd_c(int,char*);
@@ -166,6 +170,7 @@ int nextFile_c(int,char*);
 int nextFolder_c(int,char*);
 int noise_c(int, char*);
 int nan2zero_c(int,char*);
+int negative_c(int,char*);
 
 int openfile_c(int,char*);
 
@@ -176,6 +181,7 @@ int power_c(int,char*);
 int positive_c(int, char*);
 int powRGB_c(int,char*);
 int pixValue_c(int,char*);
+int powtmp_c(int,char*);
 
 int rectan_c(int,char*);
 int resize_c(int,char*);
@@ -220,6 +226,8 @@ int scatter_c(int,char*);
 int saturate_c(int,char*);
 int savefits_c(int, char*);
 int savetiff_c(int, char*);
+int savecatalog_c(int, char*);
+int sMinimum_c(int ,char*);
 
 
 
