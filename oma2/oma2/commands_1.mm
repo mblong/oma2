@@ -6668,7 +6668,7 @@ float distortX0, distortY0, distortK1;
 int distort_c(int n,char* args)
 {
     int i,j,chan2,track2,ix,iy;
-    DATAWORD *datp2;
+    DATAWORD *datp2,*origDat,*normPtr;
     float xi,yi,x,y;
     float xmax,xmin,ymax,ymin,fx,fy,pixval,subpix=0.1;
     
@@ -6742,51 +6742,68 @@ int distort_c(int n,char* args)
     chan2 = xmax - xmin + 1.5;
 
     Image warpedImage;
+    Image norm;
     warpedImage.copyABD(iBuffer);
     warpedImage.resize(track2,chan2);
-    
-    if (warpedImage.err()) {
+    norm.copyABD(iBuffer);
+    norm.resize(track2,chan2);
+
+    if (warpedImage.err() || norm.err()) {
         beep();
         printf("Could not create warped image.\n");
         return warpedImage.err();
     }
     warpedImage.zero();
-    datp2 = warpedImage.getImageData();
+    norm.zero();
     
-    n=1;
-    for( y=0; y<iBuffer.height(); y = subpix*n++) {
-        int m=1;
-        j = y;
-        for( x=0; x<iBuffer.width(); x = subpix*m++) {
-            i = x;
-            pixval = iBuffer.getpix(j,i);  //idat(j,i);
-            xi = xDistort(x,y);
-            yi = yDistort(x,y);
-            ix = xi;
-            iy = yi;
-            //coordinates of pixel in the new image
-            // remap origin to 0,0
-            xi -= xmin;
-            yi -= ymin;
-            ix = xi;
-            iy = yi;
-
-            // the fractions
-            fx = xi - ix;
-            fy = yi - iy;
- 
-            //put the intensity from this pixel into the (up to 4) pixels that this pixel covers
-            *(datp2+ix+iy*chan2) += pixval * (1.0 - fx) * (1.0 - fy);
-            if(ix+1 < chan2 && iy+1 < track2){
-                // pixel to the right
-                *(datp2+ix+1+iy*chan2) += pixval * (fx) * (1.0 - fy);
-                // pixel above
-                *(datp2+ix+(iy+1)*chan2) += pixval * (1.0 - fx) * (fy);
-                // pixel diagonally across
-                *(datp2+ix+1+(iy+1)*chan2) += pixval * (fx) * (fy);
+    for(int color=0; color < 1+iBuffer.isColor()*2; color++){
+        if(iBuffer.isColor()) printf("Color %d\n",color);
+        datp2 = warpedImage.getImageData()+color*track2*chan2;
+        normPtr=norm.getImageData()+color*track2*chan2;
+        origDat=iBuffer.getImageData()+color*iBuffer.width()*iBuffer.height();
+        n=1;
+        for( y=0; y<iBuffer.height(); y = subpix*n++) {
+            int m=1;
+            j = y;
+            for( x=0; x<iBuffer.width(); x = subpix*m++) {
+                i = x;
+                pixval = *(origDat+i+j*iBuffer.width()); //  iBuffer.getpix(j,i);  //idat(j,i);
+                xi = xDistort(x,y);
+                yi = yDistort(x,y);
+                ix = xi;
+                iy = yi;
+                //coordinates of pixel in the new image
+                // remap origin to 0,0
+                xi -= xmin;
+                yi -= ymin;
+                ix = xi;
+                iy = yi;
+                
+                // the fractions
+                fx = xi - ix;
+                fy = yi - iy;
+                
+                //put the intensity from this pixel into the (up to 4) pixels that this pixel covers
+                *(datp2+ix+iy*chan2) += pixval * (1.0 - fx) * (1.0 - fy);
+                *(normPtr+ix+iy*chan2) += (1.0 - fx) * (1.0 - fy);
+                
+                if(ix+1 < chan2 && iy+1 < track2){
+                    // pixel to the right
+                    *(datp2+ix+1+iy*chan2) += pixval * (fx) * (1.0 - fy);
+                    *(normPtr+ix+1+iy*chan2) += (fx) * (1.0 - fy);
+                    // pixel above
+                    *(datp2+ix+(iy+1)*chan2) += pixval * (1.0 - fx) * (fy);
+                    *(normPtr+ix+(iy+1)*chan2) += (1.0 - fx) * (fy);
+                    // pixel diagonally across
+                    *(datp2+ix+1+(iy+1)*chan2) += pixval * (fx) * (fy);
+                    *(normPtr+ix+1+(iy+1)*chan2) += (fx) * (fy);
+                }
             }
         }
     }
+    norm+1;
+    warpedImage/norm;
+    norm.free();
     iBuffer.free();
     iBuffer =  warpedImage;
     iBuffer.getmaxx(printMax);

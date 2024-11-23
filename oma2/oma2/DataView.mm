@@ -118,8 +118,8 @@ extern sep_small_catalog omaCatalog;
     for(int i=0; i<[labelArray count]; i+=2){
         NSPoint thePoint;
         thePoint.x = 10;
-        //thePoint.y = dirtyRect.size.height  - 20*([labelArray[i+1] intValue]+1);
-        thePoint.y = self.window.contentView.visibleRect.size.height - 20*([labelArray[i+1] intValue]+1);
+        thePoint.y = dirtyRect.size.height  - 20*([labelArray[i+1] intValue]+1);
+        //thePoint.y = self.window.contentView.visibleRect.size.height - 20*([labelArray[i+1] intValue]+1);
         [labelArray[i] drawAtPoint:thePoint withAttributes:stringAttributes];
     }
     
@@ -532,8 +532,8 @@ extern sep_small_catalog omaCatalog;
         
         float zx,zy,wx,hy;
         
-        wx = self.window.contentView.visibleRect.size.width;
-        hy = self.window.contentView.visibleRect.size.height;
+        wx = self.window.contentLayoutRect.size.width;
+        hy = self.window.contentLayoutRect.size.height;
         zx = (1.-zoom)*wx;
         zy = (1.-zoom)*hy;
         //printf("zoom: %f\n",zoom);

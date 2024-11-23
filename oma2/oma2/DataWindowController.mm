@@ -180,10 +180,11 @@ extern AppController* appController;
     [im addRepresentation:bitmap];
     
     
-    //NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
-    //[im drawAtPoint:NSZeroPoint fromRect:rect operation:NSCompositingOperationDestinationOver fraction:1];
+    //NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT); // works but cumbersome
+    //[im drawAtPoint:NSZeroPoint fromRect:rect operation:NSCompositingOperationDestinationOver fraction:1]; // not needed
     //[imageView setFrame:rect];
-    [imageView setFrame:self.window.contentView.visibleRect];
+    //[imageView setFrame:self.window.contentView.visibleRect];     // wrong
+    [imageView setFrame:self.window.contentLayoutRect];
     
     [imageView setImageScaling:NSImageScaleAxesIndependently];
     [imageView setImage:im];
