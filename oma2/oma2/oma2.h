@@ -109,7 +109,7 @@ name of the units. Occupies trailer[5] to trailer[12] */
 #define OMA_FILE -1
 #define MAX_CONTOURS 10
 
-#define HISTOGRAM_SIZE 512
+#define HISTOGRAM_SIZE 4096
 
 #define MAX_FWHM_AVERAGE_SIZE 20
 

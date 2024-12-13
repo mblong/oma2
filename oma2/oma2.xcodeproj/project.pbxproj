@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 47;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,8 @@
 		DB0333442810305100868F47 /* libcfitsio.u.9.4.1.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB38A5EF280DF61400F5C52C /* libcfitsio.u.9.4.1.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB0333452810305100868F47 /* libgsl.u.27.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB38A5F0280DF61400F5C52C /* libgsl.u.27.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB03625E224D009800DF7BA8 /* ImageBitmap.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB03625D224D009800DF7BA8 /* ImageBitmap.mm */; };
+		DB0B5AD42CF24361008F5A9B /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0B5AD32CF24361008F5A9B /* Quartz.framework */; };
+		DB0B5AE32CF24361008F5A9B /* oma2Quicklook.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DB0B5AD22CF24361008F5A9B /* oma2Quicklook.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DB0FC0231519183C008A9B54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0FC0221519183C008A9B54 /* Cocoa.framework */; };
 		DB0FC02D1519183C008A9B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB0FC02B1519183C008A9B54 /* InfoPlist.strings */; };
 		DB0FC02F1519183C008A9B54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0FC02E1519183C008A9B54 /* main.m */; };
@@ -40,6 +42,7 @@
 		DB1DC82B2601424D00C5A72C /* ColorImageOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB1DC8272601424D00C5A72C /* ColorImageOptions.xib */; };
 		DB1E9B1F15A27EA300F38CE2 /* ruler.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB1E9B1E15A27EA300F38CE2 /* ruler.jpg */; };
 		DB1E9B2215A2804C00F38CE2 /* curve.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB1E9B2115A2804C00F38CE2 /* curve.jpg */; };
+		DB2094322CF5457E00F4D2D2 /* libomp.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB66E3E92B658F8B002222AD /* libomp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DB2113591540219200B23364 /* DataView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB2113581540219200B23364 /* DataView.mm */; };
 		DB238A4D15A2879900502B50 /* pal0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A4C15A2879900502B50 /* pal0.jpg */; };
 		DB238A5015A2884F00502B50 /* pal2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB238A4E15A2884F00502B50 /* pal2.jpg */; };
@@ -87,7 +90,7 @@
 		DB593A37151B8B19007CA0C3 /* plus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A36151B8B19007CA0C3 /* plus.jpg */; };
 		DB593A3B151B9766007CA0C3 /* box.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DB593A3A151B9766007CA0C3 /* box.jpg */; };
 		DB629C07248E8A020035CB37 /* libPvAPI.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB51D9DB2274CF7F00917D5C /* libPvAPI.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		DB66E3EA2B658F8B002222AD /* libomp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB66E3E92B658F8B002222AD /* libomp.dylib */; };
+		DB66E3EA2B658F8B002222AD /* libomp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB66E3E92B658F8B002222AD /* libomp.dylib */; settings = {ATTRIBUTES = (Required, ); }; };
 		DB66E3EB2B658F8B002222AD /* libomp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB66E3E92B658F8B002222AD /* libomp.dylib */; settings = {ATTRIBUTES = (Required, ); }; };
 		DB66E3EC2B658F8B002222AD /* libomp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB66E3E92B658F8B002222AD /* libomp.dylib */; };
 		DB66E3F92B66B9D6002222AD /* libopencv_calib3d.4.9.0.u.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB66E3F12B66B9D6002222AD /* libopencv_calib3d.4.9.0.u.dylib */; };
@@ -115,6 +118,9 @@
 		DB66E40F2B66B9D6002222AD /* libopencv_highgui.4.9.0.u.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB66E3F82B66B9D6002222AD /* libopencv_highgui.4.9.0.u.dylib */; };
 		DB66E4102B66B9D6002222AD /* libopencv_highgui.4.9.0.u.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB66E3F82B66B9D6002222AD /* libopencv_highgui.4.9.0.u.dylib */; };
 		DB68D6492816BD1800D5A293 /* libraw_r.u.22.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB3DBE072815A0FD00FCAB88 /* libraw_r.u.22.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DB77878C2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB77878B2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib */; };
+		DB77878D2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB77878B2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib */; };
+		DB77878E2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB77878B2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib */; };
 		DB8029C32AEDE33E0095C562 /* ZwoOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB89777E27F7A9CA00D05582 /* ZwoOptions.mm */; };
 		DB8078AA28C13418003EBE42 /* Histogram.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85328BEA46500DE2C70 /* Histogram.mm */; };
 		DB8078AB28C13419003EBE42 /* Histogram.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBC6A85328BEA46500DE2C70 /* Histogram.mm */; };
@@ -196,6 +202,7 @@
 		DBA3CB871911985800AD10BC /* gpib.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA3CB851911985800AD10BC /* gpib.mm */; };
 		DBA50F6D2B2F6FB800FDFBDE /* sepFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA50F6C2B2F6FB800FDFBDE /* sepFunctions.mm */; };
 		DBA96ABA1520C7090043754E /* comdec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBA96AB91520C7090043754E /* comdec.mm */; };
+		DBAA70E62CF53FB3009E53E8 /* libcfitsio.u.9.4.1.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB77878B2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBABD56A1802050F007F8801 /* DrawingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD5691802050F007F8801 /* DrawingView.mm */; };
 		DBABD56F180208E7007F8801 /* DrawingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DBABD56E180208E7007F8801 /* DrawingWindowController.mm */; };
 		DBAD2EFD1868975D003F9B55 /* Oma2Macro.icns in Resources */ = {isa = PBXBuildFile; fileRef = DBAD2EFC1868975D003F9B55 /* Oma2Macro.icns */; };
@@ -223,7 +230,6 @@
 		DBCF2B9F2B683F6C006F4916 /* libopencv_imgproc.4.9.0.u.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB66E3F62B66B9D6002222AD /* libopencv_imgproc.4.9.0.u.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBCF2BA02B683F6C006F4916 /* libopencv_photo.4.9.0.u.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB66E3F72B66B9D6002222AD /* libopencv_photo.4.9.0.u.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBCF2BA12B683F6C006F4916 /* libopencv_video.4.9.0.u.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB66E3F32B66B9D6002222AD /* libopencv_video.4.9.0.u.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		DBCF2BA22B683F6C006F4916 /* libomp.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB66E3E92B658F8B002222AD /* libomp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBCF2BB32B68421B006F4916 /* libopencv_core.409.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBCF2BAB2B68421A006F4916 /* libopencv_core.409.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBCF2BB42B68421B006F4916 /* libopencv_highgui.409.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBCF2BAC2B68421A006F4916 /* libopencv_highgui.409.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBCF2BB52B68421B006F4916 /* libopencv_flann.409.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBCF2BAD2B68421A006F4916 /* libopencv_flann.409.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -327,13 +333,35 @@
 		DBFCF5EB18FC3EEF00956047 /* u3.c in Sources */ = {isa = PBXBuildFile; fileRef = DB8C23FF18FC32D500969763 /* u3.c */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		DB0B5AE12CF24361008F5A9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DB0FC0151519183B008A9B54 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DB0B5AD12CF24361008F5A9B;
+			remoteInfo = oma2Quicklook;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
+		DB0B5AE42CF24361008F5A9B /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DB0B5AE32CF24361008F5A9B /* oma2Quicklook.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DB371F7818469FD200265D79 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				DB2094322CF5457E00F4D2D2 /* libomp.dylib in CopyFiles */,
 				DBCF2B9D2B683F6C006F4916 /* libopencv_flann.4.9.0.u.dylib in CopyFiles */,
 				DBCF2B9E2B683F6C006F4916 /* libopencv_highgui.4.9.0.u.dylib in CopyFiles */,
 				DBCF2B9C2B683F6C006F4916 /* libopencv_features2d.4.9.0.u.dylib in CopyFiles */,
@@ -350,7 +378,6 @@
 				DBCF2BB82B68421B006F4916 /* libopencv_features2d.409.dylib in CopyFiles */,
 				DBCF2BB92B68421B006F4916 /* libopencv_photo.409.dylib in CopyFiles */,
 				DBCF2BBA2B68421B006F4916 /* libopencv_video.409.dylib in CopyFiles */,
-				DBCF2BA22B683F6C006F4916 /* libomp.dylib in CopyFiles */,
 				DB5032562B2DE6D800F32C42 /* libsep.0.6.0.u.dylib in CopyFiles */,
 				DB1938302816FBA3008E2279 /* libraw_r.u.22.dylib in CopyFiles */,
 				DB38A5F7280DF69000F5C52C /* libcfitsio.u.9.4.1.0.dylib in CopyFiles */,
@@ -392,11 +419,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DBAA70E52CF53F9B009E53E8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DBAA70E62CF53FB3009E53E8 /* libcfitsio.u.9.4.1.0.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DBCB578022CA3A4100988D83 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 8;
-			dstPath = /Applications;
-			dstSubfolderSpec = 0;
+			dstPath = Applications;
+			dstSubfolderSpec = 10;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
@@ -450,6 +487,8 @@
 		DB02914918E46C1F00F497FB /* cameraSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cameraSelector.h; sourceTree = "<group>"; };
 		DB02914A18E46EAF00F497FB /* oma2cam-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "oma2cam-Prefix.pch"; sourceTree = "<group>"; };
 		DB03625D224D009800DF7BA8 /* ImageBitmap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageBitmap.mm; sourceTree = "<group>"; };
+		DB0B5AD22CF24361008F5A9B /* oma2Quicklook.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = oma2Quicklook.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB0B5AD32CF24361008F5A9B /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		DB0FC01E1519183C008A9B54 /* oma2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oma2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0FC0221519183C008A9B54 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		DB0FC02A1519183C008A9B54 /* oma2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "oma2-Info.plist"; sourceTree = "<group>"; };
@@ -527,6 +566,7 @@
 		DB6EDB2E1912A3C00032934F /* gpib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gpib.h; sourceTree = "<group>"; };
 		DB6FC3B42707421D00735B9C /* fitsio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fitsio.h; sourceTree = "<group>"; };
 		DB6FC3B5270743DF00735B9C /* longnam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = longnam.h; sourceTree = "<group>"; };
+		DB77878B2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcfitsio.u.9.4.1.0.dylib; sourceTree = "<group>"; };
 		DB83FD751D4FE5DE009B3204 /* dmmalvar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dmmalvar.mm; sourceTree = "<group>"; };
 		DB83FD761D4FE5DE009B3204 /* dmmalvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dmmalvar.h; sourceTree = "<group>"; };
 		DB87BF0117F08DA200E1BF68 /* dcrawx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = dcrawx.mm; sourceTree = "<group>"; };
@@ -601,7 +641,30 @@
 		DBFEFA0726B5F506002873C8 /* canonCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = canonCamera.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DB0B5AE72CF24361008F5A9B /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DB0B5AD12CF24361008F5A9B /* oma2Quicklook */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		DB0B5AD52CF24361008F5A9B /* oma2Quicklook */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (DB0B5AE72CF24361008F5A9B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = oma2Quicklook; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		DB0B5ACF2CF24361008F5A9B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB0B5AD42CF24361008F5A9B /* Quartz.framework in Frameworks */,
+				DB77878D2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DB0FC01B1519183C008A9B54 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -609,6 +672,7 @@
 				DB66E3EA2B658F8B002222AD /* libomp.dylib in Frameworks */,
 				DB66E40E2B66B9D6002222AD /* libopencv_highgui.4.9.0.u.dylib in Frameworks */,
 				DB66E4022B66B9D6002222AD /* libopencv_core.4.9.0.u.dylib in Frameworks */,
+				DB77878C2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib in Frameworks */,
 				DB66E40B2B66B9D6002222AD /* libopencv_photo.4.9.0.u.dylib in Frameworks */,
 				DB66E3FC2B66B9D6002222AD /* libopencv_features2d.4.9.0.u.dylib in Frameworks */,
 				DB66E4082B66B9D6002222AD /* libopencv_imgproc.4.9.0.u.dylib in Frameworks */,
@@ -648,6 +712,7 @@
 				DB1C7A5928500F8000984EBB /* libusb-1.0.0.dylib in Frameworks */,
 				DB8A885C18E3297E007C79AF /* Cocoa.framework in Frameworks */,
 				DB9F31E62AD988DE0085B209 /* libEAFFocuser.dylib.1.6 in Frameworks */,
+				DB77878E2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib in Frameworks */,
 				DB38A5F5280DF61400F5C52C /* libgsl.u.27.dylib in Frameworks */,
 				DB38A5F2280DF61400F5C52C /* libcfitsio.u.9.4.1.0.dylib in Frameworks */,
 				DB589E33281C34D200469001 /* Accelerate.framework in Frameworks */,
@@ -700,6 +765,7 @@
 			children = (
 				DB0FC0281519183C008A9B54 /* oma2 */,
 				DBB4233C17F9B942005BCF33 /* Libraries */,
+				DB0B5AD52CF24361008F5A9B /* oma2Quicklook */,
 				DB0FC0211519183C008A9B54 /* Frameworks */,
 				DB0FC01F1519183C008A9B54 /* Products */,
 			);
@@ -712,6 +778,7 @@
 				DB0FC01E1519183C008A9B54 /* oma2.app */,
 				DB8A888218E3297E007C79AF /* oma2cam.app */,
 				DBDECE7727FF5337007AC635 /* oma2Canon.app */,
+				DB0B5AD22CF24361008F5A9B /* oma2Quicklook.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -719,10 +786,12 @@
 		DB0FC0211519183C008A9B54 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB77878B2CF4F9FD0035B367 /* libcfitsio.u.9.4.1.0.dylib */,
 				DBD0B8D725C7114700CD40C3 /* CoreImage.framework */,
 				DBB2C37217F9A187008C03BB /* ImageIO.framework */,
 				DB589E32281C34D200469001 /* Accelerate.framework */,
 				DB0FC0221519183C008A9B54 /* Cocoa.framework */,
+				DB0B5AD32CF24361008F5A9B /* Quartz.framework */,
 				DB0FC0241519183C008A9B54 /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -942,6 +1011,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		DB0B5AD12CF24361008F5A9B /* oma2Quicklook */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB0B5AE82CF24361008F5A9B /* Build configuration list for PBXNativeTarget "oma2Quicklook" */;
+			buildPhases = (
+				DB0B5ACE2CF24361008F5A9B /* Sources */,
+				DB0B5ACF2CF24361008F5A9B /* Frameworks */,
+				DB0B5AD02CF24361008F5A9B /* Resources */,
+				DBAA70E52CF53F9B009E53E8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				DB0B5AD52CF24361008F5A9B /* oma2Quicklook */,
+			);
+			name = oma2Quicklook;
+			packageProductDependencies = (
+			);
+			productName = oma2Quicklook;
+			productReference = DB0B5AD22CF24361008F5A9B /* oma2Quicklook.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		DB0FC01D1519183C008A9B54 /* oma2 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DB0FC03C1519183D008A9B54 /* Build configuration list for PBXNativeTarget "oma2" */;
@@ -951,10 +1043,12 @@
 				DB0FC01C1519183C008A9B54 /* Resources */,
 				DB371F7818469FD200265D79 /* CopyFiles */,
 				DBCB578022CA3A4100988D83 /* CopyFiles */,
+				DB0B5AE42CF24361008F5A9B /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DB0B5AE22CF24361008F5A9B /* PBXTargetDependency */,
 			);
 			name = oma2;
 			productName = oma2;
@@ -1008,6 +1102,9 @@
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "Yale University";
 				TargetAttributes = {
+					DB0B5AD12CF24361008F5A9B = {
+						CreatedOnToolsVersion = 16.1;
+					};
 					DB0FC01D1519183C008A9B54 = {
 						ProvisioningStyle = Automatic;
 					};
@@ -1026,6 +1123,7 @@
 			knownRegions = (
 				English,
 				en,
+				Base,
 			);
 			mainGroup = DB0FC0131519183B008A9B54;
 			productRefGroup = DB0FC01F1519183C008A9B54 /* Products */;
@@ -1035,11 +1133,19 @@
 				DB0FC01D1519183C008A9B54 /* oma2 */,
 				DB8A884218E3297E007C79AF /* oma2cam */,
 				DBDECE1327FF5337007AC635 /* oma2Canon */,
+				DB0B5AD12CF24361008F5A9B /* oma2Quicklook */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		DB0B5AD02CF24361008F5A9B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DB0FC01C1519183C008A9B54 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1169,6 +1275,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		DB0B5ACE2CF24361008F5A9B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DB0FC01A1519183C008A9B54 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1295,6 +1408,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		DB0B5AE22CF24361008F5A9B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DB0B5AD12CF24361008F5A9B /* oma2Quicklook */;
+			targetProxy = DB0B5AE12CF24361008F5A9B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		DB0FC02B1519183C008A9B54 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -1323,6 +1444,108 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		DB0B5AE52CF24361008F5A9B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = oma2Quicklook/oma2Quicklook.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = oma2Quicklook/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = oma2Quicklook;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Yale University. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.oma2.oma2Quicklook";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+		DB0B5AE62CF24361008F5A9B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = oma2Quicklook/oma2Quicklook.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = oma2Quicklook/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = oma2Quicklook;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Yale University. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.oma-x.oma2.oma2Quicklook";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
 		DB0FC03A1519183D008A9B54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1457,7 +1680,10 @@
 				GENERATE_PROFILING_CODE = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = "oma2/oma2-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)/**",
@@ -1465,6 +1691,7 @@
 					"$(PROJECT_DIR)/oma2",
 					"$(PROJECT_DIR)/opencv/lib",
 					"$(PROJECT_DIR)/oma2/opencvLibs",
+					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = NO;
@@ -1504,7 +1731,10 @@
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = "oma2/oma2-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)/**",
@@ -1512,6 +1742,7 @@
 					"$(PROJECT_DIR)/oma2",
 					"$(PROJECT_DIR)/opencv/lib",
 					"$(PROJECT_DIR)/oma2/opencvLibs",
+					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = NO;
@@ -1550,7 +1781,10 @@
 					"$(SRCROOT)/**",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/oma2cam-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
@@ -1558,6 +1792,7 @@
 					"$(PROJECT_DIR)/**",
 					"@executable_path/../Frameworks",
 					"$(PROJECT_DIR)/oma2/opencvLibs",
+					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1592,7 +1827,10 @@
 					"$(SRCROOT)/**",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/oma2cam-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
@@ -1600,6 +1838,7 @@
 					"$(PROJECT_DIR)/**",
 					"@executable_path/../Frameworks",
 					"$(PROJECT_DIR)/oma2/opencvLibs",
+					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1633,7 +1872,10 @@
 					"$(SRCROOT)/**",
 				);
 				INFOPLIST_FILE = "oma2cam copy-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
@@ -1678,7 +1920,10 @@
 					"$(SRCROOT)/**",
 				);
 				INFOPLIST_FILE = "oma2cam copy-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/**",
 					"$(inherited)",
@@ -1705,6 +1950,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		DB0B5AE82CF24361008F5A9B /* Build configuration list for PBXNativeTarget "oma2Quicklook" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB0B5AE52CF24361008F5A9B /* Debug */,
+				DB0B5AE62CF24361008F5A9B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		DB0FC0181519183B008A9B54 /* Build configuration list for PBXProject "oma2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

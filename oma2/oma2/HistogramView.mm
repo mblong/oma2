@@ -17,12 +17,15 @@ extern oma2UIData UIData;
 @synthesize yScale;
 @synthesize zoomX;
 
+float xscale = HISTOGRAM_SIZE/512.; // 512 is the width of the window
+
 - (void)drawRect:(NSRect)dirtyRect{
     
     [super drawRect:dirtyRect];
     unsigned int histMax=0;
     int i,startIndex,endIndex,indexRange;
     float binsize = (iBuffer.max()-iBuffer.min())/(HISTOGRAM_SIZE-1.0);
+    
     
     for(i=0; i<HISTOGRAM_SIZE;i++){
         if(histogram[i] > histMax) histMax = histogram[i];
@@ -45,13 +48,13 @@ extern oma2UIData UIData;
     
     if(zoomX){
         for(i=startIndex; i < endIndex; i++){
-            pt.x = (i-startIndex)*511.0/indexRange;
+            pt.x = (i-startIndex)*511.0/indexRange/xscale;
             pt.y = yScale*histogram[i]/histMax;
             [path lineToPoint:pt];
         }
     } else {
         for(i=1; i<HISTOGRAM_SIZE;i++){
-            pt.x = i;
+            pt.x = i/xscale;
             pt.y = yScale*histogram[i]/histMax;
             [path lineToPoint:pt];
         }
@@ -66,7 +69,7 @@ extern oma2UIData UIData;
         pt.x=0;
     } else {
         cminIndex = (UIData.cmin-iBuffer.min())/binsize;
-        pt.x = cminIndex;
+        pt.x = cminIndex/xscale;
     }
     [path2 moveToPoint:pt];
     pt.y = 0.0;
@@ -77,7 +80,7 @@ extern oma2UIData UIData;
         pt.x=511.0;
     } else {
         cmaxIndex = (UIData.cmax-iBuffer.min())/binsize;
-        pt.x = cmaxIndex;
+        pt.x = cmaxIndex/xscale;
     }
     [path2 moveToPoint:pt];
     pt.y = 0.0;
@@ -93,7 +96,7 @@ extern oma2UIData UIData;
     
     NSPoint point = [theEvent locationInWindow];
     point = [self convertPoint:point fromView:nil];
-    if( abs(point.x - cminIndex) < abs(point.x - cmaxIndex)){
+    if( abs(point.x*xscale - cminIndex) < abs(point.x*xscale - cmaxIndex)){
         // drag the cmin bar
         dragCmin = 1;
     } else {
@@ -109,11 +112,11 @@ extern oma2UIData UIData;
     point = [self convertPoint:point fromView:nil];
 
     if(dragCmin){
-        UIData.cmin = point.x*binsize+iBuffer.min();
+        UIData.cmin = point.x*binsize*xscale+iBuffer.min();
         [appController updateHistogram];
 
     }else{
-        UIData.cmax = point.x*binsize+iBuffer.min();
+        UIData.cmax = point.x*binsize*xscale+iBuffer.min();
         [appController updateHistogram];
     }
 }

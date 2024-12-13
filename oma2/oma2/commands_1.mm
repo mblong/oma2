@@ -515,8 +515,8 @@ int savefits_c(int n,char* args)
         beep();
         printf(" No filename specified.\n");
         return FILE_ERR;
-    } else { // otherwise, add the prefix and suffix and use the name specified
-        fullname(filename,RAW_DATA);
+    } else { // otherwise, add the prefix and use the name specified
+        fullname(filename,SAVE_DATA_NO_SUFFIX);
         printf("%d %s\n",strlen(filename),filename);
         filename[strlen(filename)+1]=0;
         for(i=strlen(filename); i>0; i--) filename[i]=filename[i-1];

@@ -144,6 +144,7 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>o2d</string>
+					<string>fit</string>
 				</array>
 			</dict>
 		</dict>
