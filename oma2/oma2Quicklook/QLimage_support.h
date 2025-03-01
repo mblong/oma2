@@ -4,7 +4,7 @@
 #define oma2_image_support_h
 
 #include    "oma2.h"
-#include    "image.h"
+#include    "QLimage.h"
 #include <vector>
 
 #include "fitsio.h"
@@ -19,13 +19,13 @@ int get_byte_swap_value(short);
 void swap_bytes_routine(char* co, int num, int nb);
 
 void trimName(char*);
-int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* );
+int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,QLImage* );
 int getpalettefile(char*);
 int savepalettefile(char*);
 unsigned long fsize(char* file);
 
-int dcrawGlue(char* name, int thecolor,Image*);
-int read_jpeg(char* filename,int thecolor,Image*);
+int dcrawGlue(char* name, int thecolor,QLImage*);
+int read_jpeg(char* filename,int thecolor,QLImage*);
 
 // for reading hdr images
 typedef struct  {

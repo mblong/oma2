@@ -133,6 +133,7 @@ int hdrNumget_c(int,char*);
 int hobjSettings_c(int,char*);
 int hsv2rgb_c(int,char*);
 int histogram_c(int,char*);
+int histmax_c(int,char*);
 
 
 int invert_c(int,char*);

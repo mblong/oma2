@@ -1078,12 +1078,12 @@ int croprectangle_c(int n,char* args){
 
 /*
  
- ASPECT Width Height
+ ASPECT [Width Height x0 y0]
  
- Crop the image to have the specified aspect ratio. Default is 16 9.
+ Crop the image to have the specified aspect ratio. Default is 16 9. If x0 and y0 are specified, use these coordinates for the center of the cropped image. If they are not specified, the default is the image center.
  
  */
-
+/*
 int aspect_c(int n, char* args)
 {
     float width=16,height=9,aspect;
@@ -1101,6 +1101,41 @@ int aspect_c(int n, char* args)
         if((newWidth-iBuffer.width())&1) newWidth--;  // needs to match even/odd of original
     }
     sprintf(args,"%d %d",newWidth,newHeight);
+    frame_c(0,args);
+
+    return NO_ERR;
+}
+*/
+int aspect_c(int n, char* args)
+{
+    float width=16,height=9,aspect;
+    int newWidth,newHeight,x0,y0,cropWidth,cropHeight;
+    x0= iBuffer.width()/2;
+    y0 = iBuffer.height()/2;
+    sscanf(args,"%f %f %d %d",&width,&height,&x0,&y0);
+    if(x0 < iBuffer.width()/2){
+        cropWidth = 2*x0;
+    }else {
+        cropWidth = 2*(iBuffer.width() - x0);
+    }
+    if(y0 < iBuffer.height()/2){
+        cropHeight = 2*y0;
+    }else {
+        cropHeight = 2*(iBuffer.height() - y0);
+    }
+
+    aspect=(float)cropWidth/cropHeight;
+    
+    if(width/height >= aspect){ // new aspect is greater than old
+        newWidth=cropWidth;
+        newHeight = height/width*newWidth;
+        if((newHeight-cropHeight)&1) newHeight--;  // needs to match even/odd of original
+    } else {
+        newHeight=cropHeight;
+        newWidth = width/height*newHeight;
+        if((newWidth-cropWidth)&1) newWidth--;  // needs to match even/odd of original
+    }
+    sprintf(args,"%d %d 0 %d %d",newWidth,newHeight,x0-newWidth/2,y0-newHeight/2);
     frame_c(0,args);
 
     return NO_ERR;
@@ -2326,6 +2361,58 @@ int histogram_c(int n,char* args)        /* get the histogram and ? */
     update_UI();
     return 0;
 }
+/* ********** */
+
+/* HISTMAX lowerPercent upperPercent [setCminCmaxFlag]
+    Calculates the histogram of the current image and returns the data values that correspond to the lowerPercent and upperPercent of the histogram maximum. command_return_1 has the lower value, command_return_2, the upper. If setCminCmaxFlag is nonzero, the color min and color max are set according to the lower and upper values. Default values are 10% 1% and 1.
+ */
+
+int histmax_c(int n,char* args)        /* get the histogram and ? */
+{
+    extern unsigned int histogram[];
+    extern Variable user_variables[];
+    float lower = 10,upper = 1;
+    int i,setCminCmaxFlag=1;
+    float sum=0.,npts=iBuffer.rows()*iBuffer.cols(), binsize=(iBuffer.max()-iBuffer.min())/(HISTOGRAM_SIZE-1.0);
+    sscanf(args,"%f %f %d",&lower,&upper,&setCminCmaxFlag);
+    iBuffer.gethistogram();
+    float histMax=0;
+    for(i=0; i< HISTOGRAM_SIZE; i++){
+        if(histogram[i] > histMax) histMax = histogram[i];
+    }
+    DATAWORD cmin,cmax;
+    for(i=0; i< HISTOGRAM_SIZE; i++){
+        if(histogram[i]/histMax > lower/100.) {
+            cmin = i*binsize+iBuffer.min();
+            break;
+        }
+    }
+    for(i=HISTOGRAM_SIZE-1; i>=0; i--){
+        if(histogram[i]/histMax > upper/100.) {
+            cmax = i*binsize+iBuffer.min();
+            break;
+        }
+    }
+
+    printf("Value that corresponds to the lower %.2f percent of the hisogram max is %g\n", lower,cmin);
+    user_variables[0].fvalue = cmin;
+    user_variables[0].ivalue = cmin;
+    user_variables[0].is_float = 1;
+    printf("Value that corresponds to the upper %.2f percent of the hisogram max is %g\n", upper,cmax);
+    user_variables[1].fvalue = cmax;
+    user_variables[1].ivalue = cmax;
+    user_variables[1].is_float = 1;
+    
+    if (setCminCmaxFlag){
+        UIData.cmin = cmin;
+        UIData.cmax = cmax;
+        UIData.autoscale = 0;
+    }
+    
+    update_UI();
+    return 0;
+}
+
 
 /* ********** */
 

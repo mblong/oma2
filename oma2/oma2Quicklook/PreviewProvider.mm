@@ -54,7 +54,7 @@
     NSURL *fileURL = request.fileURL;
     NSString *ext = fileURL.pathExtension;
     
-    NSLog(ext);
+    //NSLog(ext);
     if([ext isEqualToString:@"o2m"] || [ext isEqualToString: @"mac"]) {
         
         UTType* contentType = UTTypeUTF8PlainText; //replace with your data type
@@ -86,16 +86,22 @@
         // get the image
         NSString *name = [fileURL path] ;
         const char* cname = [name cStringUsingEncoding:NSASCIIStringEncoding];
-        Image qlImage = Image((char*)cname,LONG_NAME);
+        QLImage qlImage = QLImage((char*)cname,LONG_NAME);
         if(qlImage.err()){
             handler(nil,nil);
             return;
         }
+        int maxSize = qlImage.width();
+        if(maxSize < qlImage.height()) maxSize = qlImage.height();
+        int nth = 1;
+        if(maxSize>3840) nth=4;
+        else if(maxSize>1920) nth=2;
+        if(nth != 1) qlImage.resize(qlImage.height()/nth,qlImage.width()/nth);
         // look at the histogram to to get cmin and cmax
         extern DATAWORD cmax,cmin;
         extern unsigned int histogram[];
         int i;
-        // disregard if LHS of histogram is < 5% RHS of histogram is < 5% -- optomized for raw data
+        // disregard if LHS of histogram is < 10% of peak; RHS of histogram is < 1% of peak -- optomized for raw data
         float lower=10., upper=1;
         float binsize=(qlImage.max()-qlImage.min())/(HISTOGRAM_SIZE-1.0);
         qlImage.gethistogram();
@@ -116,32 +122,83 @@
                 break;
             }
         }
-        NSLog(@"%f %f ",cmin,cmax);
+        //NSLog(@"%f %f ",cmin,cmax);
         
-        ImageBitmap qlBitmap;
+        QLImageBitmap qlBitmap;
         qlBitmap = qlImage;
-        
+        int width=qlBitmap.getwidth();
+        int height=qlBitmap.getheight();
+
         NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
                                     //initWithBitmapDataPlanes: qlBitmap.getpixdatap()
                                     initWithBitmapDataPlanes: nil
-                                    pixelsWide: qlBitmap.getwidth() pixelsHigh: qlBitmap.getheight()
+                                    pixelsWide: width pixelsHigh: height
                                     bitsPerSample: 8 samplesPerPixel: 3 hasAlpha: NO isPlanar:NO
                                     colorSpaceName:NSDeviceRGBColorSpace
-                                    bytesPerRow: 3*qlBitmap.getwidth()
+                                    bytesPerRow: 3*width
                                     bitsPerPixel: 24];
         
         memcpy([bitmap  bitmapData], qlBitmap.getpixdata(), qlBitmap.getheight()*qlBitmap.getwidth()*3);
         NSImage* image = [[NSImage alloc] initWithSize:NSMakeSize(qlBitmap.getwidth(), qlBitmap.getheight())];
         [image addRepresentation:bitmap];
+        /*
+        NSString* text = @"woof";
+     
+        [NSGraphicsContext saveGraphicsState];
+        NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithBitmapImageRep:bitmap];
+        [NSGraphicsContext setCurrentContext:context];
+
+        [image drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0];
+
+        int fSize=10+width/2000*12;
+        NSMutableDictionary *attr = [NSMutableDictionary dictionary];
+        [attr setObject:[NSFont fontWithName:@"Lucida Grande" size:fSize] forKey:NSFontAttributeName];
+        [attr setObject:[NSColor whiteColor] forKey:NSBackgroundColorAttributeName];
+        [attr setObject:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
+        NSString *myStr = [NSString stringWithFormat:@"mn/mx: %g %g",qlImage.getvalue(MIN),qlImage.getvalue(MAX)];
+        [myStr drawAtPoint:NSMakePoint(2*fSize,height-3*fSize) withAttributes:attr];
+        myStr = [NSString stringWithFormat:@"cmn/cmx: %g %g",cmin,cmax];
+        [myStr drawAtPoint:NSMakePoint(2*fSize,height-4*fSize) withAttributes:attr];
+        myStr = [NSString stringWithFormat:@"exp: %g",qlImage.getvalue(EXPOSURE)];
+        [myStr drawAtPoint:NSMakePoint(2*fSize,height-5*fSize) withAttributes:attr];
+        myStr = [NSString stringWithFormat:@"gain: %g %d",qlImage.getvalue(ISO),width];
+        [myStr drawAtPoint:NSMakePoint(2*fSize,height-6*fSize) withAttributes:attr];
+
+        [NSGraphicsContext restoreGraphicsState];
+
+        NSImage *newImage = [[NSImage alloc] initWithSize:[bitmap size]];
+        [newImage addRepresentation:bitmap];
+         
+         //NSImage* image = [[NSImage alloc] initWithSize:NSMakeSize(qlBitmap.getwidth(), qlBitmap.getheight())];
+         //image = [self imageWithTextOverlay: dataImage text: @"woof"];
+
+         */
         
-        NSLog(name);
+        
+        [image lockFocus];
+        int fSize=10+width/500*2;
+        NSMutableDictionary *attr = [NSMutableDictionary dictionary];
+        [attr setObject:[NSFont fontWithName:@"Lucida Grande" size:fSize] forKey:NSFontAttributeName];
+        [attr setObject:[NSColor whiteColor] forKey:NSBackgroundColorAttributeName];
+        [attr setObject:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
+        NSString *myStr = [NSString stringWithFormat:@"mn/mx: %g    %g",qlImage.getvalue(MIN),qlImage.getvalue(MAX)];
+        [myStr drawAtPoint:NSMakePoint(2*fSize,height-3*fSize) withAttributes:attr];
+        myStr = [NSString stringWithFormat:@"cmn/cmx: %g    %g",cmin,cmax];
+        [myStr drawAtPoint:NSMakePoint(2*fSize,height-4*fSize) withAttributes:attr];
+        myStr = [NSString stringWithFormat:@"exp: %g",qlImage.getvalue(EXPOSURE)];
+        [myStr drawAtPoint:NSMakePoint(2*fSize,height-5*fSize) withAttributes:attr];
+        myStr = [NSString stringWithFormat:@"gain: %g ",qlImage.getvalue(ISO)];
+        [myStr drawAtPoint:NSMakePoint(2*fSize,height-6*fSize) withAttributes:attr];
+        [image unlockFocus];
+         
+
+        //NSLog(name);
         UTType* contentType = UTTypeImage; //replace with your data type
-        int width=qlBitmap.getwidth();
-        int height=qlBitmap.getheight();
+        
         if (image) {
             // Convert NSImage to NSData for the preview
             CGImageRef cgImage = [image CGImageForProposedRect:NULL context:nil hints:nil];
-
+            
             NSBitmapImageRep *bitmapRep = [[NSBitmapImageRep alloc] initWithCGImage:cgImage];
             NSDictionary *imageProps = @{};
             NSData *data = [bitmapRep representationUsingType:NSBitmapImageFileTypeTIFF properties:imageProps];
@@ -158,12 +215,16 @@
                     CGContextRef context = CGBitmapContextCreate(0, width,
                     height,
                     CGImageGetBitsPerComponent(cgImage),
-                    width*4,
+                    0,
                     colorSpace,
                     kCGImageAlphaNone | kCGImageAlphaNoneSkipLast);
-
+                    
+                    
+                    
+                   
                     // Draw the image in the context
                     CGContextDrawImage(context, drawingRect, cgImage);
+                    
                    
                     // Release the context, which allocated memory
                     CFRelease(context);
@@ -179,6 +240,40 @@
             }
         }
     }
+}
+- (NSImage *)imageWithTextOverlay:(NSImage *)image text:(NSString *)text {
+    NSBitmapImageRep *bitmapRep = [[NSBitmapImageRep alloc]
+        initWithBitmapDataPlanes:NULL
+        pixelsWide:image.size.width
+        pixelsHigh:image.size.height
+        bitsPerSample:8
+        samplesPerPixel:3
+        hasAlpha:NO
+        isPlanar:NO
+        colorSpaceName:NSCalibratedRGBColorSpace
+        bytesPerRow:3*image.size.width
+        bitsPerPixel:24];
+ 
+    [NSGraphicsContext saveGraphicsState];
+    NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithBitmapImageRep:bitmapRep];
+    [NSGraphicsContext setCurrentContext:context];
+
+    [image drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0];
+
+    NSDictionary *attributes = @{NSFontAttributeName: [NSFont systemFontOfSize:40],
+                                 NSForegroundColorAttributeName: [NSColor whiteColor],
+                                 NSParagraphStyleAttributeName: [NSParagraphStyle defaultParagraphStyle]};
+
+    NSSize textSize = [text sizeWithAttributes:attributes];
+    NSRect textRect = NSMakeRect(0, image.size.height / 2 - textSize.height / 2, image.size.width, textSize.height);
+    [text drawInRect:textRect withAttributes:attributes];
+
+    [NSGraphicsContext restoreGraphicsState];
+
+    NSImage *newImage = [[NSImage alloc] initWithSize:[bitmapRep size]];
+    [newImage addRepresentation:bitmapRep];
+
+    return newImage;
 }
     @end
     

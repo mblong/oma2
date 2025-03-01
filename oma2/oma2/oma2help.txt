@@ -71,9 +71,9 @@ ACMEVELOCITY telemetryFileName
 	exposure
 	name
 
-ASPECT [Width] [Height]
-	Crop the image to have the specified aspect ratio. Default is 16 9.
-	
+ASPECT [Width] [Height] [X0][Y0]
+	Crop the image to have the specified aspect ratio. Default is 16 9. If x0 and y0 are specified, use these coordinates for the center of the cropped image. If they are not specified, the default is the image center.
+
 BLOCK n [m]
 	Group the image data into n x m blocks (rows x cols). This command reduces the size of the data buffer. The values are summed, pending implementation of the BLKAVE command. If the image is flagged as color, the three color planes are treated separately.
 
@@ -315,12 +315,12 @@ EXECUTE <filename>
 EXPOSURE exposureValue
 	Sets an exposure time to be used in generating HDR images. If no argument is given, the value of the current exposure is echoed and command_return_1 returns the value.
 
- [index] [value]
+EXTRA [index] [value]
 	Add extra information to the current image in the form of a floating point value. Indexing starts at 0. If both arguments are present, the value is placed at the location specified by the index. If no argument is given, the command lists extra values in the current image buffer and puts the first ten extra values into the command_return variables. With one argument, the extra value at the specified index is put into command_return_1.
- 
- EXIT
+
+EXIT
 	Quit the program.
- 
+
 FFT mode scale_factor
 	mode = 0  return the magnitude scaled by scale_factor
 	mode = 1  return the real part scaled by scale_factor
@@ -494,7 +494,10 @@ HSV2RGB
     Convert the current HSV image to RGB. If the HSV image is in the range 0-255, the RGB image will also be in the range 0-255. All calculations are done in floating point.
 
 HISTOGRAM lowerPercent upperPercent [setCminCmaxFlag]
-    Calculates the histogram of the current image and returns the data values that exclude the lowerPercent and upperPercent of pixels in the image. command_return_1 has the lower value, command_return_2, the upper. If setCminCmaxFlag is nonzero, the color min and color max are set according to the lower and upper values. Default values are 1% 1% and 0.
+    Calculates the histogram of the current image and returns the data values that exclude the lowerPercent and upperPercent of pixels in the image. command_return_1 has the lower value, command_return_2, the upper. If setCminCmaxFlag is nonzero, the color min and color max are set according to the lower and upper values. Default values are 1 1 and 0.
+
+HISTMAX lowerPercent upperPercent [setCminCmaxFlag]
+    Calculates the histogram of the current image and returns the data values that correspond to the lowerPercent and upperPercent of the histogram maximum. command_return_1 has the lower value, command_return_2, the upper. If setCminCmaxFlag is nonzero, the color min and color max are set according to the lower and upper values. Default values are 10 1 and 1.
 
 IF condition
 	If condition evaluates to a non-zero value, the commands following the IF are executed. However, if the condition is zero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators < (less than), > (greater than), others to come....

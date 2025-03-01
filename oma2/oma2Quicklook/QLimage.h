@@ -2,12 +2,16 @@
 
 #include "QLimage_support.h"
 #include <math.h>
+#include "oma2.h"
 
 
-#ifndef oma2_Image_h
-#define oma2_Image_h
+#ifndef oma2_QLImage_h
+#define oma2_QLImage_h
 
-
+#define WMODE   O_CREAT|O_WRONLY,0666
+#define READMODE   O_RDONLY
+#define READBINARY   O_RDONLY
+typedef char* Ptr;
 
 typedef struct{
     char ext[6];
@@ -62,7 +66,7 @@ enum {ASI2600MC,ASI174MM};
 
 /******************** Class Definitions ********************/
 
-class Image
+class QLImage
 {
 protected:
     int         specs[NSPECS];      ///< Information on Image size, type, etc.
@@ -76,10 +80,10 @@ protected:
     float*      extra;          ///< Pointer to extra data (float)
     DATAWORD*   data;           ///< Pointer to image data (DATAWORD=float currently)
 public:
-    Image();            ///< default constructor with no arguments
-    ~Image();           ///< destructor
-    Image(int,int);     ///< constructor -- specify rows and columns, other values are defaults
-    Image(char*,int);   ///< constructor -- new Image from filename.
+    QLImage();            ///< default constructor with no arguments
+    ~QLImage();           ///< destructor
+    QLImage(int,int);     ///< constructor -- specify rows and columns, other values are defaults
+    QLImage(char*,int);   ///< constructor -- new Image from filename.
                         ///< Second argument says what to do with filling in name
     
     void operator+(DATAWORD);  ///< constant arithmetic, modifies the current Image; does not calculate min/max
@@ -89,17 +93,17 @@ public:
     void power(DATAWORD);      ///< Raise to the specified power
     
     
-    void operator+(Image);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
-    void operator-(Image);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
-    void operator*(Image);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
-    void operator/(Image);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
+    void operator+(QLImage);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
+    void operator-(QLImage);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
+    void operator*(QLImage);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
+    void operator/(QLImage);     ///< Image arithmetic, modifies the current Image; does not calculate min/max
     
     
-    Image operator<<(Image);    ///< make a copy of an image
+    QLImage operator<<(QLImage);    ///< make a copy of an image
     
     
-    bool operator==(Image);     ///< true if Images are the same size
-    bool operator!=(Image);     ///< true if Images are not the same size
+    bool operator==(QLImage);     ///< true if Images are the same size
+    bool operator!=(QLImage);     ///< true if Images are not the same size
     bool isEmpty();             ///< true if Image has no data
     bool isColor();             ///< true if Image is flagged as color
     
@@ -120,7 +124,7 @@ public:
     void saveFile(char*, int);  ///< write the Image to a file; second argument tells if name is complete or not
     void saveFile(char*, int,int);  ///< write the Image to a file as integers; second argument tells if name is complete or not; third argument is type -- uint16 int16 char8 uchar8
     
-    void copyABD(Image);        ///< copy All But Data from one image to another
+    void copyABD(QLImage);        ///< copy All But Data from one image to another
     int* getspecs();            ///< returns a copy of the image specs array
     int getspec(int);            ///< returns the specified member of speces array
     float* getextra();          ///< returns a copy of the extra data array
@@ -154,7 +158,7 @@ public:
     void mirror();             ///< mirror the current image
     
     void rgb2color(int);       ///< crop an rgb image to color 0,1, or 2 (red, green, or blue)
-    void composite(Image);     ///< composite two images. Error if images are not the same width.
+    void composite(QLImage);     ///< composite two images. Error if images are not the same width.
     void resize(int,int);      ///< resize the current image to specified rows and columns
     
     void rgbMult(float,float,float);
@@ -166,9 +170,9 @@ public:
     
     
     // These friends help read in images
-    friend int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,Image* im);
+    friend int process_old_header(TWOBYTE* header,char* comment,TWOBYTE* trailer,QLImage* im);
    
-    friend int readFits(char* filename, Image*);
+    friend int readFits(char* filename, QLImage*);
     // Special friends that need to go fast
     friend class QLImageBitmap;
 };

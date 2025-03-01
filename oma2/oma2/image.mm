@@ -1201,9 +1201,11 @@ void Image::resize(int newRows, int newCols){
     int i,j;
 	float xi,yi,sx,sy;
     
-	sx = (float)(specs[COLS]-1)/(float)(newCols-1);
-	sy = (float)(specs[ROWS]-1)/(float)(newRows-1);
-	
+	//sx = (float)(specs[COLS]-1)/(float)(newCols-1);
+	//sy = (float)(specs[ROWS]-1)/(float)(newRows-1);
+    sx = (float)(specs[COLS])/(float)(newCols);
+    sy = (float)(specs[ROWS])/(float)(newRows);
+
 	for( j=0; j<newRows; j++) {
 		for( i=0; i<newCols; i++) {
 			xi = i * sx;

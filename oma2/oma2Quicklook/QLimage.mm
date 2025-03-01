@@ -45,7 +45,7 @@ FileDecoderExtensions fileDecoderExtensions[] = {
 
 
 
-Image::Image()              // create an empty Image with default values
+QLImage::QLImage()              // create an empty QLImage with default values
 {
     data = NULL;
     specs[ROWS]=specs[COLS]=0;
@@ -69,15 +69,15 @@ Image::Image()              // create an empty Image with default values
 }
 
 
-Image::~Image()
+QLImage::~QLImage()
 {
     //free();
 }
 
 
-Image::Image(int rows, int cols)
+QLImage::QLImage(int rows, int cols)
 {
-    *this = Image();    // default specs
+    *this = QLImage();    // default specs
     data = new DATAWORD[rows*cols];
     if(data == 0){
         specs[ROWS]=specs[COLS]=0;
@@ -89,7 +89,7 @@ Image::Image(int rows, int cols)
     }
 }
 
-Image::Image(char* filename, int kindOfName)
+QLImage::QLImage(char* filename, int kindOfName)
 {
     unsigned long nr,nbyte;
     TWOBYTE header[HEADLEN/2];
@@ -99,7 +99,7 @@ Image::Image(char* filename, int kindOfName)
     int doffset=80;
     int fd,color,i;
     
-    *this = Image();
+    *this = QLImage();
     
     extraSize = 0;
     // default specs set -- now decide what kind of file we are opening
@@ -348,7 +348,7 @@ Image::Image(char* filename, int kindOfName)
 }
 
 
-void Image::operator+(DATAWORD val){
+void QLImage::operator+(DATAWORD val){
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) += val;
     }
@@ -356,7 +356,7 @@ void Image::operator+(DATAWORD val){
     //return *this;
 }
 
-void Image::operator-(DATAWORD val){
+void QLImage::operator-(DATAWORD val){
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) -= val;
     }
@@ -364,7 +364,7 @@ void Image::operator-(DATAWORD val){
     //return *this;
 }
 
-void Image::operator*(DATAWORD val){
+void QLImage::operator*(DATAWORD val){
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) *= val;
     }
@@ -372,7 +372,7 @@ void Image::operator*(DATAWORD val){
     //return *this;
 }
 
-void Image::operator/(DATAWORD val){
+void QLImage::operator/(DATAWORD val){
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) /= val;
     }
@@ -380,7 +380,7 @@ void Image::operator/(DATAWORD val){
     //return *this;
 }
 
-void Image::power(DATAWORD val){
+void QLImage::power(DATAWORD val){
     for(int i=0; i<specs[ROWS]*specs[COLS];i++){
         *(data+i) = pow(*(data+i),val);
     }
@@ -388,7 +388,7 @@ void Image::power(DATAWORD val){
     //return *this;
 }
 
-void Image::rgbMult(float x, float y, float z){
+void QLImage::rgbMult(float x, float y, float z){
     
     DATAWORD *pt,*pt_green,*pt_blue;
 	int num = specs[ROWS]*specs[COLS]/3;
@@ -406,7 +406,7 @@ void Image::rgbMult(float x, float y, float z){
     specs[HAVE_MAX]=0;
 }
 
-void Image::rgbDiv(float x, float y, float z){
+void QLImage::rgbDiv(float x, float y, float z){
     
     DATAWORD *pt,*pt_green,*pt_blue;
 	int num = specs[ROWS]*specs[COLS]/3;
@@ -424,7 +424,7 @@ void Image::rgbDiv(float x, float y, float z){
     specs[HAVE_MAX]=0;
 }
 
-void Image::rgbAdd(float x, float y, float z){
+void QLImage::rgbAdd(float x, float y, float z){
     
     DATAWORD *pt,*pt_green,*pt_blue;
 	int num = specs[ROWS]*specs[COLS]/3;
@@ -442,7 +442,7 @@ void Image::rgbAdd(float x, float y, float z){
     specs[HAVE_MAX]=0;
 }
 
-void Image::rgbSub(float x, float y, float z){
+void QLImage::rgbSub(float x, float y, float z){
     
     DATAWORD *pt,*pt_green,*pt_blue;
 	int num = specs[ROWS]*specs[COLS]/3;
@@ -460,7 +460,7 @@ void Image::rgbSub(float x, float y, float z){
     specs[HAVE_MAX]=0;
 }
 
-void Image::rgbPow(float x, float y, float z){
+void QLImage::rgbPow(float x, float y, float z){
     
     DATAWORD *pt,*pt_green,*pt_blue;
 	int num = specs[ROWS]*specs[COLS]/3;
@@ -481,7 +481,7 @@ void Image::rgbPow(float x, float y, float z){
 
 
 
-void Image::operator+(Image im2){
+void QLImage::operator+(QLImage im2){
     if (*this != im2){
         error = SIZE_ERR;
         //return *this;
@@ -494,7 +494,7 @@ void Image::operator+(Image im2){
     //return *this;
 }
 
-void Image::operator-(Image im2){
+void QLImage::operator-(QLImage im2){
     if (*this != im2){
         error = SIZE_ERR;
         //return *this;
@@ -507,7 +507,7 @@ void Image::operator-(Image im2){
     //return *this;
 }
 
-void Image::operator*(Image im2){
+void QLImage::operator*(QLImage im2){
     if (*this != im2){
         error = SIZE_ERR;
         //return *this;
@@ -520,7 +520,7 @@ void Image::operator*(Image im2){
     //return *this;
 }
 
-void Image::operator/(Image im2){
+void QLImage::operator/(QLImage im2){
     if (*this != im2){
         error = SIZE_ERR;
         //return *this;
@@ -533,10 +533,10 @@ void Image::operator/(Image im2){
     //return *this;
 }
 
-Image Image::operator<<(Image im){
+QLImage QLImage::operator<<(QLImage im){
     // in case the current image is not empty, free the space
     this->free();
-    Image copy;
+    QLImage copy;
     // allocate space for data
     copy.data = new DATAWORD[im.specs[ROWS]*im.specs[COLS]];
     if (copy.data==NULL){
@@ -553,29 +553,29 @@ Image Image::operator<<(Image im){
     return *this;
 }
 
-bool Image::operator==(Image im2){
+bool QLImage::operator==(QLImage im2){
     if (specs[ROWS] == im2.specs[ROWS] && specs[COLS] == im2.specs[COLS]) {
         return true;
     }
     return false;
 }
 
-bool Image::operator!=(Image im2){
+bool QLImage::operator!=(QLImage im2){
     return !(*this == im2);
 }
 
-int Image::err(){
+int QLImage::err(){
     return error;
 }
 
-int Image::width(){
+int QLImage::width(){
     if(data)
         return specs[COLS];
     else
         return 0;
 }
 
-int Image::height(){
+int QLImage::height(){
     if(data)
         if(specs[IS_COLOR])
             return specs[ROWS]/3;
@@ -586,14 +586,14 @@ int Image::height(){
 }
 
 
-bool Image::isEmpty(){
+bool QLImage::isEmpty(){
     if (data == NULL) 
         return true;
     else
         return false;
 }
 
-bool Image::isColor(){
+bool QLImage::isColor(){
     if (specs[IS_COLOR])
         return true;
     else
@@ -601,11 +601,11 @@ bool Image::isColor(){
 }
 
 
-void Image::errclear(){
+void QLImage::errclear(){
     error=0;
 }
 
-void Image::free(){
+void QLImage::free(){
     if(data != NULL){
         delete[] data;
         data = NULL;
@@ -625,7 +625,7 @@ void Image::free(){
     
 }
 
-void Image::zero(){
+void QLImage::zero(){
     int npts=specs[ROWS]*specs[COLS];
     DATAWORD* mydatpt=data;
     while ( mydatpt < data+npts ) {
@@ -634,7 +634,7 @@ void Image::zero(){
 }
 
 
-void Image::clip(DATAWORD clipVal){
+void QLImage::clip(DATAWORD clipVal){
     int npts=specs[ROWS]*specs[COLS];
     DATAWORD* mydatpt=data;
     while ( mydatpt < data+npts ) {
@@ -643,7 +643,7 @@ void Image::clip(DATAWORD clipVal){
     }
 }
 
-void Image::floor(DATAWORD floorVal){
+void QLImage::floor(DATAWORD floorVal){
     int npts=specs[ROWS]*specs[COLS];
     DATAWORD* mydatpt=data;
     while ( mydatpt < data+npts ) {
@@ -652,7 +652,7 @@ void Image::floor(DATAWORD floorVal){
     }
 }
 
-void Image::abs(){
+void QLImage::abs(){
     int npts=specs[ROWS]*specs[COLS];
     DATAWORD* mydatpt=data;
     while ( mydatpt < data+npts ) {
@@ -661,19 +661,19 @@ void Image::abs(){
     }
 }
 
-DATAWORD Image::min()
+DATAWORD QLImage::min()
 {
     if(specs[HAVE_MAX] == 0) getmaxx(NO_PRINT);
     return values[MIN];
 }
 
-DATAWORD Image::max()
+DATAWORD QLImage::max()
 {
     if(specs[HAVE_MAX] == 0) getmaxx(NO_PRINT);
     return values[MAX];
 }
 
-void Image::gethistogram(){
+void QLImage::gethistogram(){
     DATAWORD *mydatpt,mn=min(); // this makes sure min/max are current
     float binsize = (values[MAX] - mn)/(HISTOGRAM_SIZE-1.0);
     int npts=specs[ROWS]*specs[COLS],histogramIndex;
@@ -684,7 +684,7 @@ void Image::gethistogram(){
         if(histogramIndex < HISTOGRAM_SIZE && histogramIndex >=0) histogram[histogramIndex]++;
     }
 }
-void Image::getmaxx(char printFlag)
+void QLImage::getmaxx(char printFlag)
 {
     DATAWORD *locmin,*locmax,*locrmin,*locrmax,*locgmin,*locgmax,*locbmin,*locbmax;
     DATAWORD *mydatpt;
@@ -786,7 +786,7 @@ void Image::getmaxx(char printFlag)
     
 }
 
-void Image::saveFile(char* name, int kindOfName){
+void QLImage::saveFile(char* name, int kindOfName){
     char txt[HEADLEN];
     int nspecs = NSPECS;
     int nvalues = NVALUES;
@@ -822,7 +822,7 @@ void Image::saveFile(char* name, int kindOfName){
         write(fd,&nvalues,sizeof(int));
         write(fd,&nrulerchar,sizeof(int));
         // now write the image data minus the pointers
-        write(fd,this,sizeof(Image)- NUM_IMAGE_PTRS*sizeof(Ptr));
+        write(fd,this,sizeof(QLImage)- NUM_IMAGE_PTRS*sizeof(Ptr));
         if (commentSize) {
             write(fd,comment,commentSize);
         }
@@ -841,7 +841,7 @@ void Image::saveFile(char* name, int kindOfName){
     
 }
 
-void Image::saveFile(char* name, int kindOfName, int kindOfInt){
+void QLImage::saveFile(char* name, int kindOfName, int kindOfInt){
     char txt[HEADLEN];
     int nspecs = NSPECS;
     int nvalues = NVALUES;
@@ -947,7 +947,7 @@ void Image::saveFile(char* name, int kindOfName, int kindOfInt){
         write(fd,&nvalues,sizeof(int));
         write(fd,&nrulerchar,sizeof(int));
         // now write the image data minus the pointers
-        write(fd,this,sizeof(Image)- NUM_IMAGE_PTRS*sizeof(Ptr));
+        write(fd,this,sizeof(QLImage)- NUM_IMAGE_PTRS*sizeof(Ptr));
         if (commentSize) {
             write(fd,comment,commentSize);
         }
@@ -1016,31 +1016,38 @@ void Image::saveFile(char* name, int kindOfName, int kindOfInt){
 }
 
 
-void Image::resize(int newRows, int newCols){
+void QLImage::resize(int newRows, int newCols){
     
     if(specs[IS_COLOR]){
         newRows *= 3;
     }
     // allocate the new image
-    Image resized(newRows,newCols);
+    QLImage resized(newRows,newCols);
     resized.copyABD(*this); // get the old specs, some of which will have to be changed
     resized.specs[ROWS] = newRows;
     resized.specs[COLS] = newCols;
     
-    int i,j;
-	float xi,yi,sx,sy;
+    int i,j,xi,yi;
+	float sx,sy;
     
-	sx = (float)(specs[COLS]-1)/(float)(newCols-1);
-	sy = (float)(specs[ROWS]-1)/(float)(newRows-1);
-	
+	sx = (float)(specs[COLS])/(float)(newCols);
+	sy = (float)(specs[ROWS])/(float)(newRows);
+    DATAWORD mn,mx,val;
+    mn = mx = getpix(0,0);
 	for( j=0; j<newRows; j++) {
 		for( i=0; i<newCols; i++) {
 			xi = i * sx;
 			yi = j * sy;
-			resized.setpix(j,i,getpix(yi,xi));
+            //val = (getpix(yi,xi)+getpix(yi,xi+1))/2;
+            val = getpix(yi,xi);
+            if(val < mn) mn = val;
+            if(val > mx) mx = val;
+			resized.setpix(j,i,val);
 		}
 	}
-    resized.specs[HAVE_MAX]=0;
+    resized.values[MAX] = mx;
+    resized.values[MIN] = mn;
+    resized.specs[HAVE_MAX]=1;
     
     free();
     *this = resized;
@@ -1048,9 +1055,9 @@ void Image::resize(int newRows, int newCols){
     return;
 }
 
-void Image::filter(int rows,int cols,float* filter){
+void QLImage::filter(int rows,int cols,float* filter){
     // allocate the new image
-    Image filtered(specs[ROWS],specs[COLS]);
+    QLImage filtered(specs[ROWS],specs[COLS]);
     filtered.zero();
     filtered.copyABD(*this); // copy the old specs
     
@@ -1093,17 +1100,17 @@ void Image::filter(int rows,int cols,float* filter){
 
 }
 
-DATAWORD* Image::getImageData(){                // returns a pointer to the data; use with extreme caution
+DATAWORD* QLImage::getImageData(){                // returns a pointer to the data; use with extreme caution
     return data;
 }
 
-void Image::setImageData(DATAWORD* newImageData){    // sets the image data pointer; use with extreme caution
+void QLImage::setImageData(DATAWORD* newImageData){    // sets the image data pointer; use with extreme caution
     delete[] data;      // free the old data
     data=newImageData;
 }
 
 
-DATAWORD Image::getpix(int r ,int c)   // get a pixel value at the specified row and column
+DATAWORD QLImage::getpix(int r ,int c)   // get a pixel value at the specified row and column
 {
 	if (data == NULL){
         error = MEM_ERR;
@@ -1116,7 +1123,7 @@ DATAWORD Image::getpix(int r ,int c)   // get a pixel value at the specified row
 	return  *(data + c + r*specs[COLS]);
 }
 
-DATAWORD Image::getpix(float yi, float xi)
+DATAWORD QLImage::getpix(float yi, float xi)
 
 {
 	float z,xf,yf;
@@ -1157,7 +1164,7 @@ DATAWORD Image::getpix(float yi, float xi)
 }
 
 
-void Image::setpix(int r ,int c,DATAWORD val)   // set a pixel value at the specified row and column
+void QLImage::setpix(int r ,int c,DATAWORD val)   // set a pixel value at the specified row and column
 {
 	if (data == NULL){
         error = MEM_ERR;
@@ -1170,7 +1177,7 @@ void Image::setpix(int r ,int c,DATAWORD val)   // set a pixel value at the spec
     *(data + c + r*specs[COLS]) = val;
 }
 
-int* Image::getspecs(){             // this allocates space for specs that the user must free
+int* QLImage::getspecs(){             // this allocates space for specs that the user must free
     int* thespecs;
     thespecs = new int [NSPECS];
     for(int i=0; i<NSPECS; i++){
@@ -1179,21 +1186,21 @@ int* Image::getspecs(){             // this allocates space for specs that the u
     return thespecs;
 }
 
-int Image::getspec(int n){          // return a value from the specs array
+int QLImage::getspec(int n){          // return a value from the specs array
     if ( n>=NSPECS || n<0) return NAN;
     return specs[n];
 }
 
-int Image::rows(){             // if image is color, this is height * 3
+int QLImage::rows(){             // if image is color, this is height * 3
     return specs[ROWS];
 }
 
-int Image::cols(){             // same as width
+int QLImage::cols(){             // same as width
     return specs[COLS];
 }
 
 
-DATAWORD* Image::getvalues(){       // this allocates space for values that the user must free
+DATAWORD* QLImage::getvalues(){       // this allocates space for values that the user must free
    DATAWORD* thevalues = new DATAWORD[NVALUES];
     for(int i=0; i<NVALUES; i++){
         thevalues[i] = values[i];
@@ -1201,12 +1208,12 @@ DATAWORD* Image::getvalues(){       // this allocates space for values that the 
     return thevalues;
 }
     
-DATAWORD Image::getvalue(int n){          // return a value from the values array
+DATAWORD QLImage::getvalue(int n){          // return a value from the values array
     if ( n>=NVALUES || n<0) return NAN;
     return values[n];
 }
 
-float* Image::getextra(){       // returns a copy of the extra data array
+float* QLImage::getextra(){       // returns a copy of the extra data array
     float* theExtra = new DATAWORD[extraSize];
     for(int i=0; i<extraSize; i++){
         theExtra[i] = extra[i];
@@ -1214,7 +1221,7 @@ float* Image::getextra(){       // returns a copy of the extra data array
     return theExtra;
 }
 
-void Image::setExtra(float* ext,int size){
+void QLImage::setExtra(float* ext,int size){
     if (extra){
         delete[] extra;
         extra = NULL;
@@ -1228,12 +1235,12 @@ void Image::setExtra(float* ext,int size){
     extraSize = size;
 }
 
-int Image::getExtraSize(){      // returns the size of the extra data array
+int QLImage::getExtraSize(){      // returns the size of the extra data array
     return extraSize;
 }
 
 
-char* Image::getunit_text(){       // this allocates space for unit text that the user must free
+char* QLImage::getunit_text(){       // this allocates space for unit text that the user must free
     char* thetext = new char[NRULERCHAR];
     for(int i=0; i<NRULERCHAR; i++){
         thetext[i] = unit_text[i];
@@ -1242,7 +1249,7 @@ char* Image::getunit_text(){       // this allocates space for unit text that th
 }
 
 
-char* Image::getComment()     // returns a copy of comment buffer (NULL if no such line)
+char* QLImage::getComment()     // returns a copy of comment buffer (NULL if no such line)
 {                               // this allocates space for text that the user must free
     char* thecomment = NULL;
     
@@ -1253,7 +1260,7 @@ char* Image::getComment()     // returns a copy of comment buffer (NULL if no su
     return thecomment;
 }
 
-void Image::setComment(char* buffer,int n){
+void QLImage::setComment(char* buffer,int n){
     if (comment){
         delete[] comment;
         comment = 0;
@@ -1267,7 +1274,7 @@ void Image::setComment(char* buffer,int n){
     commentSize = n;
 }
 
-void Image::setspecs(int* newspecs){
+void QLImage::setspecs(int* newspecs){
     // resize if necessary
     if(newspecs[ROWS]*newspecs[COLS] != specs[ROWS]*specs[COLS]){
         delete[] data;
@@ -1296,25 +1303,25 @@ void Image::setspecs(int* newspecs){
     }
 }
 
-void Image::setvalues(float* newvalues){
+void QLImage::setvalues(float* newvalues){
     for(int i=0; i<NVALUES; i++){
         values[i] = newvalues[i];
     }
 }
 
-void Image::setvalue(int index,float newvalue){
+void QLImage::setvalue(int index,float newvalue){
     if(index < 0 || index >= NVALUES) return;
     values[index] = newvalue;
 }
 
 
-void Image::setRuler(float rulerScale, char* new_unit_text){
+void QLImage::setRuler(float rulerScale, char* new_unit_text){
     specs[HAS_RULER] = 1;
     values[RULER_SCALE] = rulerScale;
     strcpy(unit_text, new_unit_text);
 }
 
-void Image::copyABD(Image im){    // copy All But Data from one image to another
+void QLImage::copyABD(QLImage im){    // copy All But Data from one image to another
     
     int i;
     
@@ -1342,7 +1349,7 @@ void Image::copyABD(Image im){    // copy All But Data from one image to another
     }
 }
 
-void Image::crop(rect crop_rect){
+void QLImage::crop(rect crop_rect){
     int sizx,sizy,x0,y0;
 
     x0 = crop_rect.ul.h;
@@ -1371,7 +1378,7 @@ void Image::crop(rect crop_rect){
     }
     
     // get a new image
-    Image cropped_image(sizy,sizx);
+    QLImage cropped_image(sizy,sizx);
     if (cropped_image.err()) {
         error = MEM_ERR;
         return;
@@ -1387,9 +1394,6 @@ void Image::crop(rect crop_rect){
 			}
 		}
 	}
-
-    ////printf("%d x %d Image.\n",sizx,sizy);
-	////printf("Current image starts at: %d\t%d\n",x0,y0);
     
     cropped_image.specs[X0] = x0*specs[DX];
     cropped_image.specs[Y0] = y0*specs[DY];
@@ -1402,7 +1406,7 @@ void Image::crop(rect crop_rect){
     //return *this;
 }
 
-void Image::invert(){
+void QLImage::invert(){
     int size,i,ncolors;
 	DATAWORD *datp2,*datp,temp;
 	if (specs[IS_COLOR]) {
@@ -1430,7 +1434,7 @@ void Image::invert(){
     //return *this;
 }
 
-void Image::mirror(){
+void QLImage::mirror(){
 	int nt,nc,size;
 	DATAWORD *datp,temp;
 	
@@ -1453,7 +1457,7 @@ void Image::mirror(){
     }
 }
 
-void Image::rotate(float angle){
+void QLImage::rotate(float angle){
     
     int size,nt,nc,width=0,height=0,midx=0,midy=0,vrel,hrel,i=0;
     float theta,sintheta=0,costheta=1,ntf,ncf,outsideval;
@@ -1473,7 +1477,7 @@ void Image::rotate(float angle){
     }
     
     if(angle == 90.) {
-        Image rotated(specs[COLS],specs[ROWS]); // new data space
+        QLImage rotated(specs[COLS],specs[ROWS]); // new data space
         if(rotated.err()){
             error = MEM_ERR;
             //return *this;
@@ -1510,7 +1514,7 @@ void Image::rotate(float angle){
         size = width * height;
         //printf("%d %d width height\n",width,height);
         
-        Image rotated(width,height); // new data space
+        QLImage rotated(width,height); // new data space
         if(rotated.err()){
             error = MEM_ERR;
             //return *this;
@@ -1556,7 +1560,7 @@ void Image::rotate(float angle){
     }
 }
 
-void Image::rgb2color(int color){
+void QLImage::rgb2color(int color){
     rect cropr = {{0,0},{specs[COLS]-1,0}};
     int height=specs[ROWS]/3;
     cropr.ul.v = color*height;
@@ -1567,13 +1571,13 @@ void Image::rgb2color(int color){
     //return *this;
 }
 
-void Image::composite(Image bottom){
+void QLImage::composite(QLImage bottom){
     if( this->specs[COLS] != bottom.specs[COLS]){   // images have to be the same width
         error = SIZE_ERR;
         //return *this;
         return;
     }
-    Image newim;            // an empty image
+    QLImage newim;            // an empty image
     newim.copyABD(*this);   // get the current specs    
     newim.data = new DATAWORD[(specs[ROWS]+bottom.specs[ROWS])* specs[COLS]]; // allocate space
     if (newim.data == NULL) {

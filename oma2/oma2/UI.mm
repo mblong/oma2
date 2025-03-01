@@ -82,9 +82,39 @@ BOOL dropped_file(char* extension, char* name){
                 [appController appendText: @"OMA2>"];
                 return NO;
             }
+            // if a fit or fits file is dropped, automatically set cmin and camx according to the histogram rules
+            if(strcmp(extension, "FIT")==0 || strcmp(extension, "FITS")==0){
+                DATAWORD cmax,cmin;
+                extern unsigned int histogram[];
+                // disregard if LHS of histogram is < 10% of peak; RHS of histogram is < 1% of peak -- optomized for raw data
+                float lower=10., upper=1;
+                float binsize=(new_im.max()-new_im.min())/(HISTOGRAM_SIZE-1.0);
+                new_im.gethistogram();
+                float histMax=0;
+                for(i=0; i< HISTOGRAM_SIZE; i++){
+                    if(histogram[i] > histMax) histMax = histogram[i];
+                }
+                
+                for(i=0; i< HISTOGRAM_SIZE; i++){
+                    if(histogram[i]/histMax > lower/100.) {
+                        cmin = i*binsize+new_im.min();
+                        break;
+                    }
+                }
+                for(i=HISTOGRAM_SIZE-1; i>=0; i--){
+                    if(histogram[i]/histMax > upper/100.) {
+                        cmax = i*binsize+new_im.min();
+                        break;
+                    }
+                }
+                UIData.cmin = cmin;
+                UIData.cmax = cmax;
+                UIData.autoscale = 0;
+
+            }
             iBuffer.free();     // release the old data
             iBuffer = new_im;   // this is the new data
-            iBuffer.getmaxx(printMax);
+            //iBuffer.getmaxx(printMax);
             update_UI();
             
             display(0,(char*)"");

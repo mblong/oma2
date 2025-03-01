@@ -16,4 +16,5 @@
 
 @interface PreviewProvider : QLPreviewProvider <QLPreviewingController>
 
+- (NSImage *)imageWithTextOverlay:(NSImage *)image text:(NSString *)text;
 @end

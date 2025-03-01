@@ -1,16 +1,16 @@
 //
-//  ImageBitmap.h
+//  QLImageBitmap.h
 //  oma2
 //
 //  Created by Marshall Long on 3/30/12.
 //  Copyright (c) 2012 Yale University. All rights reserved.
 //
 
-#ifndef oma2_ImageBitmap_h
-#define oma2_ImageBitmap_h
+#ifndef oma2_QLImageBitmap_h
+#define oma2_QLImageBitmap_h
 
 #include <iostream>
-#include "image.h"
+#include "QLimage.h"
 
 
 #define NCOLORS 256
@@ -20,7 +20,7 @@ typedef  unsigned char PIXBYTES;
 
 /******************** Class Definitions ********************/
 
-class ImageBitmap
+class QLImageBitmap
 {
 private:
     PIXBYTES**  pdptr;
@@ -33,9 +33,9 @@ private:
     
 
 public:
-    ImageBitmap();            // default constructor with no arguments
+    QLImageBitmap();            // default constructor with no arguments
     
-    void operator=(Image);
+    void operator=(QLImage);
     void freeMaps();
     
     PIXBYTES* getpixdata();
