@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -30,7 +29,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="1172" y="0.0" width="246" height="354"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1512" height="944"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3360" height="1865"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="246" height="354"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -39,11 +38,11 @@
                         <rect key="frame" x="-3" y="302" width="252" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView" id="Jo1-xO-OL6">
-                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <rect key="frame" x="4" y="5" width="244" height="24"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b6l-LH-zp3">
-                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
+                                    <rect key="frame" x="-2" y="2" width="250" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="j3Q-Ep-uDl">
                                         <connections>
@@ -58,11 +57,11 @@
                         <rect key="frame" x="-3" y="254" width="252" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView" id="axy-yu-3yp">
-                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <rect key="frame" x="4" y="5" width="244" height="24"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zhx-JN-Q1f">
-                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
+                                    <rect key="frame" x="-2" y="2" width="250" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="dNm-jB-T7f"/>
                                     <connections>
@@ -76,11 +75,11 @@
                         <rect key="frame" x="-3" y="206" width="252" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView" id="MqZ-4a-wkC">
-                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <rect key="frame" x="4" y="5" width="244" height="24"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cA1-e7-gZ3">
-                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
+                                    <rect key="frame" x="-2" y="2" width="250" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="vtf-kV-Esj"/>
                                     <connections>
@@ -127,11 +126,11 @@
                         <rect key="frame" x="-3" y="20" width="252" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView" id="II7-5R-7G5">
-                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <rect key="frame" x="4" y="5" width="244" height="24"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eZ3-Nk-OzP">
-                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
+                                    <rect key="frame" x="-2" y="2" width="250" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="rVs-rU-tyu"/>
                                     <connections>
@@ -145,11 +144,11 @@
                         <rect key="frame" x="-3" y="116" width="252" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView" id="Cuk-Xc-Ttz">
-                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <rect key="frame" x="4" y="5" width="244" height="24"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jyl-0P-E55">
-                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
+                                    <rect key="frame" x="-2" y="2" width="250" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="ZUg-vG-AlY"/>
                                     <connections>
@@ -163,11 +162,11 @@
                         <rect key="frame" x="-3" y="68" width="252" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView" id="GYY-mi-TNO">
-                            <rect key="frame" x="3" y="3" width="246" height="26"/>
+                            <rect key="frame" x="4" y="5" width="244" height="24"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NPD-ac-Czj">
-                                    <rect key="frame" x="-2" y="4" width="250" height="20"/>
+                                    <rect key="frame" x="-2" y="2" width="250" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="n4l-qS-Ybb"/>
                                     <connections>
@@ -210,11 +209,11 @@
             <rect key="frame" x="0.0" y="0.0" width="252" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <view key="contentView" id="ajM-eC-DmF">
-                <rect key="frame" x="3" y="3" width="246" height="26"/>
+                <rect key="frame" x="4" y="5" width="244" height="24"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yfz-b3-Wi5">
-                        <rect key="frame" x="-2" y="4" width="250" height="24"/>
+                        <rect key="frame" x="-2" y="2" width="250" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <sliderCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="-2" maxValue="2" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="KzC-kx-zif"/>
                         <connections>

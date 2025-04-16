@@ -72,6 +72,7 @@ ComDef   commands[] =    {
     {{"CVNLDENOISE    "},   cvNLDenoise_q},
 #endif
     {{"CBALANCE       "},   cBalance_c},
+    {{"COMBINE        "},   combine_c},
     
     {{"DISPLAY        "},	display},
     {{"DCONTOUR       "},   dcontour},

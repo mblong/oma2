@@ -207,6 +207,9 @@ CANON command arguments
 CBALANCE
 	For a color image, use the  specified rectangle to balance RGB channels. Assumes the color in the rectangle should be grey. command_return_0 and 1 contain redBalance and blueBalance values.
 
+COMBINE r0 g0 b0 operator r1 g1 b1
+     The command requires color temp images 0 and 1 to be defined. A new image is created based on a weighted combination of the two images. r0, g0, and b0 multiply the RGB components of image 0 and r1, g1, and b1 multiply the RGB components of image 1. The two weighted images are combined using the specified operator, which can have values of +, - *, or /.
+
 DISPLAY [string]
 	Opens a window on the Macintosh screen and displays the contents of the current data buffer. The color palette used can be determined by the PALETTE command. The color minimum and maximum are specified by the CMINMX command. There can be up to 9 image windows open at one time. Windows can be resized, moved around the screen, and closed as in other Macintosh applications. If the optional string is specified, the window will be named according to the string.
 

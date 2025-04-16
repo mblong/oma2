@@ -64,6 +64,7 @@ int cvDenoise_q(int,char*);
 int cvNLDenoise_q(int,char*);
 #endif
 int cBalance_c(int,char*);
+int combine_c(int,char*);
 
 int dcrawarg_c(int,char*);
 int divfile_c(int,char*);

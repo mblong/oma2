@@ -258,6 +258,60 @@ int addRGB_c(int n,char* args){
     update_UI();
     return NO_ERR;
 }
+/* ********** */
+/* COMBINE r0 g0 b0 operator r1 g1 b1
+ The command requires color temp images 0 and 1 to be defined. A new image is created based on a weighted combination of the two images. r0, g0, and b0 multiply the RGB components of image 0 and r1, g1, and b1 multiply the RGB components of image 1. The two weighted images are combined using the specified operator, which can have values of +, - *, or /.
+ */
+
+int combine_c(int n,char* args){
+    
+    float r0,b0,g0,r1,b1,g1;
+    char op;
+    if (iTempImages[0].isEmpty() || iTempImages[1].isEmpty()){
+        beep();
+        printf("Must define temp images 0 and 1.\n");
+        return CMND_ERR;
+    }
+    if( sscanf(args,"%f %f %f %c %f %f %f",&r0,&g0,&b0,&op,&r1,&g1,&b1) != 7){
+        beep();
+        printf("7 Arguments needed\n");
+        return CMND_ERR;
+    }
+    if(!(op == '+' || op == '-' || op == '*' || op == '/')){
+        beep();
+        printf("Operator must be + - * or /\n");
+        return CMND_ERR;
+    }
+    Image im0,im1;
+    im0 << iTempImages[0];
+    im1 << iTempImages[1];
+    im0.rgbMult(r0, g0, b0);
+    im1.rgbMult(r1, g1, b1);
+    switch (op) {
+        case '+':
+            im0 + im1;
+            break;
+        case '-':
+            im0 - im1;
+            break;
+        case '*':
+            im0 * im1;
+            break;
+        case '/':
+            im0 / im1;
+    }
+    im1.free();
+    if (im0.err()){
+        beep();
+        printf("Images are not the same size.\n");
+        return CMND_ERR;
+    }
+    iBuffer.free();     // release the old data
+    iBuffer = im0;   // this is the new data
+    iBuffer.getmaxx(printMax);
+    update_UI();
+    return NO_ERR;
+}
 
 /* ********** */
 /// raise RGB to power by specified constants.
