@@ -55,7 +55,7 @@ int readJpeg(char* filename,Image* im)
                     }
                 }
             }
-        }else{
+        }else if (bytesPerPixel == 6){  // 16-bit tiff
             bytesPerRow /= 2;
             bytesPerPixel /=2 ;
             for(int i=0; i< rows; i++){
@@ -67,7 +67,21 @@ int readJpeg(char* filename,Image* im)
                     }
                 }
             }
+        }else if (bytesPerPixel == 12){  // floating pt tiff
+            float* floatByte=(float*)bytes;
+            bytesPerRow /= 4;
+            bytesPerPixel /=4 ;
+            for(int i=0; i< rows; i++){
+                for(int j=0; j< cols;j++){
+                    *pt++ = *(floatByte+i*bytesPerRow+j*bytesPerPixel);
+                    if(bytesPerPixel >= 3){
+                        *pt_green++ = *(floatByte+i*bytesPerRow+j*bytesPerPixel+1);
+                        *pt_blue++ = *(floatByte+i*bytesPerRow+j*bytesPerPixel+2);
+                    }
+                }
+            }
         }
+
         return NO_ERR;
     }
 }
