@@ -222,7 +222,7 @@ extern AppController *appController;
 }
 - (IBAction)applyGamma:(id)sender {
     char values[128];
-    sprintf(values,"%f %f %f", 1./UIData.redGamma,1./UIData.greenGamma,1./UIData.blueGamma );
+    snprintf(values,sizeof(values),"%f %f %f", 1./UIData.redGamma,1./UIData.greenGamma,1./UIData.blueGamma );
     powRGB_c(0, values);
     [self resetGamma:sender];
 }

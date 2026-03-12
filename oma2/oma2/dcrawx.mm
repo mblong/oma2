@@ -8838,7 +8838,7 @@ int dcrawGlue(char* name, int thecolor, Image* im){
     printf("pitch: %d \n",RawProcessor->imgdata.sizes.raw_pitch);
     printf("White balance as shot: %.3f %.3f %.3f %.3f\n", redMult,greenMult,blueMult,C.cam_mul[3]/C.cam_mul[1]);
     printf("ISO: %.1f Exposure: %f Aperture: %.1f\n",P2.iso_speed, P2.shutter,P2.aperture);
-    sprintf(log,"width: %d height: %d colors: %d black: %d\ncamera: %s %s\nfilter: %s pitch: %d\nBayer ordering is: %c%c%c%c\nWhite balance as shot: %.3f %.3f %.3f %.3f\nISO: %.1f Exposure: %f Aperture: %.1f\n",
+    snprintf(log,MBUFLEN,"width: %d height: %d colors: %d black: %d\ncamera: %s %s\nfilter: %s pitch: %d\nBayer ordering is: %c%c%c%c\nWhite balance as shot: %.3f %.3f %.3f %.3f\nISO: %.1f Exposure: %f Aperture: %.1f\n",
             S.iwidth,S.iheight,P1.colors,black,P1.make,P1.model,P1.cdesc,S.raw_pitch,
             bayerColor[RawProcessor->COLOR(0,0)],bayerColor[RawProcessor->COLOR(0,1)],
             bayerColor[RawProcessor->COLOR(1,0)],bayerColor[RawProcessor->COLOR(1,1)],

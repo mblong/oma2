@@ -47,9 +47,9 @@
     
     // Call the completion handler so Quick Look knows that the preview is fully loaded.
     // Quick Look will display a loading spinner while the completion handler is not called.
-    NSError *theErr = nil;
-    NSStringEncoding stringEncoding;
-    NSString *fileString = [NSString stringWithContentsOfURL:url usedEncoding:&stringEncoding error:&theErr];
+    //NSError *theErr = nil;
+    //NSStringEncoding stringEncoding;
+    //NSString *fileString = [NSString stringWithContentsOfURL:url usedEncoding:&stringEncoding error:&theErr];
     NSLog(@"prepare\n");
     
     

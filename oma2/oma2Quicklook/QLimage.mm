@@ -95,9 +95,9 @@ QLImage::QLImage(char* filename, int kindOfName)
     TWOBYTE header[HEADLEN/2];
     char comment_[COMLEN];
     TWOBYTE trailer[TRAILEN/2];
-    int swap_bytes;
+    int swap_bytes=0;
     int doffset=80;
-    int fd,color,i;
+    int fd,i;
     
     *this = QLImage();
     

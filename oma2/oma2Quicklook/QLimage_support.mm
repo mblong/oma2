@@ -257,7 +257,7 @@ int readFits(char* filename,QLImage* theImage){
             //printf("END\n\n");  /* terminate listing with END */
             *(commentBuffer+comBufPosition+1)=0;
             
-            if (single) break;  /* quit if only listing a single header */
+            //if (single) break;  /* quit if only listing a single header */
             
             fits_movrel_hdu(fptr, 1, NULL, &status);  /* try to move to next HDU */
         }

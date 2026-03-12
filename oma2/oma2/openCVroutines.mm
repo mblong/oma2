@@ -133,7 +133,7 @@ int cvHoughCircles_q(int n,char* args){
     
     if(!circles.empty()) circles.erase(circles.begin(), circles.end());
     
-    int narg = sscanf(args,"%d %d %d",&cannyThreshold, &accumulatorThreshold,&maxRadius);
+    sscanf(args,"%d %d %d",&cannyThreshold, &accumulatorThreshold,&maxRadius);
     
     // need checking for bounds of current image, make sure it is monochrome
     

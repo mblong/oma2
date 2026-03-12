@@ -264,6 +264,9 @@ typedef struct {
     int minMaxFromData;
     float contourLevels[MAX_CONTOURS];
     
+    // HDR Display Support
+    int useHDR;             // 0 = standard 8-bit display, 1 = HDR 16-bit for color images
+    
 }oma2UIData;
 
 typedef struct {

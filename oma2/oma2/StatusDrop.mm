@@ -14,7 +14,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self registerForDraggedTypes:@[NSURLPboardType]];
+        [self registerForDraggedTypes:@[NSPasteboardTypeFileURL]];
         // Initialization code here.
     }
     
@@ -43,7 +43,7 @@
 - (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
     NSPasteboard *pboard = [sender draggingPasteboard];
     
-    if ( [[pboard types] containsObject:NSURLPboardType] ) {
+    if ( [[pboard types] containsObject:NSPasteboardTypeFileURL] ) {
         NSURL *fileURL = [NSURL URLFromPasteboard:pboard];
         //NSLog(@"%@",[fileURL path]);
         NSString *ext = [fileURL pathExtension] ;

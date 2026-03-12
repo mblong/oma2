@@ -16,8 +16,10 @@ unsigned char customPalette[768];
 
 ImageBitmap::ImageBitmap(){
     pixdata = 0;            //
+    pixdata16 = 0;
     intensity = 0;
     width = height = 0;
+    hdrActive = 0;
     UIData.pixsiz = 1;
     
 }
@@ -31,6 +33,20 @@ int ImageBitmap::scale_pixval(DATAWORD val)
     pval = fpval/crange;
     if( pval > (NCOLORS-1))
         pval = (NCOLORS-1);
+    if( pval < 0)
+        pval = 0;
+    return pval;
+}
+
+int ImageBitmap::scale_pixval16(DATAWORD val)
+{
+    int pval;
+    float fpval;
+    
+    fpval = (val-cmin) * (NCOLORS16-1);
+    pval = fpval/crange;
+    if( pval > (NCOLORS16-1))
+        pval = (NCOLORS16-1);
     if( pval < 0)
         pval = 0;
     return pval;
@@ -62,9 +78,18 @@ void ImageBitmap::operator=(Image im){
         height = im.specs[ROWS];
     
 	
+    hdrActive = 0;
+    
 	if(allocate_new){
         if(pixdata) free(pixdata);
 		pixdata = (PIXBYTES*)malloc(width*height*3);
+        
+        if(pixdata16) free(pixdata16);
+        pixdata16 = NULL;
+        if(im.specs[IS_COLOR] && UIData.useHDR){
+            pixdata16 = (PIXBYTES16*)malloc(width*height*3*sizeof(PIXBYTES16));
+            if(pixdata16 != NULL) hdrActive = 1;
+        }
         
         if(intensity) free(intensity);
         if(im.specs[IS_COLOR])
@@ -96,15 +121,6 @@ void ImageBitmap::operator=(Image im){
         int k=0;
         float r,g,b;
         
-        /*
-         if (r_gamma != 1.) {
-         r = *(point+k)/rmax;
-         *(ptr+n+1) = scale_pixval(rmax*r_scale*powf(r,1./r_gamma));
-         } else {
-         *(ptr+n+1) = scale_pixval(*(point+k)*r_scale);
-         }
-         
-         */
         int saturated;
         float rExp=1./UIData.redGamma;
         float gExp=1./UIData.greenGamma;
@@ -112,47 +128,71 @@ void ImageBitmap::operator=(Image im){
         float rmax=im.values[RMAX];
         float gmax=im.values[GMAX];
         float bmax=im.values[BMAX];
+        int n16=0;
+        int pindx16;
+        DATAWORD scaledVal;
         
         for(i=0; i < ntrack/3; i++){
             for(j=0; j < nchan; j++){
                 saturated = 0;
                 
+                // Red channel
                 if(UIData.redGamma != 1.){
                     r = *(im.data+k)/rmax;
-                    pindx = scale_pixval(rmax*UIData.r_scale*pow(r,rExp));
+                    scaledVal = rmax*UIData.r_scale*pow(r,rExp);
                 }else{
-                    pindx = scale_pixval(*(im.data+k)*UIData.r_scale);
+                    scaledVal = *(im.data+k)*UIData.r_scale;
                 }
+                pindx = scale_pixval(scaledVal);
                 if(pindx == NCOLORS-1) saturated = 1;
                 *(pixdata+n++) = pindx;
-                *(intensity+m++) =pindx;
+                *(intensity+m++) = pindx;
+                if(hdrActive){
+                    pindx16 = scale_pixval16(scaledVal);
+                    *(pixdata16+n16++) = pindx16;
+                }
                 
+                // Green channel
                 if(UIData.greenGamma != 1.){
                     g = *(pt_green+k)/gmax;
-                    pindx = scale_pixval(gmax*UIData.g_scale*pow(g,gExp));
+                    scaledVal = gmax*UIData.g_scale*pow(g,gExp);
                 }else{
-                    pindx = scale_pixval(*(pt_green+k)*UIData.g_scale);
+                    scaledVal = *(pt_green+k)*UIData.g_scale;
                 }
+                pindx = scale_pixval(scaledVal);
                 if(pindx == NCOLORS-1) saturated = 1;
                 *(pixdata+n++) = pindx;
-                *(intensity+m++) =pindx;
+                *(intensity+m++) = pindx;
+                if(hdrActive){
+                    pindx16 = scale_pixval16(scaledVal);
+                    *(pixdata16+n16++) = pindx16;
+                }
                 
-                
+                // Blue channel
                 if(UIData.blueGamma != 1.){
                     b = *(pt_blue+k++)/bmax;
-                    pindx = scale_pixval(bmax*UIData.b_scale*pow(b,bExp));
+                    scaledVal = bmax*UIData.b_scale*pow(b,bExp);
                 }else{
-                    pindx = scale_pixval(*(pt_blue+k++)*UIData.b_scale);
+                    scaledVal = *(pt_blue+k++)*UIData.b_scale;
                 }
+                pindx = scale_pixval(scaledVal);
                 if(pindx == NCOLORS-1) saturated = 1;
                 *(pixdata+n++) = pindx;
-                *(intensity+m++) =pindx;
+                *(intensity+m++) = pindx;
+                if(hdrActive){
+                    pindx16 = scale_pixval16(scaledVal);
+                    *(pixdata16+n16++) = pindx16;
+                }
                 
                 if(saturated & UIData.highlightSaturated){
                     *(pixdata+n-3)= UIData.highlightSaturatedRed;
                     *(pixdata+n-2)= UIData.highlightSaturatedGreen;
                     *(pixdata+n-1)= UIData.highlightSaturatedBlue;
-                    
+                    if(hdrActive){
+                        *(pixdata16+n16-3)= UIData.highlightSaturatedRed * 257;
+                        *(pixdata16+n16-2)= UIData.highlightSaturatedGreen * 257;
+                        *(pixdata16+n16-1)= UIData.highlightSaturatedBlue * 257;
+                    }
                 }
             }
         }
@@ -194,6 +234,14 @@ PIXBYTES* ImageBitmap::getintensitydata(){
     return intensity;
 }
 
+PIXBYTES16* ImageBitmap::getpixdata16(){
+    return pixdata16;
+}
+
+int ImageBitmap::isHDR(){
+    return hdrActive;
+}
+
 PIXBYTES** ImageBitmap::getpixdatap(){
     return pdptr;
 }
@@ -201,6 +249,10 @@ PIXBYTES** ImageBitmap::getpixdatap(){
 void ImageBitmap::freeMaps(){
     if(pixdata) free(pixdata);
     pixdata = NULL;
+    
+    if(pixdata16) free(pixdata16);
+    pixdata16 = NULL;
+    hdrActive = 0;
     
     if(intensity) free(intensity);
     intensity = NULL;

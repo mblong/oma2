@@ -156,6 +156,7 @@ ComDef   commands[] =    {
     {{"HSV2RGB        "},   hsv2rgb_c},
     {{"HISTOGRAM      "},   histogram_c},
     {{"HISTMAX        "},   histmax_c},
+    {{"HDRFLAG        "},   hdrFlag_c},
     
     {{"IF             "},	ifcmnd},
     {{"IFNOT          "},	ifnotcmnd},
@@ -807,47 +808,47 @@ int fill_in_command(char* dest,char* source,int val)
                     break;				
                 case 'd':
                     if(numdig != 0) {
-                        sprintf(txt,"%d",val);
+                        snprintf(txt,sizeof(txt),"%d",val);
                         //pprintf("digits: %d  length: %d\n",numdig,strlen(txt));
                         for(nn = (int)strlen(txt); nn < numdig; nn++){
                             *(dest+j++) = '0';
                         }
                         numdig = 0;
                     }
-                    sprintf(dest+j,"%d",val);
+                    snprintf(dest+j,CHPERLN-j,"%d",val);
                     while(*(dest+j)) 
                         j++;
                     
                     break;
                 case 's':
-                    sprintf(dest+j,"%s",macstring);
+                    snprintf(dest+j,CHPERLN-j,"%s",macstring);
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'p':
                     txt[0] = 0;
-                    sprintf(dest+j,"%s",fullname(txt, SAVE_DATA_NO_SUFFIX));
+                    snprintf(dest+j,CHPERLN-j,"%s",fullname(txt, SAVE_DATA_NO_SUFFIX));
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'q':
                     txt[0] = 0;
-                    sprintf(dest+j,"%s",fullname(txt, GET_DATA_NO_SUFFIX));
+                    snprintf(dest+j,CHPERLN-j,"%s",fullname(txt, GET_DATA_NO_SUFFIX));
                     while(*(dest+j)) 
                         j++;
                     break;
 				case 'f':
-                    sprintf(dest+j,"%s",lastname);
+                    snprintf(dest+j,CHPERLN-j,"%s",lastname);
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'b':
-                    sprintf(dest+j,DATAFMT,values[MAX]);
+                    snprintf(dest+j,CHPERLN-j,DATAFMT,values[MAX]);
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'l':
-                    sprintf(dest+j,DATAFMT,values[MIN]);
+                    snprintf(dest+j,CHPERLN-j,DATAFMT,values[MIN]);
                     while(*(dest+j)) 
                         j++;
                     break;
@@ -857,43 +858,43 @@ int fill_in_command(char* dest,char* source,int val)
                         j++;
                     break;*/
                 case 'v':
-                    sprintf(dest+j,"%d",int_value);
+                    snprintf(dest+j,CHPERLN-j,"%d",int_value);
                     int_value +=inc_value;
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'e':
-                    sprintf(dest+j,"%d",error_return);
+                    snprintf(dest+j,CHPERLN-j,"%d",error_return);
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'a':
-                    sprintf(dest+j,"%g",aveInRect());
+                    snprintf(dest+j,CHPERLN-j,"%g",aveInRect());
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'r':
-                    sprintf(dest+j,"%g",rmsInRect());
+                    snprintf(dest+j,CHPERLN-j,"%g",rmsInRect());
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'w':
-                    sprintf(dest+j,"%d",specs[COLS]);
+                    snprintf(dest+j,CHPERLN-j,"%d",specs[COLS]);
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'h':
-                    sprintf(dest+j,"%d",specs[ROWS]);
+                    snprintf(dest+j,CHPERLN-j,"%d",specs[ROWS]);
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'x':
-                    sprintf(dest+j,"%d",last_x_val);
+                    snprintf(dest+j,CHPERLN-j,"%d",last_x_val);
                     while(*(dest+j)) 
                         j++;
                     break;
                 case 'y':
-                    sprintf(dest+j,"%d",last_y_val);
+                    snprintf(dest+j,CHPERLN-j,"%d",last_y_val);
                     while(*(dest+j)) 
                         j++;
                     break;
@@ -903,14 +904,14 @@ int fill_in_command(char* dest,char* source,int val)
                     clock_gettime( CLOCK_REALTIME, &omaTime);
                     double omaSec;
                     omaSec= (omaTime.tv_sec - omaStartTime.tv_sec) + ( omaTime.tv_nsec - omaStartTime.tv_nsec )/1.0e9;
-                    sprintf(dest+j,"%f",omaSec);
+                    snprintf(dest+j,CHPERLN-j,"%f",omaSec);
                     while(*(dest+j))
                         j++;
                     break;
 
                 case 't':
                     theTime=time(NULL);
-                    sprintf(dest+j,"%s",ctime(&theTime));
+                    snprintf(dest+j,CHPERLN-j,"%s",ctime(&theTime));
                     while(*(dest+j)) 
                         j++;
                     break;
@@ -981,7 +982,7 @@ int fill_in_command(char* dest,char* source,int val)
 					k=1;
 					//
 					if(numdig != 0) {
-						sprintf(txt,"%d",startval[n]);
+						snprintf(txt,sizeof(txt),"%d",startval[n]);
 						//pprintf("digits: %d  length: %d\n",numdig,strlen(txt));
 						for(nn = (int)strlen(txt); nn < numdig; nn++){
 							*(dest+j++) = '0';
@@ -989,7 +990,7 @@ int fill_in_command(char* dest,char* source,int val)
 						numdig = 0;
 					}	
 					//
-					sprintf(dest+j,"%d",startval[n]);	
+					snprintf(dest+j,CHPERLN-j,"%d",startval[n]);	
 					while(*(dest+j)) 
 						j++;
 					break;	// exit the variable search loop having put in the numeric value
@@ -1009,15 +1010,15 @@ int fill_in_command(char* dest,char* source,int val)
                     }
 				}
 				if(user_variables[arg_index].is_float == -1){   // this is a string variable
-					sprintf(dest+j,"%s",user_variables[arg_index].estring);
+					snprintf(dest+j,CHPERLN-j,"%s",user_variables[arg_index].estring);
 				} else {
 					if(numdig != 0 ) {   
 						if(user_variables[arg_index].is_float){
-							sprintf(dest+j,"%f",user_variables[arg_index].fvalue);
+							snprintf(dest+j,CHPERLN-j,"%f",user_variables[arg_index].fvalue);
 							//pprintf("digits: %d  length: %d\n",numdig,strlen(txt));
 							*(dest+j+numdig) = 0;	// mark end of string after a specified number of digits
 						} else {
-							sprintf(txt,"%d",user_variables[arg_index].ivalue);
+							snprintf(txt,sizeof(txt),"%d",user_variables[arg_index].ivalue);
 							//pprintf("digits: %d  length: %d\n",numdig,strlen(txt));
 							for(nn = (int)strlen(txt); nn < numdig; nn++){
 								*(dest+j++) = '0';
@@ -1029,10 +1030,10 @@ int fill_in_command(char* dest,char* source,int val)
 						if( numdig !=0){
 							numdig=0;
 						}else {
-							sprintf(dest+j,"%g",user_variables[arg_index].fvalue);
+							snprintf(dest+j,CHPERLN-j,"%g",user_variables[arg_index].fvalue);
 						}
 					} else {
-						sprintf(dest+j,"%d",user_variables[arg_index].ivalue);
+						snprintf(dest+j,CHPERLN-j,"%d",user_variables[arg_index].ivalue);
 					}
 				}
 				while(*(dest+j)) 
@@ -1442,11 +1443,11 @@ std::string getVariablesString(std::string varString)
     int i;
     for(i=0; i<num_variables; i++){
         if(user_variables[i].is_float > 0){
-            sprintf(str,"%s:\t%f\n", user_variables[i].vname,user_variables[i].fvalue);
+            snprintf(str,sizeof(str),"%s:\t%f\n", user_variables[i].vname,user_variables[i].fvalue);
         }else if(user_variables[i].is_float == 0){
-            sprintf(str,"%s:\t%d\n", user_variables[i].vname,user_variables[i].ivalue);
+            snprintf(str,sizeof(str),"%s:\t%d\n", user_variables[i].vname,user_variables[i].ivalue);
         }else{
-            sprintf(str,"%s:\t%s\n", user_variables[i].vname,&user_variables[i].estring[0]);
+            snprintf(str,sizeof(str),"%s:\t%s\n", user_variables[i].vname,&user_variables[i].estring[0]);
         }
         varString += str;
     }
@@ -1471,7 +1472,7 @@ std::string getTempImagesString(std::string varString)
                 ncolors=3;
             else
                 ncolors=1;
-            sprintf(str,"%d:\t%d x %d x %d\n",n,
+            snprintf(str,sizeof(str),"%d:\t%d x %d x %d\n",n,
                    iTempImages[n].width(),iTempImages[n].height(),ncolors);
             varString += str;
         }
@@ -1486,7 +1487,7 @@ std::string getTempImagesString(std::string varString)
             ncolors=3;
         else
             ncolors=1;
-        sprintf(str,"%s:\t%d x %d x %d\n",namedTempImages[i].vname,
+        snprintf(str,sizeof(str),"%s:\t%d x %d x %d\n",namedTempImages[i].vname,
                iTempImages[n].width(),iTempImages[n].height(),ncolors);
         varString += str;
     }
@@ -1648,7 +1649,7 @@ int imp_pause(int n,char* args)
     extern int macflag,exflag;
 	
 	if(*args == 0)
-        sprintf(pause_string, "PAUSED");
+        snprintf(pause_string, sizeof(pause_string), "PAUSED");
     else
         strlcpy(pause_string,args,CHPERLN);
     // this string will be spoken during pause
@@ -1712,7 +1713,7 @@ void clear_buffer_to_end(char* buffer)
 
 int logNext(int n,char* args)
 {
-    int charNum=0,i;
+    int charNum=0;
     if(*args == 0){
         beep();
         printf("No comment was specified\n");

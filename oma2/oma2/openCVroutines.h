@@ -39,4 +39,7 @@
 
 //#define HOMEBREW
 
+int cvAlignOriginal_q(int n, char* args);
+void denoiseMonochromeImage(unsigned short *imageData, int nRows, int nColumns, double denoisingStrength);
+
 #endif /* openCVroutines_hpp */

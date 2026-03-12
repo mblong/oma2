@@ -20,6 +20,7 @@ extern ImageBitmap iBitmap;
 extern Image iBuffer;
 extern AppController* appController; 
 extern oma2UIData UIData;
+extern NSBitmapImageRep* createBitmapRep(ImageBitmap& bitmap);
 //extern sep_catalog* catalog;
 extern sep_small_catalog omaCatalog;
 
@@ -485,10 +486,10 @@ extern sep_small_catalog omaCatalog;
     if( flags & NSEventModifierFlagCommand){
         if(degrees != 0){
             char args[128];
-            sprintf(args,"%d",degrees);
+            snprintf(args,sizeof(args),"%d",degrees);
             rotate_c(degrees,args);
             printf("Current image rotated by %d degrees.\nOMA2>",degrees);
-            sprintf(args,"Rotated: %d degrees",degrees);
+            snprintf(args,sizeof(args),"Rotated: %d degrees",degrees);
             display(0,args);
             return;
         }
@@ -517,15 +518,7 @@ extern sep_small_catalog omaCatalog;
         else
             zoom/=1.05;
 
-        NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
-                                    initWithBitmapDataPlanes: nil
-                                    pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
-                                    bitsPerSample: 8 samplesPerPixel: 3 hasAlpha: NO isPlanar:NO
-                                    colorSpaceName:NSDeviceRGBColorSpace
-                                    bytesPerRow: 3*iBitmap.getwidth()
-                                    bitsPerPixel: 24];
-        
-        memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*3);
+        NSBitmapImageRep* bitmap = createBitmapRep(iBitmap);
 
         NSImage *image = [[NSImage alloc] init];
         [image addRepresentation:bitmap];
@@ -560,15 +553,7 @@ extern sep_small_catalog omaCatalog;
     // uses the data in the current image buffer
     // should really be sure that this only applies to the window associated with iBuffer
     
-    NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
-                                initWithBitmapDataPlanes: nil
-                                pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
-                                bitsPerSample: 8 samplesPerPixel: 3 hasAlpha: NO isPlanar:NO
-                                colorSpaceName:NSDeviceRGBColorSpace
-                                bytesPerRow: 3*iBitmap.getwidth()
-                                bitsPerPixel: 24];
-    
-    memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*3);
+    NSBitmapImageRep* bitmap = createBitmapRep(iBitmap);
     CIImage *ciImage = [[CIImage alloc] initWithBitmapImageRep:bitmap];
     // sizes of original bitmap image
     dx = iBitmap.getwidth()/2;

@@ -15,6 +15,53 @@ extern ImageBitmap iBitmap;
 extern Image iBuffer;
 extern AppController* appController; 
 
+// Helper function to create NSBitmapImageRep from ImageBitmap,
+// using 16-bit extended sRGB for HDR color images or standard 8-bit otherwise.
+NSBitmapImageRep* createBitmapRep(ImageBitmap& bitmap) {
+    if (bitmap.isHDR() && bitmap.getpixdata16() != NULL) {
+        // 16-bit HDR path for color images
+        NSBitmapImageRep* rep = [[NSBitmapImageRep alloc]
+            initWithBitmapDataPlanes: nil
+            pixelsWide: bitmap.getwidth()
+            pixelsHigh: bitmap.getheight()
+            bitsPerSample: 16
+            samplesPerPixel: 3
+            hasAlpha: NO
+            isPlanar: NO
+            colorSpaceName: NSCalibratedRGBColorSpace
+            bitmapFormat: NSBitmapFormatSixteenBitLittleEndian
+            bytesPerRow: 6 * bitmap.getwidth()
+            bitsPerPixel: 48];
+        
+        memcpy([rep bitmapData], bitmap.getpixdata16(),
+               bitmap.getheight() * bitmap.getwidth() * 3 * sizeof(unsigned short));
+        
+        // Retag with extended sRGB to allow values representing brightness > 1.0
+        rep = [rep bitmapImageRepByRetaggingWithColorSpace:
+               [NSColorSpace extendedSRGBColorSpace]];
+        
+        return rep;
+    } else {
+        // Standard 8-bit SDR path
+        NSBitmapImageRep* rep = [[NSBitmapImageRep alloc]
+            initWithBitmapDataPlanes: nil
+            pixelsWide: bitmap.getwidth()
+            pixelsHigh: bitmap.getheight()
+            bitsPerSample: 8
+            samplesPerPixel: 3
+            hasAlpha: NO
+            isPlanar: NO
+            colorSpaceName: NSDeviceRGBColorSpace
+            bytesPerRow: 3 * bitmap.getwidth()
+            bitsPerPixel: 24];
+        
+        memcpy([rep bitmapData], bitmap.getpixdata(),
+               bitmap.getheight() * bitmap.getwidth() * 3);
+        
+        return rep;
+    }
+}
+
 @implementation DataWindowController
 
 @synthesize  windowName;
@@ -97,16 +144,7 @@ extern AppController* appController;
     [[self window] setTitle:windowName];
     [self setThePalette:iBitmap.getpalette()];
     
-    NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
-                                //initWithBitmapDataPlanes: iBitmap.getpixdatap()
-                                initWithBitmapDataPlanes: nil
-                                pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
-                                bitsPerSample: 8 samplesPerPixel: 3 hasAlpha: NO isPlanar:NO
-                                colorSpaceName:NSDeviceRGBColorSpace
-                                bytesPerRow: 3*iBitmap.getwidth()
-                                bitsPerPixel: 24];
-    
-    memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*3);
+    NSBitmapImageRep* bitmap = createBitmapRep(iBitmap);
     
     intensitySize = iBitmap.getheight()*iBitmap.getwidth();
     dataCols = iBitmap.getwidth();
@@ -137,6 +175,13 @@ extern AppController* appController;
     //NSRect rect = NSMakeRect(0, 0, windowRect.size.width,windowRect.size.height-TITLEBAR_HEIGHT);
     //NSRect newRect = self.window.contentView.visibleRect;
     //[imageView setFrame:rect];
+    if (@available(macOS 14.0, *)) {
+        if (iBitmap.isHDR()) {
+            [imageView setPreferredImageDynamicRange:NSImageDynamicRangeHigh];
+        } else {
+            [imageView setPreferredImageDynamicRange:NSImageDynamicRangeStandard];
+        }
+    }
     [imageView setImageScaling:NSImageScaleAxesIndependently];
     [imageView setImage:im];
     [imageView setRowLine: -1];
@@ -154,15 +199,7 @@ extern AppController* appController;
 -(void) updateImage{
     // this is called when redisplaying the current image from events in the status window
     
-    NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc]
-                                initWithBitmapDataPlanes: nil
-                                pixelsWide: iBitmap.getwidth() pixelsHigh: iBitmap.getheight()
-                                bitsPerSample: 8 samplesPerPixel: 3 hasAlpha: NO isPlanar:NO
-                                colorSpaceName:NSDeviceRGBColorSpace
-                                bytesPerRow: 3*iBitmap.getwidth()
-                                bitsPerPixel: 24];
-    
-    memcpy([bitmap  bitmapData], iBitmap.getpixdata(), iBitmap.getheight()*iBitmap.getwidth()*3);
+    NSBitmapImageRep* bitmap = createBitmapRep(iBitmap);
     
     int newintensitySize = iBitmap.getheight()*iBitmap.getwidth();
     dataCols = iBitmap.getwidth();
@@ -186,6 +223,13 @@ extern AppController* appController;
     //[imageView setFrame:self.window.contentView.visibleRect];     // wrong
     [imageView setFrame:self.window.contentLayoutRect];
     
+    if (@available(macOS 14.0, *)) {
+        if (iBitmap.isHDR()) {
+            [imageView setPreferredImageDynamicRange:NSImageDynamicRangeHigh];
+        } else {
+            [imageView setPreferredImageDynamicRange:NSImageDynamicRangeStandard];
+        }
+    }
     [imageView setImageScaling:NSImageScaleAxesIndependently];
     [imageView setImage:im];
 

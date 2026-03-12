@@ -106,8 +106,6 @@ int comdec(char*);
 #endif
 
 -(void) updateHistogram;
--(IBAction) startHistogram;
-
 -(int) saveDataWindowToPdf: (char*) fileName;
 
 -(void) windowDidBecomeKey:(NSNotification *)note;

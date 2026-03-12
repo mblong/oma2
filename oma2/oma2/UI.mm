@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <stdarg.h>
+#import <AVFoundation/AVFoundation.h>
 #include "UI.h"
 #include "PreferenceController.h"
 
@@ -84,7 +85,7 @@ BOOL dropped_file(char* extension, char* name){
             }
             // if a fit or fits file is dropped, automatically set cmin and camx according to the histogram rules
             if(strcmp(extension, "FIT")==0 || strcmp(extension, "FITS")==0){
-                DATAWORD cmax,cmin;
+                DATAWORD cmax = 0, cmin = 0;
                 extern unsigned int histogram[];
                 // disregard if LHS of histogram is < 10% of peak; RHS of histogram is < 1% of peak -- optomized for raw data
                 float lower=10., upper=1;
@@ -197,7 +198,7 @@ int cprintf(const char* format, ...)
     
     int return_status = NO_ERR;
     
-    return_status = vsprintf(reply,format, args);
+    return_status = vsnprintf(reply,sizeof(reply),format, args);
     if ([NSThread isMainThread]) {
         [appController appendCText: reply];
     } else {
@@ -224,7 +225,7 @@ int cpprintf(const char* format, ...)		/* priority printing! */
     
     int return_status = NO_ERR;
     
-    return_status = vsprintf(reply,format, args);
+    return_status = vsnprintf(reply,sizeof(reply),format, args);
     if ([NSThread isMainThread]) {
         [appController appendCText: reply];
     } else {
@@ -253,7 +254,7 @@ int omaprintf(const char* format, ...)
     
     int return_status = NO_ERR;
     
-    return_status = vsprintf(reply,format, args);
+    return_status = vsnprintf(reply,sizeof(reply),format, args);
     if ([NSThread isMainThread]) {
         [appController appendCText: reply];
     } else {
@@ -276,7 +277,7 @@ int pprintf(const char* format, ...)		/* priority printing! */
     
     int return_status = NO_ERR;
     
-    return_status = vsprintf(reply,format, args);
+    return_status = vsnprintf(reply,sizeof(reply),format, args);
     //[appController appendCText: reply];
     if ([NSThread isMainThread]) {
         [appController appendCText: reply];
@@ -304,11 +305,9 @@ void beep(){
 
 void alertSound(char* sayString){
 
-    NSSpeechSynthesizer* talker = [[NSSpeechSynthesizer alloc] init];
-    [talker startSpeakingString: [NSString stringWithCString:sayString encoding:NSASCIIStringEncoding]];
-    
-    //NSBeep();
-    
+    static AVSpeechSynthesizer* talker = [[AVSpeechSynthesizer alloc] init];
+    AVSpeechUtterance* utterance = [AVSpeechUtterance speechUtteranceWithString:[NSString stringWithCString:sayString encoding:NSASCIIStringEncoding]];
+    [talker speakUtterance:utterance];
     
 }
 

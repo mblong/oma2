@@ -754,7 +754,6 @@ void gaussianArray(float x, float y, float r, float intensity, int* pixX, int* p
     int startX = static_cast<int>(std::floor(x - 3 * r));
     int startY = static_cast<int>(std::floor(y - 3 * r));
     int endX = static_cast<int>(std::ceil(x + 3 * r));
-    int endY = static_cast<int>(std::ceil(y + 3 * r));
     
     // Calculate the size of the sub-image
     *N = endX - startX + 1;
@@ -791,7 +790,9 @@ void gaussianArray(float x, float y, float r, float intensity, int* pixX, int* p
 
 
 
-double *ones_dbl(int nx, int ny)
+#if 0 // Benchmark/test utility functions - currently unused
+
+static double *ones_dbl(int nx, int ny)
 {
     int i, npix;
     double *im, *imt;
@@ -805,7 +806,7 @@ double *ones_dbl(int nx, int ny)
 }
 
 
-float *uniformf(float a, float b, int n)
+static float *uniformf(float a, float b, int n)
 /* an array of n random numbers from the uniform interval (a, b) */
 {
     int i;
@@ -818,7 +819,7 @@ float *uniformf(float a, float b, int n)
     return result;
 }
 
-float *ones(int nx, int ny)
+static float *ones(int nx, int ny)
 {
     int i, npix;
     float *im, *imt;
@@ -831,7 +832,7 @@ float *ones(int nx, int ny)
     return im;
 }
 
-void addbox(float *im, int w, int h, float xc, float yc, float r, float val)
+static void addbox(float *im, int w, int h, float xc, float yc, float r, float val)
 /* n = sersic index */
 {
     int xmin, xmax, ymin, ymax;
@@ -855,7 +856,7 @@ void addbox(float *im, int w, int h, float xc, float yc, float r, float val)
 }
 
 
-float *tile_flt(float *im, int nx, int ny, int ntilex, int ntiley,
+static float *tile_flt(float *im, int nx, int ny, int ntilex, int ntiley,
                 int *nxout, int *nyout)
 {
     int i, x, y;
@@ -909,4 +910,6 @@ float *tile_flt(float *im, int nx, int ny, int ntilex, int ntiley,
  
  
  */
+
+#endif
 

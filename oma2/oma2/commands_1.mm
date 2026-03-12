@@ -138,7 +138,7 @@ int block_c(int n,char* args){
     specs[ROWS] = iBuffer.height()/dy*rowMultiplier;
     specs[COLS] = iBuffer.width()/dx;
     im.setspecs(specs); // this will allocate the memory
-    int size = iBuffer.height() * iBuffer.width();
+    //int size = iBuffer.height() * iBuffer.width();
     for(int nt=0; nt<specs[ROWS]*dy/rowMultiplier; nt+=dy) {
         for(int nc=0; nc<specs[COLS]*dx;nc+=dx){
             for(int c=0; c<rowMultiplier; c++){
@@ -1084,9 +1084,9 @@ int croprectangle_c(int n,char* args){
         UIData.iRect = new_rect;
     } else {    // no rectangle bounds were given
         // add the rectangle bounds to the crop command in the command history buffer
-        sprintf(args," %d %d %d %d",UIData.iRect.ul.h, UIData.iRect.ul.v, UIData.iRect.lr.h, UIData.iRect.lr.v);
+        snprintf(args,CHPERLN," %d %d %d %d",UIData.iRect.ul.h, UIData.iRect.ul.v, UIData.iRect.lr.h, UIData.iRect.lr.v);
         if(hist_index+strlen(args)+1 < HISTORY_BUFFER_SIZE){
-            sprintf(&cmnd_history[hist_index-1],"%s",args);
+            snprintf(&cmnd_history[hist_index-1],HISTORY_BUFFER_SIZE - (hist_index-1),"%s",args);
             hist_index += strlen(args);
         }
         
@@ -1189,7 +1189,7 @@ int aspect_c(int n, char* args)
         newWidth = width/height*newHeight;
         if((newWidth-cropWidth)&1) newWidth--;  // needs to match even/odd of original
     }
-    sprintf(args,"%d %d 0 %d %d",newWidth,newHeight,x0-newWidth/2,y0-newHeight/2);
+    snprintf(args,CHPERLN,"%d %d 0 %d %d",newWidth,newHeight,x0-newWidth/2,y0-newHeight/2);
     frame_c(0,args);
 
     return NO_ERR;
@@ -1298,7 +1298,7 @@ int framecntr_c(int n, char* args)
     }
     
     char cmnd[128];
-    sprintf(cmnd,"%d %d %f %d %d",2*halfWidth+1,y1-y0,value,centerX-halfWidth,y0);
+    snprintf(cmnd,sizeof(cmnd),"%d %d %f %d %d",2*halfWidth+1,y1-y0,value,centerX-halfWidth,y0);
 
     return frame_c(0,cmnd);
 }
@@ -1710,11 +1710,11 @@ int saturate_c(int n,char* args){
     printMax=NO_PRINT;
     
     rgb2hsv_c(0, (char*)"0" );
-    sprintf(args,"1.0 %f 1.0",factor);
+    snprintf(args,CHPERLN,"1.0 %f 1.0",factor);
     mulRGB_c(0, args);
     clip_c(255, (char*)"255");
     hsv2rgb_c(0, (char*)"0" );
-    sprintf(args,"%f %f",values[MIN],values[MAX]);
+    snprintf(args,CHPERLN,"%f %f",values[MIN],values[MAX]);
     map_c(0,args);
 
     free(values);
@@ -2427,14 +2427,15 @@ int histmax_c(int n,char* args)        /* get the histogram and ? */
     extern Variable user_variables[];
     float lower = 10,upper = 1;
     int i,setCminCmaxFlag=1;
-    float sum=0.,npts=iBuffer.rows()*iBuffer.cols(), binsize=(iBuffer.max()-iBuffer.min())/(HISTOGRAM_SIZE-1.0);
+    //float sum=0.,npts=iBuffer.rows()*iBuffer.cols();
+    float binsize=(iBuffer.max()-iBuffer.min())/(HISTOGRAM_SIZE-1.0);
     sscanf(args,"%f %f %d",&lower,&upper,&setCminCmaxFlag);
     iBuffer.gethistogram();
     float histMax=0;
     for(i=0; i< HISTOGRAM_SIZE; i++){
         if(histogram[i] > histMax) histMax = histogram[i];
     }
-    DATAWORD cmin,cmax;
+    DATAWORD cmin,cmax = 0;
     for(i=0; i< HISTOGRAM_SIZE; i++){
         if(histogram[i]/histMax > lower/100.) {
             cmin = i*binsize+iBuffer.min();
@@ -3816,7 +3817,7 @@ int save16BitTiff(unsigned short* imageData, int nRows, int nColumns, const char
     };
     
     // Create an NSData object containing the TIFF image data
-    NSData *tiffData = [bitmap representationUsingType:NSTIFFFileType
+    NSData *tiffData = [bitmap representationUsingType:NSBitmapImageFileTypeTIFF
         properties:tiffExportOptions];
     
     // Write the TIFF data to disk
@@ -3849,7 +3850,7 @@ int save16BitColorTIFF(unsigned short* rgbData, int nRows, int nColumns, const c
     memcpy([bitmap bitmapData], rgbData, nRows*nColumns*6);
     /*
     // Create an NSData object with the compressed TIFF data
-    NSData *tiffData = [imageRep representationUsingType:NSTIFFFileType
+    NSData *tiffData = [imageRep representationUsingType:NSBitmapImageFileTypeTIFF
       properties:@{NSTIFFCompression:@5}];
     */
     // Create a dictionary of TIFF export options
@@ -3858,7 +3859,7 @@ int save16BitColorTIFF(unsigned short* rgbData, int nRows, int nColumns, const c
     };
     
     // Create an NSData object containing the TIFF image data
-    NSData *tiffData = [bitmap representationUsingType:NSTIFFFileType
+    NSData *tiffData = [bitmap representationUsingType:NSBitmapImageFileTypeTIFF
         properties:tiffExportOptions];
 
     // Write the TIFF data to disk
@@ -4241,6 +4242,26 @@ int bayerFlag_c(int n, char* args){
     return NO_ERR;
 }
 
+/* ********** */
+
+/*
+ HDRFLAG [HDRFlagValue]
+ 
+ Sets the value of the HDRFlag, which indicates if the image should be displayed in HDR -- only makes sense if the display is capable of HDR and it is enabled in ssettings.
+ 
+ */
+
+int hdrFlag_c(int n, char* args){
+    extern oma2UIData UIData;
+    if(args[0] != 0){
+        if(n)
+            UIData.useHDR=1;
+        else
+            UIData.useHDR=0;
+    }
+    printf("HDR Flag is %d.\n",UIData.useHDR);
+    return NO_ERR;
+}
 
 /* ********** */
 /*
@@ -7799,25 +7820,25 @@ int acmevelocity_c(int n, char* filename){
     user_variables[7].is_float=1;
     
     
-    sprintf(time,"1 %f",exposure);
+    snprintf(time,sizeof(time),"1 %f",exposure);
     extra_c(1,time);
-    sprintf(time,"2 %f",mfc2Range);
+    snprintf(time,sizeof(time),"2 %f",mfc2Range);
     extra_c(2,time);
-    sprintf(time,"3 %f",fuelCorrection);
+    snprintf(time,sizeof(time),"3 %f",fuelCorrection);
     extra_c(3,time);
-    sprintf(time,"4 %f",coflowAveVel);
+    snprintf(time,sizeof(time),"4 %f",coflowAveVel);
     extra_c(4,time);
-    sprintf(time,"5 %f",coflowMaxDiff/coflowAveVel*100);
+    snprintf(time,sizeof(time),"5 %f",coflowMaxDiff/coflowAveVel*100);
     extra_c(5,time);
-    sprintf(time,"6 %f",n2AveVel);
+    snprintf(time,sizeof(time),"6 %f",n2AveVel);
     extra_c(6,time);
-    sprintf(time,"7 %f",n2MaxDiff/coflowAveVel*100);
+    snprintf(time,sizeof(time),"7 %f",n2MaxDiff/coflowAveVel*100);
     extra_c(7,time);
-    sprintf(time,"8 %f",fuelAveVel);
+    snprintf(time,sizeof(time),"8 %f",fuelAveVel);
     extra_c(8,time);
-    sprintf(time,"9 %f",fuelMaxDiff/coflowAveVel*100);
+    snprintf(time,sizeof(time),"9 %f",fuelMaxDiff/coflowAveVel*100);
     extra_c(9,time);
-    sprintf(time,"10 %f",atm);
+    snprintf(time,sizeof(time),"10 %f",atm);
     extra_c(9,time);
     
     delete[] mfc1;
@@ -8367,7 +8388,7 @@ int flippid_c(int notUsed,char* args){
     // maybe it's already been calculated
     char fname[CHPERLN]="flippidMatrices";
     mkdir(fullname(fname, SAVE_DATA_NO_SUFFIX),S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP|S_IXGRP);   // read/write by owner; read by group
-    sprintf(fname,"flippidMatrices/FLiPPD_Nx=%d_Nc=%dto%d_pow%d",Nx,NcLow,NcHigh,power);
+    snprintf(fname,sizeof(fname),"flippidMatrices/FLiPPD_Nx=%d_Nc=%dto%d_pow%d",Nx,NcLow,NcHigh,power);
     matFile = fopen(fullname(fname,CSV_DATA),"r");
     if( matFile ){ // file exists, read in the values
         double value;

@@ -37,7 +37,7 @@ void setUpUIData(){
     UIData.thepalette = FROMAFILE3;
     getpalettefile(text);
     
-    int i, thedepth = 8;
+    int i;  //, thedepth = 8;
     
     for(int thepalette = BGRBOW; thepalette <= BLUEMAP; thepalette++){
         switch(thepalette) {
@@ -524,6 +524,12 @@ int loadprefs(char* name)
             for(int i=0; i<MAX_CONTOURS; i++) UIData.contourLevels[i]=clevls[i];
             missingBytes -= sizeof(sizeof(float)*MAX_CONTOURS+3*sizeof(int));
         }
+        
+        if(missingBytes >= sizeof(int)){
+            // set default value for HDR display support
+            UIData.useHDR = 0;   // default to standard SDR display
+            missingBytes -= sizeof(int);
+        }
         return NO_ERR;
     }
     
@@ -630,7 +636,7 @@ int loadprefs(char* name)
      c_font = settings[13];
      s_font = settings[14];
      showruler = settings[15];
-     
+  
      
      if( detector != 0) detectorspecified = 1;	// If saved detector type is CCD, no
      //	automatic type switching based on
@@ -651,7 +657,7 @@ int loadprefs(char* name)
     read(fd,(char*)settings,32);
     /*
      if(do_swap) swap_bytes_routine((char*)settings,32,2);
-     
+  
      
      star_time = settings[0];					// Star 1 Settings
      star_treg = settings[1];
@@ -1109,7 +1115,7 @@ int readFits(char* filename,Image* theImage){
         
         if (status == END_OF_FILE)  status = 0; /* Reset after normal error */
         float exp=0,aper=0,gain=0;
-        int retval;
+        //int retval;
         // fitsfile *fptr, int datatype, const char *keyname, void *value,char *comm, int *status);
         // allow different keywords for some values
         if(fits_read_key(fptr,TFLOAT,"EXPTIME",&exp,NULL,&status)){

@@ -168,7 +168,7 @@ extern char histogramIsVisible;
     
 
     if(UIData.autoscale){
-        [[statusController scaleState] setState:NSOnState];
+        [[statusController scaleState] setState:NSControlStateValueOn];
         if(UIData.displaySaturateValue == 1.0 && UIData.displayFloorValue == 0.0){
             [[statusController scaleState] setTitle: @"Scale"];
         } else {
@@ -177,14 +177,14 @@ extern char histogramIsVisible;
             [[statusController scaleState] setTitle:str];
         }
     } else{
-        [[statusController scaleState] setState:NSOffState];
+        [[statusController scaleState] setState:NSControlStateValueOff];
         [[statusController scaleState] setTitle: @"Scale"];
     }
     
     if(UIData.autoupdate)
-        [[statusController updateState] setState:NSOnState];
+        [[statusController updateState] setState:NSControlStateValueOn];
     else
-        [[statusController updateState] setState:NSOffState];
+        [[statusController updateState] setState:NSControlStateValueOff];
     
     //static int current_pal = -1;
    // if (current_pal != UIData.thepalette ) {
@@ -203,9 +203,12 @@ extern char histogramIsVisible;
     [openDlg setCanChooseFiles:YES];
     // Disable the selection of directories in the dialog.
     [openDlg setCanChooseDirectories:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [openDlg setAllowedFileTypes: [[NSArray alloc] initWithObjects:
                                    @"dat",@"mac",@"jpg",@"tif",@"tiff",@"hdr",@"o2s", @"o2d",@"hobj",@"csv",
                                    @"png",@"hdr",@"nef",@"cr2",@"cr3",@"crw",@"pa1",@"raw",nil]];
+#pragma clang diagnostic pop
     
     // Display the dialog.  If the OK button was pressed,
     // process the files.

@@ -502,6 +502,9 @@ HISTOGRAM lowerPercent upperPercent [setCminCmaxFlag]
 HISTMAX lowerPercent upperPercent [setCminCmaxFlag]
     Calculates the histogram of the current image and returns the data values that correspond to the lowerPercent and upperPercent of the histogram maximum. command_return_1 has the lower value, command_return_2, the upper. If setCminCmaxFlag is nonzero, the color min and color max are set according to the lower and upper values. Default values are 10 1 and 1.
 
+HDRFLAG [HDRFlagValue]
+	Sets the value of the HDRFlag, which indicates if images should be displayed in HDR -- only makes sense if the display is capable of HDR and it is enabled in ssettings. With no argument, the current value of the HDR flag is reported.
+
 IF condition
 	If condition evaluates to a non-zero value, the commands following the IF are executed. However, if the condition is zero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators < (less than), > (greater than), others to come....
 
