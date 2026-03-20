@@ -223,6 +223,7 @@ int zwo(int n,char* args){
             beep();
             printf("Incompatible readout parameters. (Row/Column/X0/Y0/DX/DY)\n");
             printf("Possible binning  is 1x1, 2x2, 3x3.\n");
+            delete[] extra;
             free(specs);
             free(values);
             return HARD_ERR;
@@ -232,6 +233,7 @@ int zwo(int n,char* args){
         if(asiErr != ASI_SUCCESS){
             beep();
             printf("Error setting format: %d\n",asiErr);
+            delete[] extra;
             free(specs);
             free(values);
             return HARD_ERR;

@@ -330,6 +330,7 @@ int starMatch(int n, char* args)
                          32, deblendContrast, 1, 1.0, &matchCatalog);
     if (status){
         //sep_bkg_free(bkg);
+        original.free();
         printErr(status);
         return status;
     }

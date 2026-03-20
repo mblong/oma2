@@ -1444,6 +1444,8 @@ int loadHDR(const char *fileName, HDRLoaderResult *res)
     
     RGBE *scanline = (RGBE*) malloc(w * sizeof(RGBE));
     if (!scanline) {
+        free(cols);
+        res->cols = NULL;
         fclose(file);
         return false;
     }
