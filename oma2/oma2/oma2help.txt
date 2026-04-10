@@ -37,8 +37,8 @@ ADDFILE <filename>
 ADDTMPIMAGE name
 	Adds the contents of the named temporary image to the data in the current image data buffer.
 
-ABEL
-	Calculate the abel inversion using three-point abel inversion operator Di,j. The index i,j start from 0. The formula followed Dasch 1992 (Applied Optics) which contains several typos. One correction is done in function OP1 following  Martin's PhD thesis.
+ABELINV
+	Calculate the Abel inversion using three-point Abel inversion operator Di,j. The index i,j start from 0. The formula followed Dasch 1992 (Applied Optics) which contains several typos. One correction is done in function OP1 following Martin's PhD thesis.
 
 ABELRECT rec_width [rec_y0 rec_y1]
 	Sets the rectangle (of width rec_width) according to the centroid of the image. If rec_y0 and rec_y1 are omitted, they are taken to be the top and bottom of the image.
@@ -95,17 +95,14 @@ BOUNDBOX targetValue [setRectFlag]
 BLEED thresholdCount fraction
 	For correcting readout errors on a CCD detector, where intensity from one pixel bleeds into an adjacent pixel on readout. No correction is made when the value is less than thresholdCount. For a pixel with pixValue greater than thresholdCount, pixValue is increased by  (pixValue-thresholdCount)*fraction. The pixel in the next column is decreased by the same amount.
 
- BAYERFLAG [bayerFlagValue]
-	Sets the value of the bayerFlag, which indicates if the FINDBAD command should treat the image as an undemosaiced color image. If no argument is given, the current state of the bayerFlag is printed. See also FINDBAD.
-
 BITMAP2RGB
     Convert the current bitmap image to an RGB color image. This will result in 8-bit integer data as the current image.
 
-BLINK [ticks first last]
-	Blink comparitor between images stored as numbered temporary images (allowed range is 0-9). ticks specifies the delay, in ticks, between display of subsequent images. If more than two images are compared, display ordering is first - last - first. Default values are 6, 0, and 1 for ticks, first, and last. Type <return> to end the BLINK sequence. On completion, the image buffer will contain the last temporary image in the sequence.
-
 BAYERFLAG [bayerFlagValue]
-	Sets the value of the bayerFlag, which indicates if the FINDBAD command should treat the image as an undemosaiced color image. If no argument is given, the current state of the bayerFlag is printed. See also FINDBAD.
+	Sets the value of the bayerFlag, which indicates if the FINDBADPIX command should treat the image as an undemosaiced color image. If no argument is given, the current state of the bayerFlag is printed. See also FINDBADPIX.
+
+BLINK [ticks first last]
+	Blink comparator between images stored as numbered temporary images (allowed range is 0-9). ticks specifies the delay, in ticks, between display of subsequent images. If more than two images are compared, display ordering is first - last - first. Default values are 6, 0, and 1 for ticks, first, and last. Type <return> to end the BLINK sequence. On completion, the image buffer will contain the last temporary image in the sequence.
  
 CALCULATE
 	Print calculations on the rectangle specified with the RECTANGLE command or with the rectangle tools. The average, rms, # of points, and the x and y "center of mass" are printed. The mean, rms, centroid_X and centroid_Y are passed to the command_return_variables.
@@ -126,7 +123,10 @@ CLIPFRACTION fraction
 	Clip data at a fraction of the maximum value. Fraction is a real argument.
 
 CROP [x0 y0 x1 y1]
-     With no arguments, use the current rectangle to crop the image in the buffer. If four arguments are given, the current rectangele is redefined and used for cropping. The command history buffer includes the rectangle bounds in either case.
+     With no arguments, use the current rectangle to crop the image in the buffer. If four arguments are given, the current rectangle is redefined and used for cropping. The command history buffer includes the rectangle bounds in either case.
+
+CROPR [x0 y0 x1 y1]
+	Alias for the CROP command.
 
 COLUMNS n
 	Resets the number of columns in the current image to n.
@@ -135,7 +135,7 @@ COMPOSITE  <filename>
 	Create a composite image by appending the data in the specified file to that which exists in the current image buffer. The width of the specified file must be the same as that of the current image. 
 
 COMTEMPIMAGE name 
-	Create a composite image by appending the data in the named temporary image to that which exists in the current image buffer. The width of the specified temporary image be the same as that of the current image.
+	Create a composite image by appending the data in the named temporary image to that which exists in the current image buffer. The width of the specified temporary image must be the same as that of the current image.
 	
 COLORFLAG [value]
 	If an argument is given, the IS_COLOR flag is set to 0 (flag = 0) or 1 (anything else). If no argument is given, the current value of the color flag is printed.
@@ -150,19 +150,19 @@ CLEARBADPIX
  	Sets pixels tagged as bad (e.g., with the FINDBADPIX or READBADPIX commands) to the average value of their 8 nearest same-color neighbors (or to the average of between one and eight nearest same-color neighbors if the alternate FINDBAD algorithm is used). This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands. See also BAYERFLAG, FINDBADPIX, WRITEBADPIX, and READBADPIX.
 
 CCLEARBADPIX
-	This command is depricated. Use CLEARBADPIX with BAYERFLAG set to 1 instead. This will not handle bad pixel data from the alternate algorithm properly. [Old description: For un-demosaiced color images, sets pixels tagged as bad (e.g., with the FINDBADPIX or READBADPIX commands) to the value of their 8 nearest same-color neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands.] See also FINDBADPIX, CLEARBADPIX, WRITEBADPIX, and READBADPIX.
+	This command is deprecated. Use CLEARBADPIX with BAYERFLAG set to 1 instead. This will not handle bad pixel data from the alternate algorithm properly. [Old description: For un-demosaiced color images, sets pixels tagged as bad (e.g., with the FINDBADPIX or READBADPIX commands) to the value of their 8 nearest same-color neighbors. This will not work well if there are contiguous bad pixels. For that, consider using the FILBOX or FILMSK commands.] See also FINDBADPIX, CLEARBADPIX, WRITEBADPIX, and READBADPIX.
 
 CAPTURE file_name
 	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses libgphoto2 calls to capture and download an image from a digital camera that is recognized by libgphoto2 (and supports capture).
 
 CREATEFILE <filename>
-	Opens a file with the specified name, saves the current data and format information, and leaves the file open. Subsequently, the CONCATFILE command can be used to add more data to the open file. use CLOSEFILE to close the file. See also OPENFILE and GETNEXTFILE.
+	Opens a file with the specified name, saves the current data and format information, and leaves the file open. Subsequently, the CONCATFILE command can be used to add more data to the open file. Use CLOSEFILE to close the file. See also OPENFILE and GETNEXT.
 
 CONCATFILE
-	Saves the current data buffer to the file opened with the CREATEFILE command. See also OPENFILE and GETNEXTFILE.
+	Saves the current data buffer to the file opened with the CREATEFILE command. See also OPENFILE and GETNEXT.
 
 CLOSEFILE
-	Closes the file opened with the CREATEFILE command. See also OPENFILE and GETNEXTFILE.
+	Closes the file opened with the CREATEFILE command. See also OPENFILE and GETNEXT.
 
 CAMLISTSETTINGS
 	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to list the settings of the camera that can be set, along with their current values.
@@ -171,10 +171,10 @@ CAMGETSETTING  name
 	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to list the current value of the specified setting, along with the allowed values for resetting it.
 
 CAMSETSETTING  name  new_setting_value
-	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to reset the value of the specified setting to the new value. For a listing of valid setting values, use the GETCAMSETTING command.
+	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to reset the value of the specified setting to the new value. For a listing of valid setting values, use the CAMGETSETTING command.
 
-CAMCLOSE
-	[This command is only available in oma2cam. libgphoto2 must be installed.] Disconnects from the digital camera accessed through gphoto2.
+CAMEXPOSE [n]
+	[This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to capture n images from the camera (default is 1) and download them.
 
 C2RGB
 	If the current image is a color image, define temporary images named r, g, and b that correspond to the red, green, and blue color channels. The current image buffer is not modified.
@@ -251,7 +251,7 @@ DIFFY
 	Differentiate the data in the current image data buffer in the y direction.
 
 DCRAWARGS  [arguments]
-	Depricated. Default compilation now uses LibRaw to decode raw files. Allows the user to specify the arguments passed to the dcraw routine, which decodes camera raw files to OMA format. Omitting the argument lists the allowed arguments and gives the current argument settings. The filename field is ignored. 
+	Deprecated. Default compilation now uses LibRaw to decode raw files. Allows the user to specify the arguments passed to the dcraw routine, which decodes camera raw files to OMA format. Omitting the argument lists the allowed arguments and gives the current argument settings. The filename field is ignored. 
 
 DELAY nticks
 	Waits nticks/60 seconds before continuing on to the next command. Use this for rough timing operations.
@@ -295,13 +295,13 @@ DECODEHOBJ
 	Assume the current image has the proprietary .hobj format (from Halcon), and has not been decoded. This attempts to decode the image. See the command HOBJSETTINGS for how this decoding can be done automatically.
 
 DSATURATE [displaySaturationValue displayFloorValue]
-	This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMax-dataRange*( 1-displaySaturateValue). If a displayFloorValue is specified, the Color Min value used will be the dataMinimum + dataRange*displayFloorValue. If no argument is given, the current values are printed. If displaySaturateValue = 1.0 and no second argument is given, displayFloorValue is set to 0.0. command_return_1, 2, 3, and 4 are set to displaySaturationValue, displayFloorValue, color max, and color min.
+	This affects how the display command behaves when the Scale option is selected. If a displaySaturationValue is specified, the Color Max value used will be the dataMax-dataRange*( 1-displaySaturationValue). If a displayFloorValue is specified, the Color Min value used will be the dataMinimum + dataRange*displayFloorValue. If no argument is given, the current values are printed. If displaySaturationValue = 1.0 and no second argument is given, displayFloorValue is set to 0.0. command_return_1, 2, 3, and 4 are set to displaySaturationValue, displayFloorValue, color max, and color min.
 	
 DISTORT [k1 subpix x0 y0]
-    Perform radially symetric image distortion and remapping accorting to:
+    Perform radially symmetric image distortion and remapping according to:
     x' =  (x-x0)(1+k1*r^2);
     y' =  (y-y0)(1+k1*r^2);
-    x0 and y0 specify the center about which the radius is calculated and, by default, is at the center of the image. k1 specifies the amount of image distortion -- negative values correspond to a barrel distortion and positive values, a pincusion distortion. The default value is k1 = -0.15. subpix specifies the sub-pixel sampling used in the mapping -- default is 0.1, which would sub-sample each pixel 100 times.
+    x0 and y0 specify the center about which the radius is calculated and, by default, is at the center of the image. k1 specifies the amount of image distortion -- negative values correspond to a barrel distortion and positive values, a pincushion distortion. The default value is k1 = -0.15. subpix specifies the sub-pixel sampling used in the mapping -- default is 0.1, which would sub-sample each pixel 100 times.
 
 ERASE [n]
 	If no argument is given, all image windows currently on the screen are closed. If a value n is specified, only window n is erased.
@@ -342,7 +342,7 @@ FLOATAUTO <flag>
     If flag is nonzero, assignment of a variable to a floating point value will set its type to FLOAT. If flag is 0, the default INTEGER data type will be used. With no argument, the current value of the flag is echoed.
 
 FOLD fraction new_width
-	Fold an image in half vertically. It is assumed to be symmetric about some nearly verticle axis. The center of symmetry is found separately for each row, except if there are dark regions at the top and bottom of the image. For the dark regions, the average center of the middle part of the image is used as the center of symmetry. Dark regions are rows (at the top and bottom) whose values are all less than fraction*image_max. x0,y0 and x1,y1 are coordinates of the top and bottom of the dark region, center is the average center. These are returned in command_return_1-5.
+	Fold an image in half vertically. It is assumed to be symmetric about some nearly vertical axis. The center of symmetry is found separately for each row, except if there are dark regions at the top and bottom of the image. For the dark regions, the average center of the middle part of the image is used as the center of symmetry. Dark regions are rows (at the top and bottom) whose values are all less than fraction*image_max. x0,y0 and x1,y1 are coordinates of the top and bottom of the dark region, center is the average center. These are returned in command_return_1-5.
 
 FTEMPIMAGE tempImage
 	Free memory associated with temporary image tempImage. tempImage must be in the range 0-9, or correspond to a named image. If no argument is specified, all temporary images are freed.
@@ -353,9 +353,6 @@ FCLOSE
 FECHO string
 	Writes the string to the file opened with FOPEN. A newLine is added after the string unless the string ends in ..., in which case no newLine is added. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.
 
-FLOG [lineNumber]
-    Writes log information to the file opened with FOPEN. If no lineNumber is specified, all lines are added, otherwise, just the specified line is added.
-
 FOPEN <filename>
 	Open a text file with the name <filename> for I/O. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro. <filename> should specify the extension (e.g., .txt or .csv).
 
@@ -363,13 +360,13 @@ FRAME NewWidth NewHeight [Value] [X0] [Y0]
 	Put a "frame" around the current image. X0 and Y0 are the coordinates of the start of the new image in the current image's coordinate system. X0 and Y0 can be positive (will crop out some of the current image) or negative (The new image will have a border with the pixels containing the Value specified). If X0 or Y0 are not integers, the routine will interpolate pixel values. Default Value is 0. Default of X0 and Y0 center the old image in the frame.
 
 FRAMECNTR CenterX HalfWidth [Y0] [Y1] [Value]
-Put a "frame" around the current image centered on column CenterX. The new image width will be 2*HalfWidth+1. Y0 and Y1 specify where the top and bottom of the new image start. Their default values are 0 and originalImageHeight-1. If the new image is larger than the original image, data values are set to Value (default is 0).
+	Put a "frame" around the current image centered on column CenterX. The new image width will be 2*HalfWidth+1. Y0 and Y1 specify where the top and bottom of the new image start. Their default values are 0 and originalImageHeight-1. If the new image is larger than the original image, data values are set to Value (default is 0).
 
 FINDBADPIX Counts [TargetValue] [Passes]
 	Searches the current image buffer for pixels whose value is more than "Counts" above that of its nearest eight neighbors. Those pixels are tagged as hot pixels. This is best applied to a dark image. If the optional TargetValue is specified, a different algorithm is used that will get values from 1 to 8 neighboring pixels that are within the specified number of counts of the target value. A reasonable TargetValue would be the average A/D offset, e.g., from a dark frame. For the alternate algorithm, the state of the BAYERFLAG is checked to determine if the image is color or not. The information is saved in an internal buffer. See also BAYERFLAG, CLEARBADPIX, WRITEBADPIX, and READBADPIX.
 
 FWDATMATLAB  <filename> [delimiter]
-	Writes the data in the current buffer as a text file. If no delimiter is specified, tab is used and the file will have the Save File extension. If the delimeter is "," the file gets the .csv extension. Format is a matrix of values that can be loaded directly into matlab.
+	Writes the data in the current buffer as a text file. If no delimiter is specified, tab is used and the file will have the Save File extension. If the delimiter is "," the file gets the .csv extension. Format is a matrix of values that can be loaded directly into matlab.
 
 FLIPPID Nx NcLow NcHigh Power Background
 	Perform an inverse Abel transform using the FLiPPID method. The current image must satisfy these conditions: (1) it is a right-side-up, full axisymmetric flame image with an odd number of columns. (2) The flame must be perfectly centered on the center of the image. Nx should be slightly larger than the maximum width (in pixels) of the flame. NcLow and NcHigh relate to a range of radial locations of the maximum; values of -500 and 2500, respectively seem to work for several flames I tested. Power is the power used in the fitting function, and could range from 3 - 7 or more. Higher powers seem to work better for flames with thin soot regions at the edges. Rows with maximum counts less than Background will be filled with 0. The image buffer returns the Abel inverted image. A temporary image named proj is also created -- this is the projected image created from the fitting function and can be comared with the original image to assess the quality of the fit. A lookup table is created based on the values of Nx, NcLow, NcHigh, and Power. The table is saved to a file in a folder named flippidMatrices in the path specified by the Save Data Files preference. Before calculating a new table, the program checks to see if an appropriate table already exists.
@@ -378,16 +375,19 @@ FILTER n
     Apply the specified filter matrix to the current image. Filters (rectangular matrices) are numbered 0 - 9 and are loaded using the GETFILTER command.
 
 FILLCIRCLES [extraRadiusAll extraRadiusEdge excludeRadius]
- Tries to correct coma. Using the circles found with the CVHOUGHCIRCLES command, this finds the intensity within each circle and then redistributes that intesity into a Gaussian distribution centered on the circle. extraRadiusAll adds a percentage radius to each circle (e.g., 0.1 makes each circle's radius 10% larger); extraRadiusEdge adds an increasing percentage radius to circles depending on how far the circle is from the image center; excludeRadius excludes circles within the specified radius of the image center. Defaults are 0.0 0.2 0.2 for extraRadiusAll extraRadiusEdge and excludeRadius, respectively.
+	Tries to correct coma. Using the circles found with the CVHOUGHCIRCLES command, this finds the intensity within each circle and then redistributes that intensity into a Gaussian distribution centered on the circle. extraRadiusAll adds a percentage radius to each circle (e.g., 0.1 makes each circle's radius 10% larger); extraRadiusEdge adds an increasing percentage radius to circles depending on how far the circle is from the image center; excludeRadius excludes circles within the specified radius of the image center. Defaults are 0.0 0.2 0.2 for extraRadiusAll extraRadiusEdge and excludeRadius, respectively.
  
 FWHM [radius ratio minIncreaseFraction averageOver]
     Finds the center of mass (COM) of the image within the current rectangle, and calculates the full width of a presumed circular image within the specified radius (default = 50 or last specified value) of the COM. For ratio = 0.5 (default, or last specified value), the value is the full width at half max. If minIncreaseFraction > 0 (default = 0, or last specified value), all values < minIncreaseFraction * range within current rectangle are set to 0. The averageOver argument (Default = 1, or last specified) is only used in the oma2cam ZWO FOCUS command, and specifies how many values are averaged in the displayed FWHM value. Return values are FWHM, circleDeviation, xCOM, yCOM.
 
 FLOG [lineNumber]
-	Write the lineNumber entry in the comment log to the file opened with FOPEN. If lineNumber is ommited, all lines of the comment log are written to the file.
+	Write the lineNumber entry in the comment log to the file opened with FOPEN. If lineNumber is omitted, all lines of the comment log are written to the file.
 
 GET <filename>
 	Loads the data from the specified file into the current image data buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.
+
+GETRGB <filename>
+	Alias for the GET command. Loads the data from the specified file into the current image data buffer.
 
 GETFILENAMES NameFile
 	Open NameFile (uses GET DATA FILES prefix and ".txt" as suffix), which contains the names of files. The NEXTFILE command is used to open the next file. NameFile is left open until all files have been accessed. NameFile can be generated with a SHELL command. See also NEXTFILE command.
@@ -397,16 +397,16 @@ GETFOLDERNAMES FolderFile
  
 GETMATCH parameterfile
 	Load the file matching parameters contained in the text file "parameterfile". The format of the file is as follows:
-x1_ref y1_ref x1_i1 y1_i1 x1_i2 y1_i2
-x2_ref y2_ref x2_i1 y2_i1 x2_i2 y2_i2
-image1_width image1_height
-image2_width image2_height
+	x1_ref y1_ref x1_i1 y1_i1 x1_i2 y1_i2
+	x2_ref y2_ref x2_i1 y2_i1 x2_i2 y2_i2
+	image1_width image1_height
+	image2_width image2_height
 
 GETSETTINGS [filename]
 	Gets settings from the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings from within the oma application are loaded.
 
 GETFUNCTION n filename
-	Read in a tabulated function to be used by the LOOKUP command. n is the function number to be defined. filename is file containing y=f(x) data pairs, preceeded by number of table entries.
+	Read in a tabulated function to be used by the LOOKUP command. n is the function number to be defined. filename is file containing y=f(x) data pairs, preceded by number of table entries.
 	Assumptions for tabulated functions:
 	File format:
 	first number is integer with the number of pairs to follow
@@ -418,7 +418,7 @@ GETBINARYFILE <filename> rows columns headerBytes bytesPerDataPoint swapBytesFla
 	Read in a binary file with the specified parameters. If bytesPerDataPoint is -sizeof(float), the binary data are treated as float. Other reasonable values would be 1, 2, or 4. Specified parameters do not change those set with the BINARGUMENTS command.
 
 GETANGLE fraction
-For images consisting of tall, symmetric, narrow structures nearly aligned with the vertical axis (think axisymmetric laminar flames), this calculates the angle (in degrees) that the current image needs to be rotated to align the x center of mass with the y axis. This is done using a linear least squares fit of the vetical coordinate and horizontal center of mass coordinate. The entire image width is used. The start of the rectangle considered begins where the maximum along a horizontal line is greater than "fraction" of the maximum and continues until the maximum along a horizontal line falls below "fraction" of the maximum. The required rotation angle and center of mass x location are returned. After a rotation by the calculated amount, the angle returned should be small (say < .1 degree) and the location of the center of mass should correspond to the center of the symmetric image. (See also FRAMECNTR.) 
+	For images consisting of tall, symmetric, narrow structures nearly aligned with the vertical axis (think axisymmetric laminar flames), this calculates the angle (in degrees) that the current image needs to be rotated to align the x center of mass with the y axis. This is done using a linear least squares fit of the vertical coordinate and horizontal center of mass coordinate. The entire image width is used. The start of the rectangle considered begins where the maximum along a horizontal line is greater than "fraction" of the maximum and continues until the maximum along a horizontal line falls below "fraction" of the maximum. The required rotation angle and center of mass x location are returned. After a rotation by the calculated amount, the angle returned should be small (say < .1 degree) and the location of the center of mass should correspond to the center of the symmetric image. (See also FRAMECNTR.)
 
 GMACRO <filename>
 	Loads the contents of the specified file into the current macro buffer.
@@ -466,7 +466,7 @@ GIGE command
 	SFRames <filename> <numFrames> (save the specified number of frames using the specified filename. Uses FREERUN mode. Also saves a text file showing frame times.)
 	STAtus (print camera settings)
 	FIXbad <flag> (set flag to 1 to clear bad pixels before display or save --> must use FINDBAD first)
-	DISplay <flag> (set flag to 1 to display during acqusition)
+	DISplay <flag> (set flag to 1 to display during acquisition)
 	HDR <filename> <numFrames> <multiplier> (save the specified number of frames using the specified filename. Subsequent exposure times are multiplied by the multiplier.)
 
 GNOISE mean rms [seed]
@@ -503,7 +503,7 @@ HISTMAX lowerPercent upperPercent [setCminCmaxFlag]
     Calculates the histogram of the current image and returns the data values that correspond to the lowerPercent and upperPercent of the histogram maximum. command_return_1 has the lower value, command_return_2, the upper. If setCminCmaxFlag is nonzero, the color min and color max are set according to the lower and upper values. Default values are 10 1 and 1.
 
 HDRFLAG [HDRFlagValue]
-	Sets the value of the HDRFlag, which indicates if images should be displayed in HDR -- only makes sense if the display is capable of HDR and it is enabled in ssettings. With no argument, the current value of the HDR flag is reported.
+	Sets the value of the HDRFlag, which indicates if images should be displayed in HDR -- only makes sense if the display is capable of HDR and it is enabled in settings. With no argument, the current value of the HDR flag is reported.
 
 IF condition
 	If condition evaluates to a non-zero value, the commands following the IF are executed. However, if the condition is zero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators < (less than), > (greater than), others to come....
@@ -547,7 +547,7 @@ KWABEL n
 LIST
 	Lists the current detector parameters and log block.
 
-LABEL textString [lineNumber]
+LABELDATA textString [lineNumber]
         Display the text_string in the upper left of the current window. If textString is in quotes, the optional lineNumber (range 0-5) specifies what line the text appears on.
 
 LOG [n] [comment]
@@ -580,7 +580,7 @@ LOOPND
 	Specifies the end of a loop initiated with the LOOP command.
 
 LOOKUP fn_number 
-	Redefine the current image using the lookup table specified by a tabulated function. Use GETFUNCT n filename before using this command.
+	Redefine the current image using the lookup table specified by a tabulated function. Use GETFUNCTION n filename before using this command.
 
 LTEMPIMAGE 
 	List defined temporary images.
@@ -646,13 +646,19 @@ NEGATIVE
 OPENFILE <filename>
 	Reads data from the specified filename but does not close it. If there is more than one image in the file, the GETNEXT command will read the next image. This type of multi-image data file can be created with the CREATEFILE, CONCATFILE, CLOSEFILE commands, or may be produced by some cameras.
 
+PALETTE n
+	Sets the color palette used for displaying the current image. The palette number n selects among the available palettes.
+
+PAUSE [string]
+	Within a macro or execute buffer, pauses execution and speaks the specified string (or "PAUSED" if no string is given). Use this to pause execution and alert the user.
+
 PIXSIZE [WindowScaleFactor]
 	Specifies a scale factor used to determine the size of a window displayed. PIXSIZE 1 associates one screen point with one data point. If WindowScaleFactor is negative, a scale factor of -1/WindowScaleFactor is used. If no argument is given, the current WindowScaleFactor is printed.
 
 PIXVALUE row column
 	Prints the value of the pixel at the specified row and column. The upper left of an image is at 0,0. If the image is color, prints RGB values. command_return_1 is the value for BW images; command_return_1 - command_return_3 are RGB for color images.
 
-POSITVE
+POSITIVE
 	Sets all negative values in the image buffer to 0.  Positive values are unaffected.
 
 POWER y
@@ -662,7 +668,7 @@ POWTMPIMAGE name
 	Each pixel in the current image buffer is raised to the power specified in the corresponding pixel of the specified temporary image.
 
 RAMP
-	Fill current image with a ramp from 0 to the number of number of channels.
+	Fill current image with a ramp from 0 to the number of channels.
 
 RECTANGLE ulx uly lrx lry
 	Specify a rectangle that calculations are to be done on. The arguments are upper left x coordinate; upper left y coordinate; lower right x; lower right y.
@@ -688,7 +694,7 @@ RGB2HSV
 RMACRO [n m]
 	Starts executing commands in the macro buffer with %d being replaced first by value n. Subsequently, n is incremented by the amount specified in the INCMACRO command (default is 1). If the new numeric value is equal to m, the macro will be executed again. Menu items can be selected and the appropriate commands executed during macros. Commands typed during the execution of a macro will be echoed to the terminal but not performed. To stop a macro during execution type "cmd ." (hold down the apple key and type ".")
 
-ROW n
+ROWS n
 	Resets the number of rows in the current image to n.
 
 ROTATE [value]
@@ -715,21 +721,21 @@ RULER [numpix] [numunits] [unit name]
 	Can be used to specify the number of pixels that correspond to a length unit. "numpix" and "numunits" are both floating point arguments. An optional string can be included to define the units (e.g., "mm" or "feet"). If no arguments are given, the current scale factor will be printed. The scale factor defined with the RULER command is used (1) when printing lengths using the ruler tool in the status window, (2) when reporting contour lengths generated by the "Plot Contours" menu command, and (3) when reporting the x and y "center of mass" using the calculate rectangle tool in the status window. Scale factor info is saved with data files and will be reloaded automatically when the files are retrieved. To "un-define" a ruler, give only one argument.
 
 REMAP Value1 Value2 [Value3]
-	With two arguments, every occurence of Value1 in the current image is replaced with Value2. With three arguments, values in the range from Value1 to Value2 are set to Value3.
+	With two arguments, every occurrence of Value1 in the current image is replaced with Value2. With three arguments, values in the range from Value1 to Value2 are set to Value3.
 
 RAWPARAMS [demosaic subtractBlack applyWhiteBalance applyGamma clearBad]
-    Controlls whether or not additional processing is done when the LibRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, at least four arguments must be specified and corrections will be done according to the specified values. subtractBlack = 1 will just subtract the raw image black value and may have negative values; subtractBlack = 2 will set the floor to 0. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing. clearBad is float; 0 means no clearing bad pixels, 1 means use the existing bad pixels data, any other value is used as the argument to the FINDBADPIX command. With four arguments, clearBad is set to 0.
+    Controls whether or not additional processing is done when the LibRaw routines are called to open raw camera data files. If no parameters are given, the current values of the various flags are listed. If only the first argument is given, 0 will specify no additional processing (i.e, raw data is returned); if a single non-zero argument is given, all corrections will be done. Otherwise, at least four arguments must be specified and corrections will be done according to the specified values. subtractBlack = 1 will just subtract the raw image black value and may have negative values; subtractBlack = 2 will set the floor to 0. The applyGamma argument is a float, indicating the gamma correction to be done for all colors. applyGamma=1.0 corresponds to no nonlinear processing. clearBad is float; 0 means no clearing bad pixels, 1 means use the existing bad pixels data, any other value is used as the argument to the FINDBADPIX command. With four arguments, clearBad is set to 0.
 
 SAVEFILE <filename>
 	Saves the current data buffer to the specified file.
 
 SAVECATALOG filename
- Save information from the star catalog to a csv file. The star catalog is first created with the STARS command. It may also be modified interectively by option-clicking or cmnd-clicking on displayed stars/objects. Ordering is x,y,a,b,theta,flux,flags.
+	Save information from the star catalog to a csv file. The star catalog is first created with the STARS command. It may also be modified interactively by option-clicking or cmnd-clicking on displayed stars/objects. Ordering is x,y,a,b,theta,flux,flags.
 
 SAVSETTINGS [filename]
 	Saves the current settings to the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings are saved within the oma application.
  
- SATIFF <filename>
+SATIFF <filename>
 	Converts the contents of the OMA Image buffer to 16 bit unsigned data and saves a compressed 16-bit TIFF image to the specified filename. The 'save' file prefix is used. A ".tif" extension is automatically appended to the filename.
 
 SATIFFSCALED min max <filename>
@@ -754,7 +760,7 @@ SERCLOSE
 	Closes the serial port opened with the last "SERIAL device_name" command. This can be used if you need to talk to more than one serial device -- open device 1, send commands, close the serial port, open device 2, send commands, and so forth. Available in oma2cam.
 
 SERIAL device_name (or character_string) [baudRate Timeout]
-	Provides a simple way of sending text strings to a serial device. For example, a KeySpan USB to serial converter can be used to control a variety stepping motor controllers, spectrographs, arduinos etc. The device name should be something like "/dev/tty.KeySpan1" Note that upper/lower case matters on these specifications. Look in the "/dev" directory to find the name of your specific hardware. When opening a device, the baud rate and timeout value (in thenths of seconds) can be specified. Defaults are baud = 9600 and timeout = 0. After opening the device with the first SERIAL command, subsequent SERIAL commands will send across the specified character_string, followed by a <CR>. This uses standard POSIX calls.  Available in oma2cam.
+	Provides a simple way of sending text strings to a serial device. For example, a KeySpan USB to serial converter can be used to control a variety stepping motor controllers, spectrographs, arduinos etc. The device name should be something like "/dev/tty.KeySpan1" Note that upper/lower case matters on these specifications. Look in the "/dev" directory to find the name of your specific hardware. When opening a device, the baud rate and timeout value (in tenths of seconds) can be specified. Defaults are baud = 9600 and timeout = 0. After opening the device with the first SERIAL command, subsequent SERIAL commands will send across the specified character_string, followed by a <CR>. This uses standard POSIX calls.  Available in oma2cam.
 
 SIZE rows cols 
 	Set the number of rows and columns of the current image and zero the data.
@@ -792,7 +798,7 @@ SBIG command_string [parameters]
 		Specify exposure_time in seconds. Does not take an image.
 	.
 	 FILter
-		 Specify which fillter to use.
+		 Specify which filter to use.
 	.
 	 TEMperature
 		 Specify set temperature of the CCD in degrees C.
@@ -810,7 +816,7 @@ SUBTMPIMAGE name
 	Subtracts the contents of the named temporary image from the data in the current buffer.
 
 SEQ2HDR filename cutoff
-	Convert a sequence of images with different exposures to an HDR image. The file contains all images and must have information on exposures stored in the EXTRA data (see the EXTRA command). This type of file can be created by GigE cameras in oma2cam or can be created using the CREATEFILE/CONCATENATEFILE/COLSEFILE commands. Note that all exposure information must be entered in the extra space before CREATEFILE is used to open the file. Image values larger thatn the cutoff value will not be included and this should be close to the detector saturation value.
+	Convert a sequence of images with different exposures to an HDR image. The file contains all images and must have information on exposures stored in the EXTRA data (see the EXTRA command). This type of file can be created by GigE cameras in oma2cam or can be created using the CREATEFILE/CONCATFILE/CLOSEFILE commands. Note that all exposure information must be entered in the extra space before CREATEFILE is used to open the file. Image values larger than the cutoff value will not be included and this should be close to the detector saturation value.
 
 SEQ2IMAGE filename
 	Open all frames of a sequence of images to a single image whose height is NFRAMES*FRAMEHEIGHT.
@@ -837,7 +843,7 @@ SQLADD
 	Adds the current displayed image to the database table previously opened. This could be a SQLite or mySQL database.  See also MYSQSERVER and SQLNEW [qtoma command]
 
 SQLNEW databaseName tableName
-	Opens a new SQLite database file named databaseName.db and creates a table named tableNameif it doesn't already exist. If databaseName.db already exists, it is deleted and a new database started. The table will contain a numbered imageID and imageData containing the image displayed in the current data window. In addition, any variable name beginning with "sql" will be added as a column to the table (minus the "sql"). See also MYSQSERVER [qtoma command]
+	Opens a new SQLite database file named databaseName.db and creates a table named tableName if it doesn't already exist. If databaseName.db already exists, it is deleted and a new database started. The table will contain a numbered imageID and imageData containing the image displayed in the current data window. In addition, any variable name beginning with "sql" will be added as a column to the table (minus the "sql"). See also MYSQSERVER [qtoma command]
 
 SQLOPEN databaseName tableName
 	Opens an existing SQLite database file named databaseName.db and creates a table named tableName if it doesn't already exist. The table will contain a numbered imageID and imageData containing the image displayed in the current data window. In addition, any variable name beginning with "sql" will be added as a column to the table (minus the "sql"). [qtoma command]
@@ -853,8 +859,8 @@ STARS [Factor Radius SizeFactor EllipticityFactor]
 	Factor specifies the threshold multiplier factor -- the threshold will be factor*globalRms -- default is 2.0. Higher values correspond to fewer, brighter stars.
 	Radius specifies the pixel radius used in summing the intensity of each star identified -- default is 5.
 	SizeFactor specifies maximum size of objects to be included in the star catalog. If absoluteFlag = 0, objects with ellipse parameters a+b > sizeFactor*aveSize will be excluded. If absoluteFlag != 0, objects with  a+b > sizeFactor pixels will be excluded -- default is 4.0.
-	EllipticityFactor specifies maximum elipticity of objects to be included in the star catalog. If absoluteFlag = 0, objects with ellipticity  > EllipticityFactor*aveEllipticity will be excluded. If absoluteFlag != 0, objects with ellipticity > EllipticityFactor will be excluded -- default is 2.0.
-	The star catalog is sorted in descending order according to the intensity. The identified stars are displayed in subsequent display commands. If the crosshair tool is selected, clicking on a star in the displayed image shows its size, elipticity, and flux. Option-click on a star will mark it to be excluded from display/processing. Cmnd-click on a star will add a previously excluded star/object.
+	EllipticityFactor specifies maximum ellipticity of objects to be included in the star catalog. If absoluteFlag = 0, objects with ellipticity  > EllipticityFactor*aveEllipticity will be excluded. If absoluteFlag != 0, objects with ellipticity > EllipticityFactor will be excluded -- default is 2.0.
+	The star catalog is sorted in descending order according to the intensity. The identified stars are displayed in subsequent display commands. If the crosshair tool is selected, clicking on a star in the displayed image shows its size, ellipticity, and flux. Option-click on a star will mark it to be excluded from display/processing. Cmnd-click on a star will add a previously excluded star/object.
 	See also STARCLEAR, STARSETTINGS, SAVECATALOG, GETCATALOG.
 
 STARCLEAR
@@ -869,7 +875,10 @@ STARSETTINGS [absoluteFlag smallCutoff deblendContrast]
 	deblendContrast: specifies the minimum deblending contrast. Default is .005. A value of 1.0 disables deblending.
 
 STARMATCH [Factor Radius SizeFactor EllipticityFactor NumStars]
-	Assume the current deep sky image is to be matched with an image whose stars have already been indentified with the STARS command. The first four arguemnts are the same as the for the STARS command, and should probably match.  NumStars specifies how many stars should be used in searching for matching stars between the two images. These are used to determine the affine transform used to match the images.
+	Assume the current deep sky image is to be matched with an image whose stars have already been identified with the STARS command. The first four arguments are the same as for the STARS command, and should probably match. NumStars specifies how many stars should be used in searching for matching stars between the two images. These are used to determine the affine transform used to match the images.
+
+STARSYNTH
+	Synthesize an image from the current star catalog. Each star in the catalog (that has not been excluded) is rendered as a Gaussian distribution based on its position, size, and flux. The star catalog must first be created using the STARS command.
 
 SMINIMUM [newMinValue]
 	Set the minimum to the specified value. If no argument is given, 0 is assumed. command_return_1 is the offset subtracted from the data.
@@ -877,7 +886,7 @@ SMINIMUM [newMinValue]
 TSMOOTH
 	Smooth radius based on x_dim = Temp[0], y_dim = Temp[1]. This is a function that enables (Rectangular) smoothing of an image, with variable filter size. It works basically like SMOOTH 13 13, say, but it takes the x_dim and y_dim locally based on the values in the  Temporary buffers T[0] and T[1]. It has been used to variably smooth an image based on the local length scale which was modelled.
 
-UPREFX type 
+UPREFIX type 
 	Force use of prefix/suffix specified by 'type.' Possible cases for 'type' include the following:
 	s   Use Save File prefix and suffix for both saving and getting files
 	g   Use Get File prefix and suffix for both saving and getting files
@@ -894,10 +903,10 @@ VARIABLES
 	The values of variables are accessed from other commands using @my_var. For example,
 	+ @my_var
 	or
-	save datfile_@4myvar
+	save datfile_@my_var
 	As with loops, the end of a variable can be tagged by adding a '\' For example,
 	save datfile_@my_var\_corrected
-	See also commands FLOAT, INTVARIABLE and VARCLEAR
+	See also commands FLOATVARIABLE, INTVARIABLE, and VARCLEAR
 
 VARCLEAR
 	Clears all user-defined variables.
@@ -918,9 +927,9 @@ WARP subpix
 	Remaps an image coordinate system using bilinear geometric warping.
 	x' = a00 + a01x + a10y + a11xy
 	y' = b00 + b01x + b10y + b11xy
-	The 8 parameters must first be read in with the WARPARAMS command. The subpix value specifies subpixel resolution used (default is 0.2). Without subpixel sampling, there would likely be holes in the warped image.
+	The 8 parameters must first be read in with the WARPARAM command. The subpix value specifies subpixel resolution used (default is 0.2). Without subpixel sampling, there would likely be holes in the warped image.
 
-WARPARAMS <filename>
+WARPARAM <filename>
 	Reads in 8 warp parameters from the specified file. The format of the text file should be as follows:
 	a00 a01 a10 a11
 	b00 b01 b10 b11
@@ -937,12 +946,12 @@ WRITEBADPIX filename
 	.
 
 WAITHI Channel
-	Waits until the specified digital I/O channel is aserted high on a LabJack U3. Channel must be in the range 4-7. [oma2cam only]
+	Waits until the specified digital I/O channel is asserted high on a LabJack U3. Channel must be in the range 4-7. [oma2cam only]
 
 X0 n
 	Specifies that the detector is to be read out starting at column n.
 
- XCORRELATE tempImage
+XCORRELATE tempImage
     Calculate the magnitude of the cross correlation between the current image and the specified temporary image. Image sizes must be a power of two. command_return_1 and command_return_2 are the (integer) row and column offsets of the two images, determined from the peak of the cross correlation.
 
 Y0 n
@@ -959,7 +968,7 @@ ZWO [command] [commandArguments]
 	BINning binValue (sets format for binValue = 1 or 2)
 	DISconnect
 	WBAlance whiteBalanceRed whiteBalanceBlue (values are from 1-99)
-	Focus (using the current settings, presumably a cropped window, continuously acquire and display 8-bit grey-scale images. To stop, type cmnd') If the Calculate Rectangle tool is selected, the FWHM of at the center-of-mass of the image (presumably a single star in the window) is calculated and displayed. (see the FWHM command). If the Crosshair tool is selected, the average size and elipticity of stars in the window are calculated and displayed.
+	Focus (using the current settings, presumably a cropped window, continuously acquire and display 8-bit grey-scale images. To stop, type cmnd') If the Calculate Rectangle tool is selected, the FWHM of at the center-of-mass of the image (presumably a single star in the window) is calculated and displayed. (see the FWHM command). If the Crosshair tool is selected, the average size and ellipticity of stars in the window are calculated and displayed.
 	<camera number> Apply subsequent commands to the specified camera. Numbering starts at 1.
 
 ZFOCUS [cmnd command_args]
@@ -968,4 +977,4 @@ ZFOCUS [cmnd command_args]
     MOVe steps --- increment or decrement current position by the specified number of steps
     GOto targetPosition --- move the the specified target position
     MAX maxPosition --- set the Maximum allowed position
-    SET position --- set the current position to the specfied value
+    SET position --- set the current position to the specified value

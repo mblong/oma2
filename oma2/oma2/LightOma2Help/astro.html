@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+    <meta name="description" content="built-in oma2 help pages" />
+    <meta name="keywords" content="image processing" />
+    <meta name="author" content="oma developers" />
+    <link rel="stylesheet" type="text/css" href="Light/default.css" media="screen" />
+    <title>OMA2 Help</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="navigation">
+        <div class="title">
+          <h1>OMA2</h1>
+          <h2>- Help -</h2>
+        </div>
+        <a href="CommandIndex.html">Index</a>
+        <a href="astro.html">Astro</a>
+        <a href="macro.html">Macro</a>
+        <a href="file.html">I / O</a>
+        <a href="display.html">Display</a>
+        <a href="arithmetic.html">Processing</a>
+        <a href="index.html">First Steps</a>
+        <div class="clearer"><span></span></div>
+      </div>
+      <div class="holder">
+        <h1>Astronomy Commands</h1>
+        CVHOUGHCIRCLES [cannyThreshold accumulatorThreshold maxRadius]<br />
+        &nbsp;&nbsp;&nbsp; Use the opencv HoughCircles to detect circles in an image. Works on monochrome images. Default values are 30 10 20 for cannyThreshold accumulatorThreshold maxRadius. Map the monochrome image to 0-255 first. Output shows detected circles.<br />
+        <br />
+        FILLCIRCLES [extraRadiusAll extraRadiusEdge excludeRadius]<br />
+        &nbsp;&nbsp;&nbsp; Tries to correct coma. Using the circles found with the CVHOUGHCIRCLES command, this finds the intensity within each circle and then redistributes that intensity into a Gaussian distribution centered on the circle. extraRadiusAll adds a percentage radius to each circle (e.g., 0.1 makes each circle&#x27;s radius 10% larger); extraRadiusEdge adds an increasing percentage radius to circles depending on how far the circle is from the image center; excludeRadius excludes circles within the specified radius of the image center. Defaults are 0.0 0.2 0.2 for extraRadiusAll extraRadiusEdge and excludeRadius, respectively.<br />
+        <br />
+        FWHM [radius ratio minIncreaseFraction averageOver]<br />
+        &nbsp;&nbsp;&nbsp; Finds the center of mass (COM) of the image within the current rectangle, and calculates the full width of a presumed circular image within the specified radius (default = 50 or last specified value) of the COM. For ratio = 0.5 (default, or last specified value), the value is the full width at half max. If minIncreaseFraction &gt; 0 (default = 0, or last specified value), all values &lt; minIncreaseFraction * range within current rectangle are set to 0. The averageOver argument (Default = 1, or last specified) is only used in the oma2cam ZWO FOCUS command, and specifies how many values are averaged in the displayed FWHM value. Return values are FWHM, circleDeviation, xCOM, yCOM.<br />
+        <br />
+        GETCATALOG filename<br />
+        &nbsp;&nbsp;&nbsp; Load information from a star catalog previously saved to a csv file using the SAVECATALOG command. This information is used for display/processing and will not be used for the STARMATCH command. Ordering is x,y,a,b,theta,flux,flags.<br />
+        <br />
+        SAVECATALOG filename<br />
+        &nbsp;&nbsp;&nbsp; Save information from the star catalog to a csv file. The star catalog is first created with the STARS command. It may also be modified interactively by option-clicking or cmnd-clicking on displayed stars/objects. Ordering is x,y,a,b,theta,flux,flags.<br />
+        <br />
+        SAVEFITS filename [typeOfData]<br />
+        &nbsp;&nbsp;&nbsp; Save the current image to a fits format file. Include the .fits extension in the filename. Valid values for typeOfData are 16 (for unsigned integers, no underflow/overflow checking is done) and 32 (for floats). Default is 16.<br />
+        <br />
+        STARS [Factor Radius SizeFactor EllipticityFactor]<br />
+        &nbsp;&nbsp;&nbsp; Assume the image is a deep sky image, and identify the stars. Uses the SEP algorithms (https://github.com/kbarbary/sep). Background is subtracted and stored as a temp image named &#x27;bkg&#x27;.<br />
+        &nbsp;&nbsp;&nbsp; Factor specifies the threshold multiplier factor -- the threshold will be factor*globalRms -- default is 2.0. Higher values correspond to fewer, brighter stars.<br />
+        &nbsp;&nbsp;&nbsp; Radius specifies the pixel radius used in summing the intensity of each star identified -- default is 5.<br />
+        &nbsp;&nbsp;&nbsp; SizeFactor specifies maximum size of objects to be included in the star catalog. If absoluteFlag = 0, objects with ellipse parameters a+b &gt; sizeFactor*aveSize will be excluded. If absoluteFlag != 0, objects with  a+b &gt; sizeFactor pixels will be excluded -- default is 4.0.<br />
+        &nbsp;&nbsp;&nbsp; EllipticityFactor specifies maximum ellipticity of objects to be included in the star catalog. If absoluteFlag = 0, objects with ellipticity  &gt; EllipticityFactor*aveEllipticity will be excluded. If absoluteFlag != 0, objects with ellipticity &gt; EllipticityFactor will be excluded -- default is 2.0.<br />
+        &nbsp;&nbsp;&nbsp; The star catalog is sorted in descending order according to the intensity. The identified stars are displayed in subsequent display commands. If the crosshair tool is selected, clicking on a star in the displayed image shows its size, ellipticity, and flux. Option-click on a star will mark it to be excluded from display/processing. Cmnd-click on a star will add a previously excluded star/object.<br />
+        &nbsp;&nbsp;&nbsp; See also STARCLEAR, STARSETTINGS, SAVECATALOG, GETCATALOG.<br />
+        <br />
+        STARCLEAR<br />
+        &nbsp;&nbsp;&nbsp; Delete the catalog of stars found with the STARS command.<br />
+        <br />
+        STARBACK [tileSize filtersize]<br />
+        &nbsp;&nbsp;&nbsp; Assume the image is a deep sky image, and use the SEP algorithms (https://github.com/kbarbary/sep) to find the background. tileSize is the size (in pixels) of a region grouped together -- default is 64. filtersize is the size (in tiles) of the filter -- default is 3.<br />
+        <br />
+        STARSETTINGS [absoluteFlag smallCutoff deblendContrast]<br />
+        &nbsp;&nbsp;&nbsp; If at least one argument is present, the absoluteFlag is set accordingly. If given, smallCutoff and deblendContrast can also be input. The current value of the parameters is printed.<br />
+        &nbsp;&nbsp;&nbsp; smallCutoff: stars with ellipse parameters a+b &lt;= smallCutoff, which is a float, are excluded. Default is 2.5.<br />
+        &nbsp;&nbsp;&nbsp; deblendContrast: specifies the minimum deblending contrast. Default is .005. A value of 1.0 disables deblending.<br />
+        <br />
+        STARMATCH [Factor Radius SizeFactor EllipticityFactor NumStars]<br />
+        &nbsp;&nbsp;&nbsp; Assume the current deep sky image is to be matched with an image whose stars have already been identified with the STARS command. The first four arguments are the same as for the STARS command, and should probably match. NumStars specifies how many stars should be used in searching for matching stars between the two images. These are used to determine the affine transform used to match the images.<br />
+        <br />
+        STARSYNTH<br />
+        &nbsp;&nbsp;&nbsp; Synthesize an image from the current star catalog. Each star in the catalog (that has not been excluded) is rendered as a Gaussian distribution based on its position, size, and flux. The star catalog must first be created using the STARS command.<br />
+        <br />
+
+      </div>
+
+      <div class="footer">Brought to you by Developers of OMA<br />
+        &nbsp; </div>
+    </div>
+  </body>
+</html>

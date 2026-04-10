@@ -115,14 +115,14 @@ h1,h2,h3 {
 	float: right;
 	font: bold 1.2em "Trebuchet MS",sans-serif;
 	margin-top: 9px;
-	padding: 58px 18px 8px;
+	padding: 58px 12px 8px;
 	text-align: center;
 	text-decoration: none;
 }
 .navigation a:hover {
 	background: #FFF url(img/navhover.gif) repeat-x;
 	color: #28E;
-	padding: 56px 18px 10px;
+	padding: 56px 12px 10px;
 }
 
 /* holders */

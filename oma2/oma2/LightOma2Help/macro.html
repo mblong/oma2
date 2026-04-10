@@ -1,1 +1,130 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"><html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">  <head>    <meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />    <meta name="description" content="built-in oma2 help pages" />    <meta name="keywords" content="image processing" />    <meta name="author" content="oma developers" />    <link rel="stylesheet" type="text/css" href="Light/default.css" media="screen" />    <title>OMA2 Help</title>  </head>  <body>    <div class="container">      <div class="navigation">        <div class="title">          <h1>OMA2</h1>          <h2>- Help -</h2>        </div>        <a href="CommandIndex.html">Index</a> <a href="macro.html">Macro</a> <a          href="file.html">I          / O</a> <a href="display.html">Display</a> <a href="arithmetic.html">Processing</a>        <a href="index.html">First Steps</a>        <div class="clearer"><span></span></div>      </div>      <div class="holder">        <h1>Macros</h1>        <br />        ; comment<br />        The semicolon is used to add comments to OMA commands. This can follow        the last numeric argument on a command line or can be used at the        beginning of a line. For example, a macro might have lines like this:<br />        <br />            + @offset    ; the value stored in the variable &#8220;offset&#8221; will be        added to each pixel <br />            ; now display the result (the window title will be &#8220;the result&#8221;)<br />            d the result<br />        <br />            Note that adding the &#8220;; comment&#8221; at the end of a command that        expects a string or filename argument will include &#8220;; comment&#8221; as part        of the string or filename.<br />        <br />        DMACRO [n] [command]<br />        Prompts the user for lines of a command macro to be executed using the        RMACRO command. If the argument n is omitted, definition starts with        line one. If n is specified, definition begins with the nth line of the        macro. To include numerical arguments that change each time the macro is        executed, %d can be inserted in the macro command at the location where        the number will be placed upon execution of the macro. If &#8220;command&#8221; is        not present, the program prompts for additional command lines until a        null command is entered (i.e. &lt;CR&gt; only). If the optional        &#8220;command&#8221; is included on the same line, the text of &#8220;command&#8221; replaces        any command already existing at line n and no further command lines are        solicited. Dummy arguments in Macros or Execute files include the        following:<br />        %c  the number of seconds since OMA was started (float)<br />        %d  a decimal digit<br />        %s  the string specified by the STRMAC command<br />        %f  last file name<br />        %b  maximum value (big)<br />        %l  minimum value (little)<br />        %m  multiplier (the current scale factor)<br />        %t  current date and time<br />        %v  an integer value that increments by a specified amount every time it        is used<br />        Use the VALMAC command to specify the starting value and increment.<br />        %e  the result of the last error code (0 means no error)<br />        %a  the average within the currently defined rectangle<br />        %r  the rms within the currently defined rectangle<br />        %h  the height of the current image<br />        %w  the width of the current image<br />        %x  the x pixel coordinate of the last mouse click<br />        %y  the y pixel coordinate of the last mouse click<br />        <br />        DELAY nticks<br />            Waits nticks/60 seconds before continuing on to the next command.        Use this for rough timing operations.<br />        <br />        ECHO string<br />            Prints "string" during macro execution. "string" can be replaced        with any of the macro dummy arguments (e.g., ECHO %b).<br />        <br />        ENDIF<br />            Terminates an IF command. This is applicable within Macros only.<br />        <br />        EXECUTE &lt;filename&gt;<br />            Reads OMA commands stored in the specified file into a special        execute buffer and then performs those commands. Unlike macros, these        should not contain dummy numerical arguments (%d).<br />        <br />        IF condition<br />            If condition evaluates to a non-zero value, the commands following        the IF are executed. However, if the condition is zero, the commands        between IF and ENDIF are not executed. The condition can be any        arithmetic statement and can include logical operators &lt; (less than),        &gt; (greater than), others to come....<br />        <br />        IFNOT condition<br />            If condition evaluates to a ZERO value, the commands following the        IF are executed. However, if the condition is nonzero, the commands        between IF and ENDIF are not executed. The condition can be any        arithmetic statement and can include logical operators &lt; (less than),        &gt; (greater than), others to come....<br />        <br />        FCLOSE<br />        Closes the currently open text file (there can be only one). The use of        FOPEN, FCLOSE, and FECHO allows derived values to be written to a file        from within a macro.<br />        <br />        FECHO %s<br />        Exactly as echo but instead of printing to the command window, it writes        to the file opened with FOPEN. The use of FOPEN, FCLOSE, and FECHO        allows derived values to be written to a file from within a macro.<br />        <br />        FOPEN &lt;filename&gt;<br />        Open a text file with the name &lt;filename&gt; for I/O. The use of        FOPEN, FCLOSE, and FECHO allows derived values to be written to a file        from within a macro.<br />        <br />        GMACRO &lt;filename&gt;<br />        Loads the contents of the specified file into the current macro buffer.<br />        <br />        IF condition<br />        If condition evaluates to a non-zero value, the commands following the        IF are executed. However, if the condition is zero, the commands between        IF and ENDIF are not executed. The condition can be any arithmetic        statement and can include logical operators &lt; (less than), &gt;        (greater than), others to come....<br />        <br />        IFNOT condition<br />            If condition evaluates to a ZERO value, the commands following the        IF are executed.<br />             However, if the condition is nonzero, the commands between IF and        ENDIF are not executed.<br />             The condition can be any arithmetic statement and can include        logical operators &lt;<br />             (less than), &gt; (greater than), others to come....<br />        <br />        IMACRO n<br />        Used for setting or clearing a flag which determines whether or not an        executing macro can be interrupted (using &#8220;cmd .&#8221;). If n = 0,        interruption is not allowed. If n is non-0, it is. This can be used from        within a macro to ensure that certain sequences of commands are complete        before stopping the macro. (e.g., to be sure that the camera shutter is        closed.)<br />        <br />        INCMACRO n <br />        Specifies that on each execution of a macro, values should be        incremented by value n.<br />        <br />        LMACRO <br />        Lists the contents in the current macro buffer.<br />        <br />        LOOP variable_name start end [step]<br />            Initializes a loop. The variable_name can be any string of        reasonable length. The variable takes on the initial value specified by        "start" and the commands within the loop are repeated until the variable        is &gt;= "end". ( or &lt;= "end" if step &lt; 0) If step is not        specified, a step of 1 is assumed. The end of the loop is specified by        the LOOPND command. Each LOOP must have a corresponding LOOPND. To        access the value of a loop variable, precede variable_name with "@" For        example:<br />            loop fnum 2 10 2<br />            get data@fnum<br />            disp<br />            loopnd<br />            .<br />            .<br />            Note: To signify the end of a variable name when it is followed by        other characters, use a '\' character. For example:<br />            loop fnum 2 10 2<br />            get data@fnum\_corrected<br />            disp<br />            loopnd<br />        <br />        LOOPBREAK<br />            Break out of current loop.<br />        <br />        LOOPND<br />            Specifies the end of a loop initiated with the LOOP command.<br />        <br />        MACRO [n m]<br />        Like &#8220;RMACRO [n m]&#8221; except that printing of intermediate output is        automatically suppressed.<br />        <br />        PAUSE [pause_string]<br />        When executed in a macro, the PAUSE command causes macro execution to be        suspended until a key on the keyboard is pressed, at which time the        macro will continue execution. If the optional pause_string is included,        it will be echoed to the right of the Macro # in the status window. The        pause_string can contain variable names or %d type dummy arguments that        will be filled in before echoing the string. To terminate a paused        macro, type &lt;cmnd period&gt;.<br />        <br />        RMACRO [n m] <br />        Starts executing commands in the macro buffer with %d being replaced        first by value n. Subsequently, n is incremented by the amount specified        in the INCMACRO command (default is 1). If the new numeric value is        equal to m, the macro will be executed again. Menu items can be selected        and the appropriate commands executed during macros. Commands typed        during the execution of a macro will be echoed to the terminal but not        performed. To stop a macro during execution type &#8220;cmd .&#8221; (hold down the        apple key and type &#8220;.&#8221;)<br />        <br />        SMACRO <br />        Saves the contents of the current macro buffer to a specified file.        SMACRO is also used to save commands to be used with the EXECUTE        command.<br />        <br />        SHELL shell_command<br />            Opens a pipe to a shell and sends along the command. Output from the        command is echoed to the command window.<br />        <br />        STOPONERROR flag<br />            If flag = 1, macro or execute commands will stop on error        conditions. If flag = 0 (default) execution will continue.<br />        <br />        STRMACRO string<br />        Specifies that &#8220;string&#8221; is to be substituted for any &#8220;%s&#8221; found in macro        or execute commands. If no string is specified, the current string is        printed.<br />        <br />        <br />      </div>      <div class="footer">Brought to you by Developers of OMA<br />          </div>    </div>  </body></html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+    <meta name="description" content="built-in oma2 help pages" />
+    <meta name="keywords" content="image processing" />
+    <meta name="author" content="oma developers" />
+    <link rel="stylesheet" type="text/css" href="Light/default.css" media="screen" />
+    <title>OMA2 Help</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="navigation">
+        <div class="title">
+          <h1>OMA2</h1>
+          <h2>- Help -</h2>
+        </div>
+        <a href="CommandIndex.html">Index</a>
+        <a href="astro.html">Astro</a>
+        <a href="macro.html">Macro</a>
+        <a href="file.html">I / O</a>
+        <a href="display.html">Display</a>
+        <a href="arithmetic.html">Processing</a>
+        <a href="index.html">First Steps</a>
+        <div class="clearer"><span></span></div>
+      </div>
+      <div class="holder">
+        <h1>Macros and Scripting Commands</h1>
+        ACMEVELOCITY telemetryFileName<br />
+        &nbsp;&nbsp;&nbsp; For ACME color data camera images, this returns values for the velocities of the coflow, N2, and fuel, along with their relative MAXIMUM deviations. The data for this is based on the timestamp in the image file name and data in the telemetry file. The command requires the following variables to be defined beforehand: [qtOma Command]<br />
+        &nbsp;&nbsp;&nbsp; mfc2Range<br />
+        &nbsp;&nbsp;&nbsp; fuelCorrection<br />
+        &nbsp;&nbsp;&nbsp; exposure<br />
+        &nbsp;&nbsp;&nbsp; name<br />
+        <br />
+        DMACRO [n] [command]<br />
+        &nbsp;&nbsp;&nbsp; Prompts the user for lines of a command macro to be executed using the RMACRO command. If the argument n is omitted, definition starts with line one. If n is specified, definition begins with the nth line of the macro. To include numerical arguments that change each time the macro is executed, %d can be inserted in the macro command at the location where the number will be placed upon execution of the macro. If &quot;command&quot; is not present, the program prompts for additional command lines until a null command is entered (i.e. &lt;CR&gt; only). If the optional &quot;command&quot; is included on the same line, the text of &quot;command&quot; replaces any command already existing at line n and no further command lines are solicited. Dummy arguments in Macros or Execute files include the following:<br />
+        &nbsp;&nbsp;&nbsp; %c  the number of seconds since OMA was started (float)<br />
+        &nbsp;&nbsp;&nbsp; %d  a decimal digit<br />
+        &nbsp;&nbsp;&nbsp; %s  the string specified by the STRMAC command<br />
+        &nbsp;&nbsp;&nbsp; %f  last file name<br />
+        &nbsp;&nbsp;&nbsp; %b  maximum value (big)<br />
+        &nbsp;&nbsp;&nbsp; %l  minimum value (little)<br />
+        &nbsp;&nbsp;&nbsp; %t  current date and time<br />
+        &nbsp;&nbsp;&nbsp; %k  current date formatted as yyyy-mm-dd<br />
+        &nbsp;&nbsp;&nbsp; %v  an integer value that increments by a specified amount every time it is used<br />
+        &nbsp;&nbsp;&nbsp; Use the VALMAC command to specify the starting value and increment.<br />
+        &nbsp;&nbsp;&nbsp; %e  the result of the last error code (0 means no error)<br />
+        &nbsp;&nbsp;&nbsp; %a  the average within the currently defined rectangle<br />
+        &nbsp;&nbsp;&nbsp; %r  the rms within the currently defined rectangle<br />
+        &nbsp;&nbsp;&nbsp; %h  the height of the current image<br />
+        &nbsp;&nbsp;&nbsp; %w  the width of the current image<br />
+        &nbsp;&nbsp;&nbsp; %x  the x pixel coordinate of the last mouse click<br />
+        &nbsp;&nbsp;&nbsp; %y  the y pixel coordinate of the last mouse click<br />
+        &nbsp;&nbsp;&nbsp; %p	Filled in with the &quot;save data&quot; prefix<br />
+        &nbsp;&nbsp;&nbsp; %q	Filled in with the &quot;get data&quot; prefix<br />
+        <br />
+        DELAY nticks<br />
+        &nbsp;&nbsp;&nbsp; Waits nticks/60 seconds before continuing on to the next command. Use this for rough timing operations.<br />
+        <br />
+        ECHO string<br />
+        &nbsp;&nbsp;&nbsp; Prints &quot;string&quot; during macro execution. &quot;string&quot; can be replaced with any of the macro dummy arguments (e.g., ECHO %b).<br />
+        <br />
+        ENDIF<br />
+        &nbsp;&nbsp;&nbsp; Terminates an IF command. This is applicable within Macros only.<br />
+        <br />
+        EXECUTE &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Reads OMA commands stored in the specified file into a special execute buffer and then performs those commands. Unlike macros, these should not contain dummy numerical arguments (%d).<br />
+        <br />
+        EXIT<br />
+        &nbsp;&nbsp;&nbsp; Quit the program.<br />
+        <br />
+        IF condition<br />
+        &nbsp;&nbsp;&nbsp; If condition evaluates to a non-zero value, the commands following the IF are executed. However, if the condition is zero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators &lt; (less than), &gt; (greater than), others to come....<br />
+        <br />
+        IFNOT condition<br />
+        &nbsp;&nbsp;&nbsp; If condition evaluates to a ZERO value, the commands following the IF are executed. However, if the condition is nonzero, the commands between IF and ENDIF are not executed. The condition can be any arithmetic statement and can include logical operators &lt; (less than), &gt; (greater than), others to come....<br />
+        <br />
+        IFDEFINED variableName<br />
+        &nbsp;&nbsp;&nbsp; If variableName is a defined variable, the commands following the IF are executed, otherwise, the commands between IF and ENDIF are not executed.<br />
+        <br />
+        IFNDEFINED variableName<br />
+        &nbsp;&nbsp;&nbsp; If variableName is NOT a defined variable, the commands following the IF are executed, otherwise, the commands between IF and ENDIF are not executed.<br />
+        <br />
+        LMACRO<br />
+        &nbsp;&nbsp;&nbsp; Lists the contents in the current macro buffer.<br />
+        <br />
+        LOOP variable_name start end [step]<br />
+        &nbsp;&nbsp;&nbsp; Initializes a loop. The variable_name can be any string of reasonable length. The variable takes on the initial value specified by &quot;start&quot; and the commands within the loop are repeated until the variable is &gt;= &quot;end&quot;. ( or &lt;= &quot;end&quot; if step &lt; 0) If step is not specified, a step of 1 is assumed. The end of the loop is specified by the LOOPND command. Each LOOP must have a corresponding LOOPND. To access the value of a loop variable, precede variable_name with &quot;@&quot; For example:<br />
+        &nbsp;&nbsp;&nbsp; loop fnum 2 10 2<br />
+        &nbsp;&nbsp;&nbsp; get data@fnum<br />
+        &nbsp;&nbsp;&nbsp; disp<br />
+        &nbsp;&nbsp;&nbsp; loopnd<br />
+        &nbsp;&nbsp;&nbsp; .<br />
+        &nbsp;&nbsp;&nbsp; .<br />
+        &nbsp;&nbsp;&nbsp; Note: To signify the end of a variable name when it is followed by other characters, use a &#x27;\&#x27; character. For example:<br />
+        &nbsp;&nbsp;&nbsp; loop fnum 2 10 2<br />
+        &nbsp;&nbsp;&nbsp; get data@fnum\_corrected<br />
+        &nbsp;&nbsp;&nbsp; disp<br />
+        &nbsp;&nbsp;&nbsp; loopnd<br />
+        <br />
+        LOOPBREAK<br />
+        &nbsp;&nbsp;&nbsp; Break out of current loop.<br />
+        <br />
+        LOOPND<br />
+        &nbsp;&nbsp;&nbsp; Specifies the end of a loop initiated with the LOOP command.<br />
+        <br />
+        MACRO [n m]<br />
+        &nbsp;&nbsp;&nbsp; Like &quot;RMACRO [n m]&quot; except that printing of intermediate output is automatically suppressed.<br />
+        <br />
+        PAUSE [string]<br />
+        &nbsp;&nbsp;&nbsp; Within a macro or execute buffer, pauses execution and speaks the specified string (or &quot;PAUSED&quot; if no string is given). Use this to pause execution and alert the user.<br />
+        <br />
+        RMACRO [n m]<br />
+        &nbsp;&nbsp;&nbsp; Starts executing commands in the macro buffer with %d being replaced first by value n. Subsequently, n is incremented by the amount specified in the INCMACRO command (default is 1). If the new numeric value is equal to m, the macro will be executed again. Menu items can be selected and the appropriate commands executed during macros. Commands typed during the execution of a macro will be echoed to the terminal but not performed. To stop a macro during execution type &quot;cmd .&quot; (hold down the apple key and type &quot;.&quot;)<br />
+        <br />
+        STRMACRO string<br />
+        &nbsp;&nbsp;&nbsp; Specifies that &quot;string&quot; is to be substituted for any &quot;%s&quot; found in macro or execute commands. If no string is specified, the current string is printed.<br />
+        <br />
+        STOPONERROR flag<br />
+        &nbsp;&nbsp;&nbsp; If flag = 1, macro or execute commands will stop on error conditions. If flag = 0 (default) execution will continue.<br />
+        <br />
+
+      </div>
+
+      <div class="footer">Brought to you by Developers of OMA<br />
+        &nbsp; </div>
+    </div>
+  </body>
+</html>

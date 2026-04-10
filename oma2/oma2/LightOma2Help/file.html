@@ -1,1 +1,299 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"><html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">  <head>    <meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />    <meta name="description" content="built-in oma2 help pages" />    <meta name="keywords" content="image processing" />    <meta name="author" content="oma developers" />    <link rel="stylesheet" type="text/css" href="Light/default.css" media="screen" />    <title>OMA2 Help</title>  </head>  <body>    <div class="container">      <div class="navigation">        <div class="title">          <h1>OMA2</h1>          <h2>- Help -</h2>        </div>        <a href="CommandIndex.html">Index</a> <a href="macro.html">Macro</a> <a          href="file.html">I          / O</a> <a href="display.html">Display</a> <a href="arithmetic.html">Processing</a>        <a href="index.html">First Steps</a>        <div class="clearer"><span></span></div>      </div>      <div class="holder">        <h1>File I/O Commands</h1>        COMPOSITE &lt;filename&gt; <br />        Create a composite image by appending the data in the specified file to        that which exists in the current image buffer. The width of the        specified file must be the same as that of the current image. The        OPENFLAG command works in conjunction with the COMPOSITE command in the        same way that it does with the GET command. <br />        <br />        COMTEMPIMAGE name <br />        Create a composite image by appending the data in the temporary image to        that which exists in the current image buffer. The width of the        specified file must be the same as that of the current image.<br />        <br />        FWDATMATLAB  &lt;filename&gt;<br />            Writes the data in the current buffer as a tab-delimited text file.        Format is a matrix of values that can be loaded directly into matlab.<br />        <br />        GET &lt;filename&gt;<br />            Loads the data from the specified file into the current image data        buffer. The "Get Data Files" prefix is used. The "Get Data Files" suffix        is used unless the specified filename has a suffix of .jpg, .tiff, .tif,        or .nef; in those cases no suffix is added and the appropriate decoding        routines are called according to the file type.<br />        <br />        GETSETTINGS [filename]<br />            Gets settings from the specified file (uses the appropriate prefix        and suffix specified in the preferences). If no filename is given, OMA        Settings from within the oma application are loaded.<br />        <br />        GETFUNCTION n filename<br />            Read in a tabulated function to be used by the LOOKUP command. n is        the function number to be defined. filename is file containing y=f(x)        data pairs, preceeded by number of table entries.<br />            Assumptions for tabulated functions:<br />            File format:<br />            first number is integer with the number of pairs to follow<br />            pairs are float with x followed by f(x) on the same line<br />            x values are ordered smallest to largest<br />            y = f(x) is single valued<br />        <br />        GETBINARYFILE &lt;filename&gt; rows columns headerBytes        bytesPerDataPoint swapBytesFlag [unsignedFlag]<br />            Read in a binary file with the specified parameters. If        bytesPerDataPoint is -sizeof(float), the binary data are treated as        float. Other reasonable values would be 1, 2, or 4.<br />        <br />        GMACRO &lt;filename&gt;<br />            Loads the contents of the specified file into the current macro        buffer.<br />        <br />        GETNEXT<br />            Get the next image from the file opened with the OPENFILE command.        If no additional image data is available, the open file is closed.<br />        <br />        GETFILENAMES NameFile<br />            Open NameFile (currently uses macro prefix and suffix) which        contains the names of files. The NEXTFILE command is used to open the        next file. NameFile is left open until all files have been accessed.<br />        <br />        NEXTFILE [prefix]<br />            Open the next file specified in the FileNames file that was opened        with the GetFileNames command. If a prefix is specified, that is added        to the name before trying to open the file. command_return_1 is the the        filename without any prefix and without the extension (last 4        characters).<br />        <br />        OPENFILE &lt;filename&gt;<br />            Reads data from the specified filename but does not close it. If        there is more than one image in the file, the GETNEXT command will read        the next image. This type of multi-image data file can be created with        the CREATEFILE, CONCATFILE, CLOSEFILE commands, or may be produced by        some cameras.<br />        <br />        SAVE &lt;filename&gt; <br />        Saves the current data buffer to the specified file.<br />        <br />        SAVSETTINGS [filename]<br />        Saves the current settings to the specified file (uses the appropriate        prefix and suffix specified in the preferences). If no filename is        given, OMA Settings are saved within the oma application. <br />        <br />        SATIFF &lt;filename&gt; <br />            Converts the contents of the OMA Image buffer to 8 bit unsigned data        and then uses the LibTIFF TIFFWriteEncodedStrip function to save the        data to a TIFF image specified on the command line. The 'save' file        prefixes are used. A ".tif" extension is automatically appended to the        filename. To save as a color image, use the COLORFLAG command to set the        flag appropriately.<br />        <br />        SATIFFSCALED min max &lt;filename&gt;<br />            Convert image to 16 bit and save as a TIFF file. Uses the specified        min and max for scaling rather than the min and max of the image in the        buffer. Results will be between 0 - 65535. Depending on min and max, the        image may be clipped or the full 16-bit dynamic range may not be used.        To save as a color image, use the COLORFLAG command to set the flag        appropriately.<br />        <br />        UPREFX type <br />            Force use of prefix/suffix specified by 'type.' Possible cases for        'type' include the following:<br />            s   Use Save File prefix and suffix for both saving and getting        files<br />            g   Use Get File prefix and suffix for both saving and getting files<br />            d   Use Default prefix and suffix<br />        <br />        CREATEFILE &lt;filename&gt;<br />            Opens a file with the specified name, saves the current data and        format information, and leaves the file open. Subsequently, the        CONCATFILE command can be used to add more data to the open file. use        CLOSEFILE to close the file. See also OPENFILE and GETNEXTFILE.<br />        <br />        CONCATFILE<br />            Saves the current data buffer to the file opened with the CREATEFILE        command. See also OPENFILE and GETNEXTFILE.<br />        <br />        CLOSEFILE<br />            Closes the file opened with the CREATEFILE command. See also        OPENFILE and GETNEXTFILE.<br />        <br />        FCLOSE<br />            Closes the currently open text file (there can be only one). The use        of FOPEN, FCLOSE, and FECHO allows derived values to be written to a        file from within a macro.<br />        <br />        FECHO string<br />            Writes the string to the file opened with FOPEN. A newLine is added        after the string unless the string ends in ..., in which case no newLine        is added. The use of FOPEN, FCLOSE, and FECHO allows derived values to        be written to a file from within a macro.<br />        <br />        FOPEN &lt;filename&gt;<br />            Open a text file with the name &lt;filename&gt; for I/O. The use of        FOPEN, FCLOSE, and FECHO allows derived values to be written to a file        from within a macro.<br />        <br />        <h1>Hardware I/O Commands [available in oma2cam]</h1>        <br />        AINPUT channel<br />            Read analog input from the specified channel on a LabJack U3.        Channel must be in the range 0-3; The voltage is returned in        command_return_1. [oma2cam only]<br />        <br />        AOUTPUT v1 v2<br />            Sends voltages to D/A converters 0 and 1 on a Labjack USB U3        analog/digital I/O device. [oma2cam only]<br />        <br />        CAPTURE file_name<br />            [This command is only available in oma2cam. libgphoto2 must be        installed.] Uses libgphoto2 calls to capture and download an image from        a digital camera that is recognized by libgphoto2 (and supports        capture).<br />        <br />        CAMLISTSETTINGS<br />            [This command is only available in oma2cam. libgphoto2 must be        installed.] Uses gphoto2 calls to list the settings of the camera that        can be set, along with their current values.<br />        <br />        CAMGETSETTING  name<br />            [This command is only available in oma2cam. libgphoto2 must be        installed.] Uses gphoto2 calls to list the current value of the        specified setting, along with the allowed values for resetting it.<br />        <br />        CAMSETSETTING  name  new_setting_value<br />            [This command is only available in oma2cam. libgphoto2 must be        installed.] Uses gphoto2 calls to reset the value of the specified        setting to the new value. For a listing of valid setting values, use the        GETCAMSETTING command.<br />        <br />        CAMCLOSE<br />            [This command is only available in oma2cam. libgphoto2 must be        installed.] Disconnects from the digital camera accessed through        gphoto2.<br />        <br />        DOUTPUT channel state<br />            Sets the specified digital output channel on a Labjack U3 to the        specified state (0 or 1). Channel must be in the range 4-7. [oma2cam        only]<br />        <br />        EXPOSURE exposureValue<br />            Sets an exposure time to be used in generating HDR images. If no        argument is given, the value of the current exposure is echoed.<br />        <br />        GIGE command<br />            Available in oma2cam. Commands are as follows:<br />            ACQuire (gets frames in MULTIFRAME mode)<br />            EXPosure &lt;exposureTime&gt; (in microseconds)<br />            GAIn &lt;gain&gt; (0 or 33)<br />            NUMber &lt;numberOfFrames&gt; (to be acquired by the ACQUIRE        command; default is 1)<br />            RATe &lt;frameRate&gt;<br />            LABON (label frames)<br />            LABOFf (don't label frames)<br />            PREview &lt;numberFrames&gt; (show preview for specified number of        frames)<br />            EXTernal (set external triggering)<br />            INTernal (set internal triggering)<br />            DELay &lt;triggerDelay&gt; (set the trigger delay [microseconds])<br />            SFRames &lt;filename&gt; &lt;numFrames&gt; (save the specified        number of frames using the specified filename. Uses FREERUN mode. Also        saves a text file showing frame times.)<br />            STAtus (print camera settings)<br />            FIXbad &lt;flag&gt; (set flag to 1 to clear bad pixels before        display or save --&gt; must use FINDBAD first)<br />            DISplay &lt;flag&gt; (set flag to 1 to display during acqusition)<br />            HDR &lt;filename&gt; &lt;numFrames&gt; &lt;multiplier&gt; (save the        specified number of frames using the specified filename. Subsequent        exposure times are multiplied by the multiplier.)<br />        <br />        SERCLOSE<br />            Closes the serial port opened with the last "SERIAL device_name"        command. This can be used if you need to talk to more than one serial        device -- open device 1, send commands, close the serial port, open        device 2, send commands, and so forth. Available in oma2cam.<br />        <br />        SERIAL device_name (or character_string) [baudRate Timeout]<br />            Provides a simple way of sending text strings to a serial device.        For example, a KeySpan USB to serial converter can be used to control a        variety stepping motor controllers, spectrographs, arduinos etc. The        device name should be something like "/dev/tty.KeySpan1" Note that        upper/lower case matters on these specifications. Look in the "/dev"        directory to find the name of your specific hardware. When opening a        device, the baud rate and timeout value (in thenths of seconds) can be        specified. Defaults are baud = 9600 and timeout = 0. After opening the        device with the first SERIAL command, subsequent SERIAL commands will        send across the specified character_string, followed by a &lt;CR&gt;.        This uses standard POSIX calls.  Available in oma2cam.<br />        <br />        SBIG command_string [parameters]<br />            [This command is only available in oma2cam. The SBIG drivers must be        installed.]<br />            command_string specifies the SBIG command (listed below).<br />             Only the first 3 characters of SBIG commands matter.<br />             The values for parameters depend on the particular command.<br />            .<br />             SBIG command_strings:<br />             .<br />             EXPosure exposure_time<br />                Specify exposure_time in seconds. Does not take an image.<br />            .<br />             FILter<br />                 Specify which fillter to use.<br />            .<br />             TEMperature<br />                 Specify set temperature of the CCD in degrees C.<br />            .<br />             DISconnect<br />                 Close the device and driver.<br />            .<br />             STAtus <br />                 Print out CCD info, temperature, exposure, etc.<br />            .<br />             ACQuire <br />                Get an image using the current settings.<br />        <br />        WAITHI Channel<br />            Waits until the specified digital I/O channel is aserted high on a        LabJack U3. Channel must be in the range 4-7. [oma2cam only]<br />        <br />        <br />        <br />        <br />        <br />        <br />        <br />      </div>      <div class="footer">Brought to you by Developers of OMA<br />          </div>    </div>  </body></html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+    <meta name="description" content="built-in oma2 help pages" />
+    <meta name="keywords" content="image processing" />
+    <meta name="author" content="oma developers" />
+    <link rel="stylesheet" type="text/css" href="Light/default.css" media="screen" />
+    <title>OMA2 Help</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="navigation">
+        <div class="title">
+          <h1>OMA2</h1>
+          <h2>- Help -</h2>
+        </div>
+        <a href="CommandIndex.html">Index</a>
+        <a href="astro.html">Astro</a>
+        <a href="macro.html">Macro</a>
+        <a href="file.html">I / O</a>
+        <a href="display.html">Display</a>
+        <a href="arithmetic.html">Processing</a>
+        <a href="index.html">First Steps</a>
+        <div class="clearer"><span></span></div>
+      </div>
+      <div class="holder">
+        <h1>File and Hardware I/O Commands</h1>
+        <br />
+        <span style="font-weight: bold;">** File I/O Commands **</span><br />
+        <br />
+        BINARGUMENTS rows columns headerBytes bytesPerDataPoint swapBytesFlag [unsignedFlag]<br />
+        &nbsp;&nbsp;&nbsp; Specify parameters for reading in binary files. If bytesPerDataPoint is -sizeof(float), the binary data are treated as float. Other reasonable values would be 1, 2, or 4. The extension for binary files is specified using the BINEXTENSION command. Once these are specified, binary files can be read in using the GET command, or by dropping them onto the status window.<br />
+        <br />
+        BINEXTENSION fileExtension<br />
+        &nbsp;&nbsp;&nbsp; Specify the extension for binary files. Together with the BINARGUMENTS command, this allows binary files to be read in with GET or dropped onto the status window.<br />
+        <br />
+        CREATEFILE &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Opens a file with the specified name, saves the current data and format information, and leaves the file open. Subsequently, the CONCATFILE command can be used to add more data to the open file. Use CLOSEFILE to close the file. See also OPENFILE and GETNEXT.<br />
+        <br />
+        CONCATFILE<br />
+        &nbsp;&nbsp;&nbsp; Saves the current data buffer to the file opened with the CREATEFILE command. See also OPENFILE and GETNEXT.<br />
+        <br />
+        CLOSEFILE<br />
+        &nbsp;&nbsp;&nbsp; Closes the file opened with the CREATEFILE command. See also OPENFILE and GETNEXT.<br />
+        <br />
+        FCLOSE<br />
+        &nbsp;&nbsp;&nbsp; Closes the currently open text file (there can be only one). The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.<br />
+        <br />
+        FECHO string<br />
+        &nbsp;&nbsp;&nbsp; Writes the string to the file opened with FOPEN. A newLine is added after the string unless the string ends in ..., in which case no newLine is added. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro.<br />
+        <br />
+        FOPEN &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Open a text file with the name &lt;filename&gt; for I/O. The use of FOPEN, FCLOSE, and FECHO allows derived values to be written to a file from within a macro. &lt;filename&gt; should specify the extension (e.g., .txt or .csv).<br />
+        <br />
+        FWDATMATLAB  &lt;filename&gt; [delimiter]<br />
+        &nbsp;&nbsp;&nbsp; Writes the data in the current buffer as a text file. If no delimiter is specified, tab is used and the file will have the Save File extension. If the delimiter is &quot;,&quot; the file gets the .csv extension. Format is a matrix of values that can be loaded directly into matlab.<br />
+        <br />
+        GET &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Loads the data from the specified file into the current image data buffer. The &quot;Get Data Files&quot; prefix is used. The &quot;Get Data Files&quot; suffix is used unless the specified filename has a suffix of .jpg, .tiff, .tif, or .nef; in those cases no suffix is added and the appropriate decoding routines are called according to the file type.<br />
+        <br />
+        GETRGB &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Alias for the GET command. Loads the data from the specified file into the current image data buffer.<br />
+        <br />
+        GETFILENAMES NameFile<br />
+        &nbsp;&nbsp;&nbsp; Open NameFile (uses GET DATA FILES prefix and &quot;.txt&quot; as suffix), which contains the names of files. The NEXTFILE command is used to open the next file. NameFile is left open until all files have been accessed. NameFile can be generated with a SHELL command. See also NEXTFILE command.<br />
+        <br />
+        GETFOLDERNAMES FolderFile<br />
+        &nbsp;&nbsp;&nbsp; Open FolderFile (uses GET DATA FILES prefix and &quot;.txt&quot; as suffix), which contains the names of folders. The NEXTFOLDER command is used to read the next folder name. FolderFile is left open until all folders have been accessed. FolderFile can be generated with a SHELL command. See also NEXTFOLDER command.<br />
+        <br />
+        GETSETTINGS [filename]<br />
+        &nbsp;&nbsp;&nbsp; Gets settings from the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings from within the oma application are loaded.<br />
+        <br />
+        GETBINARYFILE &lt;filename&gt; rows columns headerBytes bytesPerDataPoint swapBytesFlag [unsignedFlag]<br />
+        &nbsp;&nbsp;&nbsp; Read in a binary file with the specified parameters. If bytesPerDataPoint is -sizeof(float), the binary data are treated as float. Other reasonable values would be 1, 2, or 4. Specified parameters do not change those set with the BINARGUMENTS command.<br />
+        <br />
+        GMACRO &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Loads the contents of the specified file into the current macro buffer.<br />
+        <br />
+        GETNEXT<br />
+        &nbsp;&nbsp;&nbsp; Get the next image from the file opened with the OPENFILE command. If no additional image data is available, the open file is closed.<br />
+        <br />
+        MYSQSERVER server userName password databaseName<br />
+        &nbsp;&nbsp;&nbsp; Opens a new connection to the named MYSQL database on the specified server (e.g., cld3.eng.yale.edu) with the userName and password specified. See also SQLNEW [qtoma command]<br />
+        <br />
+        MYSQTABLE tableName<br />
+        &nbsp;&nbsp;&nbsp; Creates a table named tableName on the open MYSQL server if it doesn&#x27;t already exist. The table will contain a numbered imageID and imageData containing the image displayed in the current data window. In addition, any variable name beginning with &quot;sql&quot; will be added as a column to the table (minus the &quot;sql&quot;). [qtoma command]<br />
+        <br />
+        NEXTFILE [prefix] [shortNameLength]<br />
+        &nbsp;&nbsp;&nbsp; Open the next file specified in the NameFile that was opened with the GetFileNames command. If a prefix is specified, that is added to the name before trying to open the file. A leading ; or - in the filename list indicates that file should be skipped. The prefix must be specified in order to set a shortNameLength. command_return_1 is the filename without any prefix and without the extension (last 4 characters). command_return_2 is the last shortNameLength characters of the filename (default is 10).<br />
+        <br />
+        NEXTFOLDER<br />
+        &nbsp;&nbsp;&nbsp; Read the next entry in the FolderNames file that was opened with the GETFOLDERNAMES command. command_return_1 has the local folder name. Typically this would be saved to a variable (e.g., named &quot;folder&quot;) for use in subsequent NEXTFILE commands.<br />
+        <br />
+        OPENFILE &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Reads data from the specified filename but does not close it. If there is more than one image in the file, the GETNEXT command will read the next image. This type of multi-image data file can be created with the CREATEFILE, CONCATFILE, CLOSEFILE commands, or may be produced by some cameras.<br />
+        <br />
+        SAVEFILE &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Saves the current data buffer to the specified file.<br />
+        <br />
+        SAVSETTINGS [filename]<br />
+        &nbsp;&nbsp;&nbsp; Saves the current settings to the specified file (uses the appropriate prefix and suffix specified in the preferences). If no filename is given, OMA Settings are saved within the oma application.<br />
+        <br />
+        SATIFF &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Converts the contents of the OMA Image buffer to 16 bit unsigned data and saves a compressed 16-bit TIFF image to the specified filename. The &#x27;save&#x27; file prefix is used. A &quot;.tif&quot; extension is automatically appended to the filename.<br />
+        <br />
+        SATIFFSCALED min max &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Converts the image to 16 bit and saves it as a compressed 16-bit TIFF file. The specified min and max are used for scaling rather than the min and max of the image in the buffer. Results will be between 0 - 65535. Depending on min and max, the image may be clipped or the full 16-bit dynamic range may not be used.<br />
+        <br />
+        SAVETIFF &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; This saves the current image as a compressed 16-bit TIFF file, with the color min and max used for scaling. Results will be between 0 - 65535. For processed images, this provides a higher dynamic range alternative to saving them as JPEGs.<br />
+        <br />
+        SAVEJPG &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Saves the current image bitmap to a JPG file. The current display parameters are used to create the bitmap. Include the .jpg extension in the file name.<br />
+        <br />
+        SAVEPDF &lt;filename&gt;<br />
+        &nbsp;&nbsp;&nbsp; Saves the current data window image to a PDF file. Any text labels that are displayed on the data window will be part of the pdf. Include the .pdf extension in the file name.<br />
+        <br />
+        SAVEINT &lt;FileName&gt; [typeOfInteger]<br />
+        &nbsp;&nbsp;&nbsp; Save the data to an oma2 file where the values are converted to integers. Default is typeOfInteger=16 (unsigned 16-bit integers) Other options for typeOfInteger are -16 (signed short), 8 (unsigned char), or -8 (signed char). Out of bounds values for a given type are set to the type&#x27;s minimum and maximum -- this modifies the current image as well. FileName must not contain white-space characters. See also the MAP command.<br />
+        <br />
+        SAVEFITS filename [typeOfData]<br />
+        &nbsp;&nbsp;&nbsp; Save the current image to a fits format file. Include the .fits extension in the filename. Valid values for typeOfData are 16 (for unsigned integers, no underflow/overflow checking is done) and 32 (for floats). Default is 16.<br />
+        <br />
+        SAVECATALOG filename<br />
+        &nbsp;&nbsp;&nbsp; Save information from the star catalog to a csv file. The star catalog is first created with the STARS command. It may also be modified interactively by option-clicking or cmnd-clicking on displayed stars/objects. Ordering is x,y,a,b,theta,flux,flags.<br />
+        <br />
+        GETCATALOG filename<br />
+        &nbsp;&nbsp;&nbsp; Load information from a star catalog previously saved to a csv file using the SAVECATALOG command. This information is used for display/processing and will not be used for the STARMATCH command. Ordering is x,y,a,b,theta,flux,flags.<br />
+        <br />
+        SHELL shell_command<br />
+        &nbsp;&nbsp;&nbsp; Opens a pipe to a shell and sends along the command. Output from the command is echoed to the command window.<br />
+        <br />
+        SAY string<br />
+        &nbsp;&nbsp;&nbsp; Say the string on the computer&#x27;s speaker.<br />
+        <br />
+        SQLADD<br />
+        &nbsp;&nbsp;&nbsp; Adds the current displayed image to the database table previously opened. This could be a SQLite or mySQL database.  See also MYSQSERVER and SQLNEW [qtoma command]<br />
+        <br />
+        SQLNEW databaseName tableName<br />
+        &nbsp;&nbsp;&nbsp; Opens a new SQLite database file named databaseName.db and creates a table named tableName if it doesn&#x27;t already exist. If databaseName.db already exists, it is deleted and a new database started. The table will contain a numbered imageID and imageData containing the image displayed in the current data window. In addition, any variable name beginning with &quot;sql&quot; will be added as a column to the table (minus the &quot;sql&quot;). See also MYSQSERVER [qtoma command]<br />
+        <br />
+        SQLOPEN databaseName tableName<br />
+        &nbsp;&nbsp;&nbsp; Opens an existing SQLite database file named databaseName.db and creates a table named tableName if it doesn&#x27;t already exist. The table will contain a numbered imageID and imageData containing the image displayed in the current data window. In addition, any variable name beginning with &quot;sql&quot; will be added as a column to the table (minus the &quot;sql&quot;). [qtoma command]<br />
+        <br />
+        SQLCLOSE<br />
+        &nbsp;&nbsp;&nbsp; Closes any open SQL database. [qtoma command]<br />
+        <br />
+        UPREFIX type<br />
+        &nbsp;&nbsp;&nbsp; Force use of prefix/suffix specified by &#x27;type.&#x27; Possible cases for &#x27;type&#x27; include the following:<br />
+        &nbsp;&nbsp;&nbsp; s   Use Save File prefix and suffix for both saving and getting files<br />
+        &nbsp;&nbsp;&nbsp; g   Use Get File prefix and suffix for both saving and getting files<br />
+        &nbsp;&nbsp;&nbsp; d   Use Default prefix and suffix<br />
+        <br />
+        VIDOPENFILE framesPerSecond filename<br />
+        &nbsp;&nbsp;&nbsp; Open a video file with the specified name and add the image in the last-displayed data data window to the video. The file is saved to the directory specified by Save Data Files; the extension &quot;.avi&quot; should be specified as part of the filename. [qtoma command]<br />
+        <br />
+        VIDADDFRAME<br />
+        &nbsp;&nbsp;&nbsp; Adds the image from the last-displayed data window to the video opened with the VIDOPENFILE command. [qtoma command]<br />
+        <br />
+        VIDCLOSEFILE<br />
+        &nbsp;&nbsp;&nbsp; Closes the currently open video file. This must be done after adding frames to a video. [qtoma command]<br />
+        <br />
+        X0 n<br />
+        &nbsp;&nbsp;&nbsp; Specifies that the detector is to be read out starting at column n.<br />
+        <br />
+        Y0 n<br />
+        &nbsp;&nbsp;&nbsp; Specifies that the detector is to be read out starting at row n.<br />
+        <br />
+        <br />
+        <span style="font-weight: bold;">** Hardware I/O Commands [available in oma2cam] **</span><br />
+        <br />
+        AINPUT channel<br />
+        &nbsp;&nbsp;&nbsp; Read analog input from the specified channel on a LabJack U3. Channel must be in the range 0-3; The voltage is returned in command_return_1. [oma2cam only]<br />
+        <br />
+        AOUTPUT v1 v2<br />
+        &nbsp;&nbsp;&nbsp; Sends voltages to D/A converters 0 and 1 on a Labjack USB U3 analog/digital I/O device. [oma2cam only]<br />
+        <br />
+        CAPTURE file_name<br />
+        &nbsp;&nbsp;&nbsp; [This command is only available in oma2cam. libgphoto2 must be installed.] Uses libgphoto2 calls to capture and download an image from a digital camera that is recognized by libgphoto2 (and supports capture).<br />
+        <br />
+        CAMLISTSETTINGS<br />
+        &nbsp;&nbsp;&nbsp; [This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to list the settings of the camera that can be set, along with their current values.<br />
+        <br />
+        CAMGETSETTING  name<br />
+        &nbsp;&nbsp;&nbsp; [This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to list the current value of the specified setting, along with the allowed values for resetting it.<br />
+        <br />
+        CAMSETSETTING  name  new_setting_value<br />
+        &nbsp;&nbsp;&nbsp; [This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to reset the value of the specified setting to the new value. For a listing of valid setting values, use the CAMGETSETTING command.<br />
+        <br />
+        CAMEXPOSE [n]<br />
+        &nbsp;&nbsp;&nbsp; [This command is only available in oma2cam. libgphoto2 must be installed.] Uses gphoto2 calls to capture n images from the camera (default is 1) and download them.<br />
+        <br />
+        CANON command arguments<br />
+        &nbsp;&nbsp;&nbsp; [Only available in oma2cam; requires Canon EDSDK framework]<br />
+        &nbsp;&nbsp;&nbsp; Command to control Canon camera connected via WiFi<br />
+        &nbsp;&nbsp;&nbsp; Available commands are as follows:<br />
+        &nbsp;&nbsp;&nbsp; SHOOt filename -- take a picture and save the result to the specified file. Connection to the camera is closed following the command and will time out unless another SHOOT or OPEN command is done within a minute or so.<br />
+        &nbsp;&nbsp;&nbsp; LOADResult loadResultFlag -- if the flag is nonzero, the file read from the camera following a SHOOT command is opened (default is true)<br />
+        &nbsp;&nbsp;&nbsp; DISPlayResult displayResultFlag -- if the flag is nonzero, after a SHOOT command, the current image is displayed (default is true)<br />
+        &nbsp;&nbsp;&nbsp; OPEN -- connects to the camera and keeps the connection active<br />
+        &nbsp;&nbsp;&nbsp; CLOSE -- closes the connection initiated with OPEN<br />
+        &nbsp;&nbsp;&nbsp; Notes:<br />
+        &nbsp;&nbsp;&nbsp; Only the first four characters of a command are matched in decoding the command.<br />
+        &nbsp;&nbsp;&nbsp; If a single argument is given that does not match one of the commands, that is interpreted as the filename for the SHOOT command.<br />
+        <br />
+        DOUTPUT channel state<br />
+        &nbsp;&nbsp;&nbsp; Sets the specified digital output channel on a Labjack U3 to the specified state (0 or 1). Channel must be in the range 4-7. [oma2cam only]<br />
+        <br />
+        DINPUT channel<br />
+        &nbsp;&nbsp;&nbsp; Sets the specified digital channel on a Labjack U3 for input and returns the state in command_return_1. Channel must be in the range 4-7. [oma2cam only]<br />
+        <br />
+        GIGE command<br />
+        &nbsp;&nbsp;&nbsp; Available in oma2cam. Commands are as follows:<br />
+        &nbsp;&nbsp;&nbsp; ACQuire (gets frames in MULTIFRAME mode)<br />
+        &nbsp;&nbsp;&nbsp; EXPosure &lt;exposureTime&gt; (in microseconds)<br />
+        &nbsp;&nbsp;&nbsp; GAIn &lt;gain&gt; (0 - 33)<br />
+        &nbsp;&nbsp;&nbsp; RED &lt;Red channel gain percent -&gt; 100% = no gain applied&gt;<br />
+        &nbsp;&nbsp;&nbsp; BLUe &lt;Blue channel gain percent -&gt; 100% = no gain applied&gt;<br />
+        &nbsp;&nbsp;&nbsp; NUMber &lt;numberOfFrames&gt; (to be acquired by the ACQUIRE command; default is 1)<br />
+        &nbsp;&nbsp;&nbsp; RATe &lt;frameRate&gt;<br />
+        &nbsp;&nbsp;&nbsp; LABON (label frames)<br />
+        &nbsp;&nbsp;&nbsp; LABOFf (don&#x27;t label frames)<br />
+        &nbsp;&nbsp;&nbsp; PREview &lt;numberFrames&gt; (show preview for specified number of frames)<br />
+        &nbsp;&nbsp;&nbsp; EXTernal (set external triggering)<br />
+        &nbsp;&nbsp;&nbsp; INTernal (set internal triggering)<br />
+        &nbsp;&nbsp;&nbsp; DELay &lt;triggerDelay&gt; (set the trigger delay [microseconds])<br />
+        &nbsp;&nbsp;&nbsp; SFMemory &lt;numFrames&gt; (save the specified number of frames to one big image in memory. Uses specified frame RATE. Saves time stamp seconds to extra.)<br />
+        &nbsp;&nbsp;&nbsp; SFRames &lt;filename&gt; &lt;numFrames&gt; (save the specified number of frames using the specified filename. Uses FREERUN mode. Also saves a text file showing frame times.)<br />
+        &nbsp;&nbsp;&nbsp; STAtus (print camera settings)<br />
+        &nbsp;&nbsp;&nbsp; FIXbad &lt;flag&gt; (set flag to 1 to clear bad pixels before display or save --&gt; must use FINDBAD first)<br />
+        &nbsp;&nbsp;&nbsp; DISplay &lt;flag&gt; (set flag to 1 to display during acquisition)<br />
+        &nbsp;&nbsp;&nbsp; HDR &lt;filename&gt; &lt;numFrames&gt; &lt;multiplier&gt; (save the specified number of frames using the specified filename. Subsequent exposure times are multiplied by the multiplier.)<br />
+        <br />
+        SERCLOSE<br />
+        &nbsp;&nbsp;&nbsp; Closes the serial port opened with the last &quot;SERIAL device_name&quot; command. This can be used if you need to talk to more than one serial device -- open device 1, send commands, close the serial port, open device 2, send commands, and so forth. Available in oma2cam.<br />
+        <br />
+        SERIAL device_name (or character_string) [baudRate Timeout]<br />
+        &nbsp;&nbsp;&nbsp; Provides a simple way of sending text strings to a serial device. For example, a KeySpan USB to serial converter can be used to control a variety stepping motor controllers, spectrographs, arduinos etc. The device name should be something like &quot;/dev/tty.KeySpan1&quot; Note that upper/lower case matters on these specifications. Look in the &quot;/dev&quot; directory to find the name of your specific hardware. When opening a device, the baud rate and timeout value (in tenths of seconds) can be specified. Defaults are baud = 9600 and timeout = 0. After opening the device with the first SERIAL command, subsequent SERIAL commands will send across the specified character_string, followed by a &lt;CR&gt;. This uses standard POSIX calls.  Available in oma2cam.<br />
+        <br />
+        SBIG command_string [parameters]<br />
+        &nbsp;&nbsp;&nbsp; [This command is only available in oma2cam. The SBIG drivers must be installed.]<br />
+        &nbsp;&nbsp;&nbsp; command_string specifies the SBIG command (listed below).<br />
+        &nbsp;&nbsp;&nbsp; Only the first 3 characters of SBIG commands matter.<br />
+        &nbsp;&nbsp;&nbsp; The values for parameters depend on the particular command.<br />
+        &nbsp;&nbsp;&nbsp; .<br />
+        &nbsp;&nbsp;&nbsp; SBIG command_strings:<br />
+        &nbsp;&nbsp;&nbsp; .<br />
+        &nbsp;&nbsp;&nbsp; EXPosure exposure_time<br />
+        &nbsp;&nbsp;&nbsp; Specify exposure_time in seconds. Does not take an image.<br />
+        &nbsp;&nbsp;&nbsp; .<br />
+        &nbsp;&nbsp;&nbsp; FILter<br />
+        &nbsp;&nbsp;&nbsp; Specify which filter to use.<br />
+        &nbsp;&nbsp;&nbsp; .<br />
+        &nbsp;&nbsp;&nbsp; TEMperature<br />
+        &nbsp;&nbsp;&nbsp; Specify set temperature of the CCD in degrees C.<br />
+        &nbsp;&nbsp;&nbsp; .<br />
+        &nbsp;&nbsp;&nbsp; DISconnect<br />
+        &nbsp;&nbsp;&nbsp; Close the device and driver.<br />
+        &nbsp;&nbsp;&nbsp; .<br />
+        &nbsp;&nbsp;&nbsp; STAtus<br />
+        &nbsp;&nbsp;&nbsp; Print out CCD info, temperature, exposure, etc.<br />
+        &nbsp;&nbsp;&nbsp; .<br />
+        &nbsp;&nbsp;&nbsp; ACQuire<br />
+        &nbsp;&nbsp;&nbsp; Get an image using the current settings.<br />
+        <br />
+        WAITHI Channel<br />
+        &nbsp;&nbsp;&nbsp; Waits until the specified digital I/O channel is asserted high on a LabJack U3. Channel must be in the range 4-7. [oma2cam only]<br />
+        <br />
+        ZWO [command] [commandArguments]<br />
+        &nbsp;&nbsp;&nbsp; Controls a single ZWO camera in oma2cam.<br />
+        &nbsp;&nbsp;&nbsp; Only the first three letters of a command are checked.<br />
+        &nbsp;&nbsp;&nbsp; Valid Commands:<br />
+        &nbsp;&nbsp;&nbsp; EXPosure exposureTimeInMsec<br />
+        &nbsp;&nbsp;&nbsp; TEMperature targetTemperature (degrees C)<br />
+        &nbsp;&nbsp;&nbsp; GAIn gainValue (0-700)<br />
+        &nbsp;&nbsp;&nbsp; ACQuire (acquire an image; if connected this will be done if no arguments are given.)<br />
+        &nbsp;&nbsp;&nbsp; BINning binValue (sets format for binValue = 1 or 2)<br />
+        &nbsp;&nbsp;&nbsp; DISconnect<br />
+        &nbsp;&nbsp;&nbsp; WBAlance whiteBalanceRed whiteBalanceBlue (values are from 1-99)<br />
+        &nbsp;&nbsp;&nbsp; Focus (using the current settings, presumably a cropped window, continuously acquire and display 8-bit grey-scale images. To stop, type cmnd&#x27;) If the Calculate Rectangle tool is selected, the FWHM of at the center-of-mass of the image (presumably a single star in the window) is calculated and displayed. (see the FWHM command). If the Crosshair tool is selected, the average size and ellipticity of stars in the window are calculated and displayed.<br />
+        &nbsp;&nbsp;&nbsp; &lt;camera number&gt; Apply subsequent commands to the specified camera. Numbering starts at 1.<br />
+        <br />
+        ZFOCUS [cmnd command_args]<br />
+        &nbsp;&nbsp;&nbsp; Controls a single ZWO EAF Focuser in oma2cam.<br />
+        &nbsp;&nbsp;&nbsp; Valid Commands:<br />
+        &nbsp;&nbsp;&nbsp; MOVe steps --- increment or decrement current position by the specified number of steps<br />
+        &nbsp;&nbsp;&nbsp; GOto targetPosition --- move the the specified target position<br />
+        &nbsp;&nbsp;&nbsp; MAX maxPosition --- set the Maximum allowed position<br />
+        &nbsp;&nbsp;&nbsp; SET position --- set the current position to the specified value<br />
+        <br />
+
+      </div>
+
+      <div class="footer">Brought to you by Developers of OMA<br />
+        &nbsp; </div>
+    </div>
+  </body>
+</html>
