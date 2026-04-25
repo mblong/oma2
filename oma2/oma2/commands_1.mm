@@ -8683,8 +8683,98 @@ int flippid_c(int notUsed,char* args){
     projection.free();
     iBuffer.getmaxx(printMax);
     update_UI();
-    
+
     return NO_ERR;
 }
 #endif
+
+/* ********** */
+
+/*
+ ABERATION
+
+ Create a 3x3 mosaic of subregions from the current image to show aberrations at edges and center.
+ Each subregion shows pixels at 1:1 (one image pixel = one screen pixel).
+ The output is a square image sized to fit the visible screen area.
+ The 9 subregions sample: corners, edge centers, and center of the original image.
+ */
+
+int aberation_c(int n, char* args)
+{
+    if(iBuffer.isEmpty()){
+        beep();
+        printf("No image data.\n");
+        return CMND_ERR;
+    }
+
+    int* specs = iBuffer.getspecs();
+    int imgCols = specs[COLS];
+    int imgRows = specs[ROWS];
+    int nColors = 1 + iBuffer.isColor() * 2;
+    int imgHeight = imgRows / nColors;
+
+    if(imgCols < 3 || imgHeight < 3){
+        beep();
+        printf("Image too small.\n");
+        free(specs);
+        return CMND_ERR;
+    }
+
+#ifdef MacOSX_UI
+    NSRect screenFrame = [[NSScreen mainScreen] visibleFrame];
+    int screenSize = (int)fmin(screenFrame.size.width, screenFrame.size.height);
+#else
+    int screenSize = 1024;
+#endif
+
+    int subSize = screenSize / 3;
+    int subW = (subSize < imgCols) ? subSize : imgCols;
+    int subH = (subSize < imgHeight) ? subSize : imgHeight;
+    // make subregions square using the smaller dimension
+    int sub = (subW < subH) ? subW : subH;
+    int outSize = sub * 3;
+
+    Image im;
+    im.copyABD(iBuffer);
+    int newSpecs[NSPECS];
+    memcpy(newSpecs, specs, NSPECS * sizeof(int));
+    newSpecs[ROWS] = outSize * nColors;
+    newSpecs[COLS] = outSize;
+    im.setspecs(newSpecs);
+
+    // source origins for the 3x3 grid (column, row)
+    int srcCol[3], srcRow[3];
+    srcCol[0] = 0;
+    srcCol[1] = (imgCols - sub) / 2;
+    srcCol[2] = imgCols - sub;
+    srcRow[0] = 0;
+    srcRow[1] = (imgHeight - sub) / 2;
+    srcRow[2] = imgHeight - sub;
+
+    for(int c = 0; c < nColors; c++){
+        for(int gr = 0; gr < 3; gr++){
+            for(int gc = 0; gc < 3; gc++){
+                int sr0 = srcRow[gr];
+                int sc0 = srcCol[gc];
+                int dr0 = gr * sub;
+                int dc0 = gc * sub;
+                for(int r = 0; r < sub; r++){
+                    for(int col = 0; col < sub; col++){
+                        DATAWORD val = iBuffer.getpix(c * imgHeight + sr0 + r, sc0 + col);
+                        im.setpix(c * outSize + dr0 + r, dc0 + col, val);
+                    }
+                }
+            }
+        }
+    }
+
+    free(specs);
+    iBuffer.free();
+    iBuffer = im;
+    iBuffer.getmaxx(printMax);
+    printf("Aberration mosaic: %d x %d (%d x %d subregions from %d x %d image).\n",
+           outSize, outSize, sub, sub, imgCols, imgHeight);
+    update_UI();
+    return NO_ERR;
+}
 

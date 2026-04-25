@@ -24,6 +24,7 @@ int acdelete_c(int,char*);
 int acget_c(int,char*);
 int acadd_c(int,char*);
 int addRGB_c(int,char*);
+int aberation_c(int,char*);
 int absolute_c(int,char*);
 int acmevelocity_c(int,char*);
 int aspect_c(int, char*);

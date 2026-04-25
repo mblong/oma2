@@ -25,6 +25,7 @@ ComDef   commands[] =    {
     {{"ABELINV        "},   abelinv_g},
     {{"ABELPREP       "},   abelprep_g},
     {{"ABELRECT       "},   abelrect_g},
+    {{"ABERATION      "},   aberation_c},
     {{"ACCUMULATE     "},   accumulate_c},
     {{"ACDELETE       "},   acdelete_c},
     {{"ACADD          "},   acadd_c},
