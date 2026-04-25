@@ -1321,7 +1321,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1440"
             endingLineNumber = "1440"
-            landmarkName = "Image::setComment(buffer, n)"
+            landmarkName = "Image::getComment()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1449,7 +1449,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "840"
             endingLineNumber = "840"
-            landmarkName = "Image::getmaxx(printFlag)"
+            landmarkName = "Image::gethistogram()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1897,7 +1897,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "824"
             endingLineNumber = "824"
-            landmarkName = "Image::gethistogram()"
+            landmarkName = "Image::min()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

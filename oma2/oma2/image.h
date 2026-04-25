@@ -53,7 +53,7 @@ enum {NO_PRINT,PRINT_RESULT};
 enum {BILINEAR,MALVAR};
 
 // special file reader types
-enum {DCRAW,JPEG,TIFREAD,HDR,HOBJ,OMA,TXT,RAW,FITS};
+enum {DCRAW,JPEG,TIFREAD,HDR,HOBJ,OMA,TXT,RAW,FITS,XISF};
 #define RAW_FILE_EXT_INDEX 12
 
 // definitionss for cameras that are know to all versions of oma2
@@ -177,6 +177,7 @@ public:
     friend int readHobj(char* filename, Image*);
     friend int readCsv(char* filename, Image*);
     friend int readFits(char* filename, Image*);
+    friend int readXisf(char* filename, Image*);
     friend void oma_write_ppm_tiff (int thecolor, Image* im);
 #ifdef GIGE_
     friend int gige(int n, char* args);

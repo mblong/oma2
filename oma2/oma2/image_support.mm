@@ -1,6 +1,5 @@
 #include "image_support.h"
 
-
 extern char reply[1024];
 extern oma2UIData UIData;
 extern int printMax;
@@ -1557,3 +1556,384 @@ int oldDecrunch(RGBE *scanline, int len, FILE *file)
     }
     return true;
 }
+
+/* ********** */
+
+#ifdef MacOSX_UI
+
+int readXisf(char* filename, Image* theImage){
+    @autoreleasepool {
+        printf("Reading XISF file.\n");
+
+        FILE* fp = fopen(filename, "rb");
+        if(!fp){
+            beep();
+            printf("Cannot open %s\n", filename);
+            return FILE_ERR;
+        }
+
+        // Read and validate the 16-byte XISF signature block
+        unsigned char sig[16];
+        if(fread(sig, 1, 16, fp) != 16){
+            beep();
+            printf("Error reading XISF header.\n");
+            fclose(fp);
+            return FILE_ERR;
+        }
+        if(memcmp(sig, "XISF0100", 8) != 0){
+            beep();
+            printf("Not a valid XISF file (bad signature).\n");
+            fclose(fp);
+            return FILE_ERR;
+        }
+
+        // Bytes 8-11: XML header length (uint32 little-endian)
+        uint32_t xmlLength = sig[8] | (sig[9]<<8) | (sig[10]<<16) | (sig[11]<<24);
+        // Bytes 12-15: reserved
+
+        // Read the XML header
+        char* xmlBuf = new char[xmlLength + 1];
+        if(fread(xmlBuf, 1, xmlLength, fp) != xmlLength){
+            beep();
+            printf("Error reading XISF XML header.\n");
+            delete[] xmlBuf;
+            fclose(fp);
+            return FILE_ERR;
+        }
+        xmlBuf[xmlLength] = 0;
+
+        NSData* xmlData = [NSData dataWithBytesNoCopy:xmlBuf length:xmlLength freeWhenDone:NO];
+        NSError* xmlError = nil;
+        NSXMLDocument* doc = [[NSXMLDocument alloc] initWithData:xmlData options:0 error:&xmlError];
+        if(!doc){
+            beep();
+            printf("Error parsing XISF XML header: %s\n",
+                   [[xmlError localizedDescription] UTF8String]);
+            delete[] xmlBuf;
+            fclose(fp);
+            return FILE_ERR;
+        }
+
+        // Find the first Image element
+        NSArray* imageNodes = [doc nodesForXPath:@"//Image" error:&xmlError];
+        if([imageNodes count] == 0){
+            beep();
+            printf("No Image element found in XISF header.\n");
+            delete[] xmlBuf;
+            fclose(fp);
+            return FILE_ERR;
+        }
+        NSXMLElement* imageElem = (NSXMLElement*)[imageNodes objectAtIndex:0];
+
+        // Parse geometry: "width:height:channels" or "width:height"
+        NSString* geometry = [[imageElem attributeForName:@"geometry"] stringValue];
+        if(!geometry){
+            beep();
+            printf("No geometry attribute in XISF Image element.\n");
+            delete[] xmlBuf;
+            fclose(fp);
+            return FILE_ERR;
+        }
+        NSArray* geoParts = [geometry componentsSeparatedByString:@":"];
+        int imgWidth = 0, imgHeight = 0, numChannels = 1;
+        if([geoParts count] >= 2){
+            imgWidth = [[geoParts objectAtIndex:0] intValue];
+            imgHeight = [[geoParts objectAtIndex:1] intValue];
+        }
+        if([geoParts count] >= 3){
+            numChannels = [[geoParts objectAtIndex:2] intValue];
+        }
+        if(imgWidth <= 0 || imgHeight <= 0 || numChannels <= 0){
+            beep();
+            printf("Invalid XISF geometry: %s\n", [geometry UTF8String]);
+            delete[] xmlBuf;
+            fclose(fp);
+            return FILE_ERR;
+        }
+        printf("XISF: %d x %d, %d channel%s\n", imgWidth, imgHeight, numChannels,
+               numChannels > 1 ? "s" : "");
+
+        // Parse sampleFormat
+        NSString* sampleFormat = [[imageElem attributeForName:@"sampleFormat"] stringValue];
+        if(!sampleFormat) sampleFormat = @"Float32";
+        int bytesPerSample = 4;
+        bool isFloat = true;
+        if([sampleFormat isEqualToString:@"Float32"]){
+            bytesPerSample = 4; isFloat = true;
+        } else if([sampleFormat isEqualToString:@"Float64"]){
+            bytesPerSample = 8; isFloat = true;
+        } else if([sampleFormat isEqualToString:@"UInt16"]){
+            bytesPerSample = 2; isFloat = false;
+        } else if([sampleFormat isEqualToString:@"UInt8"]){
+            bytesPerSample = 1; isFloat = false;
+        } else if([sampleFormat isEqualToString:@"UInt32"]){
+            bytesPerSample = 4; isFloat = false;
+        } else {
+            beep();
+            printf("Unsupported XISF sampleFormat: %s\n", [sampleFormat UTF8String]);
+            delete[] xmlBuf;
+            fclose(fp);
+            return FILE_ERR;
+        }
+        printf("XISF sampleFormat: %s\n", [sampleFormat UTF8String]);
+
+        // Parse colorSpace
+        NSString* colorSpace = [[imageElem attributeForName:@"colorSpace"] stringValue];
+        if(!colorSpace) colorSpace = @"Gray";
+        bool isColor = [colorSpace isEqualToString:@"RGB"];
+
+        // Parse pixelStorage (Planar is default for XISF)
+        NSString* pixelStorage = [[imageElem attributeForName:@"pixelStorage"] stringValue];
+        bool isPlanar = true;
+        if(pixelStorage && [pixelStorage isEqualToString:@"Normal"])
+            isPlanar = false;
+
+        // Parse location: "attachment:position:size"
+        NSString* location = [[imageElem attributeForName:@"location"] stringValue];
+        if(!location || ![location hasPrefix:@"attachment:"]){
+            beep();
+            printf("Unsupported XISF data location (only attachment supported): %s\n",
+                   location ? [location UTF8String] : "none");
+            delete[] xmlBuf;
+            fclose(fp);
+            return FILE_ERR;
+        }
+        NSArray* locParts = [location componentsSeparatedByString:@":"];
+        if([locParts count] < 3){
+            beep();
+            printf("Invalid XISF attachment location.\n");
+            delete[] xmlBuf;
+            fclose(fp);
+            return FILE_ERR;
+        }
+        long long attachPos = [[locParts objectAtIndex:1] longLongValue];
+        long long attachSize = [[locParts objectAtIndex:2] longLongValue];
+
+        // Check for compression
+        NSString* compression = [[imageElem attributeForName:@"compression"] stringValue];
+        bool isCompressed = (compression != nil && [compression length] > 0);
+        NSString* compAlgorithm = nil;
+        long long uncompressedSize = 0;
+        if(isCompressed){
+            NSArray* compParts = [compression componentsSeparatedByString:@":"];
+            compAlgorithm = [compParts objectAtIndex:0];
+            if([compParts count] >= 2)
+                uncompressedSize = [[compParts objectAtIndex:1] longLongValue];
+            else
+                uncompressedSize = (long long)imgWidth * imgHeight * numChannels * bytesPerSample;
+            if(![compAlgorithm isEqualToString:@"zlib"] &&
+               ![compAlgorithm isEqualToString:@"zlib+sh"]){
+                beep();
+                printf("Unsupported XISF compression: %s (only zlib supported).\n",
+                       [compAlgorithm UTF8String]);
+                delete[] xmlBuf;
+                fclose(fp);
+                return FILE_ERR;
+            }
+            printf("XISF compression: %s\n", [compression UTF8String]);
+        }
+
+        // Collect metadata from FITSKeyword and Property elements for the comment/log buffer
+        int comBufPosition = 0;
+        char commentBuffer[MBUFLEN];
+        float expValue = 0, aperValue = 0, gainValue = 0;
+
+        NSArray* fitsNodes = [imageElem nodesForXPath:@"FITSKeyword" error:nil];
+        for(NSXMLElement* fk in fitsNodes){
+            NSString* name = [[fk attributeForName:@"name"] stringValue];
+            NSString* value = [[fk attributeForName:@"value"] stringValue];
+            NSString* comment = [[fk attributeForName:@"comment"] stringValue];
+            if(!name) continue;
+
+            char card[256];
+            if(comment && [comment length] > 0)
+                snprintf(card, sizeof(card), "%-8s= %20s / %s",
+                         [name UTF8String],
+                         value ? [value UTF8String] : "",
+                         [comment UTF8String]);
+            else
+                snprintf(card, sizeof(card), "%-8s= %s",
+                         [name UTF8String],
+                         value ? [value UTF8String] : "");
+
+            printf("%s\n", card);
+            size_t cardLen = strlen(card);
+            if(comBufPosition + cardLen + 2 < MBUFLEN){
+                snprintf(commentBuffer + comBufPosition, cardLen + 1, "%s", card);
+                comBufPosition += cardLen + 1;
+            }
+
+            if([name isEqualToString:@"EXPTIME"] || [name isEqualToString:@"EXPOSURE"])
+                expValue = value ? [value floatValue] : 0;
+            else if([name isEqualToString:@"APTDIA"] || [name isEqualToString:@"APERTURE"])
+                aperValue = value ? [value floatValue] : 0;
+            else if([name isEqualToString:@"GAIN"])
+                gainValue = value ? [value floatValue] : 0;
+        }
+
+        NSArray* propNodes = [imageElem nodesForXPath:@"Property" error:nil];
+        for(NSXMLElement* prop in propNodes){
+            NSString* pid = [[prop attributeForName:@"id"] stringValue];
+            NSString* pval = [[prop attributeForName:@"value"] stringValue];
+            if(!pid) continue;
+            if(!pval) pval = [prop stringValue];
+            if(!pval) pval = @"";
+
+            char card[256];
+            snprintf(card, sizeof(card), "%s = %s", [pid UTF8String], [pval UTF8String]);
+            printf("%s\n", card);
+            size_t cardLen = strlen(card);
+            if(comBufPosition + cardLen + 2 < MBUFLEN){
+                snprintf(commentBuffer + comBufPosition, cardLen + 1, "%s", card);
+                comBufPosition += cardLen + 1;
+            }
+        }
+        if(comBufPosition > 0)
+            *(commentBuffer + comBufPosition) = 0;
+
+        // Read pixel data from attachment
+        fseek(fp, (long)attachPos, SEEK_SET);
+        unsigned char* rawData = new unsigned char[(size_t)attachSize];
+        if(fread(rawData, 1, (size_t)attachSize, fp) != (size_t)attachSize){
+            beep();
+            printf("Error reading XISF pixel data.\n");
+            delete[] rawData;
+            delete[] xmlBuf;
+            fclose(fp);
+            return FILE_ERR;
+        }
+        fclose(fp);
+
+        // Decompress if needed
+        unsigned char* pixelBytes = rawData;
+        unsigned char* decompBuf = NULL;
+        if(isCompressed){
+            // Handle byte-shuffled compression (zlib+sh)
+            bool byteShuffle = [compAlgorithm isEqualToString:@"zlib+sh"];
+
+            NSData* compData = [NSData dataWithBytesNoCopy:rawData
+                                                    length:(NSUInteger)attachSize
+                                              freeWhenDone:NO];
+            NSData* decompData = [compData decompressedDataUsingAlgorithm:NSDataCompressionAlgorithmZlib
+                                                                   error:nil];
+            if(!decompData || [decompData length] == 0){
+                beep();
+                printf("XISF zlib decompression failed.\n");
+                delete[] rawData;
+                delete[] xmlBuf;
+                return FILE_ERR;
+            }
+            uncompressedSize = [decompData length];
+            decompBuf = new unsigned char[(size_t)uncompressedSize];
+            memcpy(decompBuf, [decompData bytes], (size_t)uncompressedSize);
+
+            if(byteShuffle && bytesPerSample > 1){
+                // Unshuffle bytes: data is stored with all first bytes, then all second bytes, etc.
+                size_t totalSamples = (size_t)uncompressedSize / bytesPerSample;
+                unsigned char* unshuffled = new unsigned char[(size_t)uncompressedSize];
+                for(size_t s = 0; s < totalSamples; s++){
+                    for(int b = 0; b < bytesPerSample; b++){
+                        unshuffled[s * bytesPerSample + b] = decompBuf[b * totalSamples + s];
+                    }
+                }
+                delete[] decompBuf;
+                decompBuf = unshuffled;
+            }
+
+            pixelBytes = decompBuf;
+            delete[] rawData;
+            rawData = NULL;
+        }
+
+        // Create the Image
+        int rows = isColor ? imgHeight * 3 : imgHeight;
+        int cols = imgWidth;
+        Image newIm(rows, cols);
+        if(isColor) newIm.specs[IS_COLOR] = 1;
+
+        size_t pixelsPerChannel = (size_t)imgWidth * imgHeight;
+        size_t totalPixels = pixelsPerChannel * numChannels;
+
+        // Convert pixel data to DATAWORD (float) in oma2's planar RGB format
+        if(isFloat && bytesPerSample == 4){
+            // Float32
+            float* src = (float*)pixelBytes;
+            if(isPlanar){
+                // XISF planar matches oma2 planar: channel0, channel1, channel2
+                for(size_t i = 0; i < totalPixels && i < (size_t)rows*cols; i++)
+                    newIm.data[i] = src[i];
+            } else {
+                // Normal/interleaved: RGBRGB... → separate planes
+                for(size_t i = 0; i < pixelsPerChannel; i++){
+                    for(int c = 0; c < numChannels && c < 3; c++)
+                        newIm.data[c * pixelsPerChannel + i] = src[i * numChannels + c];
+                }
+            }
+        } else if(isFloat && bytesPerSample == 8){
+            // Float64
+            double* src = (double*)pixelBytes;
+            if(isPlanar){
+                for(size_t i = 0; i < totalPixels && i < (size_t)rows*cols; i++)
+                    newIm.data[i] = (DATAWORD)src[i];
+            } else {
+                for(size_t i = 0; i < pixelsPerChannel; i++){
+                    for(int c = 0; c < numChannels && c < 3; c++)
+                        newIm.data[c * pixelsPerChannel + i] = (DATAWORD)src[i * numChannels + c];
+                }
+            }
+        } else if(!isFloat && bytesPerSample == 2){
+            // UInt16
+            unsigned short* src = (unsigned short*)pixelBytes;
+            if(isPlanar){
+                for(size_t i = 0; i < totalPixels && i < (size_t)rows*cols; i++)
+                    newIm.data[i] = (DATAWORD)src[i];
+            } else {
+                for(size_t i = 0; i < pixelsPerChannel; i++){
+                    for(int c = 0; c < numChannels && c < 3; c++)
+                        newIm.data[c * pixelsPerChannel + i] = (DATAWORD)src[i * numChannels + c];
+                }
+            }
+        } else if(!isFloat && bytesPerSample == 1){
+            // UInt8
+            unsigned char* src = pixelBytes;
+            if(isPlanar){
+                for(size_t i = 0; i < totalPixels && i < (size_t)rows*cols; i++)
+                    newIm.data[i] = (DATAWORD)src[i];
+            } else {
+                for(size_t i = 0; i < pixelsPerChannel; i++){
+                    for(int c = 0; c < numChannels && c < 3; c++)
+                        newIm.data[c * pixelsPerChannel + i] = (DATAWORD)src[i * numChannels + c];
+                }
+            }
+        } else if(!isFloat && bytesPerSample == 4){
+            // UInt32
+            uint32_t* src = (uint32_t*)pixelBytes;
+            if(isPlanar){
+                for(size_t i = 0; i < totalPixels && i < (size_t)rows*cols; i++)
+                    newIm.data[i] = (DATAWORD)src[i];
+            } else {
+                for(size_t i = 0; i < pixelsPerChannel; i++){
+                    for(int c = 0; c < numChannels && c < 3; c++)
+                        newIm.data[c * pixelsPerChannel + i] = (DATAWORD)src[i * numChannels + c];
+                }
+            }
+        }
+
+        if(decompBuf) delete[] decompBuf;
+        else delete[] rawData;
+        delete[] xmlBuf;
+
+        theImage->free();
+        *theImage = newIm;
+        if(comBufPosition != 0)
+            theImage->setComment(commentBuffer, comBufPosition + 1);
+        theImage->setvalue(EXPOSURE, expValue);
+        theImage->setvalue(APERTURE, aperValue);
+        theImage->setvalue(ISO, gainValue);
+        theImage->getmaxx(printMax);
+        update_UI();
+        return NO_ERR;
+    }
+}
+
+#endif

@@ -69,6 +69,7 @@ FileDecoderExtensions fileDecoderExtensions[] = {
     {{".CSV"},TXT},
     {{".FITS"},FITS},
     {{".FIT"},FITS},
+    {{".XISF"},XISF},
     {{".RAW"},RAW},
     {{""},},
 };
@@ -235,6 +236,20 @@ Image::Image(char* filename, int kindOfName)
                 error = readFits(filename,this);
             } else {
                 error = readFits(fullname(filename,RAW_DATA),this);
+            }
+            if (error) windowNameMemory = 0;
+            return;
+        }
+    }
+
+    for(i=0; fileDecoderExtensions[i].ext[0]; i++ ){
+        int extLength = (int)strlen(fileDecoderExtensions[i].ext);
+        if(fileDecoderExtensions[i].decoder == XISF
+           && strncmp(&filenameCopy[nameLength-extLength],fileDecoderExtensions[i].ext,extLength) == 0){
+            if (kindOfName == LONG_NAME) {
+                error = readXisf(filename,this);
+            } else {
+                error = readXisf(fullname(filename,RAW_DATA),this);
             }
             if (error) windowNameMemory = 0;
             return;
